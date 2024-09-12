@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-11 10:13:58
  -->
 <template>
-    <div class="tapwater" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" :style="{zoom:(a1-0.1)}" v-loading="this.$store.state.isShow">
+    <div class="tapwater" :style="{zoom:(a1-0.1)}" v-loading="this.$store.state.isShow">
         <div class="linebox" :class="{colordiv:$store.state.color=='grey'}" >
             <div class="table clearfix" >
                 <div class="fll">
@@ -15,8 +15,6 @@
                         <div class="block" >
                             <span class="demonstration"></span>
                             <el-date-picker
-                                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                 v-model="value1"
                                 type="datetime"
                                  @focus="sx"
@@ -29,8 +27,6 @@
                         <div class="block" >
                             <span class="demonstration"></span>
                             <el-date-picker
-                                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                 v-model="value2"
                                 type="datetime"
                                 @focus="sx"
@@ -65,7 +61,7 @@
                
             </div>
         </div>
-        <div class="tip" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" ref="kongtiao3" v-if="tipchange1">
+        <div class="tip" ref="kongtiao3" v-if="tipchange1">
             <div
                 class="tiptop"
             >
@@ -132,7 +128,6 @@ export default {
             w: '',
             gth: require('../../assets/images/gth.png'),
             option: {},
-            option2: {},
             value1: new Date(new Date().toLocaleDateString()),
             value2: new Date(
                 new Date(new Date().toLocaleDateString()).getTime() +
@@ -230,7 +225,7 @@ export default {
             a2:1,
             sum: 0,
             data11: [],
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
+            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
 
@@ -277,9 +272,6 @@ export default {
               })
     },
       computed:{
-        theme(){
-            return this.$store.state.color
-        },
         VpowerData() {
                     return this.$store.state.btnPowerData;
         },
@@ -303,33 +295,6 @@ export default {
         // this.intgraph(this.ddddssss);
     },
     watch: {
-        theme(val){
-            if(document.getElementById('main').style.display === 'block' || document.getElementById('main1').style.display === 'block'){
-                if(val === 'blackBlue'){
-                    this.option.color = ['#5470C6']
-                    this.option.yAxis.splitLine.lineStyle.color = '#4C5777'
-                    this.option.yAxis.axisLabel.color = '#9AA3BE'
-                }else{
-                    this.option.color = ['#E60012']
-                    this.option.yAxis.splitLine.lineStyle.color = '#ccc'
-                    this.option.yAxis.axisLabel.color = '#999'
-                }
-                this.Chart1.setOption(this.option);
-            }
-
-            if(document.getElementById('main1').style.display === 'block'){
-                if(val === 'blackBlue'){
-                    this.option2.color = ['#5470C6']
-                    this.option2.yAxis.splitLine.lineStyle.color = '#4C5777'
-                    this.option2.yAxis.axisLabel.color = '#9AA3BE'
-                }else{
-                    this.option2.color = ['#E60012']
-                    this.option2.yAxis.splitLine.lineStyle.color = '#ccc'
-                    this.option2.yAxis.axisLabel.color = '#999'
-                }
-                this.Chart2.setOption(this.option2);
-            }
-        },
         value1(val) {
             console.log(val);
         },
@@ -721,21 +686,10 @@ export default {
             return
             }
           
-            let userName = '';
-            if (
-                !JSON.parse(sessionStorage.getItem('userInfo1')) ||
-                JSON.parse(sessionStorage.getItem('userInfo1')) == null
-            ) {
-                userName = JSON.parse(sessionStorage.getItem('sightseerInfo1'))
-                    .SCMSUserName;
-            } else {
-                userName = JSON.parse(sessionStorage.getItem('userInfo1'))
-                    .SCMSUserName;
-            }
             //请求接口
             this.$axios({
                 method: 'post',
-                url: `/api/HistoricalAlarm/SearchAlarm?StartTime=${this.value1}&EndTime=${this.value2}&argUserAccount=${userName}`
+                url: `/api/AlarmStatistics/SearchAlarm?StartTime=${this.value1}&EndTime=${this.value2}`
             })
                 .then(res => {
                   console.log("res",res)
@@ -1109,7 +1063,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             }
 
             this.option = {
-                color: this.$store.state.color === 'blackBlue' ? ['#5470C6'] : ['#E60012'],
+                color: ['#E60012'],
                 title: {
                     text: this.ZHObj.chartitle,
                     textStyle: {
@@ -1145,13 +1099,10 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     axisTick: {
                         show: false
                     },
-                    splitLine:{
-                        lineStyle: {
-                            color: this.$store.state.color === 'blackBlue' ? '#4C5777' : '#ccc'
-                        }
-                    },
                     axisLabel: {
-                        color: this.$store.state.color === 'blackBlue' ? '#9AA3BE' : '#999',
+                        textStyle: {
+                            color: '#999'
+                        }
                     }
                 },
                 dataZoom: [
@@ -1280,8 +1231,8 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                             dataShadow.push(yMax);
                         }
 
-                        this.option2 = {
-                            color: this.$store.state.color === 'blackBlue' ? ['#5470C6'] : ['#E60012'],
+                        let option1 = {
+                            color: ['#E60012'],
                             title: {
                                 text: this.ZHObj.subcharttitle,
                                 textStyle: {
@@ -1317,13 +1268,10 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                                 axisTick: {
                                     show: false
                                 },
-                                splitLine:{
-                                    lineStyle: {
-                                        color: this.$store.state.color === 'blackBlue' ? '#4C5777' : '#ccc'
-                                    }
-                                },
                                 axisLabel: {
-                                    color: this.$store.state.color === 'blackBlue' ? '#9AA3BE' : '#999',
+                                    textStyle: {
+                                        color: '#999'
+                                    }
                                 }
                             },
                             dataZoom: [
@@ -1397,7 +1345,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                             this.Chart2 = this.$echarts.init(
                                 document.getElementById('main1')
                             );
-                            this.Chart2.setOption(this.option2);
+                            this.Chart2.setOption(option1);
                             //初始化子表
                             document.getElementById('tabledata').style.display =
                                 'none';
@@ -1417,7 +1365,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                             //隐藏c#端的控件
                         } else {
                             
-                            this.Chart2.setOption(this.option2);
+                            this.Chart2.setOption(option1);
                             //初始化子表
                             document.getElementById('tabledata').style.display =
                                 'none';
@@ -1457,37 +1405,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
   
 };
 </script>
-<style lang="scss">
-.tapwater{
-    &.blackBlueBg{
-        #tabledata,#subtabledata{
-            th{
-                background-color: #182E50!important;
-                border-color: #4C5777;
-                color: #9AA3BE;
-
-                &:first-child{
-                    background-color: #121E3E!important;
-                }
-            }
-
-            td{
-                background: #081027;
-                border-color: #4C5777;
-                color: #9AA3BE;
-
-                &:first-child{
-                    background-color: #121E3E!important;
-                }
-            }
-        }
-
-        .mainbox{
-            background-color: #081027;
-        }
-    }
-}
-</style>
 <style lang="scss" scoped>
 .tabledata{
     overflow-y: auto;
@@ -1520,39 +1437,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     padding: 20px;
     width: 100%;
     background-color: #eeeeee;
-
-    &.blackBlueBg{
-        background-color: #06091F;
-
-        .linebox{
-            background-color: #081027;
-            border-color: #2A3058;
-        }
-
-        .table{
-            background: #0B1530;
-            border: 1px solid #38415A;
-            color: #E4E4E4;
-        }
-
-        .query{
-            background: #386DF0;
-            color: #fff;
-        }
-        .export{
-            border-color: #FDA100;
-            color: #FDA100;
-            background-color: transparent;
-        }
-        .fr{
-            .query{
-                background-color: transparent;
-                border-color: #386DF0;
-                color: #386DF0;
-            }
-        }
-    }
-
     .linebox {
         height: 100%;
         width: 100%;
@@ -1634,7 +1518,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
 }
 .tabledata {
     padding: 10px;
-    width: calc(100%-20px);
+    width: calc(100% - 20px);
 }
 
 select {
@@ -1717,10 +1601,6 @@ select {
             text-align: center;
             color: #eeb764;
         }
-    }
-    
-    &.blackBlueBg{
-        background-color: #3A3C41;
     }
 }
 .cover2 {

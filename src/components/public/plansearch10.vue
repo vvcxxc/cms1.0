@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-29 16:34:35
  -->
 <template>
-    <div class="search-container" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+    <div class="search-container">
         <div class="search-left">
             <div class="search-item" v-for="(item, index) in searchList" :key="index">
                 <div
@@ -387,23 +387,6 @@ export default {
     background-color: #ddd;
     width: 100%;
     position: relative;
-
-    
-    &.blackBlueBg{
-        .search-left{
-            .btn{
-                background-color: transparent;
-            }
-            .add{
-                background-color: transparent!important;
-            }
-            .del{
-                background-color: #4F5871!important;
-                border: 1px solid #4F5871!important;
-                color: #fff;
-            }
-        }
-    }
 }
 span {
     position: absolute;

@@ -1102,7 +1102,7 @@ select {
 }
 .tabledata {
     padding: 10px;
-    width: calc(100%-20px);
+    width: calc(100% - 20px);
     // height: 50%;
 
     .number {

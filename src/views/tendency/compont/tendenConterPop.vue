@@ -6,9 +6,9 @@
  * @LastEditTime: 2021-04-09 14:04:29
  -->
 <template>
-    <div class="tenPop_box" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" :style="{zoom:zoom11}">
+    <div class="tenPop_box" :style="{zoom:zoom11}">
         <div class="CurveArrPopcover" v-if="addCurveArrName"></div>
-        <div v-drag class="tenPop_fool" :style="{zoom1}">
+        <div v-drager class="tenPop_fool" :style="{zoom1}">
             <div class="tenPop_title">{{TitleText}}</div>
             <span @click="off" class="tenPop_i el-icon-close"></span>
         </div>
@@ -17,7 +17,7 @@
                 <div class="tenPop_conterFool" :style="{height: 370*zoom1+'px'}">
                     <div class="conterFool_fool">
                         <span>{{lang.FormulaManage_AddProject_DeviceName}}</span>
-                        <el-select @focus='sx' :popper-append-to-body="false" @change="equipmentFun()" class="conterFool_select" v-model="equipmentValue" :placeholder="lang.AlarmRecord_HT_Unlimited">
+                        <el-select @focus='sx'  @change="equipmentFun()" class="conterFool_select" v-model="equipmentValue" :placeholder="lang.AlarmRecord_HT_Unlimited">
                             <el-option
                             v-for="item in equipment"
                             size="mini"
@@ -27,7 +27,7 @@
                             </el-option>
                         </el-select>
                          <span>{{lang.FormulaManage_AddProject_VariableGroup}}</span>
-                        <el-select @focus='sx' :popper-append-to-body="false" @change="groupNameFun()" class="conterFool_select" v-model="groupNameValue" :placeholder="lang.AlarmRecord_HT_Unlimited">
+                        <el-select @focus='sx'  @change="groupNameFun()" class="conterFool_select" v-model="groupNameValue" :placeholder="lang.AlarmRecord_HT_Unlimited">
                             <el-option
                             v-for="item in groupName"
                             :key="'2' + item.GroupName"
@@ -36,7 +36,7 @@
                             </el-option>
                         </el-select>
                          <span>{{lang.FormulaManage_AddProject_DataGrid_VariableType}}：</span>
-                        <el-select @focus='sx' :popper-append-to-body="false" @change="dataTypeFun()" class="conterFool_select conterFool_select1" v-model="dataTypeValue" :placeholder="lang.AlarmRecord_HT_Unlimited">
+                        <el-select @focus='sx' @change="dataTypeFun()" class="conterFool_select conterFool_select1" v-model="dataTypeValue" :placeholder="lang.AlarmRecord_HT_Unlimited">
                             <el-option
                             v-for="(item) in dataType"
                             :key="'3' + item.Value"
@@ -56,14 +56,6 @@
                             :data="tableDataList"
                             tooltip-effect="dark"
                             style="width: 100%"
-                            :header-cell-style="{
-                                background:$store.state.color==='blackBlue' ? '#344C8F' : '#DCF0F9',
-                                color:($store.state.color=='grey')?'#000':'#fff',
-                                'border-left-color': $store.state.color==='blackBlue' ? '#8B98B8' : '#e4e4e4',
-                                height:50*zoom +'px',
-                                'font-size': 14*zoom + 'px',
-                                padding:'0'
-                            }"
                             @selection-change="handleSelectionChange">
                             <template slot="empty">
                                 <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
@@ -149,7 +141,7 @@
                             </div>
                             <div class="conter_box_2" :style="{height: 50*zoom1+'px',lineHeight: 50*zoom1+'px'}">{{item.TagName}}</div>
                             <div class="conter_box_3" :style="{height: 50*zoom1+'px',lineHeight: 50*zoom1+'px'}">
-                                <el-select @focus='sx' :popper-append-to-body="false" @change="selectValue(item,index)" v-model="item.value" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
+                                <el-select @focus='sx' @change="selectValue(item,index)" v-model="item.value" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
                                     <el-option
                                     v-for="item in item.type"
                                     :key="'4' + item.value"
@@ -164,8 +156,7 @@
                                     show-alpha
                                     @change="colorFun(item,index)"
                                     :style="{height: 40*zoom1+'px'}"
-                                    :predefine="predefineColors"
-                                    :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normalBg'">
+                                    :predefine="predefineColors">
                                 </el-color-picker>
                             </div>
                          
@@ -436,7 +427,6 @@ export default {
                 '#20124d',
                 '#4c1130'
               ],
-              zoom: 1,
               zoom1:1,
               tips: '',
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
@@ -566,6 +556,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 }else{
                     this.curveFo = ''
                 }
+                this.curveFo = val[i].Digit
                 val[i].curvePt = this.curvePt
                 val[i].curveFo = this.curveFo
                 val[i].curveMax = this.curveMax
@@ -1179,7 +1170,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         },
         //添加曲线
         addCurve(){
-            // debugger
+            
            var addCarr = this.addCurveArr
            console.log('this.addCurveArr',this.addCurveArr,this.multipleSelection)
            var addCArr = []
@@ -1889,128 +1880,17 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
        top:1px;
     }
 }
-.tenPop_box{
-    &.blackBlueBg{
-        .el-table__body-wrapper{
-            background: #1A2544!important;
-        }
-        .el-table--border{
-            th{
-                border-right-color: transparent;
-            }
-        }
-        .el-table__row:nth-of-type(odd),
-        .el-table__row:nth-of-type(even){
-            background: #1A2544!important;
-
-            td{
-                background: #1A2544!important;
-                border-bottom-color: #445992!important;
-                border-left-color: transparent;
-                border-right-color: transparent;
-            }
-        }
-
-        .conterFool_middle{
-            .el-checkbox__input{
-                .el-checkbox__inner{
-                    background-color: #18254E!important;
-                    border-color: #445992!important;
-                }
-            }
-        }
-        .conterBottom_conter .el-checkbox__input.is-checked .el-checkbox__inner{
-            background-color: #18254E!important;
-            border-color: #445992!important;
-        }
-    }
-}
 </style>
 
 <style lang="scss" scoped>
+     
+
+
     .tenPop_box{
         width:1300px;
         height:885px;
         box-shadow: 2px 2px 8px 2px rgba(0,0,0,0.6);
         // background: red;
-
-        &.blackBlueBg{
-            .deletePop{
-                background: #2A3E76;
-                color: #fff;
-            }
-            .Popshow{
-                background-color: #222D50;
-            }
-            .CurveArrPop{
-                .middle{
-                    background: #233056;
-                    color: #fff;
-                }
-            }
-            .tenPop_conter{
-                background-color: #222D50;
-
-                .tenPop_conterBox{
-                    .tenPop_conterFool{
-                        background-color: #28355B;
-                        border-color: #445992;
-                        color: #fff;
-
-                        .conterFool_fool{
-                            .conterFool_btn{
-                                border-color: #fff;
-                                background-color: transparent;
-                                color: #fff;
-                            }
-                        }
-                        .conterFool_bottom{
-                            .bottom_jump,.bottom_end,.bottom_next,.bottom_last,.bottom_firest{
-                                border-color: #9AA3BE!important;
-                                color: #9AA3BE!important;
-                                background-color: transparent!important;
-                            }
-                            .bottom_text{
-                                color: #9AA3BE;
-                            }
-                        }
-                    }
-                }
-            }
-
-            .referencePop{
-                .middle{
-                    color: #fff;
-                    background-color: #222D50;
-                }
-            }
-            .tenPop_conter{
-                .tenPop_conterBox{
-                    .tenPop_conterBottom{
-                        background: #28355B;
-                        border-color: #445992;
-
-
-                        .conterBottom_conter{
-                            background: #1A2544;
-
-                            .conter>div{
-                                background: #344C8F;
-                                border-right-color: #8B98B8;
-                                color: #FFF;
-                            }
-                            .conter_box{
-                                color: #8798C9;
-                                border-bottom-color: #445992;
-                            }
-                        }
-                    }
-                    .el-button{
-                        border-color: transparent;
-                    }
-                }
-            }
-        }
 
         .referencePop{
             position: absolute;

@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-12-01 19:01:37
  -->
 <template>
-    <div class="left-container" :class="{colordiv:$store.state.color == 'grey', blackBlueBg: $store.state.color === 'blackBlue'}">
+    <div class="left-container" :class="{colordiv:$store.state.color == 'grey'}">
         <div
             class="nav"
             :class="{ active: activeIndex == index }"
@@ -131,7 +131,29 @@ export default {
                     {
                         name: '操作记录'
                     },
-                ]
+                ],
+                MsgPush: [
+                    {
+                        name: '报警消息'
+                    },
+                    {
+                        name: '代办消息'
+                    },
+                    {
+                        name: '推送日志'
+                    }
+                ],
+                BaseData: [
+                    {
+                        name: '产品管理'
+                    },
+                    {
+                        name: '库区管理'
+                    },
+                    {
+                        name: '站点管理'
+                    }
+                ],
             },
             nav: [],
             zoom:1,
@@ -269,6 +291,17 @@ export default {
                     name: languages[currentLang].EquipmentAccount_OperationRecord
                 }
             ]
+            this.navList.MsgPush = [
+                {
+                    name: languages[currentLang].MsgPush_Alarm
+                },
+                {
+                    name: languages[currentLang].PushMessage_ToDoMessage
+                },
+                {
+                    name: languages[currentLang].PushMessage_PushLog
+                }
+            ]
         },
         tabActive(index) {
             this.$emit('tabComponent', index);
@@ -298,30 +331,10 @@ export default {
             font-weight: 600;
             .border {
                 position: absolute;
-                left: 0px;
+                left: -5px;
                 width: 5px;
                 height: 100%;
                 background-color: #4270e4;
-            }
-        }
-    }
-
-    &.blackBlueBg{
-        .nav{
-            background-color: #0C1634;
-            color: #9AA3BE;
-
-            &:hover{
-                background-color: #121D3E;
-            }
-
-            &.active{
-                background-color: #0F1B3E;
-                color: #3F81FF;
-
-                .border{
-                    background-color: #3F81FF;
-                }
             }
         }
     }

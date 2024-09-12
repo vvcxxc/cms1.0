@@ -21,7 +21,7 @@
         <div class="pages-container" >
             <my-page :pageData="pageData" @req="req"></my-page>
         </div>
-        <div class="setdata" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" ref="kongtiao2" v-show="changemenu" :style="{zoom:zoom}">
+        <div class="setdata" ref="kongtiao2" v-show="changemenu" :style="{zoom:zoom}">
             <div
                 class="setdatahead1"
               
@@ -49,13 +49,14 @@
                 <div class="setdataright">
                     <div class="endtree">
                         <el-tree
+                            ref="tree"
                             :data="endmenu"
                             show-checkbox
                             node-key="id"
                             :indent="0"
                             default-expand-all
                             @check-change="handleNodeClic"
-                             @node-click="handleNodeClick"
+                            @node-click="handleNodeClick"
                             :default-checked-keys="argRightIDList"
                         ></el-tree>
                     </div>
@@ -81,7 +82,7 @@
                     <div class="over" @click="over">{{lang.RoleManage_RoleWindow_Save}}</div>
                 </div>
         </div>
-        <div class="tip" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" ref="kongtiao" v-show="tipchange" :style="{zoom:zoom}">
+        <div class="tip" ref="kongtiao" v-show="tipchange" :style="{zoom:zoom}">
           <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
             <div
                 class="tiptop"
@@ -173,6 +174,7 @@ export default {
         };
     },
     created() {
+        console.clear();
         this.getLangData()
         this.req(1);
         this.bigmnue();
@@ -240,7 +242,6 @@ export default {
                             url: `/api/RoleManage/RoleManage_DeleteRole?argRoleId=${this.deldata}`
                         })
                             .then(res => {
-                                console.log(res);
                                 if (res.data.msg == '请求成功') {
                                     setTimeout(() => {
                             $('.tip').css({
@@ -314,32 +315,27 @@ export default {
             this.text = this.lang.RoleManage_HT_RoleWindow_TitleNameModify;
             this.data1 = data;
             this.select = 2;
-            console.log(data);
-            this.$axios
-                .post(
-                    `/api/RoleManage/RoleManage_GstRoleRight?argRoleID=${data.RoleID}`
-                )
+            this.$axios.post(`/api/RoleManage/RoleManage_GstRoleRight?argRoleID=${data.RoleID}`)
                 .then(res => {
-                    console.log(res);
+                    // console.log('角色已选权限' ,res.data);
                     let i = 0;
                     for (i in res.data.data) {
                         this.argRightIDList.push(res.data.data[i].SCMSRightID);
                     }
-
+                    this.$refs.tree.setCheckedKeys(this.argRightIDList);
                     this.rolename = data.RoleName;
                     this.rolesomething = data.RoleDesc;
-                      setTimeout(() => {
-                            $('.setdata').css({
-                                zoom: this.a11,
-                                left: `calc(50% - ${($('.setdata').width() / 2) *
-                                    this.a11}px)`,
-                                top: `calc(50% - ${($('.setdata').height() / 2) *
-                                    this.a11}px)`
-                            });
-                              this.changemenu = true;
-                            this.move('setdata', 'setdatahead1');
-                        });
                     this.pdyd1 = true;
+                    setTimeout(() => {
+                        $('.setdata').css({
+                            zoom: this.a11,
+                            left: `calc(50% - ${($('.setdata').width() / 2) * this.a11}px)`,
+                            top: `calc(50% - ${($('.setdata').height() / 2) * this.a11}px)`
+                        });
+                        this.changemenu = true;
+                        this.move('setdata', 'setdatahead1');
+                    });
+                    
                 });
         },
         no1() {
@@ -351,12 +347,9 @@ export default {
                 method: 'post',
                 url: `/api/RoleManage/RoleManage_DeleteRole?argRoleId=${this.deldata}`
             })
-
                 .then(res => {
-                    console.log(res);
                     if (res.data.msg == '请求成功') {
                         this.tipchange = false;
-                        console.log('sadsadsad');
                     } else if (!res.data.data.msg) {
                         this.tipword = res.data.msg;
                        setTimeout(() => {
@@ -419,11 +412,11 @@ export default {
         },
         cancel() {
             this.changemenu = false;
-             this.rolename = '';
+            this.rolename = '';
             this.rolesomething = '';
             this.argRightIDList = [];
-              this.$refs.tree.setCheckedKeys([]);
-                          this.$refs.tree1.setCheckedKeys([]);
+            this.$refs.tree.setCheckedKeys([]);
+            this.$refs.tree1.setCheckedKeys([]);
         },
         //三级数据结构
         treeFun(){
@@ -546,7 +539,6 @@ export default {
                 }
             }
             if(data.id == 1 && a == true){
-                console.log('true==>',this.bigmenuChild)
                 for(let f=0;f<this.bigmenuChild.length;f++){
                     this.argRightIDList.push(this.bigmenuChild[f].SCMSChildMenuID)
                 }
@@ -576,7 +568,6 @@ export default {
             }
 
                 //   this.addmenu.argRole.argRightIDList = JSON.parse(sessionStorage.getItem('userInfo')).SCMSUserID;
-                console.log("wd",this.addmenu)
                 if (!this.rolename && !this.rolesomething) {
                 setTimeout(() => {
                             $('.tip').css({
@@ -597,7 +588,6 @@ export default {
                         url: '/api/RoleManage/RoleManage_AddRole',
                         data: this.addmenu
                     }).then(res => {
-                        console.log(res);
                         if (!res.data.data) {
                             this.tipword = res.data.msg;
                         setTimeout(() => {
@@ -616,7 +606,6 @@ export default {
                             this.changemenu = false;
                             this.rolename = '';
                             this.rolesomething = '';
-                            console.log(this.pageData.PageIndex);
                             this.req(this.pageData.PageIndex);
                         }
                         this.argRightIDList = [];
@@ -664,7 +653,6 @@ export default {
                         url: '/api/RoleManage/RoleManage_UpdateRole',
                         data: this.changedata
                     }).then(res => {
-                        console.log(res);
                         if (!res.data.data) {
                             this.tipword = res.data.msg;
                            setTimeout(() => {
@@ -693,11 +681,9 @@ export default {
             }
         },
         bigmnue() {
-            console.log("sssssssssss")
             this.$axios
                 .post(`/api/UserManage/UserManage_GstMainMenu`)
                 .then(res => {
-                    console.log("11",res)
                     let i = 0;
                    for(i in res.data.data){
                         if(res.data.data[i].SCMSIsActivate){
@@ -713,78 +699,55 @@ export default {
             this.$axios
                 .post(`/api/UserManage/UserManage_GstChildMenu`)
                 .then(res => {
-                    console.log("sss",res)
                     this.smallmenu = res.data.data;
-
+                    // console.log("权限树", JSON.parse(JSON.stringify(this.smallmenu)));
                      this.$axios
                     .post(`/api/UserManage/UserManage_GstAuthorityControl`)
                     .then(res => {
-                        console.log("ss1".res)
-                         this.bigmenuChild = res.data.data;
-
-                            let i = 0;
-                            let j = 0;
-                            let a = 0;
-                            let b = 0;
-                            for (a in this.bigmenu) {
-                                this.bigmenu[a].children = [];
-                                this.bigmenu[a].label = this.bigmenu[
-                                    a
-                                ].SCMSMainMenuName;
-                                this.bigmenu[a].id = this.bigmenu[a].SCMSMainMenuID;
-                            }
-                            for (b in this.smallmenu) {
-                                this.smallmenu[b].children = [];
-                                this.smallmenu[b].label = this.smallmenu[
-                                    b
-                                ].SCMSChildMenuName;
-                                this.smallmenu[b].id = this.smallmenu[
-                                    b
-                                ].SCMSChildMenuID;
-                            }
-                            for (i in this.bigmenu) {
-                                for (j in this.smallmenu) {
-                                    if (
-                                        this.bigmenu[i].SCMSMainMenuID ==
-                                        this.smallmenu[j].SCMSMainMenuID
-                                    ) {
-                                        this.bigmenu[i].children.push(
-                                            this.smallmenu[j]
-                                        );
-                                    }
+                        this.bigmenuChild = res.data.data;
+                        let i = 0;
+                        let j = 0;
+                        let a = 0;
+                        let b = 0;
+                        for (a in this.bigmenu) {
+                            this.bigmenu[a].children = [];
+                            this.bigmenu[a].label = this.bigmenu[a].SCMSMainMenuName;
+                            this.bigmenu[a].id = this.bigmenu[a].SCMSMainMenuID;
+                        }
+                        for (b in this.smallmenu) {
+                            this.smallmenu[b].children = [];
+                            this.smallmenu[b].label = this.smallmenu[b].SCMSChildMenuName;
+                            this.smallmenu[b].id = this.smallmenu[b].SCMSChildMenuID;
+                        }
+                        for (i in this.bigmenu) {
+                            for (j in this.smallmenu) {
+                                if (
+                                    this.bigmenu[i].SCMSMainMenuID === this.smallmenu[j].SCMSMainMenuID
+                                ) {
+                                    this.bigmenu[i].children.push(this.smallmenu[j]);
                                 }
                             }
-
-                            // //四级
-                            // for(var k=0;k<this.bigmenu.length;k++){
-                            //     for(var f=0;f<this.bigmenu[k].children.length;f++){
-                            //         for(var h=0;h<this.bigmenuChild.length;h++){
-                            //             this.bigmenuChild[h].children = [];
-                            //             this.bigmenuChild[h].label = this.bigmenuChild[h].ItemName;
-                            //             this.bigmenuChild[h].id = this.bigmenuChild[h].ItemID;
-                            //             this.bigmenuChild[h].SCMSChildMenuID = this.bigmenuChild[h].ItemID;
-                            //             if(this.bigmenu[k].children[f].id == this.bigmenuChild[h].ParentID){
-                            //                 this.bigmenu[k].children[f].children.push(this.bigmenuChild[h])
-                            //             }
-                            //         }
-                            //     }
-                            // }
-                    
-
-                            this.menu.label = this.lang.RoleManage_HT_RoleWindow_AllFunctions;
-                            this.menu.id = '1';
-                            this.menu.children = this.bigmenu;
-                            this.endmenu.push(this.menu);
-
+                        }
+                        // // 四级
+                        // for(var k=0;k<this.bigmenu.length;k++){
+                        //     for(var f=0;f<this.bigmenu[k].children.length;f++){
+                        //         for(var h=0;h<this.bigmenuChild.length;h++){
+                        //             this.bigmenuChild[h].children = [];
+                        //             this.bigmenuChild[h].label = this.bigmenuChild[h].ItemName;
+                        //             this.bigmenuChild[h].id = this.bigmenuChild[h].ItemID;
+                        //             this.bigmenuChild[h].SCMSChildMenuID = this.bigmenuChild[h].ItemID;
+                        //             if(this.bigmenu[k].children[f].id == this.bigmenuChild[h].ParentID){
+                        //                 this.bigmenu[k].children[f].children.push(this.bigmenuChild[h])
+                        //             }
+                        //         }
+                        //     }
+                        // }
+                        this.menu.label = this.lang.RoleManage_HT_RoleWindow_AllFunctions;
+                        this.menu.id = '1';
+                        this.menu.children = this.bigmenu;
+                        this.endmenu.push(this.menu);
                     })
-
-
                 })
-                // .then(res => {
-                   
-                 
-
-                // });
         },
     move(name, namehead) {
           //  $(`.${name}`).addClass('center')
@@ -799,8 +762,6 @@ export default {
            }
            
             $(`.${name}`)[0].addEventListener('mousedown', function(e) {
-                
-                console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
                     $(`.${name}`).removeClass('center')
                     window.event.stopPropagation();
@@ -834,9 +795,6 @@ export default {
                         //计算移动后的左偏移量和顶部的偏移量
                         var nl = nx - (x - l);
                         var nt = ny - (y - t);
-                        console.log(nx)
-                        console.log(x)
-                        console.log(l)
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
@@ -921,7 +879,6 @@ export default {
                     params
                 } */)
                 .then(res => {
-                    console.log(res);
                     if (res.data.code == 0) {
                         this.data = res.data.data.DataList;
                         this.pageData = res.data.data.ParameterList;
@@ -1178,52 +1135,6 @@ input {
             border: 1px solid #255cc1;
             border-radius: 5px;
             line-height: 40px;
-        }
-    }
-
-    &.blackBlueBg{
-        color: #fff;
-        background-color: #222D50;
-        
-        .setdatathree{
-            .setdataleft,.setdataright,.powerBtn_box{
-                background: #28355B;
-                border: 1px solid #445992;
-            }
-        }
-        span{
-            color: #fff!important;
-        }
-        .rolediscrle{
-            span{
-                color: #fff;
-            }
-        }
-        input, select{
-            background: #1D2846;
-            border: 1px solid #445992;
-            color: #C6CAD8;
-
-            &:focus{
-                border-color: #B2C0E4;
-            }
-        }
-        .btn{
-            .cancel, .over{
-                border: 1px solid #FFF;
-                color: #fff;
-                background-color: transparent!important;;
-            }
-        }
-
-        .el-tree{
-            background-color: #28355B!important;
-        } 
-        .powerBtn_box .el-tree{
-            background: #28355B;
-        }
-        .el-tree-node__label{
-            color: #fff;
         }
     }
 }

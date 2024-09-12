@@ -24,7 +24,7 @@
             :style="'color:'+ item.Foreground +';width:100%;height:100%;background:' 
             + item.Background +';boxShadow:'+item.Shadow+';fontWeight:' + item.Blod 
             + ';text-decoration:' + item.TextDecorations +';'">
-              {{text}}</div>
+              {{item.text}}</div>
       </div>
     </div>
 
@@ -205,7 +205,15 @@ export default {
       }
     },
     methods: {
-      //页面初始化
+      getPointNum(num, n) {
+			 if(isNaN(num)||num===null){
+		     return null
+	         }else{
+             
+		     return Number(num).toFixed(n)
+             }
+		  },
+            //页面初始化
       init(){
         this.dataValue = []
         this.data = this.dae
@@ -1024,7 +1032,7 @@ export default {
                           resValue = 0
                       }else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                             resValue = data[i].Value
-                      }else if(typeof(Number(resValueNumber)) == 'number'){
+                      }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
                         resValue = Number(data[i].Value)
                       }else{
                         resValue = data[i].Value
@@ -1036,7 +1044,7 @@ export default {
                       }
                       else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                             ArrValue =  ColorAnimationList[i].Compare
-                      }else if(typeof(Number(resValueNumber)) == 'number'){
+                      }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
                         ArrValue = Number( ColorAnimationList[i].Compare)
                       }else{
                         ArrValue =  ColorAnimationList[i].Compare
@@ -1181,7 +1189,7 @@ export default {
               var fix = Number(this.digit[i])
               var num = data[i].Value
               Number(num).toFixed(fix)
-                    document.querySelector(Dom).innerHTML =  Number(num).toFixed(fix)
+                    document.querySelector(Dom).innerHTML =   this.getPointNum(Number(num),fix)
               }else{
                   var num1 = data[i].Value
                   var value = /Date/
@@ -1521,7 +1529,8 @@ export default {
                   Shadow:Shadow,
                   Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
                   TextDecorations:this.textblockData[i].PropertyList.TextDecorations == 'False' ? 'none' : 'underline',
-                  ZIndex:this.ZIndex
+                  ZIndex:this.ZIndex,
+                  text:this.Sarr.includes(this.textblockData[i].Name)?'Loading...':'数值显示'
                 }
                 this.dataValue.unshift(value)
           }
@@ -1737,8 +1746,9 @@ export default {
     box-sizing: border-box;
 }
 .DataTextBlock121aa1:hover{
-  background-color: #BEE6FD !important;
-  background: #BEE6FD !important;
+  // background-color: #BEE6FD !important;
+  // background: #BEE6FD !important;
+  border:1px solid #BEE6FD;
 }
  .showWindow2,
  .showWindow{

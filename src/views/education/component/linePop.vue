@@ -7,7 +7,7 @@
 -->
 <template>
     <div class="popBox">
-        <div v-drag class="head">{{typeText}}{{title}}
+        <div v-drager class="head">{{typeText}}{{title}}
            <div @click="can()" class="headImg"></div>
         </div>
 

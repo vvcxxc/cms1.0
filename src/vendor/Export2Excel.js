@@ -367,6 +367,7 @@ export function export_json_to_excel({
   autoWidth = true,
   bookType = "xlsx"
 } = {}) {
+  
   /* original data */
   filename = filename || "excel-list"
   data = [...data]
@@ -477,33 +478,7 @@ export function export_json_to_excel({
       "W1",
       "X1",
       "Y1",
-      "Z1",
-      "AA1",
-      "AB1",
-      "AC1",
-      "AD1",
-      "AE1",
-      "AF1",
-      "AG1",
-      "AH1",
-      "AI1",
-      "AJ1",
-      "AK1",
-      "AL1",
-      "AM1",
-      "AN1",
-      "AO1",
-      "AP1",
-      "AQ1",
-      "AR1",
-      "AS1",
-      "AT1",
-      "AU1",
-      "AV1",
-      "AW1",
-      "AX1",
-      "AY1",
-      "AZ1",
+      "Z1"
     ];
     /*以第一行为初始值*/
     let result = []
@@ -522,12 +497,11 @@ export function export_json_to_excel({
       Object.keys(ws[l]).forEach(function(key){
         if(typeof(ws[l][key]) == 'object'){
           ws[l][key].s =  style1
-         }
+      console.log(ws[l][key])
+        }
    });
       ws[l]["!cols"] = result[l]
-      console.log(ws[l])
       for (var i = 0; i < header[0].length; i++) {
-        console.log(ws[l][arr[i]]);
         if(ws[l][arr[i]]){
           ws[l][arr[i]].s = style;
         }
@@ -586,6 +560,7 @@ export function export_json_to_excel({
   // dataInfo["A1"].s = style;
 
   // excel标题样式
+
 
  wb.SheetNames.pop();
  wb.SheetNames.pop();

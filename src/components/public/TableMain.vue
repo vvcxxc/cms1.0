@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-28 16:08:08
  -->
 <template>
-    <div class="table-container" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+    <div class="table-container">
         <el-table
             :data="data"
            :style="{ fontSize: zoom * 15 + 'px', width: '100%' }"
@@ -14,10 +14,11 @@
             border
               highlight-current-row
                 :header-cell-style="{
-                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
-                    color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
-                    height: 50*zoom + 'px',
+                    background:
+                        $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
+                    color: $store.state.color == 'grey' ? '#000' : '#fff',
+                    'border-left': '1px solid #cccccc',
+                    height: 50 * zoom + 'px',
                     padding: '0'
                 }"
             row-class-name="high-light"
@@ -298,13 +299,6 @@ export default {
     height: 100%;
     border: 1px solid #cccccc;
     width: 100%;
-
-    &.blackBlueBg{
-        .img{
-            background: transparent;
-            border: 2px solid #5C6A95;
-        }
-    }
 }
 .img{
 width: 60px;

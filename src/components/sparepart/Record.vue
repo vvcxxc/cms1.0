@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-27 21:24:17
  -->
 <template>
-    <div class="public-table" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+    <div class="public-table">
           			<div class="loadcover" element-loading-spinner="el-icon-loading"
             element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
     width: 100%;

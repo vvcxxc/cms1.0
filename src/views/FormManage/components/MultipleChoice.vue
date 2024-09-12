@@ -5,7 +5,7 @@
     <div class="individual-choice component-content" :class="last ? 'last-compoennt-content' : ''">
       <div class="component-title">
         {{formData.componentAttribute.title}}
-        <span class="font-2" v-if="formData.componentAttribute && !formData.componentAttribute.required">(选填)</span>
+        <span class="font-2" v-if="formData.componentAttribute && !formData.componentAttribute.required">({{lang.EquipmentAccount_Optional}})</span>
         <el-tooltip 
           class="item" 
           effect="dark" 
@@ -26,6 +26,8 @@
               class="select-item"
               :class="dataValue.length && dataValue.find(_=>item.key && _.key==item.key) ? 'select-active' : ''"
               @click="selectChange(item)"
+              ref="option"
+              :style="{height: maxHeight}"
             >
               {{item.text}}
               <i class="icon el-icon-check"></i>
@@ -46,16 +48,18 @@ export default {
     },
     last:{
       type: Boolean,
-      returnErr: false,
       default: false
     }
   },
   data() {
     let defaultValue = [...this.formData.value.Value2];
     return {
+      maxHeight: 'unset',
       dataValue: defaultValue,
+      returnErr: false,
       thresholdFeedback: this.formData.componentAttribute.thresholdFeedback,
-      warning: require('../../../assets/images/warning.png')
+      warning: require('../../../assets/images/warning.png'),
+      lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
     }
   },
   methods: {
@@ -85,31 +89,32 @@ export default {
       let isErr = false;
       for(let i=0; i<this.thresholdFeedback.length;i++){
         let {condition, value} = this.thresholdFeedback[i]
-        if(isErr && this.returnErr){
-          return
-        }
-        if(condition === '数值范围'){
-          let numberRange = value.split(",")
-          if(val !== "" && !isNaN(Number(val)) && val >= Number(numberRange[0]) && val <= Number(numberRange[1])){
-            isErr = true
-          }
-        }else if(condition === '文本序列'){
-          let textRange = value.split(",")
-          if(!textRange.some(text=> val === text)){
-            
+        if(!isErr && !this.returnErr){
+          if(condition === '数值范围'){
+            let numberRange = value.split(",")
+            if(val !== "" && !isNaN(Number(val)) && val >= Number(numberRange[0]) && val <= Number(numberRange[1])){
+              isErr = true
+            }
+          }else if(condition === '文本序列'){
+            let textRange = value.split(",")
+            if(!textRange.some(text=> val === text)){
+              
+            }else{
+              isErr = true
+            }
           }else{
-            isErr = true
-          }
-        }else{
-          if(!isNaN(Number(val))){
-            if(val !== "" && eval(`${val}${condition}${value}`)){
-              isErr = true
-            }
-          }else if(isNaN(Number(val)) && condition === "=="){ //文本只对==有效
-            if(val !== "" && val === value){
-              isErr = true
+            if(!isNaN(Number(val))){
+              if(val !== "" && eval(`${val}${condition}${value}`)){
+                isErr = true
+              }
+            }else if(isNaN(Number(val)) && condition === "=="){ //文本只对==有效
+              if(val !== "" && val === value){
+                isErr = true
+              }
             }
           }
+          console.log("阈值条件：", condition, value)
+          console.log("当前值：", val, isErr, this.returnErr)
         }
       }
 
@@ -142,14 +147,52 @@ export default {
   },
   mounted(){
     this.cycleCheck(this.formData.value.Value2)
+    //设置高度
+    let heightArr = [];
+    this.$refs.option.forEach(item=>{
+      heightArr.push(item.clientHeight)
+    })
+    setTimeout(()=>{
+      this.maxHeight = Math.max(...heightArr) + 'px'
+    })
+    
+    //过滤无效的值，以及更新修改后的文本
+    let choiceList = []
+    this.formData.componentAttribute.option.map(opt=>{
+      if(this.dataValue.some(item=>item.key==opt.key)){
+        choiceList.push({
+          key: opt.key, 
+          value: opt.text
+        })
+      }
+    })
+    this.dataValue = [...choiceList]
+    this.formData.value.Value2 = [...choiceList]
   }
 }
 </script>
+<style lang='scss'>
+.individual-choice{
+  .el-select{
+   .el-input__inner{
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+
+      &:hover{
+        border: 1px solid #c0c4cc;
+      }
+
+      &:focus{
+        border: 1px solid #409EFF;
+      }
+   }
+  }
+}
+</style>
 <style lang='scss' scoped>
   .component-content{
     position: relative;
-    padding: 10px 16px;
-    flex-wrap: wrap;
+    padding: 8px 26px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -157,16 +200,15 @@ export default {
     overflow: hidden;
 
     .component-title{
-      line-height: 28px;
-      font-family: Source Han Sans CN;
+      line-height: 20px;
       font-size: 14px;
       font-weight: 400;
       color: #7C7F8E;
-      min-width: 300px;
+      vertical-align: middle;
       padding: 8px 0;
+      box-sizing: border-box;
 
       .font-2 {
-          font-family: PingFang SC;
           font-size: 12px;
           font-weight: 500;
           line-height: 20px;
@@ -187,26 +229,25 @@ export default {
       flex: 1;
 
       .input-group{
+        height: auto;
         flex: 1;
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
         align-items: center;
-        min-width: 116px;
-        color: #000;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        color: #222;
         // background: #f8f8f8;
         // padding: 6px 9px 6px 0;
         box-sizing: border-box;
 
         .select-item{
+          font-size: 16px;
+          line-break: anywhere;
           margin: 0 0 6px 6px;
           width: 112px;
           height: auto;
           min-height: 38px;
-          padding: 5px 9px;
-          font-family: PingFang SC;
-          font-size: 12px;
-          font-weight: 500;
+          padding: 5px 6px;
           box-sizing: border-box;
           line-height: 1;
           position: relative;
@@ -237,8 +278,8 @@ export default {
         }
 
         .el-select{
-          width: 100%;
-          background: #f8f8f8;
+          width: 230px;
+          background: #fff;
         }
         input{
           flex: 1;
@@ -255,7 +296,6 @@ export default {
         }
       }
       .unit{
-        font-family: Source Han Sans CN;
         font-size: 14px;
         line-height: 20px;
         font-weight: 400;

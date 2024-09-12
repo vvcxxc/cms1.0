@@ -7,117 +7,63 @@
  -->
 <template>
     <!-- <div class="alarm-container">
-		<iframe src="http://10.51.1.4:8810" height="100%" width="100%"></iframe>
-    </div>-->
+    		<iframe src="http://10.51.1.4:8810" height="100%" width="100%"></iframe>
+        </div>-->
     <div class="tapwater">
         <div class="linebox">
             <div class="table clearfix">
                 <div class="fl">
-                    <select
-                        name="public-choice"
-                        v-model="couponSelected"
-                        class="tabledatetime"
-                        :style="{width:'100px'}"
-                    >
-                        <option
-                            :value="coupon.name"
-                            v-for="coupon in couponList"
-                            :key="coupon.time"
-                        >{{coupon.name}}</option>
+                    <select name="public-choice" v-model="couponSelected" class="tabledatetime" :style="{ width: '100px' }">
+                        <option :value="coupon.name" v-for="coupon in couponList" :key="coupon.time">{{ coupon.name }}
+                        </option>
                     </select>
                     <div class="container">
                         <div class="block" v-show="couponSelected == '小时'">
                             <span class="demonstration"></span>
-                            <el-date-picker
-                                v-model="value1"
-                                type="datetime"
-                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                :style="{width:'220px'}"
-                            ></el-date-picker>
+                            <el-date-picker v-model="value1" type="datetime"
+                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate" value-format="yyyy-MM-dd HH:mm:ss"
+                                :style="{ width: '220px' }"></el-date-picker>
                         </div>
                         <i class="separate" v-show="couponSelected == '小时'">-</i>
                         <div class="block" v-show="couponSelected == '小时'">
                             <span class="demonstration"></span>
-                            <el-date-picker
-                                v-model="value2"
-                                type="datetime"
-                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                :style="{width:'220px'}"
-                            ></el-date-picker>
+                            <el-date-picker v-model="value2" type="datetime"
+                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate" value-format="yyyy-MM-dd HH:mm:ss"
+                                :style="{ width: '220px' }"></el-date-picker>
                         </div>
-                        <div
-                            class="block"
-                            v-show="couponSelected == '日' || couponSelected == '周'||couponSelected == '季'"
-                        >
+                        <div class="block" v-show="couponSelected == '日' || couponSelected == '周' || couponSelected == '季'">
                             <span class="demonstration"></span>
-                            <el-date-picker
-                                v-model="value3"
-                                type="date"
-                                placeholder="选择日期"
-                                value-format="yyyy-MM-dd"
-                                :style="{width:'220px'}"
-                            ></el-date-picker>
+                            <el-date-picker v-model="value3" type="date" placeholder="选择日期" value-format="yyyy-MM-dd"
+                                :style="{ width: '220px' }"></el-date-picker>
                         </div>
-                        <i
-                            class="separate"
-                            v-show="couponSelected == '日' || couponSelected == '周'||couponSelected == '季'"
-                        >-</i>
-                        <div
-                            class="block"
-                            v-show="couponSelected == '日' || couponSelected == '周'||couponSelected == '季'"
-                        >
+                        <i class="separate"
+                            v-show="couponSelected == '日' || couponSelected == '周' || couponSelected == '季'">-</i>
+                        <div class="block" v-show="couponSelected == '日' || couponSelected == '周' || couponSelected == '季'">
                             <span class="demonstration"></span>
-                            <el-date-picker
-                                v-model="value4"
-                                type="date"
-                                placeholder="选择日期"
-                                value-format="yyyy-MM-dd"
-                                :style="{width:'220px'}"
-                            ></el-date-picker>
+                            <el-date-picker v-model="value4" type="date" placeholder="选择日期" value-format="yyyy-MM-dd"
+                                :style="{ width: '220px' }"></el-date-picker>
                         </div>
                         <div class="block" v-show="couponSelected == '月'">
                             <span class="demonstration"></span>
-                            <el-date-picker
-                                v-model="value5"
-                                type="month"
-                                placeholder="选择月"
-                                value-format="yyyy-MM"
-                                :style="{width:'220px'}"
-                            ></el-date-picker>
+                            <el-date-picker v-model="value5" type="month" placeholder="选择月" value-format="yyyy-MM"
+                                :style="{ width: '220px' }"></el-date-picker>
                         </div>
                         <i class="separate" v-show="couponSelected == '月'">-</i>
                         <div class="block" v-show="couponSelected == '月'">
                             <span class="demonstration"></span>
-                            <el-date-picker
-                                v-model="value6"
-                                type="month"
-                                placeholder="选择月"
-                                value-format="yyyy-MM"
-                                :style="{width:'220px'}"
-                            ></el-date-picker>
+                            <el-date-picker v-model="value6" type="month" placeholder="选择月" value-format="yyyy-MM"
+                                :style="{ width: '220px' }"></el-date-picker>
                         </div>
                         <div class="block" v-show="couponSelected == '年'">
                             <span class="demonstration"></span>
-                            <el-date-picker
-                                v-model="value7"
-                                type="year"
-                                placeholder="选择年"
-                                value-format="yyyy"
-                                :style="{width:'220px'}"
-                            ></el-date-picker>
+                            <el-date-picker v-model="value7" type="year" placeholder="选择年" value-format="yyyy"
+                                :style="{ width: '220px' }"></el-date-picker>
                         </div>
                         <i class="separate" v-show="couponSelected == '年'">-</i>
                         <div class="block" v-show="couponSelected == '年'">
                             <span class="demonstration"></span>
-                            <el-date-picker
-                                v-model="value8"
-                                type="year"
-                                placeholder="选择年"
-                                value-format="yyyy"
-                                :style="{width:'220px'}"
-                            ></el-date-picker>
+                            <el-date-picker v-model="value8" type="year" placeholder="选择年" value-format="yyyy"
+                                :style="{ width: '220px' }"></el-date-picker>
                         </div>
                     </div>
                 </div>
@@ -126,123 +72,66 @@
                     <div class="export" @click="exportTable">导出</div>
                 </div>
             </div>
-            <div class="tabledata" :style="{width: '100%', height: 'calc(100% - 123px)'}">
+            <div class="tabledata" :style="{ width: '100%', height: 'calc(100% - 123px)' }">
                 <div class="sad1" id="outTable">
-                    <el-table
-                        v-if="headerrows == 2"
-                        ref="tableList"
-                        :data="obj.tables"
-                        border
-                           :height="height"
-                        row-key="id"
-                        stripe
-                        @header-dragend="colChange"
-                    >
+                    <el-table v-if="headerrows == 2" ref="tableList" :data="obj.tables" border :height="height" row-key="id"
+                        stripe @header-dragend="colChange">
                         <template slot="empty">
-                            <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
+                            <span>{{ lang.SCMSConsoleWebApiMySql_NoData }}</span>
                         </template>
-                        <el-table-column
-                            v-for="(item,index) in obj.header"
-                            :label="item.FirstHeader"
-                            :key="index"
-                            :prop="item.prop"
-                        >
-                            <el-table-column
-                                v-for="(child,ci) in item.SecondHeader"
-                                :prop="child.Key"
-                                :label="child.Name"
-                                :key="ci"
-                                width="204"
-                            ></el-table-column>
+                        <el-table-column v-for="(item, index) in obj.header" :label="item.FirstHeader" :key="index"
+                            :prop="item.prop">
+                            <el-table-column v-for="(child, ci) in item.SecondHeader" :prop="child.Key" :label="child.Name"
+                                :key="ci" width="204"></el-table-column>
                         </el-table-column>
                     </el-table>
-                    <div
-                        class="asd"
-                        :class="{addclass}"
-                        id="orderFullScreen"
-                        v-if="headerrows == 2"
-                        @scroll="handleScroll"
-                          
-                    >
-                        <div class="tr" v-for="(item,index) in totalData" :key="index">
-                            <div
-                                class="td"
-                                v-for="(value,key,index) in item"
-                                :key="index"
-                                :class="key"
-                            >{{value}}</div>
+                    <div class="asd" :class="{ addclass }" id="orderFullScreen" v-if="headerrows == 2" @scroll="handleScroll">
+                        <div class="tr" v-for="(item, index) in totalData" :key="index">
+                            <div class="td" v-for="(value, key, index) in item" :key="index" :class="key">{{ value }}</div>
                         </div>
                     </div>
-                    <el-table
-                        :data="obj.tables"
-                        ref="tableList"
-                        border
-                     :height="height"
-                        style="width: 100%"
-                        row-key="id"
-                        stripe
-                        v-if="headerrows == 1"
-                        @header-dragend="colChange1"
-                    >
-                        <el-table-column
-                            v-for="(child,ci) in obj.header"
-                            :prop="child.Key"
-                            :label="child.Name"
-                            :key="ci"
-                            width="371"
-                        ></el-table-column>
+                    <el-table :data="obj.tables" ref="tableList" border :height="height" style="width: 100%" row-key="id"
+                        stripe v-if="headerrows == 1" @header-dragend="colChange1">
+                        <el-table-column v-for="(child, ci) in obj.header" :prop="child.Key" :label="child.Name" :key="ci"
+                            width="371"></el-table-column>
                     </el-table>
-                    <div
-                        class="asd1"
-                        id="orderFullScreen"
-                           :class="{addclass}"
-                        v-if="headerrows == 1"
-                        @scroll="handleScroll"
-                    >
-                        <div class="tr" v-for="(item,index) in totalData" :key="index">
-                            <div
-                                class="td"
-                                v-for="(value,key,index) in item"
-                                :key="index"
-                                :class="key"
-                            >{{value}}</div>
+                    <div class="asd1" id="orderFullScreen" :class="{ addclass }" v-if="headerrows == 1"
+                        @scroll="handleScroll">
+                        <div class="tr" v-for="(item, index) in totalData" :key="index">
+                            <div class="td" v-for="(value, key, index) in item" :key="index" :class="key">{{ value }}</div>
                         </div>
                     </div>
                 </div>
                 <div class="page">
                     <div class="pageword">
-                        {{lang.DataGrid_Reaction_HT_ATotalOf}}
-                        <span>{{pageDate.togesize}}</span>{{lang.DataGrid_Reaction_HT_RecordsAndTheCurrent}}
-                        <span>{{pageDate.pageIndex}}</span>{{lang.DataGrid_Reaction_HT_Page}}
-                        <span>{{pageDate.togeIndex}}</span>{{lang.DataGrid_Reaction_HT_RecordsAnd}}
-                        <span>{{pageDate.pagesize}}</span>{{lang.DataGrid_Reaction_HT_PerPage}}
+                        {{ lang.DataGrid_Reaction_HT_ATotalOf }}
+                        <span>{{ pageDate.togesize }}</span>{{ lang.DataGrid_Reaction_HT_RecordsAndTheCurrent }}
+                        <span>{{ pageDate.pageIndex }}</span>{{ lang.DataGrid_Reaction_HT_Page }}
+                        <span>{{ pageDate.togeIndex }}</span>{{ lang.DataGrid_Reaction_HT_RecordsAnd }}
+                        <span>{{ pageDate.pagesize }}</span>{{ lang.DataGrid_Reaction_HT_PerPage }}
                     </div>
                     <div class="pageoperation">
-                        <span class="btn" @click="start">{{lang.DataGrid_Reaction_FirstPage}}</span>
-                        <span class="btn" :class="{nopage:aaa}" @click="abck">{{lang.DataGrid_Reaction_LastPage}}</span>
-                        <span class="btn" :class="{nopage:bbb}" @click="next">{{lang.DataGrid_Reaction_NextPage}}</span>
-                        <span class="btn" @click="end">{{lang.DataGrid_Reaction_EndPage}}</span>
+                        <span class="btn" @click="start">{{ lang.DataGrid_Reaction_FirstPage }}</span>
+                        <span class="btn" :class="{ nopage: aaa }" @click="abck">{{ lang.DataGrid_Reaction_LastPage }}</span>
+                        <span class="btn" :class="{ nopage: bbb }" @click="next">{{ lang.DataGrid_Reaction_NextPage }}</span>
+                        <span class="btn" @click="end">{{ lang.DataGrid_Reaction_EndPage }}</span>
                         <div class="inputnumber">
-                            {{lang.DataGrid_Reaction_The}}
-                            <input type="text" v-model="nowpage" /> {{lang.DataGrid_Reaction_Page}}
+                            {{ lang.DataGrid_Reaction_The }}
+                            <input type="text" v-model="nowpage" /> {{ lang.DataGrid_Reaction_Page }}
                         </div>
 
-                        <span class="btn" @click="jump">{{lang.DataGrid_Reaction_TurnPage}}</span>
+                        <span class="btn" @click="jump">{{ lang.DataGrid_Reaction_TurnPage }}</span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="tip" ref="kongtiao3" v-if="tipchange1">
-            <div
-                class="tiptop"
-                @mousedown="mouseDownHandleelse3($event)"
-                @mouseup="mouseUpHandleelse3($event)"
-            >
+            <div class="tiptop" @mousedown="mouseDownHandleelse3($event)" @mouseup="mouseUpHandleelse3($event)">
                 <img :src="gth" alt />
                 <span>提示</span>
             </div>
             <div class="tipcontanin">
-                <div class="w">{{w}}</div>
+                <div class="w">{{ w }}</div>
                 <div class="tipdetermine" @click="tip2">确定</div>
             </div>
         </div>
@@ -302,8 +191,8 @@ export default {
             value1: new Date(new Date().toLocaleDateString()),
             value2: new Date(
                 new Date(new Date().toLocaleDateString()).getTime() +
-                    24 * 60 * 60 * 1000 -
-                    1
+                24 * 60 * 60 * 1000 -
+                1
             ),
             value3:
                 new Date().getFullYear() +
@@ -336,8 +225,8 @@ export default {
                     id: new Date(new Date().toLocaleDateString()),
                     id1: new Date(
                         new Date(new Date().toLocaleDateString()).getTime() +
-                            24 * 60 * 60 * 1000 -
-                            1
+                        24 * 60 * 60 * 1000 -
+                        1
                     ),
                     name: '小时'
                 },
@@ -418,7 +307,7 @@ export default {
             couponSelected: '',
             starttime: '',
             endtime: '',
-              height:'83.5%',
+            height: '83.5%',
             change: 2,
             aaa: false,
             bbb: false,
@@ -435,7 +324,7 @@ export default {
             totalData: [],
             scrollLeft: null,
             headerrows: 1,
-            addclass:true,
+            addclass: true,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
@@ -740,33 +629,33 @@ export default {
                 )
                 .then(res => {
                     console.log(res);
-                     
+
                     this.headerrows = res.data.data.headerrows;
                     this.obj = res.data.data;
-                        this.totalData = JSON.parse(this.obj.summary);
-                        if(this.obj.tables == ']'|| this.obj.length == 0){
+                    this.totalData = JSON.parse(this.obj.summary);
+                    if (this.obj.tables == ']' || this.obj.length == 0) {
                         this.obj.tables = [];
                     }
-                          console.log(this.totalData)
+                    console.log(this.totalData)
                     this.pwerbody = JSON.parse(this.obj.tables);
                     this.listdata = JSON.parse(this.obj.tables);
                     this.obj.tables = this.pwerbody;
-                     console.log(this.obj.tables);
+                    console.log(this.obj.tables);
                     this.headerrows = res.data.data.headerrows;
-                
+
                     let i = 0;
                     let a = 0;
                     let b = 0;
                     console.log(this.obj.header)
                     let c = 0;
                     let cc = 0;
-                    for(c  in this.obj.header){
-                        for(cc in this.obj.header[c].SecondHeader){
-                         this.obj.header[c].SecondHeader[cc].Key=this.obj.header[c].SecondHeader[cc].Key.split(".").join("");
+                    for (c in this.obj.header) {
+                        for (cc in this.obj.header[c].SecondHeader) {
+                            this.obj.header[c].SecondHeader[cc].Key = this.obj.header[c].SecondHeader[cc].Key.split(".").join("");
                         }
-                     
-                    // this.obj.header[c].Key = this.obj.header[c].Key.replace(reg,"");
-                     console.log(this.obj.header[c]);
+
+                        // this.obj.header[c].Key = this.obj.header[c].Key.replace(reg,"");
+                        console.log(this.obj.header[c]);
                     }
                     for (i in this.pwerbody) {
                         this.saddata.push(this.sdadata);
@@ -797,8 +686,8 @@ export default {
                     this.nowpage = 1;
                 })
                 .then(() => {
-                     this.addclass = false;
-                      var aa = document.getElementsByClassName('tr');
+                    this.addclass = false;
+                    var aa = document.getElementsByClassName('tr');
                     console.log(aa.length);
                     var v = document.querySelectorAll('.tr>.td');
                     let cc = 0;
@@ -850,7 +739,7 @@ export default {
                             )[0];
                             aaa.style.height = '24.4%';
                         }
-                    }else if (this.totalData.length == 4) {
+                    } else if (this.totalData.length == 4) {
                         this.height = '66.9%';
                         if (this.headerrows == 1) {
                             let aaa = document.getElementsByClassName(
@@ -865,26 +754,21 @@ export default {
                         }
                     }
                 })
-                .catch(function(error) {
-                                var aa = document.getElementsByClassName('tr');
+                .catch(function (error) {
+                    var aa = document.getElementsByClassName('tr');
                     var v = document.querySelectorAll('.tr>.td');
                     let cc = 0;
                     for (let bb = 0; bb < v.length; bb++) {
                         cc = cc + v[bb].clientWidth + 2;
                     }
-                //    this.totalData.length = 4;
-                //     console.log(cc / this.totalData.length);
-                    // this.wewidth = cc / this.totalData.length;
                     for (let i = 0; i < aa.length; i++) {
-                        aa[i].style.width = cc/2 + 'px';
+                        aa[i].style.width = cc / 2 + 'px';
                     }
-                 
-                            let aaa = document.getElementsByClassName(
-                                'asd'
-                            )[0];
-                            aaa.style.height = '16.4%';
-                                // this.height = '75.5%';
-                    // console.log(this.headerrows);
+
+                    let aaa = document.getElementsByClassName(
+                        'asd'
+                    )[0];
+                    aaa.style.height = '16.4%';
                     console.log('鼠标');
                 });
         },
@@ -917,6 +801,7 @@ export default {
     height: 33%;
     overflow-x: auto;
     overflow-y: hidden;
+
     .td {
         // width: 1%;
         float: left;
@@ -925,20 +810,23 @@ export default {
         text-align: center;
         color: #606266;
         // width: (100%/9);
-     width: 203.88px;
-    // width: 400px;
+        width: 203.88px;
+        // width: 400px;
     }
+
     .tr {
         overflow: hidden;
         border-bottom: 1px solid #ebeef5;
         width: 100%;
     }
 }
+
 .asd1 {
     width: 100%;
     height: 33%;
     overflow-x: auto;
     overflow-y: hidden;
+
     .td {
         // width: 1%;
         float: left;
@@ -949,12 +837,14 @@ export default {
         // width: (100%/9);
         width: 371px;
     }
+
     .tr {
         overflow: hidden;
         border-bottom: 1px solid #ebeef5;
         width: 100%;
     }
 }
+
 .sad1 {
     width: 100%;
     height: 600px;
@@ -965,12 +855,15 @@ export default {
 .fl {
     float: left;
 }
+
 .fr {
     float: right;
 }
+
 select {
     text-indent: 1em;
 }
+
 .clearfix::after {
     content: '';
     height: 0;
@@ -978,9 +871,11 @@ select {
     clear: both;
     visibility: hidden;
 }
+
 .clearfix {
     zoom: 1;
 }
+
 .tapwater {
     position: fixed;
     top: 100px;
@@ -988,6 +883,7 @@ select {
     padding: 20px;
     width: 100%;
     background-color: #eeeeee;
+
     .linebox {
         height: 100%;
         width: 100%;
@@ -995,6 +891,7 @@ select {
         border: 1px solid #d5d5d5;
         overflow: hidden;
     }
+
     .table {
         height: 60px;
         padding-left: 20px;
@@ -1004,22 +901,27 @@ select {
         overflow: hidden;
         font-size: 14px;
         color: #6b6668;
+
         span {
             margin-left: 18px;
         }
+
         .tablename {
             height: 40px;
             width: 200px;
             overflow: hidden;
         }
+
         .tabledatetime {
             height: 40px;
             width: 69px;
         }
+
         .collername {
             width: 130px;
             height: 40px;
         }
+
         .starttime {
             height: 40px;
             width: 210px;
@@ -1029,6 +931,7 @@ select {
             line-height: 40px;
             padding-left: 12px;
         }
+
         .endtime {
             height: 40px;
             width: 210px;
@@ -1038,6 +941,7 @@ select {
             padding-left: 12px;
         }
     }
+
     .query,
     .export {
         display: inline-block;
@@ -1050,53 +954,65 @@ select {
         font-weight: 600;
         cursor: pointer;
     }
+
     .query {
         background-color: #4270e4;
         margin-right: 10px;
     }
+
     .export {
         background-color: #4270e4;
         margin-right: 20px;
     }
+
     .container {
         display: inline-block;
         height: 40px;
+
         .block {
             display: inline-block;
         }
     }
+
     .separate {
         position: relative;
         left: 7px;
     }
 }
+
 .tabledata {
     padding: 10px;
-    width: calc(100%-20px);
+    width: calc(100% - 20px);
     // height: 50%;
 
     .number {
         width: 160px !important;
     }
+
     .center {
         text-align: center;
         width: 40%;
     }
+
     .middle {
         width: 12%;
     }
+
     .bottomtable {
         border-bottom: 1px solid #cccccc;
     }
 }
+
 tr {
     height: 40px;
     line-height: 40px;
 }
-.topline > td {
+
+.topline>td {
     border-top: 1px solid #cccccc;
     border-bottom: 1px solid #cccccc;
 }
+
 .page {
     width: 100%;
     height: 50px;
@@ -1105,15 +1021,19 @@ tr {
     padding-left: 10px;
     font-size: 14px;
     overflow: hidden;
+
     .nopage {
         border: 2px solid #fed286 !important;
         color: #fed286;
     }
+
     .pageword {
         float: left;
     }
+
     .pageoperation {
         float: right;
+
         span {
             border: 2px solid #fda100;
             padding: 3px 8px;
@@ -1121,9 +1041,11 @@ tr {
             color: #fda100;
             margin-left: 10px;
         }
+
         .inputnumber {
             display: inline-block;
             margin-left: 10px;
+
             input {
                 width: 66px;
                 height: 30px;
@@ -1133,6 +1055,7 @@ tr {
         }
     }
 }
+
 .el-scrollbar__wrap {
     overflow-x: hidden;
 }
@@ -1142,14 +1065,17 @@ tr {
     width: 100%;
     overflow: auto;
     border: 1px solid #cccccc;
+
     table {
         width: 100%;
 
         background-color: #ffffff;
         color: #9d9d9d;
+
         tr {
             background-color: #5a6c98;
         }
+
         th {
             background: #5a6c98;
             color: #ffffff;
@@ -1157,6 +1083,7 @@ tr {
             width: 200px;
             border-right: 1px solid #cccccc;
         }
+
         td {
             width: 200px !important;
             display: inline-block;
@@ -1166,12 +1093,15 @@ tr {
         }
     }
 }
+
 .query:hover {
     cursor: pointer;
 }
-.addclass{
+
+.addclass {
     overflow: hidden !important;
 }
+
 .sad {
     thead {
         tr {
@@ -1181,18 +1111,21 @@ tr {
         }
     }
 }
+
 .sad {
     tbody {
         display: block;
         height: 580px;
         overflow-y: scroll;
     }
+
     tr {
         display: table;
         width: 100%;
         table-layout: fixed;
     }
 }
+
 .tip {
     position: fixed;
     width: 380px;
@@ -1202,16 +1135,19 @@ tr {
     left: 750px;
     box-shadow: 0px 0px 8px black;
     background-color: #f3f3f4;
+
     .tiptop {
         width: 380px;
         height: 40px;
         background-color: #ffbc3d;
+
         img {
             width: 20px;
             height: 20px;
             margin-top: 10px;
             margin-left: 160px;
         }
+
         span {
             color: #ffffff;
             position: relative;
@@ -1219,17 +1155,20 @@ tr {
             margin-left: 7px;
         }
     }
+
     .tipword {
         width: 100%;
         padding: 30px;
         // text-align: center;
         padding-bottom: 0;
     }
+
     .w {
         width: 100%;
         margin-top: 40px;
         text-align: center;
     }
+
     .tipdetermine {
         color: #ea9328;
         width: 310px;
@@ -1241,12 +1180,14 @@ tr {
         height: 30px;
         background-color: #f3e3ad;
     }
+
     .delclass {
         width: 330px;
         line-height: 30px;
         margin-top: 40px;
         margin-left: 25px;
         height: 30px;
+
         .one {
             cursor: pointer;
             display: inline-block;
@@ -1256,6 +1197,7 @@ tr {
             background-color: #e0e0e0;
             color: #7e7e7e;
         }
+
         .two {
             cursor: pointer;
             display: inline-block;
@@ -1268,6 +1210,7 @@ tr {
         }
     }
 }
+
 .cover2 {
     width: 100%;
     height: 100%;
@@ -1276,6 +1219,7 @@ tr {
     top: 0;
     left: 0;
 }
+
 .cover3 {
     width: 100%;
     height: 100%;
@@ -1284,6 +1228,7 @@ tr {
     top: 0;
     left: 0;
 }
+
 .btn {
     cursor: pointer;
 }

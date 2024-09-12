@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-29 16:34:35
  -->
 <template>
-    <div class="search-container" :class="{colordiv:$store.state.color=='grey', blackBlueBg: $store.state.color === 'blackBlue'}" :style="{lineHeight: 40*zoom+'px',height: 60*zoom+'px'}">
+    <div class="search-container" :class="{colordiv:$store.state.color=='grey'}" :style="{lineHeight: 40*zoom+'px',height: 60*zoom+'px'}">
         <div class="search-left" :style="[{fontSize:16*zoom+'px'}]">
             <div class="search-item" v-for="(item, index) in searchList" :key="index">
                 <div
@@ -17,7 +17,6 @@
 
                 <el-select
                     v-if="item.type === 'select'"
-                    :popper-append-to-body="false"
                     clearable
                     filterable
                     v-model="searchData[item.model]"
@@ -35,8 +34,6 @@
                     ></el-option>
                 </el-select>
                 <el-date-picker
-                    :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                    :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                     v-if="item.type === 'time'"
                     v-model="searchData[item.model]"
                     type="datetime"
@@ -46,8 +43,6 @@
                 ></el-date-picker>
                 <!-- <span>-</span> -->
                 <el-date-picker
-                    :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                    :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                     v-if="item.type === 'datetimerange'"
                     v-model="searchData[item.model]"
                     type="datetimerange"
@@ -324,19 +319,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     background-color: #ddd;
     width: 100%;
     position: relative;
-
-    &.blackBlueBg{
-        .import{
-            background: transparent;
-            border: 2px solid #4ABFCD;
-            color: #4ABFCD;
-        }
-        .export{
-            background: transparent;
-            border: 2px solid #FDA100;
-            color: #FDA100;
-        }
-    }
 }
 span {
     position: absolute;

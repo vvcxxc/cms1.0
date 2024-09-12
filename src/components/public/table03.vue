@@ -6,7 +6,7 @@
  * @LastEditTime: 2020-08-06 16:20:05
  -->
 <template>
-    <div class="table-container table-container1" :class="{blackBlueBg: $store.state.color==='blackBlue'}">
+    <div class="table-container table-container1"  >
         <el-table
             :data="data"
              highlight-current-row
@@ -18,9 +18,9 @@
             width="100%"
             :style="{'font-size': 14*zoom + 'px'}"
              :header-cell-style="{
-                background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
-                color:($store.state.color=='grey')?'#000':'#fff',
-                'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                 background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',
+                 color:($store.state.color=='grey')?'#000':'#fff',
+                 'border-left':'1px solid #cccccc',
                  height: 50*zoom+'px',
                 'font-size': 14*zoom + 'px',
                  padding:'0'

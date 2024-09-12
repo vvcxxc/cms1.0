@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-29 16:34:35
  -->
 <template>
-    <div class="search-container search-containersb" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" :style="{
+    <div class="search-container search-containersb" :style="{
                 zoom:a1
             }">
         <div class="search-left">
@@ -46,8 +46,6 @@
                         { fontSize: 16 * 1 + 'px' },
                         { width: 230 * 1 + 'px' }
                     ]"
-                    :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                    :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                     v-if="item.type === 'time'"
                     @focus='sx'
                     v-model="searchData[item.model]"
@@ -65,8 +63,6 @@
                         { fontSize: 16 * 1 + 'px' },
                         { width: 230 * 1 + 'px' }
                     ]"
-                    :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                    :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                     v-if="item.type === 'datetimerange'"
                     v-model="searchData[item.model]"
                     type="datetimerange"

@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-29 16:34:35
  -->
 <template>
-    <div class="search-container  search-containersb" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" :style="{
+    <div class="search-container  search-containersb"  :style="{
            
                 zoom:a1
             }">
@@ -35,8 +35,6 @@
                     ></el-option>
                 </el-select>
                 <el-date-picker
-                    :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                    :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                  :style="[
                         { height: 40 * 1 + 'px' },
                         { fontSize: 16 * 1 + 'px' },
@@ -51,8 +49,6 @@
                         value-format="yyyy-MM-dd HH:mm:ss"
                 ></el-date-picker>
                 <el-date-picker
-                    :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                    :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                  :style="[
                         { height: 40 * 1 + 'px' },
                         { fontSize: 16 * 1 + 'px' },
@@ -217,21 +213,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     background-color: #ddd;
     width: 100%;
 	position: relative;
-}
-
-.blackBlueBg{
-    .search-container {
-        .add{
-            background-color: transparent!important;;
-            border-color: #46BE05;
-        }
-        .blackBlueBg .search-container .move {
-            background-color: #4F5871;
-            border: 1px solid #4F5871;
-            color: #fff;
-        }
-
-    }
 }
 span{
 	position: absolute;

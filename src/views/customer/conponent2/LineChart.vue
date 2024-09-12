@@ -10,7 +10,7 @@
     <div ref="LineChart22" @dblclick="opendb(item)" @contextmenu.prevent 
      @mousedown="downClick(item,$event)" @mouseup="seupClick(item,$event)"
      :style="'width:' + item.width + 'px; height:' + item.height + 'px; position:absolute; left:' 
-     + item.left + 'px; top:' + item.top +'px;zIndex:0; opacity:' + item.opacity + '; transform:rotate:(' 
+     + item.left + 'px; top:' + item.top +'px;zIndex:0; opacity:' + item.opacity + '; transform:rotate(' 
      + item.rotate + 'deg);zIndex:'+item.ZIndex">22 </div>
 
      <!-- 权限弹窗 -->
@@ -809,36 +809,68 @@ if(type=='min'){
                      }
         
                        //动态辅助线
-                      if(this.valueData.YDataCollection != undefined){
-                          for(let f=0;f<Ddata.series.length;f++){
-                                 if(Ddata.series[f].markLine.length != 0 && Ddata.series[f].markLine.data.length){
-                                     var variableData = Ddata.series[f].markLine.data
-                                     if(variableData){
-                                         for(let q=0;q<variableData.length;q++){
-                                             if(variableData[q].Type == "FromVariable"){
-                                                var index11 = this.variableArr.indexOf(variableData[q].TargetVariableName)
-                                                    if(index11 != -1){
-                                                        var vbArr = Ddata.series[index11].data
-                                                        var vBvalue = ''
-                                                        if(variableData[q].ValueMethod == 'Max'){
-                                                            vBvalue = Math.max.apply(Math,vbArr);
-                                                        }else if(variableData[q].ValueMethod == 'Min'){
-                                                            vBvalue = Math.min.apply(Math,vbArr);
-                                                        }else if(variableData[q].ValueMethod == 'Avg'){
-                                                            var sum=0;
-                                                            for(var i = 0; i < vbArr.length; i++){
-                                                                sum += Number(vbArr[i]);
-                                                            }
-                                                            vBvalue  = sum / vbArr.length;
-                                                        }
-                                                        Ddata.series[f].markLine.data[q].yAxis = vBvalue
-                                                    }
+                     if (this.valueData.hasOwnProperty("MarkLine")) {
+                        var axiosArr = []
+                        for (let o6 = 0; o6 < this.valueData.MarkLine.length; o6++) {
+                            axiosArr.push(this.valueData.MarkLine[o6].axis)
+                            var a = new Set(axiosArr)
+                            axiosArr = [...a]
+                        }
+                        var index55 = []
+                        for (let o7 = 0; o7 < axiosArr.length; o7++) {
+                            for (let o5 = 0; o5 < Ddata.series.length; o5++) {
+                                var index99 = index55.indexOf(axiosArr[o7])
+                                if (index99 == -1) {
+                                    if (Ddata.series[o5].yAxisIndex == axiosArr[o7]) {
+                                        index55.push(axiosArr[o7])
+                                        var arr = []
+                                        for (var o8 = 0; o8 < this.valueData.MarkLine.length; o8++) {
+                                            if (this.valueData.MarkLine[o8].axis == axiosArr[o7]) {
+                                                arr.push(this.valueData.MarkLine[o8].yAxis)
                                             }
-                                         }
-                                     }
-                                 }
-                          }
-                      }
+                                        }
+                                        if (arr.length) {
+                                            for (var o9 = 0; o9 < arr.length; o9++) {
+                                                if (Ddata.series[o5].markLine.length != 0 && arr[o9] != undefined) {
+                                                    Ddata.series[o5].markLine.data[o9].yAxis = arr[o9]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //   if(this.valueData.YDataCollection != undefined){
+                    //       for(let f=0;f<Ddata.series.length;f++){
+                    //              if(Ddata.series[f].markLine.length != 0 && Ddata.series[f].markLine.data.length){
+                    //                  var variableData = Ddata.series[f].markLine.data
+                    //                  if(variableData){
+                    //                      for(let q=0;q<variableData.length;q++){
+                    //                          if(variableData[q].Type == "FromVariable"){
+                    //                             var index11 = this.variableArr.indexOf(variableData[q].TargetVariableName)
+                    //                                 if(index11 != -1){
+                    //                                     var vbArr = Ddata.series[index11].data
+                    //                                     var vBvalue = ''
+                    //                                     if(variableData[q].ValueMethod == 'Max'){
+                    //                                         vBvalue = Math.max.apply(Math,vbArr);
+                    //                                     }else if(variableData[q].ValueMethod == 'Min'){
+                    //                                         vBvalue = Math.min.apply(Math,vbArr);
+                    //                                     }else if(variableData[q].ValueMethod == 'Avg'){
+                    //                                         var sum=0;
+                    //                                         for(var i = 0; i < vbArr.length; i++){
+                    //                                             sum += Number(vbArr[i]);
+                    //                                         }
+                    //                                         vBvalue  = sum / vbArr.length;
+                    //                                     }
+                    //                                     Ddata.series[f].markLine.data[q].yAxis = vBvalue
+                    //                                 }
+                    //                         }
+                    //                      }
+                    //                  }
+                    //              }
+                    //       }
+                    //   }
 
                       //折线图数据 选择图例筛选数据
                     var lenIndex //最后一个显示图例
@@ -921,18 +953,47 @@ if(type=='min'){
                         }
                     }
   let seData1  = []
+  let seData2 = []
 			Ddata.series.forEach((item)=>{
-				seData1 = [...seData1,...item.data]
+                if(seData1.length==0){
+                    let data = {
+                        name:item.yAxisIndex,
+                        data:item.data
+                    }
+                    seData1.push(data)
+                }else{
+                    seData1.forEach((item1)=>{
+                        if(item1.name == item.yAxisIndex){
+                            console.log("sadsadas")
+                            item1.data = [...item1.data,...item.data]
+                        }else{
+                            seData2 = [];
+                            let data = {
+                        name:item.yAxisIndex,
+                        data:item.data
+                            }
+                          seData2.push(data)
+                        }
+                    })
+                    seData1 = [...seData1,...seData2]
+                }
+				
 			})
            
             if(seData1.length>0){
                 
-                Ddata.yAxis.forEach((item)=>{
+                Ddata.yAxis.forEach((item,key)=>{
                     console.log(item)
                     console.log( item.YAxisMax1)
                     let Adaptive1 = item.Adaptive
                     let YAxisMax1 = item.YAxisMax1
                     let YAxisMin1 = item.YAxisMin1
+                     let data = []
+                    seData1.forEach((item)=>{
+                        if(item.name == key){
+                            data = item.data
+                        }
+                    })
                     console.log(YAxisMax1)
                     if(item.Adaptive||YAxisMax1==null||YAxisMin1==null){
                         YAxisMax1 = null
@@ -940,25 +1001,25 @@ if(type=='min'){
                         Adaptive1 = true
                     }else{
                         let zf;
-                        zf = Math.min.apply(null,seData1)>=0?1:-1;
-                        if(Number(YAxisMin1)>parseFloat(Math.min.apply(null,seData1))){
+                        zf = Math.min.apply(null,data)>=0?1:-1;
+                        if(Number(YAxisMin1)>parseFloat(Math.min.apply(null,data))){
                             console.log()
-                            YAxisMin1 = this.getarea(parseFloat(Math.min.apply(null,seData1)),'min',zf) 
+                            YAxisMin1 = this.getarea(parseFloat(Math.min.apply(null,data)),'min',zf) 
                         }
                         let zf1;
-                        zf1 = Math.max.apply(null,seData1)>=0?1:-1;
-                        if(Number(YAxisMax1)<parseFloat(Math.max.apply(null,seData1))){
-                            YAxisMax1 =  this.getarea(parseFloat(Math.max.apply(null,seData1)),'max',zf1) 
+                        zf1 = Math.max.apply(null,data)>=0?1:-1;
+                        if(Number(YAxisMax1)<parseFloat(Math.max.apply(null,data))){
+                            YAxisMax1 =  this.getarea(parseFloat(Math.max.apply(null,data)),'max',zf1) 
                         }
                         Adaptive1 = false
                     }
                     if(item.Adaptive&&item.splitNumber){
                           let zf;
-                        zf = Math.min.apply(null,seData1)>=0?1:-1;
-                        YAxisMin1 = this.getarea(parseFloat(Math.min.apply(null,seData1)),'min',zf) 
+                        zf = Math.min.apply(null,data)>=0?1:-1;
+                        YAxisMin1 = this.getarea(parseFloat(Math.min.apply(null,data)),'min',zf) 
                         let zf1;
-                        zf1 = Math.max.apply(null,seData1)>=0?1:-1;
-                        YAxisMax1 = this.getarea(parseFloat(Math.max.apply(null,seData1)),'max',zf1) 
+                        zf1 = Math.max.apply(null,data)>=0?1:-1;
+                        YAxisMax1 = this.getarea(parseFloat(Math.max.apply(null,data)),'max',zf1) 
                         Adaptive1 = false
                     }
                     item.min = YAxisMin1

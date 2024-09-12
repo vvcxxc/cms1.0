@@ -10,7 +10,7 @@
    <div v-for="(item,index) in dataValue" :key="index">
   <div
       v-if="show" name="pressbutton" :class="item.class" class="PressButton7a"  @dblclick="opendb(item)" 
-      @contextmenu.prevent @mouseup="seupClick(item,$event)" 
+      @contextmenu.prevent @mouseup.stop="seupClick(item,$event)" 
       @mousedown="downFun(item,$event)"  
       :style="'position:absolute;' + 'left:' + item.left + 'px; top:' + item.top 
       + 'px; boxSizing:border-box; text-align:center; line-height:' + (item.height - item.BorderThickness*2) 
@@ -30,11 +30,11 @@
         
       </div>
 
-        <div class="pressButton_box"></div>
+        <div class="pressButton_box 22"></div>
   </div>
 
     <!-- 权限弹窗 -->
-    <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+    <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
         <div v-if="commerPopShow1" class="commerPop_outPop">
         <div class="commerPop_outHead">
             <i class="warning el-icon-warning"></i>
@@ -46,7 +46,7 @@
             <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
         </div>
         </div>
-    </div>
+    </div> -->
 
   </div>
   </div>
@@ -58,6 +58,8 @@ export default {
   data() {
     return {
       show:true,
+      item:'',
+      e1:'',
       textblockData:[],
       dataValue:[],
       commerPopShow1:false,
@@ -107,12 +109,14 @@ export default {
     },
     //确认
     Jurisdiction(){
-      this.commerPopShow1 = false
+      // this.commerPopShow1 = false
+      this.$emit('shownotip')
     },
      //权限配置请求接口
     jurisdictionShow(item){
           return new Promise((resolve, reject) => {
             var userinfoID
+            
               if(JSON.parse(sessionStorage.getItem('userInfo1')) == null){
                   userinfoID = JSON.parse(sessionStorage.getItem('sightseerInfo1')).SCMSUserID;
               }else{
@@ -152,7 +156,8 @@ export default {
            if(EventType.length){
              this.jurisdictionShow(item).then(val => { 
                  if(this.CanExcuteShow){
-                     this.commerPopShow1 = true
+                    //  this.commerPopShow1 = true
+                    this.$emit('showtip',this.lang.NoOperationAuthority)
                      return
                  }else{
                      for(var j=0;j<EventType.length;j++){
@@ -167,6 +172,9 @@ export default {
 
   //鼠标按下事件
   downFun(item,e){
+    console.log("sadsad")
+    this.item = item;
+    this.e1 = e
     //脚本事件
             var self = this
             var EventScriptList = this.data.Data.EventScriptList
@@ -186,7 +194,8 @@ export default {
                   if(EventType.length){
                     self.jurisdictionShow(item).then(val => { 
                         if(self.CanExcuteShow){
-                            self.commerPopShow1 = true
+                            // self.commerPopShow1 = true
+                            self.$emit('showtip',self.lang.NoOperationAuthority)
                             return
                         }else{
                           for(var j=0;j<EventType.length;j++){
@@ -196,7 +205,7 @@ export default {
                     });
                   }
                     //下发事件
-                e.path[0].style.background='rgba(255,255,255,0.7)'
+                // e.path[0].style.background='rgba(255,255,255,0.7)'
                 self.jurisdictionShow(item).then(val => { 
                 self.$parent.scriptData(Typearr,'点动按钮',item,'1','','')
               })
@@ -204,7 +213,8 @@ export default {
                   if(EventType1.length){
                     self.jurisdictionShow(item).then(val => { 
                           if(self.CanExcuteShow){
-                            self.commerPopShow1 = true
+                            // self.commerPopShow1 = true
+                            self.$emit('showtip',self.lang.NoOperationAuthority)
                             return
                           }else{
                             for(var j1=0;j1<EventType1.length;j1++){
@@ -216,7 +226,12 @@ export default {
                   }
               } 
   },
-  
+  upclick(){
+    if(!this.item){
+      return
+    }
+   this.seupClick(this.item,this.e1)
+  },
   //鼠标抬起
     //脚本事件
   seupClick(item,e){
@@ -241,7 +256,8 @@ export default {
               if(EventType.length){
                self.jurisdictionShow(item).then(val => { 
                   if(self.CanExcuteShow){
-                    self.commerPopShow1 = true
+                    // self.commerPopShow1 = true
+                    self.$emit('showtip',self.lang.NoOperationAuthority)
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -252,12 +268,14 @@ export default {
               })
               }else{
                  self.pressFun(item,'2')
+                 console.log("进来吧")
               }
            }else if(e.which == 3){   //鼠标右键松开
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                          self.commerPopShow1 = true
+                          // self.commerPopShow1 = true
+                          self.$emit('showtip',self.lang.NoOperationAuthority)
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -270,13 +288,16 @@ export default {
            }
               //执行下发事件
               setTimeout(function(){
-                e.path[0].style.background='rgba(255,255,255,0)'
+                // e.path[0].style.background='rgba(255,255,255,0)'
               },200)
-        },200)
+              this.item = ''
+              this.e1 = ''
+        },500)
   },
 
   //点动下发事件
   pressFun(item,type){
+    
      if(item.ControlType != ''){
       if(!this.CanExcuteShow){
         //0为false 1为true 
@@ -329,19 +350,40 @@ export default {
         "Name":item.TagName,
         "Value":valueShow
       }
+      
+      console.log('这里很奇怪')
       arr.push(value)
         //请求接口
-            this.$axios({
+                                //请求接口
+                            this.$axios({
+                                  method:'post',
+                                  url:`/api/base/CheckTags`,
+                                  data:arr
+                             }).then((res1)=>{
+                               
+                                  if(res1.data.code === 0){
+                               this.$emit('shownotip',res1.data.msg)
+                                
+                        this.$axios({
                   method: 'post',
                   url: '/api/Base/PostIOServiceTest',
                   data:arr
               }).then(res => {
+                console.log("arr",arr)
                 console.log('执行下发按下',res)
+           
               }).catch(function(error) {
+               
                     // console.log(error);
                 });
+                                  }else{
+                     this.$emit('showtip',res1.data.msg)
+                                  }
+                               
+                              })
+
       }else{
-        this.commerPopShow1 = true
+         this.$emit('showtip',this.lang.NoOperationAuthority)
       }
     }
   },
@@ -726,6 +768,12 @@ export default {
   cursor: pointer;
   box-sizing: border-box;
   position:relative;
+  .conten:active {
+    box-shadow: 4px 4px 20px #3c99c9 inset !important;
+  }
+  .contenText:active {
+    box-shadow: 4px 4px 20px #3c99c9 inset !important;
+  }
 }
 .PressButton7a:hover{
   background-color: #71A2C7ff !important;
@@ -746,6 +794,9 @@ export default {
   width:calc(100% + 4px);
   height:calc(100% + 4px);
   background:rgba(255,255,255,0);
+  &:active {
+    box-shadow: 4px 4px 20px #3c99c9 inset !important;;
+  }
 }
 
 .commerPop_outPop{

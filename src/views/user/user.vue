@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-27 14:47:42
  -->
 <template>
-	<div class="alarm-container" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+	<div class="alarm-container">
 		<section class="content-container">
 			<component :is="componentName"></component>
 		</section>

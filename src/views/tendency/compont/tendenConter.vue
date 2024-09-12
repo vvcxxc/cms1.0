@@ -7,9 +7,9 @@
  TODO:重构
  -->
 <template>
- <div  class="conterbox2" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+ <div  class="conterbox2">
      <div class="conterbox2load" v-show="loading1" v-loading="loading1"></div>
-            <div class="tip" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" ref="kongtiao2" v-show="tipchange" :style="{width: 380*zoom+'px',height:220*zoom+'px'}">
+            <div class="tip" ref="kongtiao2" v-show="tipchange" :style="{width: 380*zoom+'px',height:220*zoom+'px'}">
             <div
                 class="tiphead"
                 style="position:absolute;width: 380px;height: 40px;"
@@ -34,7 +34,7 @@
                 <el-button class="dro" type="primary">
                     <span class="drotext">{{text}}</span><i class="el-icon-caret-bottom el-icon--right caret"></i>
                 </el-button>
-                <el-dropdown-menu slot="dropdown" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+                <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item 
                     @click.native="curveName(index)"
                     @focus='sx'
@@ -47,8 +47,6 @@
             <el-date-picker
             @focus='sx'
                 :disabled="showTime"
-                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
 				v-model="Sstime"
 				type="datetime"
 				:placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -58,8 +56,6 @@
 		<div class="endTime">
 			<el-date-picker
              @focus='sx'
-            :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-            :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
             :disabled="showTime"
 				v-model="Eetime"
 				type="datetime"
@@ -90,10 +86,9 @@
             tooltip-effect="dark"
             :row-style="{ height: 50 * zoom + 'px',fontSize: 14*zoom+'px' }"
                     :style="{ width: '100%',fontSize: 14*zoom+'px'}"
-            :header-cell-style="{
-                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+            :header-cell-style="{background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',
                     color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                    'border-left':'1px solid #cccccc',
                     height:50*zoom+'px',
                     fontSize: 14*zoom+'px',
                     padding:'0'}"
@@ -118,7 +113,7 @@
                 </el-table-column>
                 <el-table-column
                     :label="lang.NewTrendChart_SingleChartUC_Description"
-                    prop="Description"
+                    prop="OriginalDescripDescription"
                     :width="100*zoom">
                 </el-table-column>
                 <el-table-column
@@ -209,25 +204,8 @@ export default {
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
 		}
     },
-    computed:{
-        theme(){
-            return this.$store.state.color === 'blackBlue'
-        },
-    },
+    
     watch:{
-        theme(val){
-            let newOpt = this.myChart.getOption()
-            if(val){
-                newOpt.tooltip[0].backgroundColor = '#4B5166'
-                newOpt.tooltip[0].borderColor = '#4B5166'
-                newOpt.tooltip[0].textStyle.color = '#fff'
-            }else{
-                newOpt.tooltip[0].backgroundColor = '#fff'
-                newOpt.tooltip[0].borderColor = '#333'
-                newOpt.tooltip[0].textStyle.color = '#000'
-            }
-            this.myChart.setOption(newOpt)
-        },
         curveIDTo(n,o){
              this.$nextTick(function(){
                 this.curveName(this.ide)
@@ -379,20 +357,17 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             
             this.myChart.resize()
         },
-        getColor(color){
-            return /^\#/.test(color) && color.length !== 9 ? color : '#' + color.slice(3)
-        },  
     //请求曲线图表设置
      axiosSet(){
           this.$axios({
           method:"post",
           url:"/api/NewTrendChart/QueryChartSetting",
           }).then((res)=>{
-            this.color2 = this.getColor(res.data.data.ChartBackground)
-            this.color3 = this.getColor(res.data.data.CursorColor)
-            this.color4 = this.getColor(res.data.data.LineColor)
-            this.color5 = this.getColor(res.data.data.XForeground)
-            this.color6 = this.getColor(res.data.data.YForeground)
+            this.color2 = '#' + res.data.data.ChartBackground.slice(3)
+            this.color3 = '#' + res.data.data.CursorColor.slice(3)
+            this.color4 = '#' + res.data.data.LineColor.slice(3)
+            this.color5 = '#' + res.data.data.XForeground.slice(3)
+            this.color6 = '#' + res.data.data.YForeground.slice(3)
             this.value2 = res.data.data.XFontFamily
             this.value3 = res.data.data.YFontFamily
             this.value5 = res.data.data.XFontSize
@@ -417,8 +392,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
      return (
        <el-date-picker
             size="mini"
-            key={this.$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'}
-            popper-class={this.$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'}
             class="timeLast"
             v-model={this.Newtime}
              onFocus={this.sx}
@@ -664,6 +637,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         Type:typename,
                         type:res.data.data[i].Type,
                         Description:res.data.data[i].Description,
+                        OriginalDescripDescription:res.data.data[i].OriginalDescripDescription,
                         Stroke:res.data.data[i].Stroke,
                         Name:res.data.data[i].Name,
                         DisplayName: res.data.data[i].DisplayName,
@@ -680,6 +654,10 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         MaxValue:res.data.data[i].MaxValue,
                         MinValue:res.data.data[i].MinValue,
                         Type:res.data.data[i].Type,
+                        Rule:res.data.data[i].Rule,
+                        Decimal:res.data.data[i].Decimal,
+                        DecimalMaxValue:res.data.data[i].DecimalMaxValue,
+                        DecimalMinValue:res.data.data[i].DecimalMinValue,
                     }
                      var Line = {
                         name:res.data.data[i].DisplayName,
@@ -783,8 +761,8 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                       this.curveArr[j].Newtext = res.data.data[j].Value
                       var sum = 0
                         var pnum = this.curveLineValue[j].data
-                       for(var w=0;w<pnum.length;w++){
-                         sum=sum+pnum[w]
+                      for(var w=0;w<pnum.length;w++){
+                          sum=sum+parseFloat(pnum[w])
                        }
                         this.curveArr[j].numP = (sum / this.curveLineValue[j].data.length).toFixed(4)
                         var data = this.curveLineValue[j].data.push(res.data.data[j].Value)
@@ -1043,15 +1021,10 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 confine: true,
                 formatter: this.formatterShow == true ? '{b0}<br /><span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#5087f0;"></span>曲线1:{c0}<br/><span style ="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#7eebfa;"></span>曲线2:{c1}<br/><span style ="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#faeb74;"></span>曲线3:{c2}<br/>' : '',
                 axisPointer: {
-                    "lineStyle": {
-                        "color": this.color3
-                    }
-                },
-                borderColor: this.$store.state.color === 'blackBlue' ? '#4B5166' : '#333',
-                backgroundColor: this.$store.state.color === 'blackBlue' ? '#4B5166' : '#fff',
-                textStyle:{
-                    color: this.$store.state.color === 'blackBlue' ? '#fff' : '#000'
-                }
+                            "lineStyle": {
+                                "color": this.color3
+                            }
+                        },
             },
             legend: {
                 top: '-100%'
@@ -1145,10 +1118,10 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 height:38px !important;
             }
             .el-table__header-wrapper{
-                background: #5A6C98;
+                background: #5A6C98 !important;
             }
             .el-table th{
-                background: #5A6C98;
+                background: #5A6C98 !important;
             }
             .el-table thead{
                 background: #5A6C98;
@@ -1254,59 +1227,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     width:86% !important
             }
         }
-
-        &.blackBlueBg{
-            .el-button{
-                border-color: transparent;
-            }
-            .bottom_fool{
-                .el-table__header-wrapper{
-                    background-color: #18254E;
-                }
-            }
-            .el-table__row:nth-of-type(odd){
-                background-color: #0E1732!important;
-                
-                td{
-                    border-color: transparent;
-                }
-            }
-            .el-table__row:nth-of-type(even){
-                background-color: #121C3A!important;
-                
-                td{
-                    border-color: transparent;
-                }
-            }
-            .el-table{
-                th{
-                    background-color: #18254E;
-                    border-bottom-color: transparent;
-                }
-            }
-        }
-    }
-    .el-dropdown-menu {
-        &.blackBlueBg{
-            background: #1D2846;
-            border-color: #445992;
-
-            .el-dropdown-menu__item{
-                color: #C6CAD8;
-
-                &:hover{
-                    background: #2A3A65;
-                    border-color: #445992;  
-                }
-            }
-
-            .popper__arrow{
-                &::after{
-                    content: '';
-                    border-bottom-color: #1D2846;
-                }
-            }
-        }
     }
 </style>
 
@@ -1315,23 +1235,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
 	width:100%;
 	height:100%;
 	background:#fff;
-
-    &.blackBlueBg{
-        .bottom_fool{
-            margin-top: 0!important;
-            background: #38415a;
-        }
-        .conter_head{
-            .xl{
-                .dro{
-                    background: #1D2846;
-                    border-color: #445992;
-                    color: #C6CAD8;
-                }
-            }
-        }
-    }
-
 	.conter_head{
 		width:100%;
 		height:70px;

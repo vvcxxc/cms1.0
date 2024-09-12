@@ -30,7 +30,7 @@
         <div class="pages-container">
             <my-page :pageData="pageData" @req="req"></my-page>
         </div>
-        <div class="tip" :class="{blackBlueBg: $store.state.color==='blackBlue'}" ref="kongtiao2" v-show="tipchange" :style="{zoom}">
+        <div class="tip" ref="kongtiao2" v-show="tipchange" :style="{zoom}">
               <div
                 class="tiphead"
                 style="position:absolute;width: 380px;height: 40px;"

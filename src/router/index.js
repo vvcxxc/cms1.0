@@ -17,7 +17,7 @@ const EquipmentOverview = () =>
     import('@/views/overview/equipmentOverview.vue');
 const CustomerVue = () =>
     import('@/views/customer/customer.vue');
-
+    
 const cuAll = () =>
     import('@/views/customer/cuAll.vue');
 
@@ -47,6 +47,20 @@ const maintain = () =>
     import('@/views/maintain/maintain.vue');
 const Repair = () =>
     import('@/views/Repair/Repair.vue');
+const BaseData = () =>
+import('@/views/BaseData/BaseData.vue');
+const warehousingManagement = () =>
+    import('@/views/warehousingManagement/warehousingManagement.vue');
+const productLoading = () =>
+    import('@/views/productLoading/productLoading.vue');
+const productDelivery = () =>
+    import('@/views/productDelivery/productDelivery.vue');
+const taskManagement = () =>
+    import('@/views/taskManagement/taskManagement.vue');
+const ReceiptOrIssueRecord = () =>
+    import('@/views/ReceiptOrIssueRecord/ReceiptOrIssueRecord.vue');
+const InventoryRecords = () =>
+    import('@/views/InventoryRecords/InventoryRecords.vue');
 const quality = () =>
     import('@/views/quality/quality.vue');
 const cpk = () =>
@@ -91,48 +105,11 @@ const scheduleMange = () =>
     import(`@/views/scheduleManage/scheduleMange2.vue`)
 const FormManage = () =>
     import(`@/views/FormManage/FormManage.vue`)
-const MainPage = () =>
-    import('@/views/MainPage/MainPage.vue');
-const TemperatureMonitoring = () =>
-    import('@/views/temperatureMonitoring/temperatureMonitoring.vue');
-const ProcessParameterReport = () =>
-    import('@/views/ProcessParameterReport/ProcessParameterReport.vue');
-const ProcessParameterReportGroup = () =>
-    import('@/views/ProcessParameterReportGroup/ProcessParameterReportGroup.vue');
-const WorkshopRollerKilnReport = () =>
-    import('@/views/WorkshopRollerKilnReport/WorkshopRollerKilnReport.vue');
-const ProductionRealTimeReport = () =>
-    import('@/views/ProductionRealTimeReport/ProductionRealTimeReport.vue');
-const WeightOfInjectionMachine = () =>
-    import('@/views/weightOfInjectionMachine/weightOfInjectionMachine.vue');
-const weightStatisticsReport = () =>
-    import('@/views/weightStatisticsReport/weightStatisticsReport.vue');
-const oxygenContentReport = () =>
-    import('@/views/oxygenContentReport/oxygenContentReport.vue');
-const saggerDamageInquiry = () =>
-    import('@/views/saggerDamageInquiry/saggerDamageInquiry.vue');
-const SaggerDamageStatistics = () =>
-    import('@/views/SaggerDamageStatistics/SaggerDamageStatistics.vue');
-const InstrumentMonitoring = () =>
-    import('@/views/instrumentMonitoring/instrumentMonitoring.vue');
-const KilnOperation = () =>
-    import('@/views/kilnOperation/kilnOperation.vue');
-const TransmissionSetting = () =>
-    import('@/views/transmissionSetting/transmissionSetting.vue');
-const OutputStatisticsReport = () =>
-    import('@/views/outputStatisticsReport/outputStatisticsReport.vue');
-const ProcessParametersKilnReport = () =>
-    import('@/views/processParametersKilnReport/processParametersKilnReport.vue')
-const DailyConsumptionReport = () =>
-    import('@/views/dailyConsumptionReport/dailyConsumptionReport.vue');
-const MonthlyConsumptionReport = () =>
-    import('@/views/monthlyConsumptionReport/monthlyConsumptionReport.vue');
-const DailyKilnFailureAnalysisReport = () =>
-    import('@/views/dailyKilnFailureAnalysisReport/dailyKilnFailureAnalysisReport.vue');
-const MonthlyKilnFailureAnalysisReport = () =>
-    import('@/views/monthlyKilnFailureAnalysisReport/monthlyKilnFailureAnalysisReport.vue');
+    const WebVideoCtrl = () =>
+    import(`@/views/WebVideoCtrl/WebVideoCtrl.vue`)
 // const Customreport = () =>
 //     import(`@/views/Customreport/Customreport.vue`);
+const pushMessage = () => import('@/views/push-message/index.vue')
 
 
 
@@ -151,14 +128,19 @@ const routes = [{
 {
     path: '/home',
     component: Index,
-    children: [{
+    children: [
+        {
         path: '/overview',
         component: EquipmentOverview
     },
     {
-        path: '/FormManage',
-        component: FormManage
+      path:'/FormManage',
+      component:FormManage
     },
+    {
+        path:'/WebVideoCtrl',
+        component:WebVideoCtrl
+      },
     {
         path: '/cpk',
         component: cpk
@@ -204,10 +186,6 @@ const routes = [{
         component: Alarm
     },
     {
-        path: '/MainPage',
-        component: MainPage
-    },
-    {
         path: '/PointInspectionManage',
         component: Spotinspection
     },
@@ -220,20 +198,48 @@ const routes = [{
         component: Repair
     },
     {
+        path: '/BaseData',
+        component: BaseData
+    },
+    {
+        path: '/warehousingManagement',
+        component: warehousingManagement
+    },
+    {
+        path: '/productLoading',
+        component: productLoading
+    },
+    {
+        path: '/productDelivery',
+        component: productDelivery
+    },
+    {
+        path: '/taskManagement',
+        component: taskManagement
+    },
+    {
+        path: '/ReceiptOrIssueRecord',
+        component: ReceiptOrIssueRecord
+    },
+    {
+        path: '/InventoryRecords',
+        component: InventoryRecords
+    },
+    {
         path: '/QualityMain',
         component: quality
     },
-
+  
     {
         path: '/FileManage',
         component: File
     },
-
+  
     {
         path: '/VulnerablePartManage',
         component: Vulnerableparts
     },
-
+  
     {
         path: '/SparePartsManage',
         component: sparepart
@@ -321,80 +327,13 @@ const routes = [{
         component: scheduleMange
     },
     {
-        path: '/TemperatureMonitoring',
-        component: TemperatureMonitoring
-    },
-    {
-        path: '/ProcessParameterReport',
-        component: ProcessParameterReport
-    },
-    {
-        path: '/ProcessParamStatisticsReport',
-        component: ProcessParameterReportGroup
-    },
-    {
-        path: '/WorkshopRollerKilnReport',
-        component: WorkshopRollerKilnReport
-    },
-    {
-        path: '/ProductionRealTimeReport',
-        component: ProductionRealTimeReport
-    },
-    {
-        path: '/FeedMachineWeightQuery',
-        component: WeightOfInjectionMachine
-    },
-    {
-        path: '/WeightStatisticsOfFeedingMachine',
-        component: weightStatisticsReport
-    },
-    {
-        path: '/KilnContainsOxygen',
-        component: oxygenContentReport
-    },
-    {
-        path: '/SaggarDamageQuery',
-        component: saggerDamageInquiry
-    },
-    {
-        path: '/SaggerDamageStatistics',
-        component: SaggerDamageStatistics
-    },
-    {
-        path: '/InstrumentMonitoring',
-        component: InstrumentMonitoring
-    },
-    {
-        path: '/KilnOperation',
-        component: KilnOperation
-    },
-    {
-        path: '/TransmissionSetting',
-        component: TransmissionSetting
-    },
-    {
-        path: '/OutputStatisticsReport',
-        component: OutputStatisticsReport
-    },
-    {
-        path: '/ProcessParametersKilnReport',
-        component: ProcessParametersKilnReport
-    },
-    {
-        path: '/DailyConsumptionReport',
-        component: DailyConsumptionReport
-    },
-    {
-        path: '/MonthlyConsumptionReport',
-        component: MonthlyConsumptionReport
-    },
-    {
-        path: '/DailyKilnFailureAnalysisReport',
-        component: DailyKilnFailureAnalysisReport
-    },
-    {
-        path: '/MonthlyKilnFailureAnalysisReport',
-        component: MonthlyKilnFailureAnalysisReport
+        path: '/MsgPush',
+        component: pushMessage,
+        // children: [
+        //     { path: '/MsgPush/alarm-message', component: () => import('@/views/push-message/alarm-message.vue') },
+        //     { path: '/MsgPush/todo-message', component: () => import('@/views/push-message/todo-message.vue') },
+        //     { path: '/MsgPush/push-log', component: () => import('@/views/push-message/push-log.vue') },
+        // ]
     },
     // {
     //     path: '/cuAll',
@@ -403,7 +342,8 @@ const routes = [{
     {
         path: '/*',
         component: CustomerVue
-    }
+    },
+
     ]
 },
 

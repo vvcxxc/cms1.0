@@ -24,7 +24,8 @@ export default {
         return{
           myChart:'',
           valueData:[],
-          commerPopShow1:false
+          commerPopShow1:false,
+          bartype:[]
         }
     },
     props:["data",'valueData1','drawLineShow','item','dataId','AllData'],
@@ -64,7 +65,17 @@ export default {
         }
     },
     methods:{
-
+sum(arr,i){
+	   let num = 0
+	   for(let a=0;a<arr.length;a++){
+		   if(arr[a].data[i]){
+			   if(Number(arr[a].data[i])!==NaN){
+				   num+=Number(arr[a].data[i])
+			   }
+			   
+		   }
+	   }
+    },
       //确认
         Jurisdiction(){
              this.commerPopShow1 = false
@@ -353,7 +364,8 @@ if(type=='min'){
             this.LegendData = []
             this.TooColorArr = []
             this.variableArr = []
-            this.IsTime = this.optionData.IsTime == true?null:'1'
+            this.IsTime = this.optionData.IsTime
+            this.bartype = []
             for(var j=0;j<this.optionData.Variables.length;j++){
               if(this.optionData.Variables[j].DataType=='Line'){
                this.LegendData.push({
@@ -368,7 +380,11 @@ if(type=='min'){
 		}
               this.TooColorArr.push(this.colorRgba(this.optionData.Variables[j].Color.HtmlColor))
               this.variableArr.push(this.optionData.Variables[j].VariableName)
+              if(this.optionData.Variables[j].DataType=='Bar'||this.optionData.Variables[j].DataType=='bar'){
+                           this.bartype.push(this.optionData.Variables[j].DimensionName)
+                }
             }
+  
             if(this.lengenPosition == 'RightCenter'){
                     this.LengenB = null
                     this.lengenT = "center"
@@ -464,6 +480,7 @@ if(type=='min'){
                 this.YFontFamily2 =  this.optionData.AxisChartYAxiss[1].FontFamily
                 this.ShowSeparator2 = this.optionData.AxisChartYAxiss[1].ShowSeparator
                 this.IsOrigin = this.optionData.IsOrigin
+                this.IsDuidie = this.optionData.IsOrigin
                 //辅助线
                 this.AuxiliaryLinesData = this.optionData.AuxiliaryLines
                 this.markLineData1= {
@@ -527,6 +544,7 @@ if(type=='min'){
                  for(let v=0;v<this.VariablesData.length;v++){
 
                    let symbol = this.VariablesData[v].DataType=='Line' ? '':'none'
+                   let  v_IsDuidie = this.VariablesData[v].DataType.toLowerCase()!=='bar'?'':!this.IsTime?this.IsOrigin?'':1:this.IsDuidie?1:''
                    let fontSize11 = this.VariablesData[v].DataType=='Line'? this.labelFontSize:this.BarLabelFontSize
                    let show11 = this.VariablesData[v].DataType=='Line'?  this.labelShow : this.BarLabelShow
                    let color11
@@ -618,7 +636,7 @@ if(type=='min'){
                       "data":data11,
                       "type": this.VariablesData[v].DataType.toLowerCase(),
                       "barMaxWidth": 25.0,
-                       stack:this.IsTime,
+                       stack:v_IsDuidie,
                       "label": {
                         "fontSize": fontSize11,
                         "show": show11,
@@ -848,41 +866,112 @@ if(type=='min'){
                 }
   
                 // 动态辅助线
-                if(this.valueData.YDataCollection != undefined){
-                    for(let f=0;f<Ddata.series.length;f++){
-                           if(Ddata.series[f].markLine.data != undefined){
-                               var variableData = Ddata.series[f].markLine.data
-                               if(variableData){
-                                 for(let q=0;q<variableData.length;q++){
-                                     if(variableData[q].Type == "FromVariable"){
-                                        var index11 = this.variableArr.indexOf(variableData[q].TargetVariableName)
-                                        var vbArr = Ddata.series[index11].data
-                                        var vBvalue = ''
-                                        if(variableData[q].ValueMethod == 'Max'){
-                                            vBvalue = Math.max.apply(Math,vbArr);
-                                        }else if(variableData[q].ValueMethod == 'Min'){
-                                            vBvalue = Math.min.apply(Math,vbArr);
-                                        }else if(variableData[q].ValueMethod == 'Avg'){
-                                            var sum=0;
-                                            for(var i = 0; i < vbArr.length; i++){
-                                                sum += Number(vbArr[i]);
+                      if (this.valueData.hasOwnProperty("MarkLine")) {
+                        var MarkLineArr11 = []
+                        var MarkLineArr22 = []
+                        for (let o1 = 0; o1 < this.valueData.MarkLine.length; o1++) {
+                            if (this.valueData.MarkLine[o1].axis == 0) {
+                                MarkLineArr11.push(this.valueData.MarkLine[o1].yAxis)
+                            } else {
+                                MarkLineArr22.push(this.valueData.MarkLine[o1].yAxis)
+                            }
+                        }
+                        for (let o = 0; o < Ddata.series.length; o++) {
+                            if (Ddata.series[o].yAxisIndex == 0) {
+                                if (Ddata.series[o].markLine.data != undefined) {
+                                    for (var o3 = 0; o3 < Ddata.series[o].markLine.data.length; o3++) {
+                                        if (Ddata.series[o].markLine.length != 0 && MarkLineArr11[o3] != undefined) {
+                                            if (Ddata.series[o].markLine.length != 0 && MarkLineArr11[o3] != undefined) {
+
+                                                Ddata.series[o].markLine.data[o3].yAxis = MarkLineArr11[o3]
                                             }
-                                            vBvalue  = sum / vbArr.length;
                                         }
-                                        Ddata.series[f].markLine.data[q].yAxis = vBvalue
                                     }
-                                 }
-                               }
-                           }
+                                }
+                            } else {
+                                if (Ddata.series[o].markLine.data != undefined) {
+                                    for (var o4 = 0; o4 < Ddata.series[o].markLine.data.length; o4++) {
+                                        if (MarkLineArr22[o4] != undefined) {
+                                            if (Ddata.series[o].markLine.length != 0 && MarkLineArr22[o4] != undefined) {
+
+                                                Ddata.series[o].markLine.data[o4].yAxis = MarkLineArr22[o4]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
                     }
-                }
+                // if(this.valueData.YDataCollection != undefined){
+                //     for(let f=0;f<Ddata.series.length;f++){
+                //            if(Ddata.series[f].markLine.data != undefined){
+                //                var variableData = Ddata.series[f].markLine.data
+                //                if(variableData){
+                //                  for(let q=0;q<variableData.length;q++){
+                //                      if(variableData[q].Type == "FromVariable"){
+                //                         var index11 = this.variableArr.indexOf(variableData[q].TargetVariableName)
+                //                         var vbArr = Ddata.series[index11].data
+                //                         var vBvalue = ''
+                //                         if(variableData[q].ValueMethod == 'Max'){
+                //                             vBvalue = Math.max.apply(Math,vbArr);
+                //                         }else if(variableData[q].ValueMethod == 'Min'){
+                //                             vBvalue = Math.min.apply(Math,vbArr);
+                //                         }else if(variableData[q].ValueMethod == 'Avg'){
+                //                             var sum=0;
+                //                             for(var i = 0; i < vbArr.length; i++){
+                //                                 sum += Number(vbArr[i]);
+                //                             }
+                //                             vBvalue  = sum / vbArr.length;
+                //                         }
+                //                         Ddata.series[f].markLine.data[q].yAxis = vBvalue
+                //                     }
+                //                  }
+                //                }
+                //            }
+                //     }
+                // }
                 if(Ddata.hasOwnProperty('markLine')){
                   delete Ddata.markLine
                 }
                    let seData1  = []
+                   let seData = []
+			             let stackarr = []
+			             let bararr = []
+			             let bartype = []
 			Ddata.series.forEach((item)=>{
 				seData1 = [...seData1,...item.data]
 			})
+        this.valueData.YDataCollection.forEach((item) => {
+                        let value22 = {
+                            data:Object.values(item.YData),
+                            name:item.name
+                        }
+                        if(this.bartype.includes(item.name)){
+                            bararr.push(value22)
+                        }
+                    })
+                    if(bararr.length>0){
+                        for(let i=0;i<bararr[0].data.length;i++){
+                               stackarr.push(this.sum(bararr,i))
+                              } 
+                      }
+					if(Ddata.IsDuidie){
+							 seData1 = [...stackarr,...seData1]
+					}
+          		if(Ddata.IsOrigin){
+						if(Ddata.series[0].data.length==1){
+							Ddata.series.forEach((item)=>{
+								item.stack = 1
+							})
+						}else{
+              	Ddata.series.forEach((item)=>{
+									item.stack = ''
+							})
+					
+						}
+						
+					}
  if(seData1.length>1){
       
         Ddata.yAxis.forEach((item)=>{
@@ -973,6 +1062,9 @@ if(type=='min'){
          var aa =   {
              "color":this.TooColorArr,
              "animation": false,
+             IsDuidie:this.IsDuidie,
+					   IsOrigin:this.IsOrigin,
+             bartype:this.bartype,
              "tooltip":{
                "trigger": 'axis',
                  formatter:function (params) {

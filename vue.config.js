@@ -16,15 +16,15 @@
 const webpack = require('webpack')
 module.exports = {
     publicPath: './',
-    productionSourceMap: true, //生产环境是否生产syourceMap文件,设置为false可减小打包后的体积
+    productionSourceMap: false, //生产环境是否生产syourceMap文件,设置为false可减小打包后的体积
     devServer: {
         // 项目运行自动打开浏览器
         open: true,
         proxy: {
             '/api': {
                 //这里最好有一个 /
-                // 'http://192.168.1.123:8807'
-                target: 'http://192.168.2.7:8804', // 后台接口域名
+                // target: 'http://192.168.131.1:8802',
+                target: 'http://192.168.2.133:8802/', // 后台接口域名
                 ws: true, //如果要代理 websockets，配置这个参数
                 secure: false, // 如果是https接口，需要配置这个参数
                 changeOrigin: true, //是否跨域
@@ -61,22 +61,14 @@ module.exports = {
             .end()
     },
     configureWebpack: {
-
-          
+        devtool: 'source-map',
         plugins: [
-
-                  new webpack.ProvidePlugin({
-
-                         $: "jquery",
-
-                        jQuery: "jquery",
-
-                         "windows.jQuery": "jquery"
-
-                       })
-
-                
+            new webpack.ProvidePlugin({
+                $: "jquery",
+                jQuery: "jquery",
+                "windows.jQuery": "jquery"
+            })
         ]
-
-    }
+    },
+    transpileDependencies: []
 };

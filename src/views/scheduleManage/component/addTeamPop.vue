@@ -7,7 +7,7 @@
 -->
 <template>
     <div class="TeamPop" :style="{zoom: zoomValue}">
-        <div  v-drag class="head">{{title}}
+        <div  v-drager class="head">{{title}}
            <div @click="cancelFun()" class="headImg"></div>
         </div>
         <div class="middle">

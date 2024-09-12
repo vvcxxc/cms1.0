@@ -374,7 +374,7 @@ export default {
                         resValue = 0
                     }else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                           resValue = data[i].Value
-                    }else if(typeof(Number(resValueNumber)) == 'number'){
+                    }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
                       resValue = Number(data[i].Value)
                     }else{
                       resValue = data[i].Value
@@ -386,7 +386,7 @@ export default {
                     }
                     else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                           ArrValue =  TextAnimationListData[i].Compare
-                    }else if(typeof(Number(resValueNumber)) == 'number'){
+                    }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
                       ArrValue = Number( TextAnimationListData[i].Compare)
                     }else{
                       ArrValue =  TextAnimationListData[i].Compare
@@ -421,7 +421,7 @@ export default {
                         for(var j=0;j<this.nullArr.length;j++){
                             if(cla == this.nullArr[j].ElementName){
                                   aa = '#aa' + cla
-                                   if(this.nullArr[j].ImageName == 'DynamicPicture.png'){
+                                 if(this.nullArr[j].ImageName == 'DynamicPicture.png'||this.nullArr[j].ImageName == 'DynamicPicture'){
                                       document.querySelector(aa).src= require(`../../../assets/images/DynamicPicture.png`)
                                     }else{
                                      document.querySelector(aa).src= `/ViewImage/${this.name}/${this.nullArr[j].ImageName}`
@@ -439,7 +439,7 @@ export default {
                           if(TextAnimationListData[i].ElementName == this.nullArr[q].ElementName){
                             var cla1 = TextAnimationListData[i].ElementName
                             aa = '#aa' + cla1
-                            if(this.nullArr[j].ImageName == 'DynamicPicture.png'){
+                          if(this.nullArr[j].ImageName == 'DynamicPicture.png'||this.nullArr[j].ImageName == 'DynamicPicture'){
                               document.querySelector(aa).src= require(`../../../assets/images/DynamicPicture.png`)
                             }else{
                              document.querySelector(aa).src= `/ViewImage/${this.name}/${this.nullArr[j].ImageName}`

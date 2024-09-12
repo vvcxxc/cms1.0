@@ -28,9 +28,9 @@
       </div>
 
         <!-- 弹窗 -->
-        <div class="Pop10">
-            <div v-if="isShow" style="position:absolute;left:0;top:0;right:0;bottom:0;z-index:99999;"></div>
-            <div v-drag v-for="(item,index) in PopList" :key="index" :class="'popbox' +item.ElementName" 
+        <div class="Pop10" v-if="isShow">
+            <div  style="position:absolute;left:0;top:0;right:0;bottom:0;z-index:99999;"></div>
+            <div v-drager v-for="(item,index) in PopList" :key="index" :class="'popbox' +item.ElementName" 
               class="popbox" :style="'width:' + item.viewWidth + 'px; height:' 
               + item.viewHeight + 'px; position:absolute; left:' + item.viewpositionX + 'px; top:'
               +item.viewpositionY + 'px;background:#fff;zIndex:999' ">
@@ -171,7 +171,7 @@ export default {
           viewpositionX:Poplist[j].viewpositionX,
           viewpositionY:Poplist[j].viewpositionY,
         }
-       
+       console.log("vvvv111111111111",Popvalue)
         this.PopList.push(Popvalue)
       }
       if(this.textblockData.length != 0){

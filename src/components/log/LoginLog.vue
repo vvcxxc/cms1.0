@@ -1,4 +1,4 @@
-    <!--
+<!--
  * @Description: 日志用户登录记录界面
  * @Date: 2019-11-25 19:42:01
  * @Author: 随风
@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-12-01 18:01:03
  -->
 <template>
-    <div class="public-table" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+    <div class="public-table">
         <div class="search-container" :style="[{ height: 60 * a1 + 'px' }]">
             <my-search
                 :searchList="searchList"
@@ -20,7 +20,7 @@
         <div class="pages-container">
             <my-page :pageData="pageData" @req="req"></my-page>
         </div>
-        <div class="tip" :class="{blackBlueBg: $store.state.color==='blackBlue'}" ref="kongtiao3" v-show="tipchange1">
+        <div class="tip" ref="kongtiao3" v-show="tipchange1">
               <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
             <div class="tiptop">
                 <img :src="gth" alt />

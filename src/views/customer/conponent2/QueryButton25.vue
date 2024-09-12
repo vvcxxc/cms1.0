@@ -31,7 +31,7 @@
        
       </div>
 
-        <div class="pressButton_box"></div>
+        <div class="pressButton_box 66"></div>
   </div>
 
   </div>
@@ -57,7 +57,7 @@
 <script>
 
 import {cron} from 'vue-cron'
-
+import Utils from '../../../assets/js/util.js'
 export default {
   
   data() {
@@ -106,6 +106,11 @@ export default {
     if(this.data){
       this.init()
     }
+  },
+  mounted(){
+  Utils.$on('demo',()=>{
+      // this.searchFun()
+    })
   },
   methods: {
    

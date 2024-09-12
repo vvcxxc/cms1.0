@@ -6,7 +6,7 @@
  * @LastEditTime: 2021-04-09 15:25:36
  -->
 <!-- 90vh 78px-->
-<!-- 版本号   1.3.5-->
+<!-- 版本号   1.3.6-->
 <template>
 <div class="customerPage" style="position:relative;overflow:auto;margin-bottom:0px;margin-top:100px;" :style="[{height:nowoverflow},{width:newoverflow}]">
   <div class='btablecover'>
@@ -359,7 +359,7 @@ export default {
           deep: true,
           handler:function(n, o){
             var data = this.$store.state.varChange
-            console.log("=-----",this.$$refs)
+            console.log("=-----",this.$refs)
               if(this.$refs.Dimage){
                     this.$refs.Dimage.axioImg2(data)
                   }
@@ -698,6 +698,7 @@ export default {
         }
         this.name = this.pathNmae
         this.nameC = this.pathNmae
+       
         //  初始化/跳转页面获取名称
           if(this.popdata){ 
             this.impor(this.popdata)
@@ -1086,6 +1087,7 @@ export default {
      //查询赋值
      queryassignmentFun(name,value){      
        setTimeout(()=>{
+         debbugger
          window.$.connection.subchart.server.query(this.name,name,value,localStorage.getItem('currentLang'))
        },300)
      },

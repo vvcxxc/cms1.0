@@ -31,7 +31,9 @@
                 :style="'text-align:center;width:100%; height:100%;'
                 + ';opacity:' + item.opacity + 'overflow:hidden;zIndex:'+item.ZIndex"
                 v-model="item.value"
+                type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
+                default-time="12:00:00"
             ></el-date-picker>
             </div>
         </div>

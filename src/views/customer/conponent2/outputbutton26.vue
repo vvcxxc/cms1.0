@@ -30,7 +30,7 @@
         + (Number(item.radiusButton) -1) + 'px;boxShadow:'+item.Shadow2">
       </div>
 
-        <div class="pressButton_box"></div>
+        <div class="pressButton_box 44"></div>
   </div>
 
   </div>

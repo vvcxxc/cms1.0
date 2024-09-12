@@ -44,10 +44,21 @@ export default {
     width: 100%;
     height: auto;
     background: #ffffff;
-    padding: 10px 16px;
+    padding: 8px 16px;
     box-sizing: border-box;
     margin: 10px 0;
     border-radius: 6px;
+
+    .el-collapse-item__content{
+      .component-content{
+        padding: 8px 16px;
+
+        &::after{
+          left: 0;
+          right: 0;
+        }
+      }
+    }
 
     &:first-child{
       margin-top: 0;
@@ -60,10 +71,10 @@ export default {
     .el-collapse-item__header{
       height: auto;
       line-height: 1;
-      font-size: 14px;
+      font-size: 16px;
       font-family: PingFang SC;
-      font-weight: bold;
-      color: #333333;
+      font-weight: 600;
+      color: #7C7F8E;
       border: 0;
 
       .el-collapse-item__arrow{

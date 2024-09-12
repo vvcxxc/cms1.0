@@ -6,16 +6,12 @@
  * @LastEditTime: 2020-08-06 16:46:54
  -->
 <template>
-    <div class="table-container" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+    <div class="table-container">
         <el-table
             :data="data"
             border
              highlight-current-row
-             :header-cell-style="{
-                background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
-                color:($store.state.color=='grey')?'#000':'#fff',
-                'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
-                 height: 50*a11+'px',padding:'0'}"
+             :header-cell-style="{background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',color:($store.state.color=='grey')?'#000':'#fff','border-left':'1px solid #cccccc',  height: 50*a11+'px',padding:'0'}"
             header-row-class-name="light-blue"
             row-class-name="high-light"
             height="100%"

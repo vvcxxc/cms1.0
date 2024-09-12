@@ -7,7 +7,7 @@
 -->
 <template>
     <div class="import_box" :style="{zoom: zoomValue}" >
-         <div  v-drag class="head">{{lang.ScheduleManage_Import}}
+         <div  v-drager class="head">{{lang.ScheduleManage_Import}}
            <div @click="can()" class="headImg"></div>
         </div>
         <div class="import_middle">

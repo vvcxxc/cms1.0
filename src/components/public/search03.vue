@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-29 16:34:35
  -->
 <template>
-    <div class="search-container search-containersb" :style="[{zoom:a1}]">
+    <div class="search-container search-containersb" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" :style="[{zoom:a1}]">
         <div class="search-left">
             <div class="search-item" v-for="(item, index) in searchList" :key="index">
 
@@ -35,6 +35,8 @@
                     ></el-option>
                 </el-select>
                 <el-date-picker
+                    :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                    :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                     v-if="item.type === 'time'"
                     v-model="searchData[item.model]"
                     type="datetime"
@@ -46,6 +48,8 @@
                 ></el-date-picker>
 				<!-- <span>-</span> -->
                 <el-date-picker
+                    :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                    :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                     v-if="item.type === 'datetimerange'"
                     v-model="searchData[item.model]"
                     type="datetimerange"
@@ -210,6 +214,10 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         }
     },
     mounted(){
+        this.a1 = Number(parseFloat(window.screen.width/1920).toFixed(2))
+    if(this.a1 <1){
+        this.a1  = 0.8
+    }
     setTimeout(()=>{
         $(".el-input__icon").css({lineHeight: 40*this.a1+'px'})
     })

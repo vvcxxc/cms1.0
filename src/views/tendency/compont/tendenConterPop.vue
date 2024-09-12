@@ -6,7 +6,7 @@
  * @LastEditTime: 2021-04-09 14:04:29
  -->
 <template>
-    <div class="tenPop_box">
+    <div class="tenPop_box" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" :style="{zoom:zoom11}">
         <div class="CurveArrPopcover" v-if="addCurveArrName"></div>
         <div v-drag class="tenPop_fool" :style="{zoom1}">
             <div class="tenPop_title">{{TitleText}}</div>
@@ -17,7 +17,7 @@
                 <div class="tenPop_conterFool" :style="{height: 370*zoom1+'px'}">
                     <div class="conterFool_fool">
                         <span>{{lang.FormulaManage_AddProject_DeviceName}}</span>
-                        <el-select @change="equipmentFun()" class="conterFool_select" v-model="equipmentValue" :placeholder="lang.AlarmRecord_HT_Unlimited">
+                        <el-select @focus='sx' :popper-append-to-body="false" @change="equipmentFun()" class="conterFool_select" v-model="equipmentValue" :placeholder="lang.AlarmRecord_HT_Unlimited">
                             <el-option
                             v-for="item in equipment"
                             size="mini"
@@ -27,7 +27,7 @@
                             </el-option>
                         </el-select>
                          <span>{{lang.FormulaManage_AddProject_VariableGroup}}</span>
-                        <el-select @change="groupNameFun()" class="conterFool_select" v-model="groupNameValue" :placeholder="lang.AlarmRecord_HT_Unlimited">
+                        <el-select @focus='sx' :popper-append-to-body="false" @change="groupNameFun()" class="conterFool_select" v-model="groupNameValue" :placeholder="lang.AlarmRecord_HT_Unlimited">
                             <el-option
                             v-for="item in groupName"
                             :key="'2' + item.GroupName"
@@ -36,7 +36,7 @@
                             </el-option>
                         </el-select>
                          <span>{{lang.FormulaManage_AddProject_DataGrid_VariableType}}：</span>
-                        <el-select @change="dataTypeFun()" class="conterFool_select conterFool_select1" v-model="dataTypeValue" :placeholder="lang.AlarmRecord_HT_Unlimited">
+                        <el-select @focus='sx' :popper-append-to-body="false" @change="dataTypeFun()" class="conterFool_select conterFool_select1" v-model="dataTypeValue" :placeholder="lang.AlarmRecord_HT_Unlimited">
                             <el-option
                             v-for="(item) in dataType"
                             :key="'3' + item.Value"
@@ -56,6 +56,14 @@
                             :data="tableDataList"
                             tooltip-effect="dark"
                             style="width: 100%"
+                            :header-cell-style="{
+                                background:$store.state.color==='blackBlue' ? '#344C8F' : '#DCF0F9',
+                                color:($store.state.color=='grey')?'#000':'#fff',
+                                'border-left-color': $store.state.color==='blackBlue' ? '#8B98B8' : '#e4e4e4',
+                                height:50*zoom +'px',
+                                'font-size': 14*zoom + 'px',
+                                padding:'0'
+                            }"
                             @selection-change="handleSelectionChange">
                             <template slot="empty">
                                 <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
@@ -133,7 +141,6 @@
                             <div class="conter_8" :style="{height: 50*zoom1+'px',lineHeight: 50*zoom1+'px'}">{{lang.NewTrendChart_SeriesGroupsSetting_DataGrid_Max}}</div>
                             <div class="conter_9" :style="{height: 50*zoom1+'px',lineHeight: 50*zoom1+'px'}">{{lang.NewTrendChart_SeriesGroupsSetting_DataGrid_Min}}</div>
                             <div class="conter_10" :style="{height: 50*zoom1+'px',lineHeight: 50*zoom1+'px'}">{{lang.NewTrendChart_SeriesGroupsSetting_DataGrid_Desc}}</div>
-                            <div class="conter_11" :style="{height: 50*zoom1+'px',lineHeight: 50*zoom1+'px'}">{{lang.NewTrendChart_SeriesGroupsSetting_DataGrid_SelectAlarmVariable}}</div>
                        </div>
 
                         <div class="conter_box" v-for="(item,index) in addCurveArr" :key="index">
@@ -142,7 +149,7 @@
                             </div>
                             <div class="conter_box_2" :style="{height: 50*zoom1+'px',lineHeight: 50*zoom1+'px'}">{{item.TagName}}</div>
                             <div class="conter_box_3" :style="{height: 50*zoom1+'px',lineHeight: 50*zoom1+'px'}">
-                                <el-select @change="selectValue(item,index)" v-model="item.value" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
+                                <el-select @focus='sx' :popper-append-to-body="false" @change="selectValue(item,index)" v-model="item.value" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
                                     <el-option
                                     v-for="item in item.type"
                                     :key="'4' + item.value"
@@ -157,7 +164,8 @@
                                     show-alpha
                                     @change="colorFun(item,index)"
                                     :style="{height: 40*zoom1+'px'}"
-                                    :predefine="predefineColors">
+                                    :predefine="predefineColors"
+                                    :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normalBg'">
                                 </el-color-picker>
                             </div>
                          
@@ -178,12 +186,6 @@
                             </div>
                             <div class="conter_box_10" :style="{height: 50*zoom1+'px',lineHeight: 50*zoom1+'px'}">
                                  <input v-model="item.Descript" type="text" />
-                            </div>
-                            <div class="conter_box_11" :style="{height: 50*zoom1+'px',lineHeight: 50*zoom1+'px'}">
-                                <div class="input-group">
-                                    <input v-model="item.AlarmVariable" type="text" disabled/>
-                                    <img :src='choiceImg' @click="selectVar(item)"/>
-                                </div>
                             </div>
                        </div>
                    </div>
@@ -310,26 +312,14 @@
                     <div @click="closePop()" class="confir">{{lang.MessageBox_Confrim}}</div>
                 </div>
             </div>
-
-        <!-- 变量选择弹窗 -->
-        <SelectVar 
-            v-if="selectVarDialog.shown"
-            @submit="value=>selectVarDialog.submit(value)"
-            @cancel="selectVarDialog.cancel()"
-        ></SelectVar>
-        
     </div>
 </template>
 
 <script>
-import SelectVar from "./SelectVarDialog.vue";
-
 export default {
     name:'tendenConterPop',
     props:['type','data','Name'],
-    components: {
-        SelectVar,
-    },
+   
     data(){
         return{
             num:1,
@@ -378,7 +368,6 @@ export default {
             NameArrIndex:[],
             describeArrIndex:[],
             describeArr:[],
-            choiceImg: require('@/assets/images/icon_diji.png'),
             
             //颜色
             colorArr:'',
@@ -447,31 +436,11 @@ export default {
                 '#20124d',
                 '#4c1130'
               ],
+              zoom: 1,
               zoom1:1,
               tips: '',
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
-
-            // 变量选择弹窗
-            // selectVarDialog.open().then((value)=>{})
-            selectVarDialog: {
-                shown: false,
-                open(){
-                    this.shown = true
-
-                    return new Promise(rs=>{
-                        this.rs = rs
-                    })
-                },
-                submit(value){
-                    this.shown = false
-
-                    this.rs(value)
-                },
-                cancel(){
-                    this.shown = false
-                }
-            },
-        }
+            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
+            }
     },
      created(){
        this.init()
@@ -479,6 +448,7 @@ export default {
        this.tips = this.lang.DataGrid_Reaction_HT_PEThePageNumber
      },
     mounted(){
+        this.zoom11 = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
         this.zoom1 = 1
       
     },
@@ -512,6 +482,19 @@ export default {
             }
         },
     methods:{
+                                      sx(){
+                                        
+            let that = this
+            setTimeout(()=>{
+for(let i=0;i<$('.el-picker-panel').length;i++){
+                $('.el-picker-panel')[i].style.zoom1 = that.zoom11
+            }
+            for(let i=0;i<$('.el-select-dropdown').length;i++){
+                $('.el-select-dropdown')[i].style.zoom1 = that.zoom11
+            }
+            })
+              
+        },
         getLangData() {
             this.addText = this.lang.NewTrendChart_SeriesGroupsSetting_AddToGroup
             this.addCurveArrHint = this.lang.NewTrendChart_AddToSeriesGroupViewModel_InputGroupName
@@ -540,7 +523,6 @@ export default {
                  var resdata = res.data.data
                  for(var i=0;i<resdata.length;i++){
                     var value = {
-                        SID: resdata[i].SID,
                         NameB:resdata[i].Name,
                         NameA:'',
                         NameC:'',
@@ -552,7 +534,6 @@ export default {
                         curveFo:resdata[i].Digit == -1 ? '' : resdata[i].Digit,
                         Address:resdata[i].TagName == '' ? this.lang.NewTrendChart_Group_Nothing :resdata[i].TagName,
                         value:resdata[i].Type,
-                        AlarmVariable: resdata[i].AlarmVariable,
                         type:resdata[i].Type == 3 ? [{
                                 value: 3,
                                 label: this.lang.NewTrendChart_CommonClass_Consult
@@ -585,7 +566,6 @@ export default {
                 }else{
                     this.curveFo = ''
                 }
-                this.curveFo = val[i].Digit
                 val[i].curvePt = this.curvePt
                 val[i].curveFo = this.curveFo
                 val[i].curveMax = this.curveMax
@@ -623,7 +603,7 @@ export default {
                 item.MinValue = item.curveNin
                 item.Description = item.Descript
             })
-            console.log(daiti)
+            
             this.$axios({
                  method:'post',
                  url:`api/NewTrendChart/CheckSeriesArg`,
@@ -1199,7 +1179,7 @@ export default {
         },
         //添加曲线
         addCurve(){
-            
+            // debugger
            var addCarr = this.addCurveArr
            console.log('this.addCurveArr',this.addCurveArr,this.multipleSelection)
            var addCArr = []
@@ -1456,7 +1436,6 @@ export default {
                 item.MinValue = item.curveNin
                 item.Description = item.Descript
             })
-            console.log(a)
             this.$axios({
                  method:'post',
                  url:`api/NewTrendChart/CheckSeriesArg`,
@@ -1626,13 +1605,11 @@ export default {
            if(this.type == 'x'){
                 var left = this
               
-               console.log('修改曲线组', this.addCurveArr)
+               console.log('修改曲线组')
 
                 let UpdateArr = []
             for(var i=0;i<this.addCurveArr.length;i++){
-                console.log('=+++++',this.addCurveArr[i])
                 var value = {
-                    SID: this.addCurveArr[i].SID || '00000000-0000-0000-0000-000000000000',
                    Number:i+1,
                    TagName:this.addCurveArr[i].TagName == this.lang.NewTrendChart_Group_Nothing ? null : this.addCurveArr[i].TagName,
                    Stroke:"#FF" + this.addCurveArr[i].Stroke.slice(1),
@@ -1643,7 +1620,6 @@ export default {
                    MaxValue:Number(this.addCurveArr[i].curveMax),
                    MinValue:Number(this.addCurveArr[i].curveNin),
                    Type:this.addCurveArr[i].value,
-                   AlarmVariable: this.addCurveArr[i].AlarmVariable
                 }
               
                 UpdateArr.push(value)
@@ -1660,7 +1636,6 @@ export default {
                 url:"/api/NewTrendChart/UpdateSeriesGroup",
                 data:data
             }).then((res)=>{
-                console.log("UpdateSeriesGroup======", data, res.data)
                  if(res.data.code == 0){
                           this.addCurveArrNameShow = true
                           this.addCurveArrHint = this.lang.NewTrendChart_ChartSettingViewModel_SaveSuccess
@@ -1693,7 +1668,6 @@ export default {
                     let arr = []
                 for(var k=0;k<this.addCurveArr.length;k++){
                     var value1 = {
-                        SID: '00000000-0000-0000-0000-000000000000',
                         Number:k + 1,
                         TagName:this.addCurveArr[k].TagName == this.lang.NewTrendChart_Group_Nothing ? null : this.addCurveArr[k].TagName,
                         Stroke:this.addCurveArr[k].Stroke?"#FF" + this.addCurveArr[k].Stroke.slice(1):'',
@@ -1703,8 +1677,7 @@ export default {
                         Digit:this.addCurveArr[k].curveFo ==''? null :!isNaN(this.addCurveArr[k].curveFo)?Number(this.addCurveArr[k].curveFo):this.addCurveArr[k].curveFo,
                         MaxValue:Number(this.addCurveArr[k].curveMax),
                         MinValue:Number(this.addCurveArr[k].curveNin),
-                        Type:this.addCurveArr[k].value,
-                        AlarmVariable: this.addCurveArr[k].AlarmVariable
+                        Type:this.addCurveArr[k].value
                     }
     
                     arr.push(value1)
@@ -1805,14 +1778,9 @@ export default {
                 return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
             }
             return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
-        },
-
-        selectVar(item){
-            this.selectVarDialog.open().then(value=>{
-                console.log("🚀 - this.selectVarDialog.open - value", value, item)
-                this.$set(item, 'AlarmVariable', value.Name)
-            })
         }
+      
+       
     }
     
 }
@@ -1921,17 +1889,128 @@ export default {
        top:1px;
     }
 }
+.tenPop_box{
+    &.blackBlueBg{
+        .el-table__body-wrapper{
+            background: #1A2544!important;
+        }
+        .el-table--border{
+            th{
+                border-right-color: transparent;
+            }
+        }
+        .el-table__row:nth-of-type(odd),
+        .el-table__row:nth-of-type(even){
+            background: #1A2544!important;
+
+            td{
+                background: #1A2544!important;
+                border-bottom-color: #445992!important;
+                border-left-color: transparent;
+                border-right-color: transparent;
+            }
+        }
+
+        .conterFool_middle{
+            .el-checkbox__input{
+                .el-checkbox__inner{
+                    background-color: #18254E!important;
+                    border-color: #445992!important;
+                }
+            }
+        }
+        .conterBottom_conter .el-checkbox__input.is-checked .el-checkbox__inner{
+            background-color: #18254E!important;
+            border-color: #445992!important;
+        }
+    }
+}
 </style>
 
 <style lang="scss" scoped>
-     
-
-
     .tenPop_box{
         width:1300px;
         height:885px;
         box-shadow: 2px 2px 8px 2px rgba(0,0,0,0.6);
         // background: red;
+
+        &.blackBlueBg{
+            .deletePop{
+                background: #2A3E76;
+                color: #fff;
+            }
+            .Popshow{
+                background-color: #222D50;
+            }
+            .CurveArrPop{
+                .middle{
+                    background: #233056;
+                    color: #fff;
+                }
+            }
+            .tenPop_conter{
+                background-color: #222D50;
+
+                .tenPop_conterBox{
+                    .tenPop_conterFool{
+                        background-color: #28355B;
+                        border-color: #445992;
+                        color: #fff;
+
+                        .conterFool_fool{
+                            .conterFool_btn{
+                                border-color: #fff;
+                                background-color: transparent;
+                                color: #fff;
+                            }
+                        }
+                        .conterFool_bottom{
+                            .bottom_jump,.bottom_end,.bottom_next,.bottom_last,.bottom_firest{
+                                border-color: #9AA3BE!important;
+                                color: #9AA3BE!important;
+                                background-color: transparent!important;
+                            }
+                            .bottom_text{
+                                color: #9AA3BE;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .referencePop{
+                .middle{
+                    color: #fff;
+                    background-color: #222D50;
+                }
+            }
+            .tenPop_conter{
+                .tenPop_conterBox{
+                    .tenPop_conterBottom{
+                        background: #28355B;
+                        border-color: #445992;
+
+
+                        .conterBottom_conter{
+                            background: #1A2544;
+
+                            .conter>div{
+                                background: #344C8F;
+                                border-right-color: #8B98B8;
+                                color: #FFF;
+                            }
+                            .conter_box{
+                                color: #8798C9;
+                                border-bottom-color: #445992;
+                            }
+                        }
+                    }
+                    .el-button{
+                        border-color: transparent;
+                    }
+                }
+            }
+        }
 
         .referencePop{
             position: absolute;
@@ -2439,7 +2518,7 @@ export default {
                     background: #fff;
 
                     .conter{
-                        width:calc(60px + 140px + 140px + 100px + 180px + 120px + 120px + 100px + 100px + 200px + 180px);
+                        width:calc(60px + 140px + 140px + 100px + 180px + 120px + 120px + 100px + 100px + 200px);
                         height:50px;
                         position: sticky;
                         top: 0;
@@ -2456,8 +2535,7 @@ export default {
                     .conter_7,
                     .conter_8,
                     .conter_9,
-                    .conter_10,
-                    .conter_11{
+                    .conter_10{
                         height:100%;
                         background: #DCF0F9;
                         border-right:1px solid #A7D0E2;
@@ -2506,13 +2584,10 @@ export default {
                     .conter_10{
                      width:180px;
                     }
-                    .conter_11{
-                     width:180px;
-                    }
                     
                     .conter_box{
                        float: left;
-                       width: calc(1260px + 180px);
+                       width:1260px;
                        height:50px;
                        border-bottom:1px solid #E4E4E4;
                     }
@@ -2527,8 +2602,7 @@ export default {
                     .conter_box_7,
                     .conter_box_8,
                     .conter_box_9,
-                    .conter_box_10,
-                    .conter_box_11{
+                    .conter_box_10{
                         height:100%;
                         float: left;
                         padding-left:5px;
@@ -2602,7 +2676,7 @@ export default {
                     .conter_box_5{
                      width:180px;
                      input{
-                         width:160px;
+                         width:165px;
                          height:30px;
                      }
                     }
@@ -2641,15 +2715,7 @@ export default {
                     .conter_box_10{
                      width:180px;
                       input{
-                         width:160px;
-                         height:30px;
-                     }
-                    }
-                    .conter_box_11{
-                     width:180px;
-                     padding-right: 10px;
-                      input{
-                         width:160px;
+                         width:175px;
                          height:30px;
                      }
                     }
@@ -2692,25 +2758,6 @@ export default {
 
         }
     }
-.input-group{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-
-    input{
-        flex: 1;
-        width: 100%!important;
-    }
-
-    img{
-        width: 30px;
-        height: 30px;
-        border: 1px solid #e0e0e0;
-        border-left-width: 0;
-        cursor: pointer;
-    }
-}
 .CurveArrPopcover{
     position: fixed;
     top: 0;

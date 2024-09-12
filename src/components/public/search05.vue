@@ -6,8 +6,8 @@
  * @LastEditTime: 2019-11-29 16:34:35
  -->
 <template>
-    <div class="search-container" :class="{colordiv:$store.state.color=='grey'}">
-        <div class="search-left">
+    <div class="search-container" :class="{colordiv:$store.state.color=='grey', blackBlueBg: $store.state.color === 'blackBlue'}" :style="{lineHeight: 40*1+'px',height: 60*1+'px'}">
+        <div class="search-left" :style="[{fontSize:16*1+'px'}]">
             <div class="search-item" v-for="(item, index) in searchList" :key="index">
                 <div
                     class="title"
@@ -17,12 +17,14 @@
 
                 <el-select
                     v-if="item.type === 'select'"
+                    :popper-append-to-body="false"
                     clearable
                     filterable
                     v-model="searchData[item.model]"
                     class="search-select"
                     :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                     @change="change(item, $event)"
+                    @focus="sx()"
                 >
                     <!-- <el-option label="全部" value="全部"></el-option> -->
                     <el-option
@@ -33,18 +35,25 @@
                     ></el-option>
                 </el-select>
                 <el-date-picker
+                    :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                    :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                     v-if="item.type === 'time'"
                     v-model="searchData[item.model]"
                     type="datetime"
+                    @focus="sx()"
                     :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                     default-time="12:00:00"
                      value-format="yyyy-MM-dd HH:mm:ss"
                 ></el-date-picker>
                 <!-- <span>-</span> -->
                 <el-date-picker
+                    width="110"
+                    :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                    :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                     v-if="item.type === 'datetimerange'"
                     v-model="searchData[item.model]"
                     type="datetimerange"
+                    @focus="sx()"
                     range-separator="-"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
@@ -62,11 +71,45 @@
                 ></el-input>
             </div>
             <div class="btn pointer importtant" @click="search" :id="cxid" 
+                :style="[{fontSize:16*1+'px'},
+                    {height: 40*1+'px'},
+                    {width: 100*1+'px'},
+                    {marginLeft: 10*1+'px'},
+                    {marginTop: 10*1+'px'},
+                    {right: 340*1+'px'}
+                ]"
             >{{lang.AlarmRecord_Time_Select}}</div>
             <div class="btn pointer export" @click="confirm" :id="qrid" 
+                :style="[
+                    {fontSize:16*1+'px'},
+                    {height: 40*1+'px'},
+                    {width: 100*1+'px'},
+                    {marginLeft: 10*1+'px'},
+                    {marginTop: 10*1+'px'},
+                    {right: 230*1+'px'}
+                ]"
             >{{lang.AlarmRecord_Time_Sure}}</div>
             <div class="allconfim" @click="allconfirm" :id="allqrid" 
+                :style="[
+                    {fontSize:16*1+'px'},
+                    {height: 40*1+'px'},
+                    {width: 100*1+'px'},
+                    {marginLeft: 10*1+'px'},
+                    {marginTop: 10*1+'px'},
+                    {lineHeight: 40*1+'px'},
+                    {right: 120*1+'px'}
+                ]"
             >{{lang.AlarmRecord_Time_AllSure}}</div>
+            <div class="btn pointer export" @click="exportFn"  
+                :style="[
+                    {fontSize:16*1+'px'},
+                    {height: 40*1+'px'},
+                    {width: 100*1+'px'},
+                    {marginLeft: 10*1+'px'},
+                    {marginTop: 10*1+'px'},
+                    {right: 10*1+'px'},
+                ]"
+            >导出</div>
         </div>
         
         <!-- <div class="fr">
@@ -84,11 +127,13 @@ export default {
             jurisdiction:[],
             buttonarr:[],
             cxid:"",
+            zoom1:1,
             qrid:'',
             allqrid:'',
             cxshow:true,
             qrshow:true,
             allqrshow:true,
+            zoom:1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
@@ -150,6 +195,21 @@ export default {
         },
     },
     mounted(){
+        this.zoom = 1
+         this.zoom1 = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
+        setTimeout(()=>{
+            $(".search-item").css({marginLeft: 10*this.zoom, marginRight: 0, height: 40* this.zoom})
+            $(".el-input__icon").css({lineHeight: 40* this.zoom+'px'})
+            $(".search-select").css({width: 120 * this.zoom, height: 40* this.zoom})
+            $(".el-date-editor").css({width: 210 * this.zoom, height: 40* this.zoom})
+            $(".search-container>.search-container").css({paddingRight: 330 * this.zoom})
+            $(".el-input--suffix").css({fontSize: 16 * this.zoom, height: 40* this.zoom})
+            $(".el-select-dropdown__item").css({fontSize: 14 * this.zoom, height: 40* this.zoom})
+            // if(window.screen.width <= 1280 &&  localStorage.getItem('currentLang') === 'Main_Language_EN'){
+            //     $(".search-container .title").css({maxWidth:'75px', lineHeight: 1})
+            // }
+        })
+
     this.jurisdiction = this.$store.state.btnPowerData
      this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
      this.buttonarr.forEach((item)=>{
@@ -197,6 +257,33 @@ export default {
               })
     },
     methods: {
+        sx(){
+            let that = this
+            setTimeout(()=>{
+                for(let i=0;i<$('.el-picker-panel').length;i++){
+                    $('.el-picker-panel')[i].style.zoom = that.zoom1
+                }
+                for(let i=0;i<$('.el-select-dropdown').length;i++){
+                    $('.el-select-dropdown')[i].style.zoom = that.zoom1
+                }
+            })
+              
+        },
+        getZoom() {
+            var $this = this
+            this.$nextTick(() => {
+                let dates = [...document.querySelectorAll('.el-picker-panel.el-date-picker')]
+                dates.forEach(item => {
+                    item.style.transformOrigin =  `-210% -43%`
+                    item.style.transform = `scale(${$this.zoom})`
+                })
+                let drops = [...document.querySelectorAll('.el-select-dropdown.el-popper')]
+                drops.forEach(item => {  
+                    item.style.zoom = $this.zoom
+                })
+            })
+            
+        },
         findPathByLeafId(id,node,path){
         if(!path){
              path = []
@@ -244,6 +331,9 @@ export default {
           allconfirm(){
         this.$emit('allconfirm',this.allqrshow);
         },
+        exportFn(){
+            this.$emit('exportFn');
+        },
          confirm(){
         this.$emit('confirm',this.qrshow);
         },
@@ -257,7 +347,7 @@ export default {
             ) {
                 this.$emit('change', e,item);
             }
-        }
+        },
     }
 };
 </script>
@@ -273,11 +363,23 @@ export default {
     justify-content: space-between;
     background-color: #ddd;
     // width: 1690px;
+    padding-right:330px ;
     position: relative;
+
+    &.blackBlueBg{
+        .export{
+            background-color: #46BE05!important;
+        }
+    }
 }
 span {
     position: absolute;
     left: 315px;
+}
+.importtant {
+    right: 230px;
+    position: absolute;
+    // bottom: 10px;
 }
 .search-left {
     @extend %flex;
@@ -291,10 +393,6 @@ span {
             // margin-right: 10px;
             position: relative;
             left: -4px;
-        }
-
-        ::v-deep .el-input__inner{
-            height: 40px;
         }
     }
     .btn {
@@ -327,6 +425,9 @@ span {
     color: #fda100;
 }
 .export {
+    position: absolute;
+    right: 120px;
+    // bottom: 10px;
     background-color:#79d088 !important;
 }
 .fr {
@@ -345,12 +446,13 @@ span {
     line-height: 40px;
     text-align: center;
     background-color:#ff6600;
-    font-weight: 600;
-    border-radius: 4px;
-    color: #fff;
-    margin-top: 10px;
-    margin-left: 10px;
-    cursor: pointer;  
+     font-weight: 600;
+      border-radius: 4px;
+      color: #fff;
+      position: absolute;
+    //   bottom: 10px;
+      right: 10px;;
+          cursor: pointer;
 }
 .el-input__icon{
     line-height: unset;

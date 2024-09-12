@@ -28,8 +28,8 @@
       </div>
 
         <!-- 弹窗 -->
-        <div class="Pop10" v-if="isShow">
-            <div  style="position:absolute;left:0;top:0;right:0;bottom:0;z-index:99999;"></div>
+        <div class="Pop10">
+            <div v-if="isShow" style="position:absolute;left:0;top:0;right:0;bottom:0;z-index:99999;"></div>
             <div v-drag v-for="(item,index) in PopList" :key="index" :class="'popbox' +item.ElementName" 
               class="popbox" :style="'width:' + item.viewWidth + 'px; height:' 
               + item.viewHeight + 'px; position:absolute; left:' + item.viewpositionX + 'px; top:'

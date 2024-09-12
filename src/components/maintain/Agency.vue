@@ -6,14 +6,14 @@
  * @LastEditTime: 2020-08-06 17:46:58
  -->
 <template>
-    <div class="public-table bygl" @click="changeselect = false" >
+    <div class="public-table bygl" @click="changeselect = false" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
           			<div class="loadcover" element-loading-spinner="el-icon-loading"
             element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;"></div>
-        <div class="look" ref="kongtiao5" v-if="offdecive">
+        <div class="look" ref="kongtiao5" v-if="offdecive" :style="{zoom}">
             <div
                 class="looktop"
                 @mousedown="mouseDownHandleelse5($event)"
@@ -58,9 +58,10 @@
                             highlight-current-row
                             style="width: 100%"
                             @row-click="handleRowChange1"
-                           :header-cell-style="[{background:(($store.state.color=='grey')?'#D9DBDE':'#E1EDFA')},
-                           {color:(($store.state.color=='grey')?'#000':'#769DE7')}, 
-                           {'border-left':'1px solid #cccccc',
+                           :header-cell-style="[{
+                            background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+                            color:($store.state.color=='grey')?'#000':'#fff',
+                            'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
                             height:50*zoom+'px',
                             fontSize: 14*zoom+'px',
                            padding:'0'}]"
@@ -114,6 +115,8 @@
             <span class="sp1 title" >{{lang.MaintenanceManage_ThisTimeStartTime1}}</span>
 
             <el-date-picker
+                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                 v-model="value1"
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -122,6 +125,8 @@
             ></el-date-picker>
             <span class="demonstration" :style="{fontSize: 16*1+'px'}">-</span>
             <el-date-picker
+                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                 v-model="value2"
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -144,9 +149,9 @@
                 border
                 highlight-current-row
                 :header-cell-style="{
-                    background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',
+                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
                     color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left':'1px solid #cccccc',
+                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
                     height:50*zoom+'px',
                     fontSize: 14*zoom+'px',
                     padding:'0'}"
@@ -249,7 +254,7 @@
                 </el-table-column>
             </el-table>
         </div>
-        <div class="pages-container">
+        <div class="pages-container" :style="{zoom}">
             <div class="page">
                 <div class="pageword">
                     {{lang.DataGrid_Reaction_HT_ATotalOf}}
@@ -273,7 +278,7 @@
             </div>
         </div>
         <div class="sestion sestion1" ref="kongtiao1" v-if="change11" :style="{width: 800*zoom+'px',height: 800*zoom+'px'}"> 
-            <div class="sestionheader">
+            <div class="sestionheader" :style="{zoom}">
                 <div
                     class="sestionheader1"
                     @mousedown="mouseDownHandleelse1($event)"
@@ -493,7 +498,7 @@
                 <div class="cancel" @click="cancel" v-if="sestion == 1 || sestion == 3">{{lang.PopupCommon_Cancel}}</div>
             </div>
         </div>
-        <div class="sestion sestion23" ref="kongtiao1" v-show="mesad2">
+        <div class="sestion sestion23" ref="kongtiao1" v-show="mesad2" :style="{zoom}">
             <div class="sestionheader" :class="{colordiv:$store.state.color=='grey'}" >
                 <div
                     class="sestionheader1"
@@ -723,7 +728,7 @@
                 </div>
             </div>
         </div>
-        <div class="boxsad" v-show="daibang">
+        <div class="boxsad" v-show="daibang" :style="{zoom}">
             <div
                 class="tqp"
              
@@ -749,13 +754,13 @@
                 <!-- <img :src="gth" alt /> -->
             </div>
         </div>
-        <div class="cover1" v-if="change"></div>
-        <div class="cover3" v-if="cancel1"></div>
-        <div class="cover2" v-if="tipchange"></div>
-        <div class="cover4" v-if="offdecive"></div>
-        <div class="cover5" v-if="change11"></div>
-        <div class="cover6" v-if="mesad2"></div>
-        <div class="cover7" v-if="daibang"></div>
+        <div class="cover1" v-if="change" :style="{zoom}"></div>
+        <div class="cover3" v-if="cancel1" :style="{zoom}"></div>
+        <div class="cover2" v-if="tipchange" :style="{zoom}"></div>
+        <div class="cover4" v-if="offdecive" :style="{zoom}"></div>
+        <div class="cover5" v-if="change11" :style="{zoom}"></div>
+        <div class="cover6" v-if="mesad2" :style="{zoom}"></div>
+        <div class="cover7" v-if="daibang" :style="{zoom}"></div>
     </div>
 </template>
 
@@ -2436,8 +2441,14 @@ this.$store.commit('move')
                 .then(res => {
                     console.log(res);
                     if (res.data.code == 0) {
+                        res.data.data.DataList = res.data.data.DataList.filter(function(
+                            item
+                        ) {
+                            return item.Status < 4;
+                        });
+                        this.tableData1 = res.data.data.DataList;
                               if(res.data.data.length==0){
-                         this.tableData1 = [];
+                         
                             this.PageData ={
                             PageSize: 50,
                             TotalCount: 0,
@@ -2447,12 +2458,6 @@ this.$store.commit('move')
                             NextEnabled: false
                         }
                               }else{
-                                   res.data.data.DataList = res.data.data.DataList.filter(function(
-                            item
-                        ) {
-                            return item.Status < 4;
-                        });
-                        this.tableData1 = res.data.data.DataList;
    this.PageData = res.data.data.ParameterList;
                               }
                         let i = 0;
@@ -2857,7 +2862,6 @@ this.$store.commit('move')
     }
 };
 </script>
-
 <style lang='scss' scoped>
 .margin1 {
     // height: 36px;
@@ -3202,6 +3206,114 @@ this.$store.commit('move')
     }
     .page-container {
         height: 60px;
+    }
+
+    &.blackBlueBg{
+        .el-tree{
+            background: #1D2846;
+            color: #C6CAD8;
+        }
+
+        .seleword,.seleword2{
+            background: #1D2846;
+            border: 1px solid #445992;
+            color: #C6CAD8;
+        }
+        .search-container{
+            background: #0B1530;
+            border-color: #38415A;
+            color: #E4E4E4;
+            .selectword{
+                background: #1D2846;
+                border: 1px solid #445992;
+            }
+            .add{
+                background-color: transparent;
+                border: 1px solid #46BE05;
+                color: #46BE05;
+            }
+            .move{
+                background-color: #4F5871;
+                border: 1px solid #4F5871;
+                color: #fff;
+            }
+        }
+        .table-container{
+            border-color: transparent;
+        }
+        .img{
+            border-color: #5C6A95;
+            background-color: transparent;
+        }
+
+        .boxsad{
+            background: #233056;
+            color: #fff;
+        }
+
+        .look{
+            background: #233056;
+
+            .lookselect{
+                background: #28355B;
+                border-color: #445992;
+                color: #fff;
+
+                .table{
+                    border-color: #2A3058;
+                }
+                .el-table--border th.gutter:last-of-type{
+                    background-color: #344c8f;
+                }
+            }
+        }
+
+        select{
+            background: #1D2846!important;
+            border-color: #445992;
+
+            &:disabled{
+                background: #35446D!important;
+                border-color: #445992;
+            }
+
+            &:focus{
+                border-color: #B2C0E4
+            }
+        }
+        .showtext{
+            color: #fff;
+        }
+        .el-checkbok{
+            color: #fff;
+
+            &:disabled{
+                color: #6D789A;
+            }
+        }
+
+        .sestion{
+            border-color: transparent;
+
+            .sestioncontain{
+                background: #233056;
+            }
+            span{
+                color:#fff;
+            }
+            .input1{
+                color: #C6CAD8;
+                background: #35446D;
+                border-color: #445992;
+            }
+            .hometop-title{
+                background-color: transparent;
+            }
+
+            .line{
+                background-color: #445992;
+            }
+        }
     }
 }
 .table-container .img {

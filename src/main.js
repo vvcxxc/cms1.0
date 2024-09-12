@@ -30,7 +30,6 @@ import store from './store';
 import vueXlsxTable from 'vue-xlsx-table'
 import './common/font.css'
 import common from './assets/js/common'
-
 import Print from './plugins/print'
 
 import '@/api/index'; // 导入API插件
@@ -38,10 +37,10 @@ import $ from 'jquery'
 
 import "@/assets/sass/common.scss";
 import "@/assets/sass/reset.scss";
-import "@/assets/sass/rewrite.scss"
+import "@/assets/sass/reset.scss";
+import "@/assets/sass/black_blue.scss";
 import moment from 'moment'//导入文件
 import VideoPlayer from 'vue-video-player'
-import * as filters from './filters' // global filters
 // import 'videojs-flash';
 // import 'videojs-contrib-hls'
 require('video.js/dist/video-js.css')
@@ -51,10 +50,6 @@ import domtoimage from 'dom-to-image';
 
 Vue.use(Print) // 注册
 Vue.use(common)
-// register global utility filters
-Object.keys(filters).forEach(key => {
-    Vue.filter(key, filters[key])
-})
 // Vue.use(hls)
 Vue.prototype.$moment = moment;//赋值使用
 import JsEncrypt from 'jsencrypt'
@@ -173,6 +168,8 @@ axios.interceptors.request.use(function(config){
         }
     }
    }
+   console.log("----------------当前主题色",localStorage.getItem('theme'))
+   localStorage.getItem('theme') ? store.commit('changecolor', localStorage.getItem('theme')) : null;
     config.headers.common['argLanguage'] = localStorage.getItem('currentLang') ? localStorage.getItem('currentLang') : 'Main_Language_ZH'
 //    if (config.method === 'post') {
 //         config.params = {

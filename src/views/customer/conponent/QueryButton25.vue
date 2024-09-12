@@ -35,7 +35,7 @@
 
   </div>
     <!-- 权限弹窗 -->
-    <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+    <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
         <div v-if="commerPopShow1" class="commerPop_outPop">
         <div class="commerPop_outHead">
             <i class="warning el-icon-warning"></i>
@@ -46,7 +46,7 @@
             <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
         </div>
         </div>
-    </div> -->
+    </div>
 
 
   </div>
@@ -55,7 +55,6 @@
 <script>
 
 import {cron} from 'vue-cron'
-import Utils from '../../../assets/js/util.js'
 export default {
   data() {
     return {
@@ -88,12 +87,8 @@ export default {
     if(this.data){
       this.init()
     }
-    Utils.$on('demo',()=>{
-      // this.searchFun()
-    })
   },
   methods: {
-
     init(){
         //数据筛选
         this.dataValue = []
@@ -145,8 +140,7 @@ export default {
 
     //确认
     Jurisdiction(){
-      // this.commerPopShow1 = false
-      this.$emit('shownotip')
+      this.commerPopShow1 = false
     },
     //权限配置请求接口
      jurisdictionShow(item){
@@ -207,8 +201,7 @@ export default {
               if(EventType.length){
                self.jurisdictionShow(item).then(val => { 
                   if(self.CanExcuteShow){
-                    // self.commerPopShow1 = true
-                    self.$emit('showtip',self.lang.NoOperationAuthority)
+                    self.commerPopShow1 = true
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -222,8 +215,7 @@ export default {
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                          // self.commerPopShow1 = true
-                          self.$emit('showtip',self.lang.NoOperationAuthority)
+                          self.commerPopShow1 = true
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -259,8 +251,7 @@ export default {
               if(EventType.length){
                 self.jurisdictionShow(item).then(val => { 
                      if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                     }else{
                       for(var j=0;j<EventType.length;j++){
@@ -276,8 +267,7 @@ export default {
                if(EventType1.length){
                  self.jurisdictionShow(item).then(val => { 
                        if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                       }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -305,8 +295,7 @@ export default {
             if(EventType.length){
               this.jurisdictionShow(item).then(val => { 
                    if(this.CanExcuteShow){
-                          // this.commerPopShow1 = true
-                          this.$emit('showtip',this.lang.NoOperationAuthority)
+                          this.commerPopShow1 = true
                           return
                     }else{
                       for(var j=0;j<EventType.length;j++){
@@ -392,12 +381,10 @@ export default {
      },
      
      searchData(item,it,i1){
-       
-      console.log("12321321312312",i1)
+      console.log("sasda",i1)
          if(this.CanExcuteShow){
             // if(it !=1){
-              // this.commerPopShow1 = true
-              this.$emit('showtip',this.lang.NoOperationAuthority)
+              this.commerPopShow1 = true
             // }
           }else{
 
@@ -406,7 +393,7 @@ export default {
                 var Numbervalue = this.$parent.$refs.NumberScreen30.TimeValueFun()
                 this.$emit('search',item,Numbervalue,true)
               })
-              
+          
             // }
             //图表
             this.$axios({                      //控件名请求接口
@@ -415,7 +402,6 @@ export default {
               viewName:this.PageName
             }) .then(res => {
               console.log('按钮查询')
-              
                       if(res.data.data.length){
                         this.Controls2 = {}
                         let QueryIndexArr = []
@@ -424,7 +410,6 @@ export default {
                               this.ChartsTimingArr(res.data.data[i])
                           }
                         }
-                        
                               this.$parent.queryassignmentFun(item.class,this.Controls2)
                       }
             }) 
@@ -437,11 +422,10 @@ export default {
         this.jurisdictionShow(item).then(val => { 
           if(this.CanExcuteShow){
             if(it !=1){
-              // this.commerPopShow1 = true
-              this.$emit('showtip',this.lang.NoOperationAuthority)
+              this.commerPopShow1 = true
             }
           }else{
-            console.log("sadsadsadsadsadsadsa")
+            
             //自定义报表
             var leng = this.dataValue.length
                 this.$parent.scriptData(this.Typearr,'查询按钮',item,'','',it)

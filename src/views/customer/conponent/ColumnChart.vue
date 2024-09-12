@@ -14,7 +14,7 @@
         >23</div>
         
          <!-- 权限弹窗 -->
-        <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+        <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
                 <div v-if="commerPopShow1" class="commerPop_outPop">
                 <div class="commerPop_outHead">
                     <i class="warning el-icon-warning"></i>
@@ -25,7 +25,7 @@
                     <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
                 </div>
                 </div>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -41,9 +41,7 @@ export default {
             myChart:'',
             aa:true,
             commerPopShow1:false,
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
-            IsOrigin:'',
-            IsDuidie:''
+            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         }
     },
     props:["data",'valueData1','drawLineShow','AllData','item','dataId'],
@@ -85,22 +83,9 @@ export default {
       }
     },
     methods:{
-    sum(arr,i){
-	   let num = 0
-	   for(let a=0;a<arr.length;a++){
-		   if(arr[a].data[i]){
-			   if(Number(arr[a].data[i])!==NaN){
-				   num+=Number(arr[a].data[i])
-			   }
-			   
-		   }
-	   }
-	   return num
-       },
          //确认
         Jurisdiction(){
-            //  this.commerPopShow1 = false
-            this.$emit('shownotip')
+             this.commerPopShow1 = false
         },
            //  计算自定义区间
              judgeDivisor(m, n){
@@ -222,8 +207,7 @@ if(type=='min'){
               if(EventType.length){
                self.jurisdictionShow(item).then(val => { 
                   if(self.CanExcuteShow){
-                    // self.commerPopShow1 = true
-                    self.$emit('showtip',self.lang.NoOperationAuthority)
+                    self.commerPopShow1 = true
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -237,8 +221,7 @@ if(type=='min'){
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                        //   self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                          self.commerPopShow1 = true
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -271,8 +254,7 @@ if(type=='min'){
               if(EventType.length){
                 self.jurisdictionShow(item).then(val => { 
                      if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                     }else{
                       for(var j=0;j<EventType.length;j++){
@@ -286,8 +268,7 @@ if(type=='min'){
                if(EventType1.length){
                  self.jurisdictionShow(item).then(val => { 
                        if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                       }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -313,8 +294,7 @@ if(type=='min'){
            if(EventType.length){
              this.jurisdictionShow(item).then(val => { 
                   if(this.CanExcuteShow){
-                        //  this.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                         this.commerPopShow1 = true
                          return
                    }else{
                      for(var j=0;j<EventType.length;j++){
@@ -351,7 +331,7 @@ if(type=='min'){
            this.LegendData = []
            this.TooColorArr = []
            this.variableArr = []
-           this.IsTime = this.optionData.IsTime
+           this.IsTime = this.optionData.IsTime == true?null:'1'
            for(var j=0;j<this.optionData.Variables.length;j++){
                this.LegendData.push(this.optionData.Variables[j].DimensionName)
                this.TooColorArr.push(this.optionData.Variables[j].Color.HtmlColor)
@@ -418,8 +398,6 @@ if(type=='min'){
             this.YFontFamily =  this.optionData.AxisChartYAxis.FontFamily
             this.ShowSeparator = this.optionData.AxisChartYAxis.ShowSeparator
             this.IsOrigin =this.optionData.IsOrigin
-            this.IsDuidie = this.optionData.IsDuidie
-            let chartstack = !this.IsTime?this.IsOrigin?1:1:this.IsDuidie?1:''
              //折线图数据
             this.seriesDatas = this.optionData.Datas
             this.Xdata = []
@@ -484,7 +462,7 @@ if(type=='min'){
                    data:data11,
                    barMaxWidth: 25.0,
                    showBackground:this.optionData.ShowBackground,
-                   stack:chartstack,
+                   stack:this.IsTime,
                    type: this.VariablesData[v].DataType.toLowerCase(),
                     itemStyle: itemcolortry,
                     lineStyle: {
@@ -700,74 +678,35 @@ if(type=='min'){
                          }
 
                     }
-                    console.log("this.valueData",this.valueData)
                      //动态辅助线
-                    if (this.valueData.hasOwnProperty("MarkLine")) {
-                        for (var s = 0; s < this.valueData.MarkLine.length; s++) {
-                            if (Ddata.series[0].markLine.length != 0 && this.valueData.MarkLine[s].yAxis != undefined) {
-
-                                Ddata.series[0].markLine.data[s].yAxis = this.valueData.MarkLine[s].yAxis
+                    if(this.valueData.YDataCollection != undefined){
+                        var variableData = Ddata.series[0].markLine.data
+                        if(variableData){
+                            for(let q=0;q<variableData.length;q++){
+                                if(variableData[q].Type == "FromVariable"){
+                                    var index11 = this.variableArr.indexOf(variableData[q].TargetVariableName)
+                                    var vbArr = Ddata.series[index11].data
+                                    var vBvalue = ''
+                                    if(variableData[q].ValueMethod == 'Max'){
+                                        vBvalue = Math.max.apply(Math,vbArr);
+                                    }else if(variableData[q].ValueMethod == 'Min'){
+                                         vBvalue = Math.min.apply(Math,vbArr);
+                                    }else if(variableData[q].ValueMethod == 'Avg'){
+                                        var sum=0;
+                                        for(var i = 0; i < vbArr.length; i++){
+                                            sum += Number(vbArr[i]);
+                                        }
+                                        vBvalue  = sum / vbArr.length;
+                                    }
+                                    Ddata.series[0].markLine.data[q].yAxis = vBvalue
+                                }
                             }
                         }
                     }
-                    // if(this.valueData.YDataCollection != undefined){
-                    //     var variableData = Ddata.series[0].markLine.data
-                    //     if(variableData){
-                    //         for(let q=0;q<variableData.length;q++){
-                    //             if(variableData[q].Type == "FromVariable"){
-                    //                 var index11 = this.variableArr.indexOf(variableData[q].TargetVariableName)
-                    //                 var vbArr = Ddata.series[index11].data
-                    //                 var vBvalue = ''
-                    //                 if(variableData[q].ValueMethod == 'Max'){
-                    //                     vBvalue = Math.max.apply(Math,vbArr);
-                    //                 }else if(variableData[q].ValueMethod == 'Min'){
-                    //                      vBvalue = Math.min.apply(Math,vbArr);
-                    //                 }else if(variableData[q].ValueMethod == 'Avg'){
-                    //                     var sum=0;
-                    //                     for(var i = 0; i < vbArr.length; i++){
-                    //                         sum += Number(vbArr[i]);
-                    //                     }
-                    //                     vBvalue  = sum / vbArr.length;
-                    //                 }
-                    //                 Ddata.series[0].markLine.data[q].yAxis = vBvalue
-                    //             }
-                    //         }
-                    //     }
-                    // }
-                     if (Ddata.IsOrigin) {
-                        if (Ddata.series[0].data.length == 1) {
-                            Ddata.series.forEach(item => {
-                                item.stack = 1;
-                            });
-                        } else {
-                            Ddata.series.forEach(item => {
-                                item.stack = '';
-                            });
-                        }
-                    }
                     let seData1  = []
-                    let stackarr = []
-			        let seData = []
-			        Ddata.series.forEach((item)=>{
+			Ddata.series.forEach((item)=>{
 				seData1 = [...seData1,...item.data]
-             
 			})
-            this.valueData.YDataCollection.forEach((item)=>{
-	         let value = {
-			    data:Object.values(item.YData),
-				name:item.name
-			}
-            seData.push(value)
-            })
-            if(seData.length>0){
-          	  for(let i=0;i<seData[0].data.length;i++){
-          	  	   stackarr.push(this.sum(seData,i))
-          	  	  }
-          }
-          
-          if(Ddata.IsDuidie){
-				seData1 = [...stackarr,...seData1]
-			}
             if(seData1.length>0){
                let YAxisMax1 =Ddata.yAxis[0].YAxisMax1
                let YAxisMin1 = Ddata.yAxis[0].YAxisMin1
@@ -876,8 +815,6 @@ if(type=='min'){
                 this.myChart.resize()
                 var aa =  {
                         color:this.TooColorArr,
-                        IsDuidie:this.IsDuidie,
-                        IsOrigin:this.IsOrigin,
                         animation: false,
                         tooltip:{
                             trigger: 'axis',

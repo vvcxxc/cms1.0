@@ -9,15 +9,42 @@ export default {
     props: ['ChartDataItem', 'ChartDataSource', 'ChartCalResult'],
     data() {
         return {
-            targetPage: 1
+            targetPage: 1,
+            option13: {},
+            Chart4: null
         };
     },
     created() {
         this.targetPage = this.pageData.PageIndex;
     },
+    computed:{
+        theme(){
+            return this.$store.state.color
+        }
+    },  
+    watch: {
+        theme(val){
+            if(val === 'blackBlue'){
+                this.option13.color = ['#5470C6']
+                this.option13.yAxis[0].splitLine.lineStyle.color = '#4C5777'
+                this.option13.yAxis[0].axisLabel.color = '#9AA3BE'
+                this.option13.xAxis[0].splitLine.lineStyle.color = '#4C5777'
+                this.option13.xAxis[0].axisLabel.color = '#9AA3BE'
+                this.option13.yAxis[0].nameTextStyle.color = '#9AA3BE'
+            }else{
+                this.option13.color = ['#E60012']
+                this.option13.yAxis[0].splitLine.lineStyle.color = '#ccc'
+                this.option13.yAxis[0].axisLabel.color = '#333'
+                this.option13.xAxis[0].splitLine.lineStyle.color = '#ccc'
+                this.option13.xAxis[0].axisLabel.color = '#333'
+                this.option13.yAxis[0].nameTextStyle.color = '#333'
+            }
+            this.Chart4.setOption(this.option13);
+        }
+    },
     methods: {
         intheadchart4() {
-            let Chart4 = this.$echarts.init(
+            this.Chart4 = this.$echarts.init(
                 document.getElementById('myChart3')
             );
             let xdata1_1 = new Array();
@@ -45,13 +72,22 @@ export default {
             if (parseFloat(USL) > maxyy) {
                 maxyy = parseFloat(USL);
             }
-            let option13 = {
+            this.option13 = {
                 calculable: true,
+                color: this.$store.state.color === 'blackBlue' ? ['#5470C6'] : ['#E60012'],
                 xAxis: [
                     {
                         type: 'category',
                         boundaryGap: false,
-                        data: xdata1_1
+                        data: xdata1_1,
+                        splitLine:{
+                            lineStyle: {
+                                color: this.$store.state.color === 'blackBlue' ? '#4C5777' : '#ccc'
+                            }
+                        },
+                        axisLabel: {
+                            color: this.$store.state.color === 'blackBlue' ? '#9AA3BE' : '#333',
+                        },
                     }
                 ],
                 yAxis: [
@@ -59,19 +95,25 @@ export default {
                     {
                         type: 'value',
                          "axisTick":{       //y轴刻度线
-          "show":true
-        },
-       "axisLine":{       //y轴
-          "show":true
-
-        },
+                            "show":true
+                        },
+                        "axisLine":{       //y轴
+                            "show":true
+                        },
+                        splitLine:{
+                            lineStyle: {
+                                color: this.$store.state.color === 'blackBlue' ? '#4C5777' : '#ccc'
+                            }
+                        },
                         axisLabel: {
+                            color: this.$store.state.color === 'blackBlue' ? '#9AA3BE' : '#333',
                             formatter: '{value}'
                         },
                         name: this.$t('CpkMsg.CpkSampleValue'),
                         nameTextStyle: {
-                                fontSize: 16,
-                            fontFamily: 'SiYuanHei'
+                            fontSize: 16,
+                            fontFamily: 'SiYuanHei',
+                            color: this.$store.state.color === 'blackBlue' ? '#9AA3BE' : '#333',
                         },
                            min: minyy,
                            max: maxyy
@@ -104,7 +146,7 @@ export default {
                     }
                 ]
             };
-            Chart4.setOption(option13);
+            this.Chart4.setOption(this.option13);
         }
     },
     mounted() {

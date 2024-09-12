@@ -6,7 +6,7 @@
  * @LastEditTime: 2021-04-09 15:25:36
  -->
 <!-- 90vh 78px-->
-<!-- 版本号   1.3.6.4-->
+<!-- 版本号   1.3.5.19-->
 <template>
     <div
         @scroll="scroll()"
@@ -83,137 +83,104 @@
 </div>
 
 </div> -->
-      <div class="tip" v-show="tipchange" :style="{zoom: zoomValue}">
-            <div
-                class="tiphead"
-                style="position:absolute;width: 380px;height: 40px;"
-            ></div>
-            <div class="tiptop">
-                <img :src="gth" alt />
-                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
-            </div>
-            <div class="tipcontanin">
-                <div class="tipword">{{tipword}}</div>
-                <div class="tipdetermine" @click="shownotip" >{{lang.PopupCommon_Sure}}</div>
-            </div>
-        </div>
-         <div class="cover1111" v-if="tipchange" @mouseup.stop="upFun()"></div>
-         <div v-loading="true" class="loadbox"   v-if="this.$store.state.isShow" @mouseup.stop="upFun()"> </div>
         <div class="scalediv1">
-            <div class="big_box report"  >
+            <div v-loading="this.$store.state.isShow" class="big_box report">
                 <LineVue1
                     :dataId="dataId"
                     :dae="data"
                     :key="1 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></LineVue1>
                 <RectangleVue2
                     :dataId="dataId"
                     :dae="data"
                     :key="2 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></RectangleVue2>
                 <EllipseVue3
                     :dataId="dataId"
                     :dae="data"
                     :key="3 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></EllipseVue3>
                 <StaticImage4
                     :dataId="dataId"
                     :name="name"
                     :dae="data"
                     :key="4 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></StaticImage4>
                 <StaticTextBlock5
                     :dataId="dataId"
                     :dae="data"
                     :key="5 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></StaticTextBlock5>
                 <CornerButton6
                     ref="CornerButton6"
                     :dataId="dataId"
                     :dae="data"
                     :key="6 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></CornerButton6>
                 <PressButton7
                     ref="PressButton7"
                     :dataId="dataId"
                     :dae="data"
                     :key="7 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></PressButton7>
                 <Switch8
                     ref="Switch8a"
                     :dataId="dataId"
                     :dae="data"
                     :key="8 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></Switch8>
                 <TabModuleButton9
                     :dataId="dataId"
                     class="TabModuleVButton"
                     :dae="data"
                     :key="9 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></TabModuleButton9>
                 <PopupButton10
                     :dataId="dataId"
                     :ViewName="name"
                     :dae="data"
                     :key="10 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></PopupButton10>
                 <TextBox11
                     :dataId="dataId"
                     :dae="data"
                     :key="11 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></TextBox11>
                 <DataTextBlock12
                     ref="DataTextBlock12"
                     :dataId="dataId"
                     :dae="data"
                     :key="12 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></DataTextBlock12>
                 <RWTextBox13
                     ref="RWTextBox13"
                     :dataId="dataId"
                     :dae="data"
                     :key="13 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></RWTextBox13>
                 <Alarm14
                     :dataId="dataId"
                     ref="Alarm14"
                     :dae="data"
                     :key="14 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></Alarm14>
                 <EllipseLamp15
                     ref="EllipseLamp"
                     :dataId="dataId"
                     :dae="data"
                     :key="15 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></EllipseLamp15>
                 <CommonLamp16
                     ref="CommonLamp"
                     :dataId="dataId"
                     :dae="data"
                     :key="16 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></CommonLamp16>
                 <DynamicText17
                     ref="dynamicyext17"
                     :dataId="dataId"
                     :dae="data"
                     :key="17 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></DynamicText17>
                 <Image18
                     ref="Dimage"
@@ -221,7 +188,6 @@
                     :name="name"
                     :dae="data"
                     :key="18 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></Image18>
                 <PieChart20
                     :dataId="dataId"
@@ -230,7 +196,6 @@
                     :contentName="contentName"
                     :chartdata="contentData"
                     :key="20 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></PieChart20>
                 <DashBoardChart21
                     :type="type"
@@ -240,7 +205,6 @@
                     :dae="data"
                     :chartdata="contentData"
                     :key="21 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></DashBoardChart21>
                 <LineChart22
                     :dataId="dataId"
@@ -249,7 +213,6 @@
                     :contentName="contentName"
                     :chartdata="contentData"
                     :key="22 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></LineChart22>
                 <ColumnChart23
                     :dataId="dataId"
@@ -258,7 +221,6 @@
                     :contentName="contentName"
                     :chartdata="contentData"
                     :key="23 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></ColumnChart23>
                 <PolylineColumnChart24
                     :dataId="dataId"
@@ -267,7 +229,6 @@
                     :dae="data"
                     :chartdata="contentData"
                     :key="24 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></PolylineColumnChart24>
                 <!-- 筛选控件 -->
                 <querybutton25
@@ -277,49 +238,42 @@
                     :PageName="name"
                     @search="search"
                     :key="25 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></querybutton25>
                 <outputbutton26
                     :dataId="dataId"
                     :dae="data"
                     @exportdata="exportdata"
                     :key="26 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></outputbutton26>
                 <textimport27a
                     ref="textimport27a"
                     :dataId="dataId"
                     :dae="data"
                     :key="27 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></textimport27a>
                 <DateTimePicker282
                     ref="DateTimePicker282"
                     :dataId="dataId"
                     :dae="data"
                     :key="28 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></DateTimePicker282>
                 <Combobox299
                     ref="Combobox299"
                     :dataId="dataId"
                     :dae="data"
                     :key="29 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></Combobox299>
                 <Customreport
                     :dataId="dataId"
                     :dae="data"
                     ref="table"
                     @percentage1="percentage1"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></Customreport>
                 <NumberScreen30
                     ref="NumberScreen30"
                     :dataId="dataId"
                     :dae="data"
                     :key="30 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></NumberScreen30>
                 <!-- 视频控件 -->
                 <Video
@@ -327,47 +281,35 @@
                     :dataId="dataId"
                     :dae="data"
                     :name="name"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></Video>
                 <MobileProducts
                     ref="mobileProducts"
                     :dataId="dataId"
                     :dae="data"
                     :key="31 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></MobileProducts>
                 <DynamicProducts
                     ref="Dyn1"
                     :dataId="dataId"
                     :dae="data"
                     :key="32 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></DynamicProducts>
                 <FlowPipe
                     ref="FlowPipe"
                     :dataId="dataId"
                     :dae="data"
                     :key="33 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
                 ></FlowPipe>
                 <!-- 权限失败提示弹窗 -->
                 <TipsPop :popText="TipsPopText" v-if="isTipsPop"></TipsPop>
                 <Tank
-                    @showtip="showtip" @shownotip="shownotip"
                     ref="Tank"
                     :dataId="dataId"
                     :dae="data"
                     :key="34 + componentKey"
                 ></Tank>
-                <MatrixGrid @showtip="showtip" @shownotip="shownotip" ref="MatrixGrid" :dataId="dataId" :dae="data" :key="35+componentKey"/>
-                <MatrixGridSet @showtip="showtip" @shownotip="shownotip" ref="MatrixGridSet" :dataId="dataId" :dae="data" :key="36+componentKey"/>
-                <Combinecombobox
-                    ref="Combinecombobox"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="37 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></Combinecombobox>
+                <MatrixGrid ref="MatrixGrid" :dataId="dataId" :dae="data" :key="35+componentKey"/>
+                <MatrixGridSet ref="MatrixGridSet" :dataId="dataId" :dae="data" :key="36+componentKey"/>
                 <div v-if="isTipsPop" class="mask_box"></div>
             </div>
         </div>
@@ -405,7 +347,6 @@ import querybutton25 from './conponent/QueryButton25.vue';
 import outputbutton26 from './conponent/outputbutton26.vue';
 import textimport27a from './conponent/textimport27.vue';
 import DateTimePicker282 from './conponent/DateTimePicker282.vue';
-import Combinecombobox from './conponent/combinecombobox.vue';
 import Combobox299 from './conponent/Combobox299.vue';
 import NumberScreen30 from './conponent/NumberScreen30.vue';
 import Customreport from './conponent/customreport.vue';
@@ -418,7 +359,6 @@ import screenfull from 'screenfull';
 export default {
     name: 'customer',
     components: {
-        Combinecombobox,//下拉框下发控件
         LineVue1, //执行控件
         MatrixGrid, //单点矩阵
         MatrixGridSet, //矩阵设定
@@ -461,9 +401,6 @@ export default {
     props: ['popdata'],
     data() {
         return {
-            zoomValue: 0,
-            gth: require('../../assets/images/gth.png'),
-            tipchange:false,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
             fdsx:true,
             heardertop:90,
@@ -501,8 +438,7 @@ export default {
             pageHeight: '',
             pageHTime: '',
             nowoverflow: 'calc(100% - 110px)',
-            newoverflow: 'calc(100%)',
-            tipword:''
+            newoverflow: 'calc(100%)'
         };
     },
     computed: {
@@ -716,10 +652,7 @@ export default {
             deep: true,
             handler: function(n, o) {
                 var data = this.$store.state.varChange;
-                console.log('=-----', this.$refs);
-                if(this.$refs.Combinecombobox){
-                      this.$refs.Combinecombobox.axioImg2(data);
-                }
+                console.log('=-----', this.$$refs);
                 if (this.$refs.Dimage) {
                     this.$refs.Dimage.axioImg2(data);
                 }
@@ -756,15 +689,11 @@ export default {
                 if (this.$refs.Tank) {
                     this.$refs.Tank.axioImg2(data);
                 }
-            
-               
-                if (this.$refs.MatrixGridSet) {
-                    
-                    this.$refs.MatrixGridSet.axioImg2(data);
-                }
-                    if (this.$refs.MatrixGrid) {
-                    
+                if (this.$refs.MatrixGrid) {
                     this.$refs.MatrixGrid.axioImg2(data);
+                }
+                if (this.$refs.MatrixGridSet) {
+                    this.$refs.MatrixGridSet.axioImg2(data);
                 }
             }
         },
@@ -772,7 +701,6 @@ export default {
             //监听筛选控件查询值
             deep: true,
             handler: function(n, o) {
-                console.log("22222")
                 this.$refs.table.search('默认查询');
                 var option = this.$refs.querybutton25.timingSearch(
                     this.$store.state.setTiemValue.ViewName,
@@ -806,7 +734,6 @@ export default {
                     );
                 }
                 if (this.$refs.querybutton25) {
-                    console.log("sadasdsadsad")
                     this.$refs.querybutton25.searchFun();
                 }
                 if (this.$store.state.websocketsShow != null) {
@@ -819,10 +746,6 @@ export default {
                 if (this.$refs.Dimage) {
                     this.$refs.Dimage.JoinVarFun();
                 }
-                if (this.$refs.Combinecombobox) {
-                    this.$refs.Combinecombobox.JoinVarFun();
-                }
-                
                 if (this.$refs.dynamicyext17) {
                     this.$refs.dynamicyext17.JoinVarFun();
                 }
@@ -859,13 +782,12 @@ export default {
                 if (this.$refs.Tank) {
                     this.$refs.Tank.JoinVarFun();
                 }
-                 if (this.$refs.MatrixGridSet) {
-                    this.$refs.MatrixGridSet.JoinVarFun();
-                }
                 if (this.$refs.MatrixGrid) {
                     this.$refs.MatrixGrid.JoinVarFun();
                 }
-               
+                if (this.$refs.MatrixGridSet) {
+                    this.$refs.MatrixGridSet.JoinVarFun();
+                }
             }
         },
         listData(n, o) {
@@ -940,7 +862,6 @@ export default {
         clearInterval(this.pageHTime);
     },
     created() {
-         this.zoomValue = Number(parseFloat(window.screen.width/1920).toFixed(2)) <= 0.8 ? 0.8 : Number(parseFloat(window.screen.width/1920).toFixed(2))
         console.log('screentype', this.$store.state.screentype);
         this.init();
     },
@@ -987,17 +908,6 @@ export default {
 window.addEventListener('scroll', this.scroll,true);
     },
     methods: {
-        upFun(){
-            // console.log('触发了')
-        this.$refs.PressButton7.upclick()
-        }, 
-        showtip(a){
-         this.tipchange = true;
-         this.tipword = a;
-        },
-        shownotip(){
-        this.tipchange = false
-        },
         scroll(e){
 
             if(e){
@@ -1021,7 +931,6 @@ window.addEventListener('scroll', this.scroll,true);
             this.percentage = data;
         },
         searchFun() {
-        
             //触发查询控件 查询方法
             if (this.$refs.querybutton25) {
                 this.$refs.querybutton25.searchFun();
@@ -1040,8 +949,6 @@ window.addEventListener('scroll', this.scroll,true);
 
         search(a, num, i1) {
             //组件25查询事件
-            console.log("2222112")
-            
             this.$refs.table.search(a, num, i1);
         },
         exportdata(a, num) {
@@ -1059,16 +966,10 @@ window.addEventListener('scroll', this.scroll,true);
 
         //初始化页面
         init() {
-            // this.pathNmae = this.$route.path.slice(1);
-           console.log("asddsasasasasasasasasasasasasasasa")
-            this.pathNmae = this.$route.query.title;
-            if(!this.pathNmae){
-                this.pathNmae = this.$route.params.pathMatch
-            }
+            this.pathNmae = this.$route.path.slice(1);
             if (this.pathName2 != this.pathName) {
                 this.dataId = this.$route.query.id;
             }
-            
             this.name = this.pathNmae;
             this.nameC = this.pathNmae;
             //  初始化/跳转页面获取名称
@@ -1174,18 +1075,24 @@ window.addEventListener('scroll', this.scroll,true);
             console.log('originalData', originalData);
             var widthWV;
             var heightWH;
-            // 浏览器显示宽度
+            //浏览器显示宽度
             if (this.isWindow) {
-                // 首次浏览器显示宽度
-                widthWV = document.body.clientWidth > 800 ? document.body.clientWidth : 800;
+                //首次浏览器显示宽度
+                widthWV =
+                    document.body.clientWidth > 800
+                        ? document.body.clientWidth
+                        : 800;
                 heightWH = this.$store.state.pageleft = widthWV;
             } else {
-                widthWV = document.body.clientWidth + 17 > 800 ? document.body.clientWidth + 17 : 800;
+                widthWV =
+                    document.body.clientWidth + 17 > 800
+                        ? document.body.clientWidth + 17
+                        : 800;
                 this.$store.state.pageleft = widthWV;
             }
 
             if (widthWV > 800) {
-                // 首次小于1280执行之后小于1280不执行
+                //首次小于1280执行之后小于1280不执行
                 this.isMinW = true;
             }
             if (text != '跳转') {
@@ -1196,7 +1103,9 @@ window.addEventListener('scroll', this.scroll,true);
             if (widthWV == 800) {
                 this.isMinW = false;
             }
+
             var screenWV = window.screen.width; //分辨率宽度
+
             var screenHv = window.screen.height;
             var bl;
             var hbl;
@@ -1205,7 +1114,8 @@ window.addEventListener('scroll', this.scroll,true);
             //画布高度比例
             //画布宽度比例
             if (
-                Number(originalData.Controls.PropertyList.Width) < Number(screenWV)
+                Number(originalData.Controls.PropertyList.Width) <
+                Number(screenWV)
             ) {
                 //小画布
                 windowType = 'Small';
@@ -1214,8 +1124,14 @@ window.addEventListener('scroll', this.scroll,true);
                 } else {
                     hieghtType = 'Small';
                 }
-                var Xbl = Number(originalData.Controls.PropertyList.Width) / Number(screenWV);
-                bl = (originalData.Controls.PropertyList.Width * (widthWV / originalData.Controls.PropertyList.Width)) / Number(screenWV);
+                var Xbl =
+                    Number(originalData.Controls.PropertyList.Width) /
+                    Number(screenWV);
+                bl =
+                    (originalData.Controls.PropertyList.Width *
+                        (widthWV / originalData.Controls.PropertyList.Width)) /
+                    Number(screenWV);
+
                 this.$store.state.WindowWB = bl;
                 //========
                 // if(this.$store.state.screentype == 3){
@@ -1420,91 +1336,22 @@ window.addEventListener('scroll', this.scroll,true);
         },
         //跟换JSON源
         impor(name) {
-            console.log("sadsadasdasdasdsad")
             this.$store.state.isInit = true; //分辨率
             this.$store.state.report = true; //
             this.name = name;
             this.nameC = name;
-            // debugger
             if (name == 'onePath') {
                 //默认页面
-                this.JsonData  = {
-                    "Controls": {
-                        "Name": "MainCanvas",
-                        "ControlType": "canvas",
-                        "PropertyList": {
-                            "Width": "1920",
-                            "Height": "952",
-                            "Background": "{\"ColorType\":\"SolidColor\",\"Data\":{\"Color\":\"#FFFFFFFF\"}}"
-                        },
-                        "ControlList": []
-                    },
-                    "Data": {
-                        "PieChartItemList": [],
-                        "DashBoardChartItemList": [],
-                        "LineChartItemList": [],
-                        "BarChartItemList": [],
-                        "LineBarChartItemList": [],
-                        "ScatterPlotChartItemList": [],
-                        "InputDataList": [],
-                        "RWDataList": [],
-                        "CommonButtonGroupList": [],
-                        "CommonButtonList": [],
-                        "PressButtonList": [],
-                        "TabModuleButtonParaList": [],
-                        "TabModuleButtonList": [],
-                        "PopupButtonList": [],
-                        "SwitchList": [],
-                        "StatusAnimationList": [],
-                        "TextAnimationList": [],
-                        "ImageAnimationList": [],
-                        "ElementList": [
-                            {
-                                "EleName": "MainCanvas",
-                                "EleType": "Canvas"
-                            }
-                        ],
-                        "EventScriptList": [],
-                        "ParameterReportItemtList": [],
-                        "TDDesignerItemList": [],
-                        "AlarmGroupItemList": [],
-                        "AlarmTagItemList": [],
-                        "ComboBoxList": [],
-                        "AssociateDateTimePickerList": [],
-                        "OutputButtonList": [],
-                        "TextImportList": [],
-                        "PrintingButtonList": [],
-                        "QueryButtonList": [],
-                        "AssociateNumericalEntityList": [],
-                        "ProductFlowList": [],
-                        "FlowPipeAnimationList": [],
-                        "TankAnimationList": [],
-                        "MatrixGridAnimationList": [],
-                        "MatrixGridSetAnimationList": [],
-                        "KeyboardControlList": [],
-                        "ZIndexs": {},
-                        "DataAnimationList": [],
-                        "DataStatusTextColorEffectAnimationList": []
-                    }
-                }
-                // $('.big_box').empty()
-                this.$nextTick(() => {
-                    this.dataFun('跳转');
-                    if (this.$store.state.websocketsShow != null) {
-                        this.scriptInit(); //脚本加载时
-                    }
-                    this.scriptShow();
-                });
-                // return;
-            } else {
-                
-                console.log("name",name)
-                // 本地服务器读取方法
-                this.$axios({
-                    method: 'post',
-                    url: `/api/Main/Main_GetViewJson?argViewName=${encodeURIComponent(name)}`
-                }).then(res => {
-                    console.log("界面",res.data)
+                return;
+            }
+            //  本地服务器读取方法
+            this.$axios({
+                method: 'post',
+                url: `/api/Main/Main_GetViewJson?argViewName=${name}`
+            })
+                .then(res => {
+                  
+                  console.log("界面",res)
                     var data = res.data;
                     this.JsonData = data.data;
                     console.log(' this.JsonData ', this.JsonData);
@@ -1516,23 +1363,37 @@ window.addEventListener('scroll', this.scroll,true);
                         }
                         this.scriptShow();
                     });
-                }).then(() => {
-                    if($('header')[0].style.zoom){
-                        if(parseFloat(($('header')[0].style.zoom))>1){
-                            this.heardertop = $('header').height()*parseFloat($('header')[0].style.zoom)+'px'
-                        }
-                    }
+                })
+                .then(() => {
+             if($('header')[0].style.zoom){
+             
+                if(parseFloat(($('header')[0].style.zoom))>1){
+ this.heardertop = $('header').height()*parseFloat($('header')[0].style.zoom)+'px'
+                }
+               
+            }
                     // setTimeout(()=>{
-                    this.newoverflow =  'calc(100%)'
+                       this.newoverflow =  'calc(100%)'
+                       
                     if (this.$store.state.screentype == 1) {
+                        
                         setTimeout(() => {
-                            let w = window.screen.width / parseFloat($('.big_box').attr('width'));
-                            if (parseFloat($('.v-toolbar')[0].style.zoom)>1) {
-                                var a = $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) + $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
-                            } else {
-                                var a = $('.v-toolbar').height()  + 10 + $('.v-footer').height() ;
-                            }
-                            let h = (window.screen.height - a) / parseFloat($('.big_box').attr('height'));
+                            let w =
+                                window.screen.width /
+                                parseFloat($('.big_box').attr('width'));
+                             if(parseFloat($('.v-toolbar')[0].style.zoom)>1){
+                                var a =
+                            $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) +
+                            $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                        }else{
+                          var a =
+                            $('.v-toolbar').height()  +
+                            10 +
+                            $('.v-footer').height() ;
+                        }
+                            let h =
+                                (window.screen.height - a) /
+                                parseFloat($('.big_box').attr('height'));
                             $('.report').css({
                                 transform: `scale(${w},${h})`,
                                 margin: '0px'
@@ -1553,19 +1414,27 @@ window.addEventListener('scroll', this.scroll,true);
                             width: parseFloat($('.big_box').attr('width'))
                         });
                     } else if (this.$store.state.screentype == 3) {
+                        
+                        
                         setTimeout(() => {
                             console.log(this.JsonData)
                             let width = window.screen.width;
-                            let w2 = window.screen.width
-                            console.log(parseFloat(JSON.parse(JSON.stringify(this.JsonData)).Controls)*w1)
-                            if (
-                                parseFloat(JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Height)*w1 >
-                                window.screen.height - 130
-                            ) {
-                                w2 -= 17;
-                            }
-                            let w = width / parseFloat($('.big_box').attr('width'));
-                            let w3 = w2 / parseFloat($('.big_box').attr('width'));
+                             let w2 = window.screen.width
+                     console.log(parseFloat(
+                            JSON.parse(JSON.stringify(this.JsonData)).Controls
+                                .PropertyList.Height
+                        )*w1)
+                    if (
+                        parseFloat(
+                            JSON.parse(JSON.stringify(this.JsonData)).Controls
+                                .PropertyList.Height
+                        )*w1 >
+                        window.screen.height - 130
+                    ) {
+                        w2 -= 17;
+                    }
+                    let w = width / parseFloat($('.big_box').attr('width'));
+                     let w3 = w2 / parseFloat($('.big_box').attr('width'));
                             // if (
                             //     parseFloat(
                             //         JSON.parse(JSON.stringify(this.JsonData))
@@ -1578,73 +1447,102 @@ window.addEventListener('scroll', this.scroll,true);
                             console.log($('.report'));
                             // let w =
                             //     width / parseFloat($('.big_box').attr('width'));
-                            $('.report').css({transform: `scale(${w},${w3})`});
-                            $('.scalediv1').css({
-                                height: parseFloat($('.big_box').attr('height'))*w3+'px',
-                                width: width + 'px'
+                            $('.report').css({
+                                transform: `scale(${w},${w3})`
                             });
-                            if (parseFloat($('.v-toolbar')[0].style.zoom)>1) {
-                                if (
-                                    JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Width*parseFloat(w) >= 
-                                    window.screen.width&&this.$store.state.screentype!==1
-                                ) {
-                                    if(this.$store.state.screentype==4||this.$store.state.screentype==3){
-                                        this.newoverflow = `calc(100% + 20px)`
-                                    }
-                                }
-                            }
+                              $('.scalediv1').css({
+                            height: parseFloat($('.big_box').attr('height'))*w3+'px',
+                            width: width + 'px'
                         });
+                        if(parseFloat($('.v-toolbar')[0].style.zoom)>1){
+                             if (JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Width*parseFloat(w) >= window.screen.width&&this.$store.state.screentype!==1) {
+                   if(this.$store.state.screentype==4||this.$store.state.screentype==3){
+ this.newoverflow = `calc(100% + 20px)`
+                   }
+                   }
+                        }
+                      
+
+                        });
+                                  
+                      
                     } else if (this.$store.state.screentype == 4) {
-                        if (parseFloat($('.v-toolbar')[0].style.zoom)>1) {
-                            var a = $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) + $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
-                        } else {
-                            var a = $('.v-toolbar').height() + 10 + $('.v-footer').height() ;
+                         if(parseFloat($('.v-toolbar')[0].style.zoom)>1){
+                                var a =
+                            $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) +
+                            $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                        }else{
+                          var a =
+                            $('.v-toolbar').height()  +
+                            10 +
+                            $('.v-footer').height() ;
                         }
                         let height = window.screen.height - a;
-                        if (parseFloat(JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Width) > window.screen.width) {
+                        if (
+                            parseFloat(
+                                JSON.parse(JSON.stringify(this.JsonData))
+                                    .Controls.PropertyList.Width
+                            ) > window.screen.width
+                        ) {
                             height -= 17;
                         }
-                        let h = height / parseFloat($('.big_box').attr('height'));
+                        let h =
+                            height / parseFloat($('.big_box').attr('height'));
                         setTimeout(() => {
-                            $('.report').css({transform: `scale(${h},${h})`});
+                            $('.report').css({
+                                transform: `scale(${h},${h})`
+                            });
                         });
                         $('.scalediv1').css({
                             height: height + 'px',
-                            width: parseFloat($('.big_box').attr('width'))*h + 'px'
+                            width:
+                                parseFloat($('.big_box').attr('width'))*h + 'px'
                         });
                     }
-                    console.log(this.JsonData)
-                    if (JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Width > window.screen.width&&this.$store.state.screentype!==1) {
-                        if (this.$store.state.screentype == 4 || this.$store.state.screentype== 3) {
-                            if(parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
-                                var a = $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) + $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
-                            }else{
-                                var a = $('.v-toolbar').height()  + 10 + $('.v-footer').height();
-                            }
-                            this.nowoverflow = `calc(100% - ${a}px)`;
-                            this.newoverflow = `calc(100% + 20px)`
-                        }
-                        if(parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
-                            var a = $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) + $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
-                        } else {
-                            var a = $('.v-toolbar').height()  + 10 + $('.v-footer').height() ;
-                        }
-                        this.nowoverflow = `calc(100% - ${a}px)`;
-                    } else {
-                            if(parseFloat($('.v-toolbar')[0].style.zoom)>1){
-                                        var a =
-                                    $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) +
-                                    $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
-                                }else{
+                    
+                console.log(this.JsonData)
+              
+                if (JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Width > window.screen.width&&this.$store.state.screentype!==1) {
+                   if(this.$store.state.screentype==4||this.$store.state.screentype==3){
+                     if(parseFloat($('.v-toolbar')[0].style.zoom)>1){
                                 var a =
-                                    $('.v-toolbar').height()  -
-                                    10 +
-                                    $('.v-footer').height() ;
-                                }
-                            this.nowoverflow = `calc(100% - ${a}px)`;
-                    }
+                            $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) +
+                            $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                        }else{
+                          var a =
+                            $('.v-toolbar').height()  +
+                            10 +
+                            $('.v-footer').height() ;
+                        }
+                    this.nowoverflow = `calc(100% - ${a}px)`;
+                    this.newoverflow = `calc(100% + 20px)`
+                   }
+                    if(parseFloat($('.v-toolbar')[0].style.zoom)>1){
+                                var a =
+                            $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) +
+                            $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                        }else{
+                          var a =
+                            $('.v-toolbar').height()  +
+                            10 +
+                            $('.v-footer').height() ;
+                        }
+
+                    this.nowoverflow = `calc(100% - ${a}px)`;
+                } else {
+                    if(parseFloat($('.v-toolbar')[0].style.zoom)>1){
+                                var a =
+                            $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) +
+                            $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                        }else{
+                          var a =
+                            $('.v-toolbar').height()  -
+                            10 +
+                            $('.v-footer').height() ;
+                        }
+                    this.nowoverflow = `calc(100% - ${a}px)`;
+                }
                 });
-            }
             // })
             //  ===========================
             //  本地调试读取方法
@@ -1662,7 +1560,6 @@ window.addEventListener('scroll', this.scroll,true);
         },
         //查询赋值
         queryassignmentFun(name, value) {
-            
             setTimeout(() => {
               console.log(this.name)
               console.log( name,
@@ -1683,7 +1580,7 @@ window.addEventListener('scroll', this.scroll,true);
                     this.$refs.Dyn1.ChartTime();
                 }
                 if (this.$refs.Dimage) {
-                    // this.$refs.Dimage.JoinVarFun();
+                    this.$refs.Dimage.JoinVarFun();
                 }
                 if (this.$refs.dynamicyext17) {
                     this.$refs.dynamicyext17.JoinVarFun();
@@ -1712,13 +1609,12 @@ window.addEventListener('scroll', this.scroll,true);
                 if (this.$refs.Alarm14) {
                     this.$refs.Alarm14.JoinVarFun();
                 }
-                  if (this.$refs.MatrixGridSet) {
-                    this.$refs.MatrixGridSet.JoinVarFun();
-                }
                 if (this.$refs.MatrixGrid) {
                     this.$refs.MatrixGrid.JoinVarFun();
                 }
-              
+                if (this.$refs.MatrixGridSet) {
+                    this.$refs.MatrixGridSet.JoinVarFun();
+                }
             });
         },
 
@@ -1820,14 +1716,11 @@ window.addEventListener('scroll', this.scroll,true);
                         for (let k = 0; k < ziarr.length; k++) {
                             var aab = this.$refs.DateTimePicker282.TimeValueFun();
                             var bbb = this.$refs.Combobox299.TimeValueFun();
-                            var bbb1 = this.$refs.Combinecombobox.TimeValueFun();
-                            
                             var ccb = this.$refs.textimport27a.TimeValueFun();
                             var vv = '';
                             if (
                                 ziarr[k].split(',')[1].trim() == 'SelectedValue'
                             ) {
-                                // 修改
                                 //下拉框   //根据类型和控件名赋值
                                 for (let f = 0; f < bbb.length; f++) {
                                     if (
@@ -1835,15 +1728,6 @@ window.addEventListener('scroll', this.scroll,true);
                                         ziarr[k].split(',')[0].trim()
                                     ) {
                                         vv = bbb[f].value;
-                                        isShow = true;
-                                    }
-                                }
-                                for (let f = 0; f < bbb1.length; f++) {
-                                    if (
-                                        bbb1[f].name ==
-                                        ziarr[k].split(',')[0].trim()
-                                    ) {
-                                        vv = bbb1[f].value;
                                         isShow = true;
                                     }
                                 }
@@ -1959,7 +1843,6 @@ window.addEventListener('scroll', this.scroll,true);
                             for (let k = 0; k < ziarr.length; k++) {
                                var aab = this.$refs.DateTimePicker282.TimeValueFun();
                                 let bbb = this.$refs.Combobox299.TimeValueFun();
-                                let bbb1 = this.$refs.Combinecombobox.TimeValueFun();
                                 let ccb = this.$refs.textimport27a.TimeValueFun();
                                 let vv = '';
                                 if (
@@ -1973,15 +1856,6 @@ window.addEventListener('scroll', this.scroll,true);
                                             ziarr[k].split(',')[0].trim()
                                         ) {
                                             vv = bbb[f].value;
-                                            isShow = true;
-                                        }
-                                    }
-                                        for (let f = 0; f < bbb1.length; f++) {
-                                        if (
-                                            bbb1[f].name ==
-                                            ziarr[k].split(',')[0].trim()
-                                        ) {
-                                            vv = bbb1[f].value;
                                             isShow = true;
                                         }
                                     }
@@ -2055,10 +1929,9 @@ window.addEventListener('scroll', this.scroll,true);
                 console.log();
                 endarr = [{ ScriptContent: undefined, WebProperty: [] }];
             }
-        
+            console.log('脚本事件', endarr);
             // 修改过的
             if (this.$store.state.websocketsShow != null) {
-                    console.log('脚本事件', endarr);
                 window.$.connection.chart.server.ExecuteScript(endarr);
             }
         },
@@ -4628,104 +4501,5 @@ window.addEventListener('scroll', this.scroll,true);
 }
 .customerPage{
     box-sizing: content-box;
-}
-.tip {
-    position: fixed;
-    width: 380px;
-    height: 200px;
-    z-index: 30999999;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    margin: auto;
-    box-shadow: 0px 0px 8px black;
-    background-color: #f3f3f4;
-    .tiptop {
-        width: 380px;
-        height: 40px;
-        background-color: #ffbc3d;
-        img {
-            width: 20px;
-            height: 20px;
-            margin-top: 10px;
-            margin-left: 160px;
-        }
-        span {
-            color: #ffffff;
-            position: relative;
-            top: -5px;
-            margin-left: 7px;
-        }
-    }
-    .tipcontanin{
-        height: 110px;
-    }
-    .tipword {
-        // width:calc(100% - 0px);
-        // text-align: center;
-        padding: 20px;
-        justify-content: center;
-        align-items: center;
-        display: flex;
-        word-break: break-all;
-        height: 70px;
-        min-height:70px ;
-    }
-    .tipdetermine {
-        cursor: pointer;
-        color: #ea9328;
-        width: 310px;
-        line-height: 30px;
-        text-align: center;
-        margin-left: 35px;
-        height: 30px;
-        background-color: #f3e3ad;
-        position: absolute;
-        bottom: 20px;
-    }
-
-    .delclass {
-        width: 330px;
-        line-height: 30px;
-        margin-top: 40px;
-        margin-left: 25px;
-        height: 30px;
-        .one {
-            cursor: pointer;
-            display: inline-block;
-            height: 30px;
-            width: 160px;
-            text-align: center;
-            background-color: #e0e0e0;
-            color: #7e7e7e;
-        }
-        .two {
-            cursor: pointer;
-            display: inline-block;
-            height: 30px;
-            margin-left: 10px;
-            width: 160px;
-            background-color: #f3e3ad;
-            text-align: center;
-            color: #eeb764;
-        }
-    }
-}
-.cover1111 {
-    width: 100%;
-    height: 100%;
-    z-index: 9999999;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-.loadbox{
-      width: 100%;
-    height: 100%;
-    z-index: 99999999;
-    position: fixed;
-    top: 0;
-    left: 0;
 }
 </style>

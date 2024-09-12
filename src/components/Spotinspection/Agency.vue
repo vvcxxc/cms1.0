@@ -6,80 +6,54 @@
  * @LastEditTime: 2020-08-06 17:53:22
  -->
 <template>
-    <div class="public-table public-table1" @click="changeselect = false">
-        <div
-            class="loadcover"
-            element-loading-spinner="el-icon-loading"
-            element-loading-background="rgba(0, 0, 0, 0.4)"
-            v-loading="this.$store.state.isShow"
-            v-show="this.$store.state.isShow"
-            style="position: absolute;
+    <div class="public-table public-table1" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" @click="changeselect = false">
+          			<div class="loadcover" element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
-    left: 0;"
-        ></div>
-        <div class="boxsad" ref="kongtiao12" v-show="daibang">
-            <div class="tqw"></div>
+    left: 0;"></div>
+        <div class="boxsad" ref="kongtiao12" v-show="daibang" :style="{zoom}">
             <div
-                class="tiphead"
-                :class="{ colordiv: $store.state.color == 'grey' }"
+                class="tqw"
             >
-                <span :class="{ fcolor: $store.state.color == 'grey' }">{{
-                    lang.PointInspectionManage_CloseToDoPointPatrolTask
-                }}</span>
-                <img
+                   </div>
+                <div class="tiphead"  :class="{colordiv:$store.state.color=='grey'}" >
+                    <span  :class="{fcolor:$store.state.color=='grey'}">{{lang.PointInspectionManage_CloseToDoPointPatrolTask}}</span>
+                       <img
                     :src="no2"
                     alt
                     class="no"
                     @click.stop="cancel"
-                    v-if="$store.state.color == 'grey'"
+                    v-if="$store.state.color=='grey'"
                 />
                 <img :src="no" alt class="no" @click.stop="cancel" v-else />
-            </div>
-            <div class="t">
-                <span class="w">{{ lang.MaintenanceManage_Remark }}</span>
-                <textarea
-                    name
-                    id
-                    cols="30"
-                    rows="10"
-                    :placeholder="lang.MaintenanceManage_InputCloseReason"
-                    v-model="gbword"
-                ></textarea>
-                <div class="Preservation" @click="gb">
-                    {{ lang.PopupCommon_Sure }}
                 </div>
-                <div class="cancel" @click.stop="cancel">
-                    {{ lang.PopupCommon_Cancel }}
+                <div class="t" >
+                    <span class="w">{{lang.MaintenanceManage_Remark}}</span>
+                    <textarea name id cols="30" rows="10" :placeholder="lang.MaintenanceManage_InputCloseReason" v-model="gbword"></textarea>
+                       <div class="Preservation" @click="gb">{{lang.PopupCommon_Sure}}</div>
+                <div class="cancel" @click.stop="cancel">{{lang.PopupCommon_Cancel}}</div>
                 </div>
-            </div>
-            <!-- <img :src="gth" alt /> -->
-        </div>
+                <!-- <img :src="gth" alt /> -->
 
-        <div class="search-container">
-            <span class="title sblx">{{
-                lang.EquipmentAccount_EquipmentType1
-            }}</span>
-            <div class="seleword seleword3" @click.stop="selectword1">
-                <div class="seleword1">
-                    {{ Meter }}
-                    <img :src="xiala" alt />
-                </div>
+             
+            </div>
+ 
+        <div class="search-container" :style="{zoom}">
+            <span class="title sblx" >{{lang.EquipmentAccount_EquipmentType1}}</span>
+            <div class="seleword seleword3" @click.stop="selectword1" >
+             <div class="seleword1">
+                  {{Meter}}
+               <img :src="xiala" alt  />
+             </div>
             </div>
 
-            <span class="sp1 tinput title">{{
-                lang.MaintenanceManage_TaskStatus1
-            }}</span>
-            <select v-model="Meter1" style="width: 150px">
-                <option
-                    v-for="(item, index) in ztarr"
-                    :key="index"
-                    :value="item"
-                    >{{ item }}</option
-                >
+            <span class="sp1 tinput title" >{{lang.MaintenanceManage_TaskStatus1}}</span>
+            <select v-model="Meter1" >
+                <option v-for="(item,index) in ztarr" :key="index" :value="item">{{item}}</option>
             </select>
-            <div class="selectword" v-show="changeselect">
+            <div class="selectword" v-show="changeselect" >
                 <el-tree
                     :data="data6"
                     @node-click="handleNodeClic6"
@@ -89,12 +63,7 @@
                 >
                     <span class="custom-tree-node" slot-scope="{ node, data }">
                         <span>
-                            <img
-                                v-show="data.file"
-                                :src="data.file"
-                                alt
-                                class="img11"
-                            />
+                            <img v-show="data.file" :src="data.file" alt class="img11" />
                             <i :class="data.icon"></i>
                             {{ node.label }}
                         </span>
@@ -102,533 +71,262 @@
                 </el-tree>
             </div>
 
-            <span class="sp4 title">{{
-                lang.MaintenanceManage_ThisTimeStartTime1
-            }}</span>
+            <span class="sp4 title">{{lang.MaintenanceManage_ThisTimeStartTime1}}</span>
 
             <el-date-picker
+                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                 v-model="value1"
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                 value-format="yyyy-MM-dd HH:mm:ss"
-                @focus="sx"
+                @focus='sx'
             ></el-date-picker>
-            <span class="demonstration title">-</span>
+            <span class="demonstration title" >-</span>
             <el-date-picker
+                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                 v-model="value2"
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                 value-format="yyyy-MM-dd HH:mm:ss"
-                @focus="sx"
+               @focus='sx'
             ></el-date-picker>
-            <input
-                type="text"
-                :placeholder="lang.AlarmRecord_Time_Keyword"
-                v-model="keyword"
-                :style="{
-                    width: 155 * 1 + 'px',
-                    height: 40 * 1 + 'px',
-                    marginLeft: 10 * 1 + 'px',
-                    fontSize: 16 * 1 + 'px'
-                }"
-            />
-            <div
-                class="sad"
-                @click="sad"
-                :style="{
-                    width: 120 * 1 + 'px',
-                    height: 40 * 1 + 'px',
-                    lineHeight: 40 * 1 + 'px',
-                    marginLeft: 10 * 1 + 'px',
-                    fontSize: 16 * 1 + 'px'
-                }"
-            >
-                {{ lang.RoleManage_Query }}
-            </div>
+            <input type="text" :placeholder="lang.AlarmRecord_Time_Keyword" v-model="keyword" :style="{width:155*1+'px',height: 40*1+'px',marginLeft: 10*1+'px',fontSize: 16*1+'px'}"/>
+            <div class="sad" @click="sad" :style="{width:120*1+'px',height: 40*1+'px',lineHeight: 40*1+'px',marginLeft: 10*1+'px',fontSize: 16*1+'px'}">{{lang.RoleManage_Query}}</div>
         </div>
         <div class="table-container">
             <el-table
                 ref="multipleTable"
+                 
                 :data="tableData1"
                 stripe
                 height="100%"
                 tooltip-effect="dark"
-                :style="{
-                    width: 1700 * zoom + 'px',
-                    fontSize: 14 * zoom + 'px'
-                }"
+                :style="{width: 1700*zoom+'px', fontSize: 14*zoom+'px'}"
                 border
                 highlight-current-row
-                :header-cell-style="{
-                    background:
-                        $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
-                    color: $store.state.color == 'grey' ? '#000' : '#fff',
-                    'border-left': '1px solid #cccccc',
-                    height: 50 * zoom + 'px',
-                    fontSize: 14 * zoom + 'px',
-                    padding: '0'
-                }"
+              :header-cell-style="{
+                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+                    color:($store.state.color=='grey')?'#000':'#fff',
+                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                    height:50*zoom+'px',
+                    fontSize: 14*zoom+'px',
+                    padding:'0'}"
             >
                 <template slot="empty">
-                    <span>{{ lang.SCMSConsoleWebApiMySql_NoData }}</span>
+                    <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
                 </template>
-                <el-table-column
-                    :label="lang.NewTrendChart_SingleChartUC_No"
-                    :width="100 * zoom"
-                    prop="Number"
-                    :show-overflow-tooltip="true"
-                    fixed
-                >
-                    <template slot-scope="scope">{{
-                        scope.row.Number
-                    }}</template>
+                <el-table-column :label="lang.NewTrendChart_SingleChartUC_No" :width="100 * zoom" prop="Number"  :show-overflow-tooltip="true" fixed>
+                    <template slot-scope="scope">{{ scope.row.Number }}</template>
                 </el-table-column>
-                <el-table-column
-                    prop="name"
-                    :label="lang.NewTrendChart_SingleChartUC_Operate"
-                    :width="250 * zoom"
-                    fixed
-                >
+                <el-table-column prop="name" :label="lang.NewTrendChart_SingleChartUC_Operate" :width="300 * zoom"   fixed>
                     <template slot-scope="scope">
-                        <div
-                            class="img"
-                            @click="handleEdit1(scope.$index, scope.row)"
-                            :style="{
-                                width: 60 * zoom + 'px',
-                                height: 30 * zoom + 'px',
-                                lineHeight: 30 * zoom + 'px',
-                                marginLeft: 0 + 'px'
-                            }"
-                        >
-                            {{ lang.MaintenanceManage_Submit }}
-                        </div>
-                        <div
-                            class="img"
-                            @click="handleEdit3(scope.$index, scope.row)"
-                            :style="{
-                                width: 60 * zoom + 'px',
-                                height: 30 * zoom + 'px',
-                                lineHeight: 30 * zoom + 'px',
-                                marginLeft: 10 * zoom + 'px'
-                            }"
-                        >
-                            {{ lang.MaintenanceManage_Close }}
-                        </div>
-                        <div
-                            class="img"
-                            @click="handleEdit(scope.$index, scope.row)"
-                            :style="{
-                                width: 60 * zoom + 'px',
-                                height: 30 * zoom + 'px',
-                                lineHeight: 30 * zoom + 'px',
-                                marginLeft: 10 * zoom + 'px'
-                            }"
-                        >
-                            <img
-                                :src="look"
-                                alt
-                                :style="{
-                                    width: 24 * zoom + 'px',
-                                    height: 24 * zoom + 'px'
-                                }"
-                            />
-                            {{ scope.row.phone }}
+                        <!-- <i class="el-icon-share"></i> -->
+                        <div class="img" @click="handleEdit1(scope.$index, scope.row)" :style="{width:60*zoom+'px',height: 30*zoom+'px',lineHeight: 30*zoom+'px',marginLeft: 10*zoom+'px'}">{{lang.MaintenanceManage_Submit}}</div>
+                        <div class="img" @click="handleEdit3(scope.$index, scope.row)" :style="{width:60*zoom+'px',height: 30*zoom+'px',lineHeight: 30*zoom+'px',marginLeft: 10*zoom+'px'}">{{lang.MaintenanceManage_Close}}</div>
+                        <div class="img" @click="handleEdit(scope.$index, scope.row)" :style="{width:60*zoom+'px',height: 30*zoom+'px',lineHeight: 30*zoom+'px',marginLeft: 10*zoom+'px'}">
+                            <img :src="look" alt :style="{width: 24*zoom+'px',height: 24*zoom+'px'}"/>
+                            {{scope.row.phone}}
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="Name"
-                    :label="lang.MaintenanceManage_PlanName"
-                    :show-overflow-tooltip="true"
-                >
+                <el-table-column prop="Name" :label="lang.MaintenanceManage_PlanName"  :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.Foreground == '#ff0000'"
-                                >{{ scope.row.Name }}</span
-                            >
-                            <span v-else>{{ scope.row.Name }}</span>
+                                v-if="scope.row.Foreground=='#ff0000'"
+                            >{{scope.row.Name}}</span>
+                            <span v-else>{{scope.row.Name}}</span>
                         </div>
                     </template>
                 </el-table-column>
-
-                <el-table-column
-                    prop="PlanTypeDesc"
-                    label="计划类型"
-                    :show-overflow-tooltip="true"
-                >
+                <el-table-column prop="StartTime" :label="lang.ProcessParameterConfigure_ProduceManageUserControl_DataGrid1_PlanningStartTime"  :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.Foreground == '#ff0000'"
-                                >{{ scope.row.PlanTypeDesc }}</span
-                            >
-                            <span v-else>{{ scope.row.PlanTypeDesc }}</span>
+                                v-if="scope.row.Foreground=='#ff0000'"
+                            >{{scope.row.StartTime}}</span>
+                            <span v-else>{{scope.row.StartTime}}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="ClassShift"
-                    label="班次-班组"
-                    :show-overflow-tooltip="true"
-                >
+                <el-table-column prop="EndTime" :label="lang.ProcessParameterConfigure_ProduceManageUserControl_DataGrid1_PlanEndTime"  :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.Foreground == '#ff0000'"
-                                >{{ scope.row.ClassShift }}</span
-                            >
-                            <span v-else>{{ scope.row.ClassShift }}</span>
+                               v-if="scope.row.Foreground=='#ff0000'"
+                            >{{scope.row.EndTime}}</span>
+                            <span v-else>{{scope.row.EndTime}}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="StartTime"
-                    :label="
-                        lang.ProcessParameterConfigure_ProduceManageUserControl_DataGrid1_PlanningStartTime
-                    "
-                    :show-overflow-tooltip="true"
-                >
+                <el-table-column prop="Status" :label="lang.MaintenanceManage_TaskStatus"  :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.Foreground == '#ff0000'"
-                                >{{ scope.row.StartTime }}</span
-                            >
-                            <span v-else>{{ scope.row.StartTime }}</span>
+                            v-if="scope.row.Foreground=='#ff0000'"
+                            >{{scope.row.Status}}</span>
+                            <span v-else>{{scope.row.Status}}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="EndTime"
-                    :label="
-                        lang.ProcessParameterConfigure_ProduceManageUserControl_DataGrid1_PlanEndTime
-                    "
-                    :show-overflow-tooltip="true"
-                >
+                <el-table-column prop="Executor" :label="lang.PointInspectionManage_Inspector"  :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.Foreground == '#ff0000'"
-                                >{{ scope.row.EndTime }}</span
-                            >
-                            <span v-else>{{ scope.row.EndTime }}</span>
+                            v-if="scope.row.Foreground=='#ff0000'"
+                            >{{scope.row.Executor}}</span>
+                            <span v-else>{{scope.row.Executor}}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="Status"
-                    :label="lang.MaintenanceManage_TaskStatus"
-                    :show-overflow-tooltip="true"
-                >
+                <el-table-column prop="DevicesStr" :label="lang.EquipmentAccount_EquipmentName"  :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.Foreground == '#ff0000'"
-                                >{{ scope.row.Status }}</span
-                            >
-                            <span v-else>{{ scope.row.Status }}</span>
-                        </div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="Executor"
-                    :label="lang.PointInspectionManage_Inspector"
-                    :show-overflow-tooltip="true"
-                >
-                    <template slot-scope="scope">
-                        <div class="item">
-                            <span
-                                class="sad"
-                                v-if="scope.row.Foreground == '#ff0000'"
-                                >{{ scope.row.Executor }}</span
-                            >
-                            <span v-else>{{ scope.row.Executor }}</span>
-                        </div>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="DevicesStr"
-                    :label="lang.EquipmentAccount_EquipmentName"
-                    :show-overflow-tooltip="true"
-                >
-                    <template slot-scope="scope">
-                        <div class="item">
-                            <span
-                                class="sad"
-                                v-if="scope.row.Foreground == '#ff0000'"
-                                >{{ scope.row.DevicesStr }}</span
-                            >
-                            <span v-else>{{ scope.row.DevicesStr }}</span>
+                            v-if="scope.row.Foreground=='#ff0000'"
+                            >{{scope.row.DevicesStr}}</span>
+                            <span v-else>{{scope.row.DevicesStr}}</span>
                         </div>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
-        <div class="pages-container">
+        <div class="pages-container" :style="{zoom}">
             <div class="page">
                 <div class="pageword">
-                    {{ lang.DataGrid_Reaction_HT_ATotalOf }}
-                    <span>{{ PageData.TotalCount }}</span
-                    >{{ lang.DataGrid_Reaction_HT_RecordsAndTheCurrent }}
-                    <span>{{ PageData.PageIndex }}</span
-                    >{{ lang.DataGrid_Reaction_HT_Page }}
-                    <span>{{ PageData.TotalPage }}</span
-                    >{{ lang.DataGrid_Reaction_HT_RecordsAnd }}
-                    <span>{{ PageData.PageSize }}</span
-                    >{{ lang.DataGrid_Reaction_HT_PerPage }}
+                    {{lang.DataGrid_Reaction_HT_ATotalOf}}
+                 <span>{{PageData.TotalCount}}</span>{{lang.DataGrid_Reaction_HT_RecordsAndTheCurrent}}
+                    <span>{{PageData.PageIndex}}</span>{{lang.DataGrid_Reaction_HT_Page}}
+                    <span>{{PageData.TotalPage}}</span>{{lang.DataGrid_Reaction_HT_RecordsAnd}}
+                    <span>{{PageData.PageSize}}</span>{{lang.DataGrid_Reaction_HT_PerPage}}
                 </div>
                 <div class="pageoperation">
-                    <span class="btn" @click="start">{{
-                        lang.DataGrid_Reaction_FirstPage
-                    }}</span>
-                    <span
-                        class="btn"
-                        :class="{ nopage: !PageData.LastEnabled }"
-                        @click="abck"
-                        >{{ lang.DataGrid_Reaction_LastPage }}</span
-                    >
-                    <span
-                        class="btn"
-                        :class="{ nopage: !PageData.NextEnabled }"
-                        @click="next"
-                        >{{ lang.DataGrid_Reaction_NextPage }}</span
-                    >
-                    <span class="btn" @click="end">{{
-                        lang.DataGrid_Reaction_EndPage
-                    }}</span>
+                    <span class="btn" @click="start">{{lang.DataGrid_Reaction_FirstPage}}</span>
+                      <span class="btn" :class="{nopage:!PageData.LastEnabled}" @click="abck">{{lang.DataGrid_Reaction_LastPage}}</span>
+                 <span class="btn" :class="{nopage:!PageData.NextEnabled}" @click="next">{{lang.DataGrid_Reaction_NextPage}}</span>
+                    <span class="btn" @click="end">{{lang.DataGrid_Reaction_EndPage}}</span>
                     <div class="inputnumber">
-                        {{ lang.DataGrid_Reaction_The }}
-                        <input type="text" v-model="nowpage" />
-                        {{ lang.DataGrid_Reaction_Page }}
+                        {{lang.DataGrid_Reaction_The}}
+                        <input type="text" v-model="nowpage" /> {{lang.DataGrid_Reaction_Page}}
                     </div>
 
-                    <span class="btn" @click="jump">{{
-                        lang.DataGrid_Reaction_TurnPage
-                    }}</span>
+                    <span class="btn" @click="jump">{{lang.DataGrid_Reaction_TurnPage}}</span>
                 </div>
             </div>
         </div>
-        <div class="sumbitResult" ref="kongtiao1" v-if="setionchange">
-            <div
-                class="sestionheader"
-                :class="{ colordiv: $store.state.color == 'grey' }"
-            >
-                <div class="sestionheader1"></div>
-                <span
-                    class="head"
-                    v-if="sestion == 1"
-                    :class="{ fcolor: $store.state.color == 'grey' }"
-                    >{{
-                        lang.PointInspectionManage_ViewPointPatrolTaskContent
-                    }}</span
-                >
-                <span
-                    class="head"
-                    v-if="sestion == 2"
-                    :class="{ fcolor: $store.state.color == 'grey' }"
-                    >{{
-                        lang.PointInspectionManage_SubmitPointPatrolTaskResult
-                    }}</span
-                >
-                <img
+        <div class="sestion" ref="kongtiao1" v-show="setionchange" :style="{width:800*zoom+'px',height: 740*zoom+'px'}">
+            <div class="sestionheader"  :class="{colordiv:$store.state.color=='grey'}" :style="{zoom}">
+                <div
+                    class="sestionheader1"
+
+                ></div>
+                <span class="head" v-if="sestion == 1" :class="{fcolor:$store.state.color=='grey'}">{{lang.PointInspectionManage_ViewPointPatrolTaskContent}}</span>
+                <span class="head" v-if="sestion == 2" :class="{fcolor:$store.state.color=='grey'}">{{lang.PointInspectionManage_SubmitPointPatrolTaskResult}}</span>
+                 <img
                     :src="no2"
                     alt
                     class="no"
                     @click.stop="setionchange = false"
-                    v-if="$store.state.color == 'grey'"
+                    v-if="$store.state.color=='grey'"
                 />
-                <img
-                    :src="no"
-                    alt
-                    class="no"
-                    @click.stop="setionchange = false"
-                    v-else
-                />
+                <img :src="no" alt class="no" @click.stop="setionchange = false" v-else />
             </div>
-            <div class="sestioncontain">
+            <div class="sestioncontain" :style="{zoom}">
                 <div class="homesetion">
                     <div class="hometop">
-                        <div>
-                            {{
-                                lang.PointInspectionManage_PointPatrolInformation
-                            }}
-                        </div>
+                        <div>{{lang.PointInspectionManage_PointPatrolInformation}}</div>
                         <div class="line"></div>
                     </div>
                 </div>
                 <div class="overflow">
                     <div>
                         <div class="fl">
-                            <span>{{ lang.MaintenanceManage_PlanName }}</span>
-                            <input
-                                type="text"
-                                :value="sesstion.Name"
-                                disabled
-                            />
+                            <span>{{lang.MaintenanceManage_PlanName}}</span>
+                            <input type="text" :value="sesstion.Name" disabled />
                         </div>
                         <div class="fl">
                             <div>
-                                <span>{{
-                                    lang.PointInspectionManage_Inspector
-                                }}</span>
-                                <input
-                                    type="text"
-                                    :value="sesstion.Executor"
-                                    disabled
-                                />
+                                <span>{{lang.PointInspectionManage_Inspector}}</span>
+                                <input type="text" :value="sesstion.Executor" disabled />
                             </div>
                         </div>
                     </div>
                     <div>
                         <div class="fl">
-                            <span class="mi">{{
-                                lang.AlarmStatistics_AlarmStatisticsUserControl_StartTime
-                            }}</span>
+                            <span class="mi">{{lang.AlarmStatistics_AlarmStatisticsUserControl_StartTime}}</span>
                             <div class="inpimg">
                                 <img :src="rili" alt class="inpimg1" />
-                                <input
-                                    type="text"
-                                    :value="sesstion.StartTime"
-                                    disabled
-                                />
+                                <input type="text" :value="sesstion.StartTime" disabled />
                             </div>
                         </div>
                         <div class="fl">
-                            <span>{{
-                                lang.AlarmStatistics_AlarmStatisticsUserControl_EndTime
-                            }}</span>
+                            <span>{{lang.AlarmStatistics_AlarmStatisticsUserControl_EndTime}}</span>
                             <div class="inpimg">
                                 <img :src="rili" alt class="inpimg1" />
-                                <input
-                                    type="text"
-                                    :value="sesstion.EndTime"
-                                    disabled
-                                />
+                                <input type="text" :value="sesstion.EndTime" disabled />
                             </div>
                         </div>
                     </div>
                     <div>
-                        <span class="rwnr">{{
-                            lang.MaintenanceManage_TaskExecutionContent
-                        }}</span>
-                        <input
-                            name
-                            id
-                            :value="sesstion.Remarks"
-                            disabled
-                            style="width:610px;margin-bottom:10px"
-                        />
+                        <span class="rwnr">{{lang.MaintenanceManage_TaskExecutionContent}}</span>
+                        <input name id :value="sesstion.Remarks" disabled style="width:610px;margin-bottom:10px"/>
                     </div>
                 </div>
                 <div class="homesetion">
                     <div class="hometop">
-                        <div>
-                            {{
-                                lang.PointInspectionManage_PatrolInspectionDetails
-                            }}
-                        </div>
+                        <div>{{lang.PointInspectionManage_PatrolInspectionDetails}}</div>
                         <div class="line"></div>
                     </div>
                 </div>
                 <div class="mx1">
                     <div
                         class="twice"
-                        v-for="(item, index) in projectarr"
+                        v-for="(item,index) in projectarr"
                         :key="index"
-                        :class="{ bgcolor: sestion == 2 }"
+                        :class="{bgcolor:sestion == 2}"
                     >
                         <div class="inptwice">
-                            <div class="fl">
-                                <span>{{
-                                    lang.EquipmentAccount_EquipmentName
-                                }}</span>
-                                <input
-                                    type="text"
-                                    :value="item.DeviceName"
-                                    disabled
-                                />
+                            <div class="fl" >
+                                <span>{{lang.EquipmentAccount_EquipmentName}}</span>
+                                <input type="text" :value="item.DeviceName" disabled />
                             </div>
                             <div class="zr">
-                                <span>{{
-                                    lang.PointInspectionManage_PatrolInspectionItems
-                                }}</span>
-                                <input
-                                    type="text"
-                                    :value="item.StandardName"
-                                    disabled
-                                />
-                                <div
-                                    class="sopBtn"
-                                    @click="openSopListPop(item)"
-                                >
-                                    查看文件
-                                </div>
+                                <span>{{lang.PointInspectionManage_PatrolInspectionItems}}</span>
+                                <input type="text" :value="item.StandardName" disabled />
                             </div>
                         </div>
                         <div>
-                            <span
-                                class="sl"
-                                style="display:inline-block;width: 60px;"
-                                >{{
-                                    lang.PointInspectionManage_PointInspectionItems
-                                }}</span
-                            >
 
-                            <div
-                                v-for="(item1, index1) in item.Projects"
-                                :key="index1"
-                                style="display: inline-block;width: 85%;float:right;border-bottom: 1px solid #cccccc;"
-                            >
-                                <div class="mx" v-if="item1.Type == 1">
-                                    <div class="num">{{ item1.Number }}</div>
+                            <span class="sl" style="display:inline-block;width: 60px;" >{{lang.PointInspectionManage_PointInspectionItems}}</span>
+
+                            <div  v-for="(item1,index1) in item.Projects" :key="index1" style="display: inline-block;width: 85%;float:right;">
+
+                                <div class="mx" v-if="item1.Type==1">
+                                    <div class="num">{{item1.Number}}</div>
                                     <div class="nur">
-                                        <div class="nurword">
-                                            {{
-                                                lang.PointInspectionManage_ItemName
-                                            }}
-                                            {{ item1.ProjectName }}
+                                        <div class="nurword">{{lang.PointInspectionManage_ItemName}} {{item1.ProjectName}}</div>
+                                        <div class="nl">
+                                            {{lang.PointInspectionManage_Upper}}
+                                            <input type="text" :value="item1.Upper" disabled />
                                         </div>
                                         <div class="nl">
-                                            {{
-                                                lang.PointInspectionManage_Upper
-                                            }}
-                                            <input
-                                                type="text"
-                                                :value="item1.Upper"
-                                                disabled
-                                            />
+                                            {{lang.PointInspectionManage_Lower}}
+                                            <input type="text" :value="item1.Lower" disabled />
                                         </div>
                                         <div class="nl">
-                                            {{
-                                                lang.PointInspectionManage_Lower
-                                            }}
-                                            <input
-                                                type="text"
-                                                :value="item1.Lower"
-                                                disabled
-                                            />
+                                            {{lang.PointInspectionManage_ReferenceValue}}
+                                            <input type="text" :value="item1.Reference" disabled />
                                         </div>
                                         <div class="nl">
-                                            {{
-                                                lang.PointInspectionManage_ReferenceValue
-                                            }}
-                                            <input
-                                                type="text"
-                                                :value="item1.Reference"
-                                                disabled
-                                            />
-                                        </div>
-                                        <div class="nl">
-                                            {{
-                                                lang.PointInspectionManage_RealValue
-                                            }}
+                                            {{lang.PointInspectionManage_RealValue}}
                                             <input
                                                 type="text"
                                                 v-model="item1.Answer"
@@ -638,204 +336,99 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mx" v-if="item1.Type == 2">
-                                    <div class="num">{{ item1.Number }}</div>
+
+                                <div class="mx" v-if="item1.Type==2">
+                                    <div class="num">{{item1.Number}}</div>
                                     <div class="nur">
-                                        <div class="nurword">
-                                            {{
-                                                lang.PointInspectionManage_ItemName
-                                            }}
-                                            {{ item1.ProjectName }}
-                                        </div>
-                                        <div>{{ item1.Remarks }}</div>
+                                        <div class="nurword">{{lang.PointInspectionManage_ItemName}} {{item1.ProjectName}}</div>
+                                        <div>{{item1.Remarks}}</div>
                                         <!-- Referencearr -->
                                         <div>
-                                            <el-radio
-                                                v-model="item1.Answer"
-                                                v-for="(item2,
-                                                index2) in item1.Referencearr"
-                                                :key="index2"
-                                                :label="item2"
-                                                :disabled="disabled"
-                                                >{{ item2 }}</el-radio
-                                            >
-
+                                            <el-radio v-model="item1.Answer"   v-for="(item2,index2) in item1.Referencearr" :key="index2" :label="item2"    :disabled="disabled">{{item2}}</el-radio>
+                                        
                                             <!-- <el-radio :label="item1.Right">是</el-radio>
                                             <el-radio :label="item1.Right">否</el-radio> -->
                                         </div>
+
                                     </div>
                                 </div>
 
-                                <div class="mx" v-if="item1.Type == 3">
-                                    <div class="num">{{ item1.Number }}</div>
+                                <div class="mx" v-if="item1.Type==3">
+                                    <div class="num">{{item1.Number}}</div>
                                     <div class="nur">
-                                        <div class="nurword">
-                                            {{
-                                                lang.PointInspectionManage_ItemName
-                                            }}
-                                            {{ item1.ProjectName }}
+                                        <div class="nurword">{{lang.PointInspectionManage_ItemName}} {{item1.ProjectName}}</div>
+                                    <div class="nl" style="width:97%">
+                                            {{lang.PointInspectionManage_SituationDescription}}
+                                            <input style="width:85%" type="text" v-model="item1.Answer"    :disabled="disabled" />
                                         </div>
-                                        <div class="nl" style="width:97%">
-                                            {{
-                                                lang.PointInspectionManage_SituationDescription
-                                            }}
-                                            <input
-                                                style="width:85%"
-                                                type="text"
-                                                v-model="item1.Answer"
-                                                :disabled="disabled"
-                                            />
-                                        </div>
+
                                     </div>
                                 </div>
 
-                                <div class="mx" v-if="item1.Type == 4">
-                                    <div class="num">{{ item1.Number }}</div>
+                                <div class="mx" v-if="item1.Type==4">
+                                    <div class="num">{{item1.Number}}</div>
                                     <div class="nur">
-                                        <div class="nurword">
-                                            {{
-                                                lang.PointInspectionManage_ItemName
-                                            }}
-                                            {{ item1.ProjectName }}
-                                        </div>
-                                        <div>{{ item1.Remarks }}</div>
-
+                                        <div class="nurword">{{lang.PointInspectionManage_ItemName}} {{item1.ProjectName}}</div>
+                                        <div>{{item1.Remarks}}</div>
+                                        
                                         <div>
-                                            <el-checkbox
-                                                v-for="(item2,
-                                                index2) in item1.Referencearr"
-                                                :key="index2"
-                                                :label="item2"
-                                                :disabled="disabled"
-                                                @change="
-                                                    checked =>
-                                                        ch(
-                                                            index,
-                                                            index1,
-                                                            index2,
-                                                            checked
-                                                        )
-                                                "
-                                                >{{ item2 }}</el-checkbox
-                                            >
+
+                                            <el-checkbox  v-for="(item2,index2) in item1.Referencearr" :key="index2" :label="item2"    :disabled="disabled" @change="checked=>ch(index,index1,index2,checked)">{{item2}}</el-checkbox>                       
                                         </div>
+
                                     </div>
                                 </div>
-                                <div class="item-sop" v-if="item1.FileName">
-                                    <div class="sop-label">文件名称:</div>
-                                    <div
-                                        class="sop"
-                                        v-if="
-                                            item1.FileName.endsWith('pdf') ||
-                                                item1.FileName.endsWith('PDF')
-                                        "
-                                        @click="openViewSop(item1)"
-                                    >
-                                        {{ item1.FileName }}
-                                    </div>
-                                    <img
-                                        class="sopImg"
-                                        v-else
-                                        :src="imgSrc(item1.StandardProjectId)"
-                                        @click="openViewSop(item1)"
-                                    />
-                                </div>
+
+
                             </div>
                         </div>
+                        
                     </div>
                 </div>
 
-                <div
-                    class="Preservation"
-                    v-if="sestion == 2"
-                    @click="preservation6"
-                >
-                    {{ lang.PopupCommon_Sure }}
-                </div>
-                <div
-                    class="cancel"
-                    v-if="sestion == 2 || sestion == 3"
-                    @click="cancel"
-                >
-                    {{ lang.PopupCommon_Cancel }}
-                </div>
+                <div class="Preservation" v-if="sestion == 2" @click="preservation6">{{lang.PopupCommon_Sure}}</div>
+                <div class="cancel" v-if="sestion == 2 || sestion == 3" @click="cancel">{{lang.PopupCommon_Cancel}}</div>
             </div>
         </div>
-        <div
-            class="tip"
-            ref="kongtiao2"
-            v-show="tipchange"
-            :style="{ width: 380 * zoom + 'px', height: 220 * zoom + 'px' }"
-        >
+        <div class="tip" ref="kongtiao2" v-show="tipchange" :style="{width: 380*zoom+'px',height:220*zoom+'px'}">
             <div
                 class="tiphead"
                 style="position:absolute;width: 380px;height: 40px;"
             ></div>
-            <div class="tiptop">
+            <div
+                class="tiptop"
+                :style="{zoom}"
+            >
                 <img :src="gth" alt />
-                <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
+                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
             </div>
-            <div class="tipcontanin">
-                <div class="tipword">
-                    <span>{{ tipword }}</span>
-                </div>
-                <div class="tipdetermine" @click="tip1" v-if="deltrue">
-                    {{ lang.MessageBox_Confrim }}
-                </div>
+            <div class="tipcontanin" :style="{zoom}">
+                <div class="tipword"><span>{{tipword}}</span></div>
+                <div class="tipdetermine" @click="tip1" v-if="deltrue">{{lang.MessageBox_Confrim}}</div>
                 <div class="delclass" v-if="!deltrue">
-                    <div class="one" @click="no1">{{ lang.MessageBox_NO }}</div>
-                    <div class="two" @click="yes1">
-                        {{ lang.MessageBox_YES }}
-                    </div>
+                    <div class="one" @click="no1">{{lang.MessageBox_NO}}</div>
+                    <div class="two" @click="yes1">{{lang.MessageBox_YES}}</div>
                 </div>
             </div>
         </div>
-        <div class="cover1" v-if="setionchange"></div>
-        <div class="cover3" v-if="cancel1"></div>
-        <div class="cover2" v-if="tipchange"></div>
-        <div class="cover7" v-if="daibang"></div>
-        <ViewSop
-            v-if="sopShow"
-            :defaultSrc="defaultSrc"
-            title="查看文件"
-            :sopData="sopData"
-            @callback="viewSopCallback"
-        />
-        <SopListPop
-            v-if="SopListPopShow"
-            title="查看附件"
-            SopListPopType="查看文件"
-            :hiddenBtn="true"
-            :SopListPopItem="SopListPopItem"
-            @callback="sopListPopCallback"
-        ></SopListPop>
-        <tip-pop
-            v-if="isTipShow"
-            :tipText="tipText"
-            :noCancel="noCancel"
-            @tipCallBack="tipCallBack"
-        ></tip-pop>
+        <div class="cover1" v-if="setionchange" :style="{zoom}"></div>
+        <div class="cover3" v-if="cancel1" :style="{zoom}"></div>
+        <div class="cover2" v-if="tipchange" :style="{zoom}"></div>
+        <div class="cover7" v-if="daibang" :style="{zoom}"></div>
     </div>
 </template>
 
 <script>
-import ViewSop from '../Vulnerableparts/ViewSop.vue';
-import SopListPop from './SopListPop.vue';
-import TipPop from '../public/tipPop.vue';
-
+import MySearch from '../public/search01.vue';
+// import MyPage from '../public/Pages.vue';
+import XLSX from 'xlsx';
 export default {
-    components: { TipPop, ViewSop, SopListPop },
+    components: {
+        // MySearch,
+        // MyPage
+    },
     data() {
         return {
-            isTipShow: false,
-            tipText: '',
-            noCancel: true,
-            SopListPopItem: null,
-            SopListPopShow: false,
-            sopData: [],
-            sopPopTitle: '',
-            sopShow: false,
-            defaultSrc: '',
             checked: {},
             value1: new Date(new Date().toLocaleDateString()),
             value2: new Date(
@@ -948,20 +541,20 @@ export default {
             yesdel: '',
             gbword: '',
             oldName: '',
-            antable: [],
-            ztarr: ['不限', '未开始', '进行中', '已延误'],
+            antable:[],
+            ztarr: ['不限', '未开始','进行中','已延误'],
             leixinarr: ['不限', '计划维修', '故障维修'],
             setionchange: false,
             nowIndex: 1,
-            cxid: '',
-            cxshow: true,
-            ckid: '',
-            ckshow: true,
-            tjid: '',
-            tjshow: true,
-            xiala: require('../../assets/images/ziyuan4.png'),
-            gbid: '',
-            gbshow: true,
+            cxid:'',
+            cxshow:true,
+            ckid:'',
+            ckshow:true,
+            tjid:'',
+            tjshow:true,
+                  xiala:require('../../assets/images/ziyuan4.png'),
+            gbid:'',
+            gbshow:true,
             pageDate: {
                 pageIndex: 1,
                 pagesize: 50,
@@ -969,261 +562,200 @@ export default {
                 togesize: 0
             },
             zoom: 1,
-            lang: JSON.parse(localStorage.getItem('languages'))[
-                localStorage.getItem('currentLang')
-            ]
+            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
     watch: {
-        VpowerData(val) {
-            this.jurisdiction = this.$store.state.btnPowerData;
-            this.buttonarr = this.findPathByLeafId(
-                this.GetUrlParam('id'),
-                this.jurisdiction
-            )[0].Children;
-            this.buttonarr.forEach(item => {
-                if (item.RightName == '代办点巡检-查询按钮') {
-                    this.cxid = item.RightID;
-                } else if (item.RightName == '代办点巡检-提交按钮') {
-                    this.tjid = item.RightID;
-                } else if (item.RightName == '代办点巡检-关闭按钮') {
-                    this.gbid = item.RightID;
-                } else if (item.RightName == '代办点巡检-查看按钮') {
-                    this.ckid = item.RightID;
-                }
-            });
-            var userid = '';
-            if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
-                userid = JSON.parse(sessionStorage.getItem('sightseerInfo1'))
-                    .SCMSUserID;
+         VpowerData(val){
+              this.jurisdiction = this.$store.state.btnPowerData
+     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
+        this.buttonarr.forEach((item)=>{
+         if(item.RightName == "代办点巡检-查询按钮"){
+          this.cxid = item.RightID
+         }else if(item.RightName == "代办点巡检-提交按钮"){
+          this.tjid = item.RightID
+         }else if(item.RightName == "代办点巡检-关闭按钮"){
+          this.gbid = item.RightID
+         }else if(item.RightName == "代办点巡检-查看按钮"){
+          this.ckid = item.RightID
+         }
+     })
+       var userid = ''
+      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+                userid = JSON.parse(
+                    sessionStorage.getItem('sightseerInfo1')
+                ).SCMSUserID;
             } else {
-                userid = JSON.parse(sessionStorage.getItem('userInfo1'))
-                    .SCMSUserID;
+                userid = JSON.parse(
+                    sessionStorage.getItem('userInfo1')
+                ).SCMSUserID;
             }
-            this.$axios({
-                method: 'post',
-                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`
-            })
-                .then(res => {
-                    this.cxshow = res.data.data;
-                })
-                .catch(err => {
-                    console.log('err', err);
-                });
-            this.$axios({
-                method: 'post',
-                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.tjid}`
-            })
-                .then(res => {
-                    this.tjshow = res.data.data;
-                })
-                .catch(err => {
-                    console.log('err', err);
-                });
-            this.$axios({
-                method: 'post',
-                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.gbid}`
-            })
-                .then(res => {
-                    this.gbshow = res.data.data;
-                })
-                .catch(err => {
-                    console.log('err', err);
-                });
-            this.$axios({
-                method: 'post',
-                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ckid}`
-            })
-                .then(res => {
-                    this.ckshow = res.data.data;
-                })
-                .catch(err => {
-                    console.log('err', err);
-                });
-        }
+              this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`,
+              }).then(res => {
+                  this.cxshow = res.data.data
+              
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
+                this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.tjid}`,
+              }).then(res => {
+                  this.tjshow = res.data.data
+              
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
+                this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.gbid}`,
+              }).then(res => {
+                  this.gbshow = res.data.data
+              
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
+                this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ckid}`,
+              }).then(res => {
+                  this.ckshow = res.data.data
+              
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
+         }
+         
     },
     created() {
-        this.getLangData();
-        this.jurisdiction = this.$store.state.btnPowerData;
-        this.buttonarr = this.findPathByLeafId(
-            this.GetUrlParam('id'),
-            this.jurisdiction
-        )[0].Children;
-        this.buttonarr.forEach(item => {
-            if (item.RightName == '代办点巡检-查询按钮') {
-                this.cxid = item.RightID;
-            } else if (item.RightName == '代办点巡检-提交按钮') {
-                this.tjid = item.RightID;
-            } else if (item.RightName == '代办点巡检-关闭按钮') {
-                this.gbid = item.RightID;
-            } else if (item.RightName == '代办点巡检-查看按钮') {
-                this.ckid = item.RightID;
+        this.getLangData()
+                 this.jurisdiction = this.$store.state.btnPowerData
+     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
+        this.buttonarr.forEach((item)=>{
+         if(item.RightName == "代办点巡检-查询按钮"){
+          this.cxid = item.RightID
+         }else if(item.RightName == "代办点巡检-提交按钮"){
+          this.tjid = item.RightID
+         }else if(item.RightName == "代办点巡检-关闭按钮"){
+          this.gbid = item.RightID
+         }else if(item.RightName == "代办点巡检-查看按钮"){
+          this.ckid = item.RightID
+         }
+     })
+       var userid = ''
+      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+                userid = JSON.parse(
+                    sessionStorage.getItem('sightseerInfo1')
+                ).SCMSUserID;
+            } else {
+                userid = JSON.parse(
+                    sessionStorage.getItem('userInfo1')
+                ).SCMSUserID;
             }
-        });
-        var userid = '';
-        if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
-            userid = JSON.parse(sessionStorage.getItem('sightseerInfo1'))
-                .SCMSUserID;
-        } else {
-            userid = JSON.parse(sessionStorage.getItem('userInfo1')).SCMSUserID;
-        }
-        this.$axios({
-            method: 'post',
-            url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`
-        })
-            .then(res => {
-                this.cxshow = res.data.data;
-            })
-            .catch(err => {
-                console.log('err', err);
-            });
-        this.$axios({
-            method: 'post',
-            url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.tjid}`
-        })
-            .then(res => {
-                this.tjshow = res.data.data;
-            })
-            .catch(err => {
-                console.log('err', err);
-            });
-        this.$axios({
-            method: 'post',
-            url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.gbid}`
-        })
-            .then(res => {
-                this.gbshow = res.data.data;
-            })
-            .catch(err => {
-                console.log('err', err);
-            });
-        this.$axios({
-            method: 'post',
-            url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ckid}`
-        })
-            .then(res => {
-                this.ckshow = res.data.data;
-            })
-            .catch(err => {
-                console.log('err', err);
-            });
+              this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`,
+              }).then(res => {
+                  this.cxshow = res.data.data
+              
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
+                this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.tjid}`,
+              }).then(res => {
+                  this.tjshow = res.data.data
+              
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
+                this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.gbid}`,
+              }).then(res => {
+                  this.gbshow = res.data.data
+              
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
+                this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ckid}`,
+              }).then(res => {
+                  this.ckshow = res.data.data
+              
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
         this.getEquipmentType();
         this.req(1);
         this.time4 = this.getNowTime();
     },
-    computed: {
+        computed:{
         VpowerData() {
-            return this.$store.state.btnPowerData;
-        }
+                    return this.$store.state.btnPowerData;
+        },
     },
     methods: {
-        tipCallBack(str) {
-            this.isTipShow = false;
-        },
-        openSopListPop(item) {
-            this.SopListPopItem = item;
-            this.SopListPopShow = true;
-        },
-        sopListPopCallback() {
-            this.SopListPopItem = null;
-            this.SopListPopShow = false;
-        },
-        openViewSop(item) {
-            this.defaultSrc = this.imgSrc(item.StandardProjectId);
-            this.sopData = [this.defaultSrc];
-            this.sopShow = true;
-        },
-        imgSrc(_id) {
-            const apiHref = window.location.host.includes('localhost')
-                ? '192.168.2.73:8802'
-                : window.location.host;
-            let str = `http://${apiHref}/api/PointInspectionManage/PointInspectionManage_GetByStandardProjectId?standardProjectId=${_id}`;
-            str = str.replace(/\\/g, '\\\\');
-            return str;
-        },
-        viewSopCallback() {
-            this.sopShow = false;
-        },
         getLangData() {
-            this.sametimearr = [
-                this.lang.HMI_HT_LineChartWindowViewModel_Hour,
-                this.lang.MaintenanceManage_Day,
-                this.lang.HMI_HT_LineChartWindowViewModel_Week,
-                this.lang.HMI_HT_LineChartWindowViewModel_Month
-            ];
-            this.warrantystatus = [
-                this.lang.EquipmentAccount_Inside,
-                this.lang.EquipmentAccount_Outside
-            ];
-            this.devicestatus = [
-                this.lang.EquipmentAccount_Used,
-                this.lang.EquipmentAccount_Stopped,
-                this.lang.EquipmentAccount_Abandoned
-            ];
-            this.warry = this.lang.EquipmentAccount_Inside;
-            this.device = this.lang.EquipmentAccount_Used;
-            this.Meter1 = this.lang.AlarmRecord_HT_Unlimited;
-            this.Meter2 = this.lang.AlarmRecord_HT_Unlimited;
-            this.ztarr = [
-                this.lang.AlarmRecord_HT_Unlimited,
-                this.lang.MaintenanceManage_NotStarted,
-                this.lang.MaintenanceManage_Ongoing,
-                this.lang.MaintenanceManage_Delayed
-            ];
-            this.leixinarr = [
-                this.lang.AlarmRecord_HT_Unlimited,
-                this.lang.RepairManage_PlanRepair,
-                this.lang.RepairManage_FaultRepair
-            ];
+            this.sametimearr =  [this.lang.HMI_HT_LineChartWindowViewModel_Hour, this.lang.MaintenanceManage_Day, this.lang.HMI_HT_LineChartWindowViewModel_Week, this.lang.HMI_HT_LineChartWindowViewModel_Month]
+            this.warrantystatus = [this.lang.EquipmentAccount_Inside, this.lang.EquipmentAccount_Outside]
+            this.devicestatus = [this.lang.EquipmentAccount_Used, this.lang.EquipmentAccount_Stopped, this.lang.EquipmentAccount_Abandoned]
+            this.warry = this.lang.EquipmentAccount_Inside
+            this.device = this.lang.EquipmentAccount_Used
+            this.Meter1 = this.lang.AlarmRecord_HT_Unlimited
+            this.Meter2 = this.lang.AlarmRecord_HT_Unlimited
+            this.ztarr = [this.lang.AlarmRecord_HT_Unlimited, this.lang.MaintenanceManage_NotStarted, this.lang.MaintenanceManage_Ongoing, this.lang.MaintenanceManage_Delayed]
+            this.leixinarr = [this.lang.AlarmRecord_HT_Unlimited, this.lang.RepairManage_PlanRepair, this.lang.RepairManage_FaultRepair]
         },
-        ch(a, b, c, d) {
-            if (d) {
-                this.projectarr[a].Projects[b].check[c] = 1;
-            } else {
-                this.projectarr[a].Projects[b].check[c] = 0;
+        ch(a,b,c,d){
+            if(d){
+          this.projectarr[a].Projects[b].check[c] = 1
+            }else{
+             this.projectarr[a].Projects[b].check[c] = 0
             }
-            console.log(this.projectarr);
+            console.log(this.projectarr)
         },
-        findPathByLeafId(id, node, path) {
-            if (!path) {
-                path = [];
-            }
-            for (let i = 0; i < node.length; i++) {
-                var temPath = path.concat();
-
-                if (id == node[i].RightID) {
-                    temPath.push(node[i]);
-                    return temPath;
-                }
-                if (node[i].Children) {
-                    var findResult = this.findPathByLeafId(
-                        id,
-                        node[i].Children,
-                        temPath
-                    );
-                    if (findResult) {
-                        return findResult;
-                    }
-                }
-            }
+              findPathByLeafId(id,node,path){
+        if(!path){
+             path = []
+         }
+        for(let i=0;i<node.length;i++){
+          var temPath = path.concat();
+        
+          if(id == node[i].RightID){
+                temPath.push(node[i])
+           return temPath
+          }
+          if(node[i].Children){
+           var findResult = this.findPathByLeafId(id,node[i].Children,temPath)
+           if(findResult){
+           return findResult
+           }
+          }
+        }
         },
-        GetUrlParam(paraName) {
-            let url = document.location.toString();
-            let arrObj = url.split('?');
-            if (arrObj.length > 1) {
-                let arrPara = arrObj[1].split('&');
-                let arr;
-                for (let i = 0; i < arrPara.length; i++) {
-                    arr = arrPara[i].split('=');
-                    if (arr && arr[0] == paraName) {
-                        return arr[1];
-                    }
-                }
-                return '';
-            } else {
-                return '';
+          GetUrlParam(paraName) {
+        let url = document.location.toString();
+        let arrObj = url.split("?");
+        if (arrObj.length > 1) {
+            let arrPara = arrObj[1].split("&");
+            let arr;
+           for(let i=0;i<arrPara.length;i++){
+            arr = arrPara[i].split("=");
+            if(arr&&arr[0] == paraName){
+              
+               return arr[1]
             }
-        },
+           }
+           return ''
+        }else {
+            return ''
+        }
+          },
         GMTToStr(time) {
             let date = new Date(time);
             let m = date.getMonth() + 1,
@@ -1246,16 +778,13 @@ export default {
             this.changeselect = false;
         },
         tip1() {
-            if (
-                this.tipword ==
-                this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect
-            ) {
-                this.value1 = new Date(new Date().toLocaleDateString());
-                this.value2 = new Date(
-                    new Date(new Date().toLocaleDateString()).getTime() +
-                        24 * 60 * 60 * 1000 -
-                        1
-                );
+            if(this.tipword == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect){
+                    this.value1=new Date(new Date().toLocaleDateString());
+            this.value2=new Date(
+                new Date(new Date().toLocaleDateString()).getTime() +
+                    24 * 60 * 60 * 1000 -
+                    1
+                      );
             }
             this.tipchange = false;
         },
@@ -1266,14 +795,13 @@ export default {
                 )
                 .then(res => {
                     console.log(res);
-                    (this.tipword = this.lang.MaintenanceManage_ClosedSuccessfully),
-                        (this.daibang = false);
-                    setTimeout(() => {
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
+                    (this.tipword = this.lang.MaintenanceManage_ClosedSuccessfully), (this.daibang = false);
+                      setTimeout(() => {
+             this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
                     this.sad(1);
-                    this.gbword = '';
+                    this.gbword = ''
                 });
         },
         mouseDownHandleelse12(event) {
@@ -1353,62 +881,65 @@ export default {
             this.change = false;
             this.setionchange = false;
             this.daibang = false;
-            this.gbword = '';
-            let ss = JSON.stringify(this.antable);
+            this.gbword = ''
+                let ss = JSON.stringify(this.antable);
             this.tableData1 = JSON.parse(ss);
         },
 
         handleEdit(a, b) {
-            if (!this.ckshow) {
-                this.tipword = this.lang.NoOperationAuthority;
-                setTimeout(() => {
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-                return;
+              if(!this.ckshow){
+               this.tipword = this.lang.NoOperationAuthority;
+                 setTimeout(() => {
+             this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
+               return
             }
             console.log(a);
             console.log(b);
-            b.Devices.forEach(item => {
-                item.Projects.forEach(items => {
-                    if (items.Type == 2) {
-                        items.Right = null;
-                        items.Referencearr = items.Reference.split('|');
-                    } else if (items.Type == 4) {
-                        items.Referencearr = items.Reference.split('|');
-                        if (!items.Answer) {
-                            items.check = [];
-                            items.Referencearr.forEach(item2 => {
-                                items.check.push(0);
-                            });
-                        } else {
-                            items.check = items.Right.split(',');
-                        }
-                    }
-                });
-            });
-            setTimeout(() => {
-                this.setionchange = true;
+            b.Devices.forEach((item)=>{
+                item.Projects.forEach((items)=>{
+                     if(items.Type==2){
+                         items.Right = null
+                         items.Referencearr = items.Reference.split('|')
+                     }else if(items.Type==4){
+                         
+                         items.Referencearr = items.Reference.split('|')
+                         if(!items.Answer){
+                               items.check = []
+                              items.Referencearr.forEach((item2)=>{
+                                    items.check.push(0)
+                              })
+                           
+                         }else{
+                             items.check = items.Right.split(',')
+                         }
+                     }
+                     
+                })
+            })
+              setTimeout(() => {
+               this.setionchange = true;
                 this.move('sestion', 'sestionheader1');
             });
             this.sestion = 1;
             this.disabled = true;
             this.sesstion = b;
             this.projectarr = b.Devices;
-            console.log('sszz==>', a, b);
+            console.log('sszz==>',a,b)
+
         },
         handleEdit3(a, b) {
-            console.log(a, b);
-            if (!this.gbshow) {
-                this.tipword = this.lang.NoOperationAuthority;
-                setTimeout(() => {
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-                return;
+               if(!this.gbshow){
+               this.tipword = this.lang.NoOperationAuthority;
+                 setTimeout(() => {
+             this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
+               return
             }
-            setTimeout(() => {
-                this.daibang = true;
+             setTimeout(() => {
+              this.daibang = true;
                 this.move('boxsad', 'tqw');
             });
 
@@ -1416,36 +947,39 @@ export default {
             // this.change11 = true;
         },
         handleEdit1(a, b) {
-            if (!this.tjshow) {
-                this.tipword = this.lang.NoOperationAuthority;
-                setTimeout(() => {
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-                return;
+            
+            if(!this.tjshow){
+               this.tipword = this.lang.NoOperationAuthority;
+                 setTimeout(() => {
+             this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
+               return
             }
             console.log(a);
             console.log(b);
-            b.Devices.forEach(item => {
-                item.Projects.forEach(items => {
-                    if (items.Type == 2) {
-                        items.Right = null;
-                        items.Referencearr = items.Reference.split('|');
-                    } else if (items.Type == 4) {
-                        items.Referencearr = items.Reference.split('|');
-                        if (!items.Right) {
-                            items.check = [];
-                            items.Referencearr.forEach(item2 => {
-                                items.check.push(0);
-                            });
-                        } else {
-                            items.check = items.Right.split(',');
-                        }
-                    }
-                });
-            });
-            setTimeout(() => {
-                this.setionchange = true;
+                  b.Devices.forEach((item)=>{
+                item.Projects.forEach((items)=>{
+                     if(items.Type==2){
+                         items.Right = null
+                         items.Referencearr = items.Reference.split('|')
+                     }else if(items.Type==4){
+                         items.Referencearr = items.Reference.split('|')
+                         if(!items.Right){
+                              items.check = []
+                             items.Referencearr.forEach((item2)=>{
+                                items.check.push(0)
+                             })
+                            
+                         }else{
+                             items.check = items.Right.split(',')
+                         }
+                     }
+                     
+                })
+            })
+              setTimeout(() => {
+               this.setionchange = true;
                 this.move('sestion', 'sestionheader1');
             });
             this.sestion = 2;
@@ -1453,6 +987,7 @@ export default {
             this.sesstion = b;
             this.projectarr = b.Devices;
             console.log(this.projectarr);
+            
         },
         getNowTime() {
             let date = new Date();
@@ -1475,10 +1010,7 @@ export default {
             let j = 1;
             for (i in this.selectname) {
                 if (this.a1 == 1) {
-                    if (
-                        this.selectname[i].NodeName ==
-                        this.lang.EquipmentAccount_EquipmentType
-                    ) {
+                    if (this.selectname[i].NodeName == this.lang.EquipmentAccount_EquipmentType) {
                         this.selectname[i].NID =
                             '11111111-1111-1111-1111-111111111111';
                     }
@@ -1501,7 +1033,7 @@ export default {
             }
             this.data6 = [];
             this.data6.push(this.selectname[0]);
-            $(`.selectword`).css({
+              $(`.selectword`).css({
                 left:
                     $('.sblx')[0].offsetLeft + $('.sblx')[0].clientWidth + 'px',
                 top:
@@ -1514,31 +1046,26 @@ export default {
         cancel2() {
             if (this.Preservation == this.lang.EquipmentAccount_EquipmentType) {
                 this.Preservation = this.lang.EquipmentAccount_ClickSelect;
-            } else if (
-                this.Preservation5 == this.lang.EquipmentAccount_InstallPosition
-            ) {
+            } else if (this.Preservation5 == this.lang.EquipmentAccount_InstallPosition) {
                 this.Preservation5 = this.lang.EquipmentAccount_ClickSelect;
             } else {
                 this.cancel1 = false;
             }
             this.cancel1 = false;
         },
-        start() {
+       start() {
             this.PageData.PageIndex = 1;
             this.onetable();
         },
         abck() {
-            if (1 < this.PageData.PageIndex && this.PageData.PageIndex !== 1) {
+            if ((1 < this.PageData.PageIndex) &&(  this.PageData.PageIndex!==1)) {
                 this.PageData.PageIndex--;
 
                 this.onetable();
             }
         },
-        next() {
-            if (
-                this.PageData.PageIndex < this.PageData.TotalPage &&
-                this.PageData.PageIndex !== this.PageData.TotalPage
-            ) {
+      next() {
+            if ((this.PageData.PageIndex <  this.PageData.TotalPage)&&(this.PageData.PageIndex!==this.PageData.TotalPage)) {
                 this.PageData.PageIndex++;
                 this.onetable();
             }
@@ -1581,61 +1108,47 @@ export default {
                     `/api/PointInspectionManage/PointInspectionManage_GstTask?argDeviceType=${c}&argStartTime=${this.value1}&argTaskStatus=${a}&argEndTime=${this.value2}&argKeyword=${this.keyword}&argPageSize=${this.PageData.PageSize}&argPageIndex=${this.PageData.PageIndex}`
                 )
                 .then(res => {
-                    console.log(res);
-                    if (res.data.code == 0) {
+                    console.log(res)
+                     if (res.data.code == 0) {
                         this.tableData1 = res.data.data.DataList;
                         this.PageData = res.data.data.ParameterList;
-                        let i = 0;
-                        for (i in this.tableData1) {
-                            this.tableData1[i].StartTime = this.gettime(
-                                this.tableData1[i].StartTime
-                            );
-                            this.tableData1[i].EndTime = this.gettime(
-                                this.tableData1[i].EndTime
-                            );
-                            let a = i;
-                            this.tableData1[i].Number = ++a;
-                            if (this.tableData1[i].Status == 4) {
-                                this.tableData1[
-                                    i
-                                ].Status = this.lang.MaintenanceManage_Closed;
-                            } else if (this.tableData1[i].Status == 5) {
-                                this.tableData1[
-                                    i
-                                ].Status = this.lang.MaintenanceManage_Completed;
-                            } else if (this.tableData1[i].Status == 6) {
-                                this.tableData1[
-                                    i
-                                ].Status = this.lang.MaintenanceManage_TimeoutCompleted;
-                            } else if (this.tableData1[i].Status == 7) {
-                                this.tableData1[
-                                    i
-                                ].Status = this.lang.MaintenanceManage_Expired;
-                            } else if (
-                                this.tableData1[i].Status == 1 ||
-                                this.tableData1[i].Status == 0
-                            ) {
-                                this.tableData1[
-                                    i
-                                ].Status = this.lang.MaintenanceManage_NotStarted;
-                            } else if (this.tableData1[i].Status == 2) {
-                                this.tableData1[
-                                    i
-                                ].Status = this.lang.MaintenanceManage_Ongoing;
-                            } else if (this.tableData1[i].Status == 3) {
-                                this.tableData1[
-                                    i
-                                ].Status = this.lang.MaintenanceManage_Delayed;
-                            }
+                    let i = 0;
+                    for (i in this.tableData1) {
+                        this.tableData1[i].StartTime = this.gettime(
+                            this.tableData1[i].StartTime
+                        );
+                        this.tableData1[i].EndTime = this.gettime(
+                            this.tableData1[i].EndTime
+                        );
+                        let a = i;
+                        this.tableData1[i].Number = ++a;
+                        if (this.tableData1[i].Status == 4) {
+                            this.tableData1[i].Status = this.lang.MaintenanceManage_Closed;
+                        } else if (this.tableData1[i].Status == 5) {
+                            this.tableData1[i].Status = this.lang.MaintenanceManage_Completed;
+                        } else if (this.tableData1[i].Status == 6) {
+                            this.tableData1[i].Status = this.lang.MaintenanceManage_TimeoutCompleted;
+                        } else if (this.tableData1[i].Status == 7) {
+                            this.tableData1[i].Status = this.lang.MaintenanceManage_Expired;
+                        } else if (
+                            this.tableData1[i].Status == 1 ||
+                            this.tableData1[i].Status == 0
+                        ) {
+                            this.tableData1[i].Status = this.lang.MaintenanceManage_NotStarted;
+                        } else if (this.tableData1[i].Status == 2) {
+                            this.tableData1[i].Status = this.lang.MaintenanceManage_Ongoing;
+                        } else if (this.tableData1[i].Status == 3) {
+                            this.tableData1[i].Status = this.lang.MaintenanceManage_Delayed;
                         }
-                    } else {
+                    }
+                     }else{
                         setTimeout(() => {
-                            this.tipchange = true;
-                            this.move('tip', 'tiphead');
-                        });
+             this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
                         this.tipword = res.data.msg;
                         this.tableData1 = [];
-                        this.PageData = {
+                        this.PageData ={
                             PageSize: 50,
                             TotalCount: 0,
                             TotalPage: 1,
@@ -1643,10 +1156,10 @@ export default {
                             LastEnabled: false,
                             NextEnabled: false
                         };
-                    }
-
-                    this.nowpage = this.PageData.PageIndex;
-                    let avc = JSON.stringify(this.tableData1);
+                     }
+                  
+                   this.nowpage = this.PageData.PageIndex;
+                     let avc = JSON.stringify(this.tableData1);
                     this.antable = JSON.parse(avc);
                     console.log(res);
                 });
@@ -1669,22 +1182,22 @@ export default {
                 date.getFullYear() + mm + dd + ' ' + hh + ':' + ii + ':' + ss
             );
         },
-        isPositiveInteger(s) {
+          isPositiveInteger(s) {
             //是否为正整数
             var re = /^[0-9]+$/;
             return re.test(s);
         },
-        jump() {
+       jump() {
             if (!this.isPositiveInteger(this.nowpage)) {
-                setTimeout(() => {
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
+                  setTimeout(() => {
+             this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
                 this.tipword = this.lang.RoleManage_HT_PEAPositiveInteger;
-                setTimeout(() => {
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
+                  setTimeout(() => {
+             this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
                 return;
             } else {
                 if (
@@ -1696,10 +1209,10 @@ export default {
                         this.nowpage > this.PageData.TotalPage
                     ) {
                         this.tipword = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
-                        setTimeout(() => {
-                            this.tipchange = true;
-                            this.move('tip', 'tiphead');
-                        });
+                          setTimeout(() => {
+             this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
                         return;
                     }
                 }
@@ -1709,69 +1222,65 @@ export default {
             this.onetable();
         },
         sad(a) {
-            if (!this.cxshow && a !== 1) {
-                setTimeout(() => {
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-                this.tipword = this.lang.NoOperationAuthority;
-                return;
+            if(!this.cxshow&&a!==1){
+             setTimeout(() => {
+             this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
+                this.tipword =this.lang.NoOperationAuthority;
+                return
             }
             if (
                 new Date(this.value1).getTime() >
                 new Date(this.value2).getTime()
             ) {
-                setTimeout(() => {
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
+                  setTimeout(() => {
+             this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
                 this.tipword = this.lang.AlarmRecord_HT_TheQueryDate;
-                return;
+                return
             }
             this.onetable();
         },
         setParams(params) {
             this.searchData = params;
         },
-        sx() {
-            let that = this;
-            setTimeout(() => {
-                for (let i = 0; i < $('.el-picker-panel').length; i++) {
-                    $('.el-picker-panel')[i].style.zoom = that.zoom;
-                }
-            });
-        },
+                  sx(){
+            let that = this
+            setTimeout(()=>{
+for(let i=0;i<$('.el-picker-panel').length;i++){
+                $('.el-picker-panel')[i].style.zoom = that.zoom
+            }
+            })
+                  },
         preservation6() {
             let i = 0;
             let a = [];
-
+           
             let c = 0;
             for (c in this.projectarr) {
                 for (i in this.projectarr[c].Projects) {
-                    let b = {
-                        Answer: '',
-                        ProjectID: ''
-                    };
+                     let b = {
+                Answer:"",
+                ProjectID:""
+            };
                     b.ProjectID = this.projectarr[c].Projects[i].PID;
-
+                   
                     b.Answer = this.projectarr[c].Projects[i].Answer;
-                    if (this.projectarr[c].Projects[i].Type == 2) {
-                        if (this.projectarr[c].Projects[i].Answer == '是') {
-                            b.Answer = '10';
-                        } else if (
-                            this.projectarr[c].Projects[i].Answer == '否'
-                        ) {
-                            b.Answer = '01';
+                     if(this.projectarr[c].Projects[i].Type==2){
+                        if(this.projectarr[c].Projects[i].Answer=='是'){
+                            b.Answer = '10'
+                        }else  if(this.projectarr[c].Projects[i].Answer=='否'){
+                             b.Answer = '01'
                         }
                     }
-                    if (this.projectarr[c].Projects[i].Type == 4) {
-                        b.Answer = '';
-                        b.Answer = this.projectarr[c].Projects[i].check
-                            .toString()
-                            .replace(/,/g, '');
+                     if(this.projectarr[c].Projects[i].Type==4){
+                       b.Answer = ''
+                       b.Answer = this.projectarr[c].Projects[i].check.toString().replace(/,/g, "")
                     }
-                    console.log(b);
-                    a.push(b);
+                    console.log(b)
+                    a.push(b)
                 }
             }
 
@@ -1786,10 +1295,10 @@ export default {
                     ProjectAnswerGroup: a
                 }
             }).then(res => {
-                setTimeout(() => {
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
+                  setTimeout(() => {
+             this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
                 console.log(res);
                 if (res.data.code !== 0) {
                     this.tipword = res.data.msg;
@@ -1877,17 +1386,18 @@ export default {
                 })
                 .catch(err => {});
         },
-        move(name, namehead) {
-            //  $(`.${name}`).addClass('center')
-            let left = $(`.${name}`).width() / 2 + 'px';
-            let top = $(`.${name}`).height() / 2 + 'px';
-            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+               move(name, namehead) {
+          //  $(`.${name}`).addClass('center')
+           let left = ($(`.${name}`).width())/2+'px'
+           let top = ($(`.${name}`).height())/2+'px'
+             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
             $(`.${name}`)[0].addEventListener('mousedown', function(e) {
+                
                 console.log(e.target.className.toLocaleLowerCase());
-                console.log(namehead);
+                console.log(namehead)
                 if (e.target.className.toLocaleLowerCase() == namehead) {
-                    $(`.${name}`).removeClass('center');
+                    $(`.${name}`).removeClass('center')
                     window.event.stopPropagation();
                     var x = 0;
                     var y = 0;
@@ -1903,6 +1413,7 @@ export default {
                     isDown = true;
                     var pdmove = false;
 
+                     
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
@@ -1918,9 +1429,9 @@ export default {
                         //计算移动后的左偏移量和顶部的偏移量
                         var nl = nx - (x - l);
                         var nt = ny - (y - t);
-                        console.log(nx);
-                        console.log(x);
-                        console.log(l);
+                        console.log(nx)
+                        console.log(x)
+                        console.log(l)
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
@@ -1971,34 +1482,41 @@ export default {
         this.value2 = this.GMTToStr(this.value2);
         this.getsetime();
 
-        setTimeout(() => {
-            if (
-                window.screen.width <= 1280 &&
-                localStorage.getItem('currentLang') === 'Main_Language_EN'
-            ) {
-                $('.search-container .title').css({
-                    maxWidth: '75px',
-                    lineHeight: 1
-                });
+        this.zoom = window.screen.width / 1920 < 0.76 ? 0.76 : window.screen.width / 1920
+        setTimeout(()=>{
+            if(window.screen.width <= 1280 &&  localStorage.getItem('currentLang') === 'Main_Language_EN'){
+                $(".search-container .title").css({maxWidth:'75px', lineHeight: 1})
             }
-            $('.el-date-editor--datetime>.el-input__inner').css({
-                height: 40 + 'px',
-                lineHeight: 40 + 'px'
-            });
-        });
+            $(".el-date-editor--datetime>.el-input__inner").css({height: 40+'px', lineHeight: 40+'px' })
+          
+        })
     }
 };
 </script>
-
-<style lang="scss" scoped>
-.public-table1 {
-    .el-radio__label {
-        padding-left: 5px;
+<style lang="scss">
+.public-table{
+    &.blackBlueBg{
+        .mx .el-radio__label{
+            color: #fff!important;
+        }
+        .mx .el-checkbox__label{
+            color: #fff!important;
+        }
     }
 }
 </style>
-
 <style lang="scss" scoped>
+.public-table1{
+
+    .el-radio__label{
+        padding-left:5px;
+    }
+    
+}
+
+</style>
+
+<style lang='scss' scoped>
 select {
     background-color: #fff;
 }
@@ -2033,7 +1551,7 @@ select {
     position: fixed;
     width: 380px;
     height: 200px;
-    z-index: 30;
+    z-index: 30999999;
     top: 350px;
     left: 750px;
     box-shadow: 0px 0px 8px black;
@@ -2147,7 +1665,7 @@ select {
     .sp1 {
         margin-left: 10px;
     }
-    .title {
+    .title{
         display: inline-block;
         line-height: 1;
         vertical-align: middle;
@@ -2170,7 +1688,7 @@ select {
         height: 40px;
         margin-left: 10px;
         text-indent: 1em;
-        border: 1px solid rgb(244, 244, 244);
+        border: 1px solid rgb(244,244,244);
     }
     .sad {
         width: 120px;
@@ -2217,6 +1735,125 @@ select {
     }
     .page-container {
         height: 60px;
+    }
+
+    &.blackBlueBg{
+        .el-tree{
+            background: #1D2846;
+            color: #C6CAD8;
+        }
+
+        .seleword,.seleword2{
+            background: #1D2846;
+            border: 1px solid #445992;
+            color: #C6CAD8;
+        }
+        .search-container{
+            background: #0B1530;
+            border-color: #38415A;
+            color: #E4E4E4;
+            .selectword{
+                background: #1D2846;
+                border: 1px solid #445992;
+            }
+            .addBtn{
+                background-color: transparent;
+                border: 1px solid #46BE05;
+                color: #46BE05;
+            }
+            .deleteBtn{
+                background-color: #4F5871;
+                border: 1px solid #4F5871;
+                color: #fff;
+            }
+        }
+        .table-container{
+            border-color: transparent;
+        }
+        .img{
+            border-color: #5C6A95;
+            background-color: transparent;
+        }
+
+        .boxsad{
+            background: #233056;
+            color: #fff;
+        }
+
+        .twice{
+            background: #28355B;
+            border-color: #445992;
+        }
+        .mx1{
+            color: #fff;
+        }
+        .mx{
+            border-color: #445992;
+        }
+
+        .look{
+            background: #233056;
+
+            .lookselect{
+                background: #28355B;
+                border-color: #445992;
+                color: #fff;
+
+                .table{
+                    border-color: #2A3058;
+                }
+                .el-table--border th.gutter:last-of-type{
+                    background-color: #344c8f;
+                }
+            }
+        }
+
+        select{
+            background: #1D2846!important;
+            border-color: #445992;
+
+            &:disabled{
+                background: #35446D!important;
+                border-color: #445992;
+            }
+
+            &:focus{
+                border-color: #B2C0E4
+            }
+        }
+        .showtext{
+            color: #fff;
+        }
+        .el-checkbok{
+            color: #fff;
+
+            &:disabled{
+                color: #6D789A;
+            }
+        }
+
+        .sestion{
+            border-color: transparent;
+
+            .sestioncontain{
+                background: #233056;
+            }
+            span{
+                color:#fff;
+            }
+            .input1{
+                color: #C6CAD8;
+                background: #35446D;
+                border-color: #445992;
+            }
+            .hometop-title{
+                background-color: transparent;
+            }
+
+            .line{
+                background-color: #445992;
+            }
+        }
     }
 }
 .table-container .img {
@@ -2273,7 +1910,7 @@ img {
 
 .selectword {
     position: absolute;
-    z-index: 11;
+    z-index: 11999999;
     width: 230px;
     overflow: auto;
     // height: 350px;
@@ -2294,7 +1931,7 @@ img {
 .cover1 {
     width: 100%;
     height: 100%;
-    z-index: 9;
+    z-index: 9999999;
     position: fixed;
     top: 0;
     left: 0;
@@ -2302,21 +1939,13 @@ img {
 .cover2 {
     width: 100%;
     height: 100%;
-    z-index: 29;
+    z-index: 29999999;
     position: fixed;
     top: 0;
     left: 0;
 }
-.sumbitResult {
+.sestion {
     width: 800px;
-    height: 740px;
-    z-index: 10;
-    box-shadow: 0px 0px 8px black;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid #cccccc;
     .is {
         display: inline-block;
         width: 240px;
@@ -2334,7 +1963,13 @@ img {
     select {
         background-color: #ebebe4;
     }
-
+    height: 800px;
+    z-index: 10999999;
+    box-shadow: 0px 0px 8px black;
+    position: fixed;
+    top: 120px;
+    left: 500px;
+    border: 1px solid #cccccc;
     .sestionheader {
         background-color: #386df0;
         height: 50px;
@@ -2352,7 +1987,7 @@ img {
         .no {
             position: absolute;
             top: 0;
-            z-index: 50;
+            z-index: 50999999;
             bottom: 0;
             margin: auto;
             height: 25px;
@@ -2377,11 +2012,11 @@ img {
         position: relative;
         font-size: 16px;
     }
-    .hometop {
+    .hometop{
         display: flex;
         width: 100%;
 
-        div {
+        div{
             margin-right: 10px;
         }
 
@@ -2432,7 +2067,7 @@ img {
         }
     }
     .inputimg {
-        z-index: 50;
+        z-index: 50999999;
         position: absolute;
         right: 7px;
         top: 0;
@@ -2459,8 +2094,8 @@ img {
         display: inline-block;
         width: 50%;
         margin-bottom: 10px;
-
-        span {
+        
+        span{
             display: inline-block;
             width: 85px;
             text-align: right;
@@ -2496,8 +2131,8 @@ textarea {
         cursor: pointer;
     }
     width: 100%;
-    height: 60px;
-    line-height: 60px;
+    height: 50px;
+    line-height: 50px;
     color: #ababab;
     padding-left: 10px;
     font-size: 14px;
@@ -2532,26 +2167,12 @@ textarea {
 }
 .twice {
     float: left;
-    .item-sop {
-        display: flex;
-
-        .sop {
-            color: #386df0;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-        .sopImg {
-            height: 28px;
-            margin-left: 10px;
-            margin-bottom: 10px;
-            cursor: pointer;
-        }
-    }
     .mx {
         // float: right;
         // width: 87%;
+        border-bottom: 1px solid #cccccc;
         padding-bottom: 10px;
-        padding-top: 10px;
+        padding-top:10px;
         overflow: hidden;
 
         .num {
@@ -2575,6 +2196,7 @@ textarea {
             .nl {
                 margin: 10px 0 0 10px;
                 float: left;
+                margin-right: 20px;
                 input {
                     margin-left: 10px;
                     height: 24px;
@@ -2603,7 +2225,7 @@ textarea {
         .fl {
             float: left;
             margin-left: 10px;
-            span {
+            span{
                 display: inline-block;
                 max-width: 90px;
                 line-height: 1;
@@ -2618,29 +2240,16 @@ textarea {
         .zr {
             float: right;
             margin-right: 10px;
-            span {
+            span{
                 display: inline-block;
                 max-width: 90px;
                 line-height: 1;
                 vertical-align: middle;
             }
             input {
-                width: 150px;
+                width: 200px;
                 text-indent: 1em;
                 height: 36px;
-            }
-            .sopBtn {
-                display: inline-block;
-                width: 80px;
-                height: 36px;
-                border-radius: 8px;
-                color: #fff;
-                background: #386df0;
-                cursor: pointer;
-                text-align: center;
-                line-height: 36px;
-                font-size: 14px;
-                margin-left: 15px;
             }
         }
     }
@@ -2678,7 +2287,7 @@ textarea {
     position: fixed;
     width: 530px;
     height: 250px;
-    z-index: 30;
+    z-index: 30999999;
     .cancel {
         margin-top: 0px;
         margin-right: 20px;
@@ -2715,7 +2324,7 @@ textarea {
             height: 25px;
             right: 20px;
             cursor: pointer;
-            z-index: 50;
+            z-index: 50999999;
             img {
                 width: 100%;
                 height: 100%;
@@ -2729,7 +2338,7 @@ textarea {
 .cover7 {
     width: 100%;
     height: 100%;
-    z-index: 29;
+    z-index: 29999999;
     position: fixed;
     top: 0;
     left: 0;
@@ -2739,14 +2348,14 @@ textarea {
     height: 400px;
     overflow: auto;
 }
-.tqw {
+.tqw{
     width: 100%;
     height: 60px;
-    z-index: 30;
+    z-index: 30999999;
     top: 0;
     position: absolute;
 }
-img {
+img{
     cursor: pointer;
 }
 .fcolor {
@@ -2764,21 +2373,22 @@ img {
 .colortip {
     background-color: #efeff0 !important;
 }
-.rwnr {
+.rwnr{
     display: inline-block;
     width: 85px;
     width: 85px;
     vertical-align: middle;
     line-height: 1;
 }
-.overflow1 {
+.overflow1{
     margin-left: 0;
-    input {
-        position: relative;
-        left: 95px;
+    input{
+   position: relative;
+    left: 95px;
     }
+ 
 }
-.seleword {
+  .seleword{
     display: inline-block;
     width: 13%;
     height: 40px;
@@ -2787,17 +2397,16 @@ img {
     background: #fff;
     text-indent: 1em;
     line-height: 40px;
-    .seleword1 {
+    .seleword1{
         width: calc(100%);
         position: relative;
         height: 100%;
         padding-right: 20px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        word-break: break-all;
-        border: 1px solid rgb(244, 244, 244);
-        img {
+         white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
+        img{
             position: absolute;
             right: 2px;
             width: 20px;
@@ -2807,13 +2416,13 @@ img {
     }
     // align-content: bottom;
 }
-.tinput {
+.tinput{
     margin-left: 15% !important;
 }
-.tinput1 {
+.tinput1{
     margin-left: 23% !important;
 }
-.seleword2 {
+ .seleword2{
     display: inline-block;
     width: 21%;
     height: 30px;
@@ -2822,16 +2431,16 @@ img {
     background: #fff;
     text-indent: 1em;
     line-height: 30px;
-    .seleword1 {
+    .seleword1{
         width: calc(100%);
         position: relative;
         height: 100%;
         padding-right: 20px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        word-break: break-all;
-        img {
+         white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
+        img{
             position: absolute;
             right: 2px;
             width: 20px;
@@ -2846,7 +2455,8 @@ img {
     top: 41px !important;
     left: 113px !important;
 }
-.sblx {
-    display: inline-block;
+.sblx{
+    display:inline-block;
 }
 </style>
+

@@ -6,8 +6,8 @@
  * @LastEditTime: 2019-11-27 14:53:55
  -->
 <template>
-	<div class="alarm-container" ref="alarmContainer">
-			<aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200+'px'}]">
+	<div class="alarm-container" ref="alarmContainer" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+			<aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200*(width/1920)+'px'}]">
 			<left-nav @tabComponent="tabComponent"></left-nav>
 		</aside>
 		<section class="content-container">
@@ -37,10 +37,15 @@ export default {
 	},
 	created() {},
 	mounted(){
+		this.width = window.screen.width
+		this.zoom = (this.width/1920)>1?1:(this.width/1920)
 		setTimeout(()=>{
-		let a = '200px';
+		$('.alarm-container').css({
+        marginTop:$('.v-toolbar').height()*$('.v-toolbar')[0].style.zoom+10+'px'
+		});
+		let a = 200*(this.width/1920)+'px'
 		$('.content-container').css({
-            width:`calc(100% - ${a})`
+				width:`calc(100% - ${a})`
 		})
 		})
 	
@@ -63,7 +68,7 @@ export default {
 	// width: 100%;
 	// height: 100%;
 	// flex: 1;
-	height: calc(100% - 90px);
+	height: 86vh;
 	overflow: hidden;
 	color: #000;
 	margin-top: 100px;

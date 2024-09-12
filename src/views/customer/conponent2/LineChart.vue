@@ -10,7 +10,7 @@
     <div ref="LineChart22" @dblclick="opendb(item)" @contextmenu.prevent 
      @mousedown="downClick(item,$event)" @mouseup="seupClick(item,$event)"
      :style="'width:' + item.width + 'px; height:' + item.height + 'px; position:absolute; left:' 
-     + item.left + 'px; top:' + item.top +'px;zIndex:0; opacity:' + item.opacity + '; transform:rotate(' 
+     + item.left + 'px; top:' + item.top +'px;zIndex:0; opacity:' + item.opacity + '; transform:rotate:(' 
      + item.rotate + 'deg);zIndex:'+item.ZIndex">22 </div>
 
      <!-- 权限弹窗 -->
@@ -809,68 +809,36 @@ if(type=='min'){
                      }
         
                        //动态辅助线
-                     if (this.valueData.hasOwnProperty("MarkLine")) {
-                        var axiosArr = []
-                        for (let o6 = 0; o6 < this.valueData.MarkLine.length; o6++) {
-                            axiosArr.push(this.valueData.MarkLine[o6].axis)
-                            var a = new Set(axiosArr)
-                            axiosArr = [...a]
-                        }
-                        var index55 = []
-                        for (let o7 = 0; o7 < axiosArr.length; o7++) {
-                            for (let o5 = 0; o5 < Ddata.series.length; o5++) {
-                                var index99 = index55.indexOf(axiosArr[o7])
-                                if (index99 == -1) {
-                                    if (Ddata.series[o5].yAxisIndex == axiosArr[o7]) {
-                                        index55.push(axiosArr[o7])
-                                        var arr = []
-                                        for (var o8 = 0; o8 < this.valueData.MarkLine.length; o8++) {
-                                            if (this.valueData.MarkLine[o8].axis == axiosArr[o7]) {
-                                                arr.push(this.valueData.MarkLine[o8].yAxis)
+                      if(this.valueData.YDataCollection != undefined){
+                          for(let f=0;f<Ddata.series.length;f++){
+                                 if(Ddata.series[f].markLine.length != 0 && Ddata.series[f].markLine.data.length){
+                                     var variableData = Ddata.series[f].markLine.data
+                                     if(variableData){
+                                         for(let q=0;q<variableData.length;q++){
+                                             if(variableData[q].Type == "FromVariable"){
+                                                var index11 = this.variableArr.indexOf(variableData[q].TargetVariableName)
+                                                    if(index11 != -1){
+                                                        var vbArr = Ddata.series[index11].data
+                                                        var vBvalue = ''
+                                                        if(variableData[q].ValueMethod == 'Max'){
+                                                            vBvalue = Math.max.apply(Math,vbArr);
+                                                        }else if(variableData[q].ValueMethod == 'Min'){
+                                                            vBvalue = Math.min.apply(Math,vbArr);
+                                                        }else if(variableData[q].ValueMethod == 'Avg'){
+                                                            var sum=0;
+                                                            for(var i = 0; i < vbArr.length; i++){
+                                                                sum += Number(vbArr[i]);
+                                                            }
+                                                            vBvalue  = sum / vbArr.length;
+                                                        }
+                                                        Ddata.series[f].markLine.data[q].yAxis = vBvalue
+                                                    }
                                             }
-                                        }
-                                        if (arr.length) {
-                                            for (var o9 = 0; o9 < arr.length; o9++) {
-                                                if (Ddata.series[o5].markLine.length != 0 && arr[o9] != undefined) {
-                                                    Ddata.series[o5].markLine.data[o9].yAxis = arr[o9]
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //   if(this.valueData.YDataCollection != undefined){
-                    //       for(let f=0;f<Ddata.series.length;f++){
-                    //              if(Ddata.series[f].markLine.length != 0 && Ddata.series[f].markLine.data.length){
-                    //                  var variableData = Ddata.series[f].markLine.data
-                    //                  if(variableData){
-                    //                      for(let q=0;q<variableData.length;q++){
-                    //                          if(variableData[q].Type == "FromVariable"){
-                    //                             var index11 = this.variableArr.indexOf(variableData[q].TargetVariableName)
-                    //                                 if(index11 != -1){
-                    //                                     var vbArr = Ddata.series[index11].data
-                    //                                     var vBvalue = ''
-                    //                                     if(variableData[q].ValueMethod == 'Max'){
-                    //                                         vBvalue = Math.max.apply(Math,vbArr);
-                    //                                     }else if(variableData[q].ValueMethod == 'Min'){
-                    //                                         vBvalue = Math.min.apply(Math,vbArr);
-                    //                                     }else if(variableData[q].ValueMethod == 'Avg'){
-                    //                                         var sum=0;
-                    //                                         for(var i = 0; i < vbArr.length; i++){
-                    //                                             sum += Number(vbArr[i]);
-                    //                                         }
-                    //                                         vBvalue  = sum / vbArr.length;
-                    //                                     }
-                    //                                     Ddata.series[f].markLine.data[q].yAxis = vBvalue
-                    //                                 }
-                    //                         }
-                    //                      }
-                    //                  }
-                    //              }
-                    //       }
-                    //   }
+                                         }
+                                     }
+                                 }
+                          }
+                      }
 
                       //折线图数据 选择图例筛选数据
                     var lenIndex //最后一个显示图例

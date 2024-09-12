@@ -9,15 +9,42 @@ export default {
     props: ['ChartDataItem', 'ChartDataSource', 'ChartCalResult'],
     data() {
         return {
-            targetPage: 1
+            targetPage: 1,
+            option12:{},
+            Chart5: null
         };
     },
     created() {
         this.targetPage = this.pageData.PageIndex;
     },
+    computed:{
+        theme(){
+            return this.$store.state.color
+        }
+    },  
+    watch: {
+        theme(val){
+            if(val === 'blackBlue'){
+                this.option12.color = ['#5470C6']
+                this.option12.yAxis[0].splitLine.lineStyle.color = '#4C5777'
+                this.option12.yAxis[0].axisLabel.color = '#9AA3BE'
+                this.option12.xAxis[0].splitLine.lineStyle.color = '#4C5777'
+                this.option12.xAxis[0].axisLabel.color = '#9AA3BE'
+                this.option12.yAxis[0].nameTextStyle.color = '#9AA3BE'
+            }else{
+                this.option12.color = ['#E60012']
+                this.option12.yAxis[0].splitLine.lineStyle.color = '#ccc'
+                this.option12.yAxis[0].axisLabel.color = '#333'
+                this.option12.xAxis[0].splitLine.lineStyle.color = '#ccc'
+                this.option12.xAxis[0].axisLabel.color = '#333'
+                this.option12.yAxis[0].nameTextStyle.color = '#333'
+            }
+            this.Chart5.setOption(this.option12);
+        }
+    },
     methods: {
         intheadchart5() {
-            let Chart5 = this.$echarts.init(
+            this.Chart5 = this.$echarts.init(
                 document.getElementById('myChart4')
             );
             let xdata1_1 = new Array();
@@ -62,33 +89,47 @@ export default {
             if (parseFloat(USL) > maxyy) {
                 maxyy = parseFloat(USL);
             }
-            let option12 = {
+            this.option12 = {
                 calculable: true,
                 xAxis: [
                     {
                         type: 'category',
                         boundaryGap: false,
-                        data: xdata1_1
+                        data: xdata1_1,
+                        splitLine:{
+                            lineStyle: {
+                                color: this.$store.state.color === 'blackBlue' ? '#4C5777' : '#ccc'
+                            }
+                        },
+                        axisLabel: {
+                            color: this.$store.state.color === 'blackBlue' ? '#9AA3BE' : '#333',
+                        },
                     }
                 ],
                 yAxis: [
                     
                     {
                         type: 'value',
-                         "axisTick":{       //y轴刻度线
-          "show":true
-        },
-       "axisLine":{       //y轴
-          "show":true
-
-        },
+                        "axisTick":{       //y轴刻度线
+                            "show":true
+                        },
+                        "axisLine":{       //y轴
+                            "show":true
+                        },
+                        splitLine:{
+                            lineStyle: {
+                                color: this.$store.state.color === 'blackBlue' ? '#4C5777' : '#ccc'
+                            }
+                        },
                         axisLabel: {
+                            color: this.$store.state.color === 'blackBlue' ? '#9AA3BE' : '#333',
                             formatter: '{value}'
                         },
                         name: this.$t('CpkMsg.CpkAverage'),
                         nameTextStyle: {
                             fontSize: 16,
-                            fontFamily: 'SiYuanHei'
+                            fontFamily: 'SiYuanHei',
+                            color: this.$store.state.color === 'blackBlue' ? '#9AA3BE' : '#333',
                         },
                          min: minyy,
             max: maxyy
@@ -145,10 +186,10 @@ export default {
                     type: 'scatter',
                     data: ydata1_1
                 };
-                option12.series.push(obj);
+                this.option12.series.push(obj);
             }
-            console.log("option12",JSON.stringify(option12))
-            Chart5.setOption(option12);
+            console.log("this.option12",JSON.stringify(this.option12))
+            this.Chart5.setOption(this.option12);
         }
     },
     mounted() {

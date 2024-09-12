@@ -1,4 +1,4 @@
-<!--
+    <!--
  * @Description: 日志用户登录记录界面
  * @Date: 2019-11-25 19:42:01
  * @Author: 随风
@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-12-01 18:01:03
  -->
 <template>
-    <div class="public-table">
+    <div class="public-table" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
         <div class="search-container" :style="[{ height: 60 * a1 + 'px' }]">
             <my-search
                 :searchList="searchList"
@@ -20,7 +20,7 @@
         <div class="pages-container">
             <my-page :pageData="pageData" @req="req"></my-page>
         </div>
-        <div class="tip" ref="kongtiao3" v-show="tipchange1">
+        <div class="tip" :class="{blackBlueBg: $store.state.color==='blackBlue'}" ref="kongtiao3" v-show="tipchange1">
               <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
             <div class="tiptop">
                 <img :src="gth" alt />
@@ -89,7 +89,6 @@ export default {
                 LastEnabled: false,
                 NextEnabled: false
             },
-            a1: 1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
@@ -115,6 +114,10 @@ export default {
         this.req(1);
     },
     mounted() {
+        this.a1 = Number(parseFloat(window.screen.width / 1920).toFixed(2));
+        if (this.a1 < 1) {
+            this.a1 = 0.8;
+        }
     },
     methods: {
          getLangData() {
@@ -215,7 +218,13 @@ export default {
         setParams(params, a) {
             if (!a) {
                 setTimeout(() => {
-                    let a1 = 1
+                    let a1 = Number(
+                        parseFloat(window.screen.width / 1920).toFixed(2)
+                    );
+                    if (a1 < 1) {
+                        a1 = 0.8;
+                    }
+                    this.a1 = a1;
                     $('.tip').css({
                         zoom: a1,
                         left: `calc(50% - ${($('.tip').width() / 2) * a1}px)`,
@@ -239,7 +248,13 @@ export default {
                 !Regex.test(this.searchData.argEndTime)
             ) {
                 setTimeout(() => {
-                    let a1 = 1
+                    let a1 = Number(
+                        parseFloat(window.screen.width / 1920).toFixed(2)
+                    );
+                    if (a1 < 1) {
+                        a1 = 0.8;
+                    }
+                    this.a1 = a1;
                     $('.tip').css({
                         zoom: a1,
                         left: `calc(50% - ${($('.tip').width() / 2) * a1}px)`,
@@ -256,7 +271,13 @@ export default {
                 new Date(this.searchData.argEndTime).getTime()
             ) {
                 setTimeout(() => {
-                    let a1 = 1
+                    let a1 = Number(
+                        parseFloat(window.screen.width / 1920).toFixed(2)
+                    );
+                    if (a1 < 1) {
+                        a1 = 0.8;
+                    }
+                    this.a1 = a1;
                     $('.tip').css({
                         zoom: a1,
                         left: `calc(50% - ${($('.tip').width() / 2) * a1}px)`,
@@ -282,7 +303,13 @@ export default {
             if (s == 'jump') {
                 if (!this.isPositiveInteger(pageIndex)) {
                     setTimeout(() => {
-                        let a1 = 1
+                        let a1 = Number(
+                            parseFloat(window.screen.width / 1920).toFixed(2)
+                        );
+                        if (a1 < 1) {
+                            a1 = 0.8;
+                        }
+                        this.a1 = a1;
                         $('.tip').css({
                             zoom: a1,
                             left: `calc(50% - ${($('.tip').width() / 2) *
@@ -305,7 +332,15 @@ export default {
                             pageIndex > this.pageData.TotalPage
                         ) {
                             setTimeout(() => {
-                                let a1 = 1
+                                let a1 = Number(
+                                    parseFloat(
+                                        window.screen.width / 1920
+                                    ).toFixed(2)
+                                );
+                                if (a1 < 1) {
+                                    a1 = 0.8;
+                                }
+                                this.a1 = a1;
                                 $('.tip').css({
                                     zoom: a1,
                                     left: `calc(50% - ${($('.tip').width() /

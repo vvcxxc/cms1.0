@@ -9,8 +9,8 @@
 <div>
    <div v-for="(item,index) in dataValue" :key="index">
   <div
-      v-if="show" name="pressbutton" :class="item.class" class="PressButton7a" @mouseup.stop="upFun(item,$event)" 
-      @mousedown.stop="downFun(item,$event)"  @dblclick="opendb(item)" @contextmenu.prevent
+      v-if="show" name="pressbutton" :class="item.class" class="PressButton7a" @mouseup="upFun(item,$event)" 
+      @mousedown="downFun(item,$event)"  @dblclick="opendb(item)" @contextmenu.prevent
       :style="'position:absolute;' + 'left:' + item.left + 'px; top:' + item.top 
       + 'px; boxSizing:border-box; text-align:center; line-height:' + (item.height - item.BorderThickness*2) 
       + 'px; width:'+ item.width + 'px; height:'+ item.height + 'px; borderRadius:' 
@@ -219,7 +219,6 @@ export default {
                   //下发事件
               e.path[0].style.background='rgba(255,255,255,0.7)'
               self.jurisdictionShow(item).then(val => { 
-                console.log("11111111111111")
                 self.$parent.scriptData(Typearr,'点动按钮',item,'1','','')
               })
 
@@ -277,7 +276,6 @@ export default {
                   }
               });
               }else{
-                console.log("进来吧")
                 self.pressFun(item,'2')
               }
            }else if(e.which == 3){  //鼠标右键松开
@@ -300,13 +298,12 @@ export default {
                 e.path[0].style.background='rgba(255,255,255,0)'
               },200)
 
-        },600)
+        },200)
 
   },
 
     //点动下发事件
   pressFun(item,type){
-      console.log('这里很奇怪')
      if(item.ControlType != ''){
       if(!this.CanExcuteShow){
         //0为false 1为true 
@@ -364,17 +361,8 @@ export default {
         "Value":valueShow
       }
       arr.push(value)
-         //请求接口
-                           //请求接口
-                            this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags`,
-                                  data:arr
-                             }).then((res1)=>{
-                                  if(res1.data.code === 0){
-                                this.commerPopShow = false
-                                //  this.commerPopShow1value =  '该账户无操作权限'
-                        this.$axios({
+        //请求接口
+            this.$axios({
                   method: 'post',
                   url: '/api/Base/PostIOServiceTest',
                   data:arr
@@ -383,13 +371,6 @@ export default {
               }).catch(function(error) {
                     // console.log(error);
                 });
-                                  }else{
-                       console.log("res1",res1)
-                               this.commerPopShow1 = true   
-                               this.commerPopShow1value = res1.data.msg
-                                  }
-                               
-                              })
       }else{
         this.commerPopShow1 = true
       }

@@ -13,13 +13,15 @@
             element-loading-background="rgba(0, 0, 0, 0.4)"
             v-loading="this.$store.state.isShow"
             v-show="this.$store.state.isShow"
-            style="position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;"
+            style="
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+            "
         ></div>
-        <div class="search-container">
+        <div class="search-container" :style="{ zoom }">
             <my-search
                 :searchList="searchList"
                 :searchData="searchData"
@@ -27,6 +29,7 @@
                 @change="change"
                 @confirm="confirm"
                 @allconfirm="allconfirm"
+                @exportFn="exportFn"
                 ref="time"
             ></my-search>
         </div>
@@ -41,10 +44,15 @@
         <div class="pages-container">
             <my-page :pageData="pageData" @req="req"></my-page>
         </div>
-        <div class="tip" v-show="tipchange">
+        <div
+            class="tip"
+            :class="{ blackBlueBg: $store.state.color === 'blackBlue' }"
+            v-show="tipchange"
+            :style="{ zoom }"
+        >
             <div
                 class="tiphead"
-                style="position:absolute;width: 380px;height: 40px;"
+                style="position: absolute; width: 380px; height: 40px"
             ></div>
             <div class="tiptop">
                 <img :src="gth" alt />
@@ -64,7 +72,7 @@
                 </div>
             </div>
         </div>
-        <div class="cover2" v-if="tipchange"></div>
+        <div class="cover2" v-if="tipchange" :style="{ zoom }"></div>
     </div>
 </template>
 
@@ -76,7 +84,7 @@ export default {
     components: {
         MySearch,
         MyTable,
-        MyPage
+        MyPage,
     },
     data() {
         return {
@@ -94,23 +102,23 @@ export default {
                     optionList: [
                         {
                             value: '不限',
-                            label: '不限'
+                            label: '不限',
                         },
                         {
                             value: '未确认未恢复',
-                            label: '未确认未恢复'
+                            label: '未确认未恢复',
                         },
                         {
                             value: '已确认未恢复',
-                            label: '已确认未恢复'
+                            label: '已确认未恢复',
                         },
                         {
                             value: '未确认已恢复',
-                            label: '未确认已恢复'
-                        }
+                            label: '未确认已恢复',
+                        },
                     ],
                     value: 'value',
-                    label: 'label'
+                    label: 'label',
                 },
                 {
                     title: '报警类型：',
@@ -118,7 +126,7 @@ export default {
                     type: 'select',
                     optionList: [],
                     value: 'value',
-                    label: 'label'
+                    label: 'label',
                 },
                 // {
                 // 	title: '报警时间范围：',
@@ -128,17 +136,17 @@ export default {
                 {
                     title: '报警时间范围：',
                     model: 'argStartTime',
-                    type: 'time'
+                    type: 'time',
                 },
                 {
                     title: '-',
                     model: 'argEndTime',
-                    type: 'time'
+                    type: 'time',
                 },
                 {
                     model: 'argKeyword',
-                    type: 'key'
-                }
+                    type: 'key',
+                },
             ],
             searchData: {
                 argAlarmArray: '',
@@ -149,22 +157,22 @@ export default {
                 argEndTime: '',
                 argKeyword: '',
                 argPageSize: 50,
-                argPageIndex: 1
+                argPageIndex: 1,
             },
             tableHead: {
-                AlarmDevice: '报警设备',
-                AlarmMsg: '报警内容',
                 AlarmTime: '报警时间',
-                AlarmStateName: '报警状态',
-                RecoverTime: '恢复时间',
-                AlarmValue: '报警值',
-                AlarmGroup: '报警组',
-                AlarmType: '报警类别',
-                AlarmLevel: '报警等级',
-                OperatorName: '报警确认员',
-                ConfirmTime: '确认时间',
+                AlarmTagName: '报警变量名',
                 AlarmTagAddress: '报警地址',
-                AlarmTagName: '报警变量名'
+                AlarmDevice: '报警设备',
+                AlarmType: '报警类别',
+                AlarmGroup: '报警组',
+                AlarmMsg: '报警信息',
+                AlarmValue: '报警值',
+                AlarmLevel: '报警等级',
+                RecoverTime: '恢复时间',
+                ConfirmTime: '确认时间',
+                OperatorName: '报警确认员',
+                AlarmStateName: '报警状态',
             },
             data: [],
             daochu: '',
@@ -174,7 +182,7 @@ export default {
                 TotalPage: 0,
                 PageIndex: 1,
                 LastEnabled: false,
-                NextEnabled: false
+                NextEnabled: false,
             },
             deviceList: [],
             confirmdata: '',
@@ -182,9 +190,10 @@ export default {
             enddata: {},
             time4: '',
             w1: false,
+            zoom: 1,
             lang: JSON.parse(localStorage.getItem('languages'))[
                 localStorage.getItem('currentLang')
-            ]
+            ],
         };
     },
     created() {
@@ -202,11 +211,16 @@ export default {
         );
         Object.assign(this.searchData, {
             argStartTime,
-            argEndTime
+            argEndTime,
         });
         this.time4 = this.getNowTime();
     },
-    mounted() {},
+    mounted() {
+        this.zoom =
+            window.screen.width / 1920 < 0.71
+                ? 0.71
+                : window.screen.width / 1920;
+    },
     methods: {
         move(name, namehead) {
             //  $(`.${name}`).addClass('center')
@@ -214,7 +228,7 @@ export default {
             let top = $(`.${name}`).height() / 2 + 'px';
             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
             $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
-            $(`.${name}`)[0].addEventListener('mousedown', function(e) {
+            $(`.${name}`)[0].addEventListener('mousedown', function (e) {
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
                     $(`.${name}`).removeClass('center');
@@ -236,7 +250,7 @@ export default {
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
-                    $('body')[0].addEventListener('mousemove', function(e) {
+                    $('body')[0].addEventListener('mousemove', function (e) {
                         pdmove = true;
                         if (isDown == false) {
                             return;
@@ -254,7 +268,7 @@ export default {
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
-                    $('body')[0].addEventListener('mouseup', function(e) {
+                    $('body')[0].addEventListener('mouseup', function (e) {
                         //开关关闭
                         isDown = false;
                         $('body')[0].style.cursor = 'default';
@@ -271,27 +285,29 @@ export default {
                     optionList: [
                         {
                             value: this.lang.AlarmRecord_HT_Unlimited,
-                            label: this.lang.AlarmRecord_HT_Unlimited
+                            label: this.lang.AlarmRecord_HT_Unlimited,
                         },
                         {
                             value: this.lang
                                 .AlarmRecord_HT_UnconfirmedUnresumed,
-                            label: this.lang.AlarmRecord_HT_UnconfirmedUnresumed
+                            label: this.lang
+                                .AlarmRecord_HT_UnconfirmedUnresumed,
                         },
                         {
                             value: this.lang
                                 .AlarmRecord_HT_ConfirmedNoRecovered,
-                            label: this.lang.AlarmRecord_HT_ConfirmedNoRecovered
+                            label: this.lang
+                                .AlarmRecord_HT_ConfirmedNoRecovered,
                         },
                         {
                             value: this.lang
                                 .AlarmRecord_HT_UnconfirmedResumption,
                             label: this.lang
-                                .AlarmRecord_HT_UnconfirmedResumption
-                        }
+                                .AlarmRecord_HT_UnconfirmedResumption,
+                        },
                     ],
                     value: 'value',
-                    label: 'label'
+                    label: 'label',
                 },
                 {
                     title: this.lang.AlarmRecord_Time_Type,
@@ -299,7 +315,7 @@ export default {
                     type: 'select',
                     optionList: [],
                     value: 'value',
-                    label: 'label'
+                    label: 'label',
                 },
                 // {
                 // 	title: '报警时间范围：',
@@ -309,30 +325,192 @@ export default {
                 {
                     title: this.lang.AlarmRecord_History_Time,
                     model: 'argStartTime',
-                    type: 'time'
+                    type: 'time',
                 },
                 {
                     title: '-',
                     model: 'argEndTime',
-                    type: 'time'
+                    type: 'time',
                 },
                 {
                     model: 'argKeyword',
-                    type: 'key'
-                }
+                    type: 'key',
+                },
             ];
+            this.tableHead = {
+                AlarmTime: this.lang.AlarmRecord_Time_DataGrid_Time,
+                AlarmTagName: this.lang.AlarmRecord_Time_DataGrid_VariableName,
+                AlarmTagAddress: this.lang.AlarmRecord_Time_DataGrid_Address,
+                AlarmDevice: this.lang.AlarmRecord_Time_DataGrid_Equipment,
+                AlarmType: this.lang.AlarmRecord_Time_DataGrid_Type,
+                AlarmGroup: this.lang.AlarmRecord_Time_DataGrid_Group,
+                AlarmMsg: this.lang.AlarmRecord_Time_DataGrid_Information,
+                AlarmValue: this.lang.AlarmRecord_Time_DataGrid_Value,
+                AlarmLevel: this.lang.AlarmRecord_Time_DataGrid_Grade,
+                RecoverTime: this.lang.AlarmRecord_Time_DataGrid_RecoveryTime,
+                ConfirmTime:
+                    this.lang.AlarmRecord_Time_DataGrid_ConfirmationTime,
+                OperatorName:
+                    this.lang.AlarmRecord_Time_DataGrid_ConfirmationPerson,
+                AlarmStateName: this.lang.AlarmRecord_Time_DataGrid_State,
+            };
         },
         powerBtn() {
             this.jurisdiction = this.$store.state.btnPowerData;
             console.log('按钮无权限', this.$store.state.btnPowerData);
+        },
+        exportFn() {
+            let filterVal = [
+                'AlarmTime',
+                'AlarmTagName',
+                'AlarmTagAddress',
+                'AlarmDevice',
+                'AlarmType',
+                'AlarmGroup',
+                'AlarmMsg',
+                'AlarmValue',
+                'AlarmLevel',
+                'RecoverTime',
+                'ConfirmTime',
+                'OperatorName',
+                'AlarmStateName',
+            ];
+            let title = [
+                '报警时间',
+                '报警变量名',
+                '报警地址',
+                '报警设备',
+                '报警类别',
+                '报警组',
+                '报警信息',
+                '报警值',
+                '报警等级',
+                '恢复时间',
+                '确认时间',
+                '报警确认员',
+                '报警状态',
+            ];
+            if (this.pageData.TotalCount == 0) {
+                let excelDatas = [
+                    {
+                        tHeader: title,
+                        filterVal: filterVal,
+                        tableDatas: [],
+                        sheetName: 'sheet1',
+                    },
+                    {
+                        tHeader: title,
+                        filterVal: filterVal,
+                        tableDatas: [],
+                        sheetName: 'sheet1',
+                    }, //不知道源码为啥删一次，写两次才正常
+                ];
+                this.json2excel(excelDatas, '实时报警', true, 'xlsx');
+                return;
+            }
+            let params = this.searchData;
+            this.$axios
+                .post(
+                    `/api/AlarmRecord/AlarmRecord_GstCurrentAlarmRecord?argStatus=${
+                        params.argStatus
+                    }&argAlarmType=${encodeURIComponent(
+                        params.argAlarmType
+                    )}&argStartTime=${params.argStartTime}&argEndTime=${
+                        params.argEndTime
+                    }&argKeyword=${encodeURIComponent(
+                        params.argKeyword
+                    )}&argPageSize=${this.pageData.TotalCount}&argPageIndex=1`
+                )
+                .then((res) => {
+                    if (res.data.code == 0) {
+                        let tableList = [...res.data.data.DataList];
+                        require.ensure([], () => {
+                            const {
+                                expor_json_to_excel,
+                            } = require('../../vendor/Export2Excel');
+                            let excelDatas = [
+                                {
+                                    tHeader: title,
+                                    filterVal: filterVal,
+                                    tableDatas: tableList,
+                                    sheetName: 'sheet1',
+                                },
+                                {
+                                    tHeader: title,
+                                    filterVal: filterVal,
+                                    tableDatas: tableList,
+                                    sheetName: 'sheet1',
+                                }, //不知道源码为啥删一次，写两次才正常
+                            ];
+                            this.json2excel(
+                                excelDatas,
+                                '实时报警',
+                                true,
+                                'xlsx'
+                            );
+                        });
+                    } else {
+                        this.w = res.data.msg;
+                        this.w1 = true;
+                        this.tipword = '';
+                        setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${
+                                    ($('.tip').width() / 2) * this.a11
+                                }px)`,
+                                top: `calc(50% - ${
+                                    ($('.tip').height() / 2) * this.a11
+                                }px)`,
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                    }
+                });
+        },
+        json2excel(tableJson, filenames, autowidth, bookTypes) {
+            var that = this;
+            //这个是引用插件
+            import('@/vendor/Export2Excel').then((excel) => {
+                var tHeader = [];
+                var dataArr = [];
+                var sheetnames = [];
+                for (var i in tableJson) {
+                    tHeader.push(tableJson[i].tHeader);
+                    dataArr.push(
+                        that.formatJson(
+                            tableJson[i].filterVal,
+                            tableJson[i].tableDatas
+                        )
+                    );
+                    sheetnames.push(tableJson[i].sheetName);
+                }
+                excel.export_json_to_excel({
+                    header: tHeader,
+                    data: dataArr,
+                    sheetname: sheetnames,
+                    filename: filenames,
+                    autoWidth: autowidth,
+                    bookType: bookTypes,
+                });
+            });
+        },
+        formatJson(filterVal, jsonData) {
+            return jsonData.map((v) => filterVal.map((j) => v[j]));
         },
         allconfirm(a) {
             console.log(a);
             if (!a) {
                 setTimeout(() => {
                     $('.tip').css({
-                        left: `calc(50% - ${$('.tip').width() / 2}px)`,
-                        top: `calc(50% - ${$('.tip').height() / 2}px)`
+                        zoom: this.a11,
+                        left: `calc(50% - ${
+                            ($('.tip').width() / 2) * this.a11
+                        }px)`,
+                        top: `calc(50% - ${
+                            ($('.tip').height() / 2) * this.a11
+                        }px)`,
                     });
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
@@ -345,8 +523,9 @@ export default {
             }
             setTimeout(() => {
                 $('.tip').css({
-                    left: `calc(50% - ${$('.tip').width() / 2}px)`,
-                    top: `calc(50% - ${$('.tip').height() / 2}px)`
+                    zoom: this.a11,
+                    left: `calc(50% - ${($('.tip').width() / 2) * this.a11}px)`,
+                    top: `calc(50% - ${($('.tip').height() / 2) * this.a11}px)`,
                 });
                 this.tipchange = true;
                 this.move('tip', 'tiphead');
@@ -374,16 +553,21 @@ export default {
             }
             this.$axios({
                 method: 'post',
-                url: `/api/AlarmRecord/AlarmRecord_AllAlarmConfirmation?argAlarmType=${this.searchData.argAlarmType}&argStatus=${this.searchData.argStatus}&argStartTime=${this.searchData.argStartTime}&argEndTime=${this.searchData.argEndTime}&argKeyword&argOperatorName=${this.searchData.OperatorName}`
+                url: `/api/AlarmRecord/AlarmRecord_AllAlarmConfirmation?argAlarmType=${this.searchData.argAlarmType}&argStatus=${this.searchData.argStatus}&argStartTime=${this.searchData.argStartTime}&argEndTime=${this.searchData.argEndTime}&argKeyword&argOperatorName=${this.searchData.OperatorName}`,
             })
-                .then(res => {
+                .then((res) => {
                     this.req(this.pageData.PageIndex);
                     if (res.data.data) {
                         this.tipword = `${res.data.data}`;
                         setTimeout(() => {
                             $('.tip').css({
-                                left: `calc(50% - ${$('.tip').width() / 2}px)`,
-                                top: `calc(50% - ${$('.tip').height() / 2}px)`
+                                zoom: this.a11,
+                                left: `calc(50% - ${
+                                    ($('.tip').width() / 2) * this.a11
+                                }px)`,
+                                top: `calc(50% - ${
+                                    ($('.tip').height() / 2) * this.a11
+                                }px)`,
                             });
                             this.tipchange = true;
                             this.move('tip', 'tiphead');
@@ -393,7 +577,7 @@ export default {
                     }
                 })
 
-                .catch(err => {});
+                .catch((err) => {});
         },
 
         tip1() {
@@ -467,8 +651,13 @@ export default {
             if (!a) {
                 setTimeout(() => {
                     $('.tip').css({
-                        left: `calc(50% - ${$('.tip').width() / 2}px)`,
-                        top: `calc(50% - ${$('.tip').height() / 2}px)`
+                        zoom: this.a11,
+                        left: `calc(50% - ${
+                            ($('.tip').width() / 2) * this.a11
+                        }px)`,
+                        top: `calc(50% - ${
+                            ($('.tip').height() / 2) * this.a11
+                        }px)`,
                     });
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
@@ -504,14 +693,19 @@ export default {
             this.$axios({
                 method: 'post',
                 url: `/api/AlarmRecord/AlarmRecord_SetAlarmConfirm`,
-                data: this.enddata
-            }).then(res => {
+                data: this.enddata,
+            }).then((res) => {
                 console.log(res);
                 console.log('ss', this.enddata);
                 setTimeout(() => {
                     $('.tip').css({
-                        left: `calc(50% - ${$('.tip').width() / 2}px)`,
-                        top: `calc(50% - ${$('.tip').height() / 2}px)`
+                        zoom: this.a11,
+                        left: `calc(50% - ${
+                            ($('.tip').width() / 2) * this.a11
+                        }px)`,
+                        top: `calc(50% - ${
+                            ($('.tip').height() / 2) * this.a11
+                        }px)`,
                     });
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
@@ -522,8 +716,11 @@ export default {
             });
             /* } else {
                 $('.tip').css({
-                    left: `calc(50% - ${($('.tip').width() / 2)}px)`,
-                    top: `calc(50% - ${($('.tip').height() / 2)}px)`
+                    zoom: this.a11,
+                    left: `calc(50% - ${($('.tip').width() / 2) *
+                        this.a11}px)`,
+                    top: `calc(50% - ${($('.tip').height() / 2) *
+                        this.a11}px)`
                 });
                 this.tipchange = true;
                 this.move('tip', 'tiphead');
@@ -541,7 +738,7 @@ export default {
             this.length = data1;
         },
         formatJson(filterVal, jsonData) {
-            return jsonData.map(v => filterVal.map(j => v[j]));
+            return jsonData.map((v) => filterVal.map((j) => v[j]));
         },
         init() {
             // 自来水系统：仪表类型，仪表名称
@@ -550,7 +747,7 @@ export default {
             let data = '设备';
             this.$axios
                 .post(`/api/Main/Main_GetProjectName`)
-                .then(res => {
+                .then((res) => {
                     // if (res.data.code === 0) {
                     //     let data = res.data.data;
                     //     if (data === 'SCMS自来水监控系统') {
@@ -615,16 +812,16 @@ export default {
                     //     }
                     // }
                 })
-                .catch(err => {});
+                .catch((err) => {});
         },
         change(e, item) {
             let data = this.deviceList[e];
             if (data.length > 0) {
                 this.searchList[1].optionList = [];
-                data.map(item => {
+                data.map((item) => {
                     this.searchList[1].optionList.push({
                         value: item,
-                        label: item
+                        label: item,
                     });
                 });
             }
@@ -633,8 +830,13 @@ export default {
             if (!a) {
                 setTimeout(() => {
                     $('.tip').css({
-                        left: `calc(50% - ${$('.tip').width() / 2}px)`,
-                        top: `calc(50% - ${$('.tip').height() / 2}px)`
+                        zoom: this.a11,
+                        left: `calc(50% - ${
+                            ($('.tip').width() / 2) * this.a11
+                        }px)`,
+                        top: `calc(50% - ${
+                            ($('.tip').height() / 2) * this.a11
+                        }px)`,
                     });
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
@@ -651,8 +853,13 @@ export default {
             ) {
                 setTimeout(() => {
                     $('.tip').css({
-                        left: `calc(50% - ${$('.tip').width() / 2}px)`,
-                        top: `calc(50% - ${$('.tip').height() / 2}px)`
+                        zoom: this.a11,
+                        left: `calc(50% - ${
+                            ($('.tip').width() / 2) * this.a11
+                        }px)`,
+                        top: `calc(50% - ${
+                            ($('.tip').height() / 2) * this.a11
+                        }px)`,
                     });
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
@@ -675,27 +882,29 @@ export default {
         getAlarmType() {
             this.$axios
                 .post(`/api/AlarmRecord/AlarmRecord_GstAlarmType`)
-                .then(res => {
+                .then((res) => {
                     if (res.data.code == 0) {
                         this.searchList[1].optionList = [];
                         let data = res.data.data;
-                        data.map(item => {
+                        data.map((item) => {
                             this.searchList[1].optionList.push({
                                 value: item.Value,
-                                label: item.Text
+                                label: item.Text,
                             });
                         });
                         this.searchList[1].optionList.unshift({
                             value: this.lang.AlarmRecord_HT_Unlimited,
-                            label: this.lang.AlarmRecord_HT_Unlimited
+                            label: this.lang.AlarmRecord_HT_Unlimited,
                         });
-                        this.searchData.argAlarmType = this.searchList[1].optionList[0].value;
-                        this.searchData.argStatus = this.searchList[0].optionList[0].value;
+                        this.searchData.argAlarmType =
+                            this.searchList[1].optionList[0].value;
+                        this.searchData.argStatus =
+                            this.searchList[0].optionList[0].value;
                         this.req(1);
                         console.log(this.searchList);
                     }
                 })
-                .catch(err => {});
+                .catch((err) => {});
         },
         isPositiveInteger(s) {
             //是否为正整数
@@ -707,8 +916,13 @@ export default {
                 if (!this.isPositiveInteger(pageIndex)) {
                     setTimeout(() => {
                         $('.tip').css({
-                            left: `calc(50% - ${$('.tip').width() / 2}px)`,
-                            top: `calc(50% - ${$('.tip').height() / 2}px)`
+                            zoom: this.a11,
+                            left: `calc(50% - ${
+                                ($('.tip').width() / 2) * this.a11
+                            }px)`,
+                            top: `calc(50% - ${
+                                ($('.tip').height() / 2) * this.a11
+                            }px)`,
                         });
                         this.tipchange = true;
                         this.move('tip', 'tiphead');
@@ -728,15 +942,19 @@ export default {
                         ) {
                             setTimeout(() => {
                                 $('.tip').css({
-                                    left: `calc(50% - ${$('.tip').width() /
-                                        2}px)`,
-                                    top: `calc(50% - ${$('.tip').height() /
-                                        2}px)`
+                                    zoom: this.a11,
+                                    left: `calc(50% - ${
+                                        ($('.tip').width() / 2) * this.a11
+                                    }px)`,
+                                    top: `calc(50% - ${
+                                        ($('.tip').height() / 2) * this.a11
+                                    }px)`,
                                 });
                                 this.tipchange = true;
                                 this.move('tip', 'tiphead');
                             });
-                            this.w = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
+                            this.w =
+                                this.lang.DataGrid_Reaction_HT_PEThePageNumber;
                             this.w1 = true;
                             this.tipword = '';
                             return;
@@ -747,7 +965,7 @@ export default {
 
             let params = Object.assign(this.searchData, {
                 argPageIndex: pageIndex,
-                argPageSize: this.pageData.PageSize
+                argPageSize: this.pageData.PageSize,
             });
             // let a = '';
             // if (params.argStatus == '不限') {
@@ -773,7 +991,7 @@ export default {
                         params.argPageIndex
                     }`
                 )
-                .then(res => {
+                .then((res) => {
                     if (res.data.code == 0) {
                         this.data = res.data.data.DataList;
                         this.pageData = res.data.data.ParameterList;
@@ -783,8 +1001,13 @@ export default {
                         this.tipword = '';
                         setTimeout(() => {
                             $('.tip').css({
-                                left: `calc(50% - ${$('.tip').width() / 2}px)`,
-                                top: `calc(50% - ${$('.tip').height() / 2}px)`
+                                zoom: this.a11,
+                                left: `calc(50% - ${
+                                    ($('.tip').width() / 2) * this.a11
+                                }px)`,
+                                top: `calc(50% - ${
+                                    ($('.tip').height() / 2) * this.a11
+                                }px)`,
                             });
                             this.tipchange = true;
                             this.move('tip', 'tiphead');
@@ -792,9 +1015,9 @@ export default {
                     }
                 })
 
-                .catch(err => {});
-        }
-    }
+                .catch((err) => {});
+        },
+    },
 };
 </script>
 
@@ -821,6 +1044,12 @@ export default {
     left: 750px;
     box-shadow: 0px 0px 8px black;
     background-color: #f3f3f4;
+
+    &.blackBlueBg {
+        background-color: #233056;
+        color: #fff;
+    }
+
     .tiptop {
         width: 380px;
         height: 40px;

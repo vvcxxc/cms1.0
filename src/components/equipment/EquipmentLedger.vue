@@ -6,28 +6,31 @@
  * @LastEditTime: 2021-02-25 12:17:29
  -->
 <template>
-    <div class="public-table  sbtz" @click="changeselect = false">
-        <div
-            class="loadcover"
-            element-loading-spinner="el-icon-loading"
-            element-loading-background="rgba(0, 0, 0, 0.4)"
-            v-loading="this.$store.state.isShow"
-            v-show="this.$store.state.isShow"
-            style="position: absolute;
+    <div
+        class="public-table  sbtz" :class="{blackBlueBg: $store.state.color === 'blackBlue'}"
+        @click="changeselect = false"
+    >
+      			<div class="loadcover" element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
-    left: 0;"
-        ></div>
+    left: 0;"></div>
         <div
             class="search-container"
-            :class="{ colordiv: $store.state.color == 'grey' }"
+            :class="{ colordiv: $store.state.color == 'grey', blackBlueBg: $store.state.color === 'blackBlue'}"
             :style="{
-                zoom: a11
+                zoom:a11
             }"
         >
-            <span class="sblx">{{ lang.EquipmentAccount_EquipmentType1 }}</span>
-            <div class="seleword" @click.stop="selectword1('seleword')">
+            <span class="sblx" 
+                >{{lang.EquipmentAccount_EquipmentType1}}</span
+            >
+            <div
+                class="seleword"
+                @click.stop="selectword1('seleword')"
+
+            >
                 <div class="seleword1">
                     {{ Meter }}
                     <img :src="xiala" alt />
@@ -60,20 +63,42 @@
                 class="tinput"
                 :placeholder="lang.AlarmRecord_Time_Keyword"
                 v-model="keyword"
-                :style="[{ marginLeft: 220 * 1 + 10 + 'px' }]"
+                :style="[
+
+                    { marginLeft: 220 * 1 + 10 + 'px' }
+                ]"
             />
-            <div class="sad" @click="sad" :id="cxid">
-                {{ lang.UserManage_Query }}
+            <div
+                class="sad"
+                @click="sad"
+                :id="cxid"
+             
+            >
+                {{lang.UserManage_Query}}
             </div>
-            <div class="add" @click="add" :id="tjid">
-                {{ lang.UserManage_Add }}
+            <div
+                class="add"
+                @click="add"
+                :id="tjid"
+             
+            >
+                {{lang.UserManage_Add}}
             </div>
-            <div class="move" @click="del" :id="scid">
-                {{ lang.RoleManage_Delete }}
+            <div
+                class="move"
+                @click="del"
+                :id="scid"
+             
+            >
+                 {{lang.RoleManage_Delete}}
             </div>
             <div class="fr" :id="drid">
-                <a href="javascript:;" class="file">
-                    {{ lang.QualityManage_SampleChoseUserControl_Import }}
+                <a
+                    href="javascript:;"
+                    class="file"
+                  
+                >
+                    {{lang.QualityManage_SampleChoseUserControl_Import}}
                     <input
                         @click="dr($event)"
                         type="file"
@@ -82,9 +107,15 @@
                         class="outputlist_upload"
                     />
                 </a>
-                <div class="export" @click="exportTable" :id="dcid">
-                    {{ lang.QualityManage_SampleChoseUserControl_Export }}
+                <div
+                    class="export"
+                    @click="exportTable"
+                    :id="dcid"
+                   
+                >
+                   {{lang.QualityManage_SampleChoseUserControl_Export}}
                 </div>
+
             </div>
         </div>
         <div class="table-container table-container1">
@@ -96,37 +127,31 @@
                 header-row-class-name="light-blue"
                 :style="{ fontSize: a11 * 15 + 'px', width: '100%' }"
                 stripe
-                :row-style="{ height: 50 * a11 + 'px' }"
+                :row-style="{height:50*a11+'px'}"
                 height="100%"
                 tooltip-effect="dark"
                 :header-cell-style="{
-                    background:
-                        $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
-                    color: $store.state.color == 'grey' ? '#000' : '#fff',
-                    'border-left': '1px solid #cccccc',
-                    height: 50 * a11 + 'px',
+                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+                    color:($store.state.color=='grey')?'#000':'#fff',
+                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                    height: 50*a11+'px',
                     padding: '0'
                 }"
                 @select="select"
                 @select-all="selectall"
             >
                 <template slot="empty">
-                    <span>{{ lang.SCMSConsoleWebApiMySql_NoData }}</span>
+                    <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
                 </template>
                 <el-table-column
                     type="selection"
-                    :width="60 * a11 < 60 ? 60 : 60 * a11"
+                    :width="60*a11<60?60:60*a11"
                     fixed
                     :show-overflow-tooltip="true"
                 ></el-table-column>
                 <el-table-column
                     :label="lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber"
-                    :width="
-                        lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber ==
-                        'Serial number'
-                            ? 130 * a11
-                            : 100 * a11
-                    "
+                    :width="lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber=='Serial number'?130*a11:100 * a11"
                     prop="number"
                     :show-overflow-tooltip="true"
                     fixed
@@ -138,14 +163,15 @@
                 <el-table-column
                     prop="name"
                     :label="lang.RoleManage_Operation"
-                    :width="210 * a11"
+                     :width="210 * a11"
+                 
                     fixed
                 >
                     <template slot-scope="scope">
                         <!-- <i class="el-icon-share"></i> -->
                         <div
                             class="img"
-                            :style="{ zoom: a11 }"
+                            :style="{zoom:a11}"
                             @click="handleEdit(scope.$index, scope.row)"
                         >
                             <img :src="look" alt />
@@ -153,10 +179,10 @@
                         </div>
                         <div
                             class="img"
-                            :style="{ zoom: a11 }"
+                             :style="{zoom:a11}"
                             @click="handleEdit1(scope.$index, scope.row, scope)"
                         >
-                            <img :src="pensoil" alt />
+                            <img :src="pensoil" alt  />
                             {{ scope.row.phone }}
                         </div>
                     </template>
@@ -286,30 +312,31 @@
             ref="kongtiao1"
             :style="{ zoom: a11 }"
         >
-            <div
-                class="sestionheader"
-                :class="{ colordiv: $store.state.color == 'grey' }"
-            >
-                <div class="sestionheader1"></div>
-                <span
-                    class="head"
-                    v-if="sestion == 1"
-                    :class="{ fcolor: $store.state.color == 'grey' }"
-                    >{{ lang.EquipmentAccount_ViewEquipmentInfo }}</span
+            <div class="sestionheader"  :class="{ colordiv: $store.state.color == 'grey' }">
+                <div
+                    class="sestionheader1"
+                   
                 >
-                <span
-                    class="head"
-                    v-if="sestion == 2"
-                    :class="{ fcolor: $store.state.color == 'grey' }"
-                    >{{ lang.EquipmentAccount_EditEquipmentInfo }}</span
-                >
-                <span
-                    class="head"
-                    v-if="sestion == 3"
-                    :class="{ fcolor: $store.state.color == 'grey' }"
-                    >{{ lang.EquipmentAccount_AddEquipmentInfo }}</span
-                >
-
+                  </div>
+                    <span
+                        class="head"
+                        v-if="sestion == 1"
+                        :class="{ fcolor: $store.state.color == 'grey' }"
+                        >{{lang.EquipmentAccount_ViewEquipmentInfo}}</span
+                    >
+                    <span
+                        class="head"
+                        v-if="sestion == 2"
+                        :class="{ fcolor: $store.state.color == 'grey' }"
+                        >{{lang.EquipmentAccount_EditEquipmentInfo}}</span
+                    >
+                    <span
+                        class="head"
+                        v-if="sestion == 3"
+                        :class="{ fcolor: $store.state.color == 'grey' }"
+                        >{{lang.EquipmentAccount_AddEquipmentInfo}}</span
+                    >
+              
                 <img
                     :src="no2"
                     alt
@@ -324,18 +351,16 @@
                 <div class="homesetion">
                     <div class="hometop">
                         <div class="linetop1 hometop-title">
-                            {{ lang.EquipmentAccount_BasicInformation }}
+                               {{lang.EquipmentAccount_BasicInformation}}
                         </div>
-
+                        
                         <div class="line linetop4"></div>
                     </div>
                 </div>
                 <div class="overflow xgtooltip">
                     <div class="zl">
-                        <div class="margin">
-                            <span>{{
-                                lang.EquipmentAccount_EquipmentName
-                            }}</span>
+                        <div class="margin" >
+                            <span>{{lang.EquipmentAccount_EquipmentName}}</span>
                             <input
                                 type="text"
                                 v-if="sestion == 1"
@@ -354,20 +379,16 @@
                             />
                         </div>
                         <div class="margin ">
-                            <span class="mi">{{
-                                lang.EquipmentAccount_EquipmentType
-                            }}</span>
+                            <span class="mi">{{lang.EquipmentAccount_EquipmentType}}</span>
                             <div v-if="sestion == 1" class="input1">
                                 <el-tooltip
-                                    popper-class="atooltip"
+                                 popper-class="atooltip"
                                     class="item"
                                     effect="dark"
                                     :content="sesstion.DetailDeviceType"
                                     placement="top-start"
                                 >
-                                    <span @mouseenter="atooltip">{{
-                                        sesstion.DetailDeviceType
-                                    }}</span>
+                                    <span @mouseenter="atooltip">{{ sesstion.DetailDeviceType }}</span>
                                 </el-tooltip>
                                 <div class="inputimg">
                                     <img :src="diji" alt />
@@ -379,27 +400,23 @@
                             >
                                 <el-tooltip
                                     v-if="sestion == 2"
-                                    popper-class="atooltip"
+                                     popper-class="atooltip"
                                     class="item"
                                     effect="dark"
                                     :content="pen.DetailDeviceType"
                                     placement="top-start"
                                 >
-                                    <span @mouseenter="atooltip">{{
-                                        pen.DetailDeviceType
-                                    }}</span>
+                                    <span @mouseenter="atooltip">{{ pen.DetailDeviceType }}</span>
                                 </el-tooltip>
                                 <el-tooltip
                                     v-if="sestion == 3"
-                                    popper-class="atooltip"
+                                     popper-class="atooltip"
                                     class="item"
                                     effect="dark"
                                     :content="wselectname2"
                                     placement="top-start"
                                 >
-                                    <span @mouseenter="atooltip">{{
-                                        wselectname2
-                                    }}</span>
+                                    <span @mouseenter="atooltip">{{ wselectname2 }}</span>
                                 </el-tooltip>
                                 <div
                                     class="inputimg"
@@ -410,7 +427,7 @@
                             </div>
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_AssetNumber }}</span>
+                            <span>{{lang.EquipmentAccount_AssetNumber}}</span>
                             <input
                                 type="text"
                                 v-if="sestion == 1"
@@ -431,7 +448,7 @@
                             />
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_Department }}</span>
+                            <span>{{lang.EquipmentAccount_Department}}</span>
                             <input
                                 type="text"
                                 v-if="sestion == 1"
@@ -454,62 +471,10 @@
                                 :placeholder="lang.EquipmentAccount_Optional"
                             />
                         </div>
-
-                        <div class="margin">
-                            <span class="mi">巡检状态</span>
-
-                            <div class="input1">
-                                <el-tooltip
-                                    v-if="sestion == 1"
-                                    class="item"
-                                    popper-class="atooltip"
-                                    effect="dark"
-                                    :content="sesstion.InspectionStatus"
-                                    placement="top-start"
-                                >
-                                    <span @mouseenter="atooltip">{{
-                                        sesstion.InspectionStatus
-                                    }}</span>
-                                </el-tooltip>
-
-                                <el-tooltip
-                                    v-if="sestion == 2"
-                                    class="item"
-                                    effect="dark"
-                                    popper-class="atooltip"
-                                    :content="pen.InspectionStatus"
-                                    placement="top-start"
-                                >
-                                    <span @mouseenter="atooltip">{{
-                                        pen.InspectionStatus
-                                    }}</span>
-                                </el-tooltip>
-                                <el-tooltip
-                                    v-if="sestion == 3"
-                                    class="item"
-                                    effect="dark"
-                                    popper-class="atooltip"
-                                    :content="tip.InspectionStatus"
-                                    placement="top-start"
-                                >
-                                    <span @mouseenter="atooltip">{{
-                                        tip.InspectionStatus
-                                    }}</span>
-                                </el-tooltip>
-                                <div
-                                    class="inputimg"
-                                    @click="handleChoose('InspectionStatus')"
-                                >
-                                    <img :src="diji" alt />
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="zr">
-                        <div class="margin">
-                            <span>{{
-                                lang.EquipmentAccount_EquipmentNumber
-                            }}</span>
+                        <div class="margin" >
+                            <span>{{lang.EquipmentAccount_EquipmentNumber}}</span>
                             <input
                                 type="text"
                                 v-if="sestion == 1"
@@ -530,9 +495,7 @@
                             />
                         </div>
                         <div class="margin">
-                            <span>{{
-                                lang.EquipmentAccount_EquipmentModel
-                            }}</span>
+                            <span>{{lang.EquipmentAccount_EquipmentModel}}</span>
                             <input
                                 type="text"
                                 v-if="sestion == 1"
@@ -556,14 +519,12 @@
                             />
                         </div>
                         <div class="margin">
-                            <span>{{
-                                lang.EquipmentAccount_InstallPosition
-                            }}</span>
+                            <span>{{lang.EquipmentAccount_InstallPosition}}</span>
 
                             <div class="input1" v-if="sestion == 1">
                                 <el-tooltip
                                     class="item"
-                                    popper-class="atooltip"
+                                     popper-class="atooltip"
                                     effect="dark"
                                     :content="
                                         sesstion.DetailInstallationLocation
@@ -586,7 +547,7 @@
                                     v-if="sestion == 2"
                                     class="item"
                                     effect="dark"
-                                    popper-class="atooltip"
+                                     popper-class="atooltip"
                                     :content="pen.DetailInstallationLocation"
                                     placement="top-start"
                                 >
@@ -598,13 +559,11 @@
                                     v-if="sestion == 3"
                                     class="item"
                                     effect="dark"
-                                    popper-class="atooltip"
+                                     popper-class="atooltip"
                                     :content="wselectname3"
                                     placement="top-start"
                                 >
-                                    <span @mouseenter="atooltip">{{
-                                        wselectname3
-                                    }}</span>
+                                    <span @mouseenter="atooltip">{{ wselectname3 }}</span>
                                 </el-tooltip>
                                 <div class="inputimg" @click="inputclick2()">
                                     <img :src="diji" alt />
@@ -612,9 +571,7 @@
                             </div>
                         </div>
                         <div class="margin">
-                            <span class="indent">{{
-                                lang.EquipmentAccount_Person
-                            }}</span>
+                            <span class="indent">{{lang.EquipmentAccount_Person}}</span>
                             <select v-model="person1" :disabled="disabled">
                                 <option
                                     v-for="(item, index) in person"
@@ -629,18 +586,16 @@
                 <div class="homesetion">
                     <div class="hometop">
                         <div class="linetop2 hometop-title">
-                            {{ lang.EquipmentAccount_OtherInformation }}
+                               {{lang.EquipmentAccount_OtherInformation}}
                         </div>
-
+                      
                         <div class="line linetop3"></div>
                     </div>
                 </div>
                 <div class="overflow">
                     <div class="zl">
-                        <div class="margin">
-                            <span>{{
-                                lang.EquipmentAccount_Manufacturer
-                            }}</span>
+                        <div class="margin" >
+                            <span>{{lang.EquipmentAccount_Manufacturer}}</span>
                             <input
                                 type="text"
                                 v-if="sestion == 1"
@@ -664,37 +619,35 @@
                             />
                         </div>
                         <div class="margin">
-                            <span>{{
-                                lang.EquipmentAccount_PurchaseDate
-                            }}</span>
+                            <span>{{lang.EquipmentAccount_PurchaseDate}}</span>
                             <template>
                                 <div class="block">
                                     <el-date-picker
+                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="sesstion.PurchaseTime"
                                         type="datetime"
-                                        :placeholder="
-                                            lang.SCMSConsoleWebApiMySql_PleChooseDate
-                                        "
+                                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                                         value-format="yyyy-MM-dd HH:mm:ss"
                                         :disabled="disabled"
                                         v-if="sestion == 1"
                                     ></el-date-picker>
                                     <el-date-picker
+                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="pen.PurchaseTime"
                                         type="datetime"
-                                        :placeholder="
-                                            lang.SCMSConsoleWebApiMySql_PleChooseDate
-                                        "
+                                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                                         value-format="yyyy-MM-dd HH:mm:ss"
                                         :disabled="disabled"
                                         v-if="sestion == 2"
                                     ></el-date-picker>
                                     <el-date-picker
+                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="time1"
                                         type="datetime"
-                                        :placeholder="
-                                            lang.SCMSConsoleWebApiMySql_PleChooseDate
-                                        "
+                                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                                         value-format="yyyy-MM-dd HH:mm:ss"
                                         :disabled="disabled"
                                         v-if="sestion == 3"
@@ -703,7 +656,7 @@
                             </template>
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_Salesman }}</span>
+                            <span>{{lang.EquipmentAccount_Salesman}}</span>
                             <input
                                 type="text"
                                 v-if="sestion == 1"
@@ -727,37 +680,35 @@
                             />
                         </div>
                         <div class="margin">
-                            <span>{{
-                                lang.EquipmentAccount_AcceptanceDate
-                            }}</span>
+                            <span>{{lang.EquipmentAccount_AcceptanceDate}}</span>
                             <template>
                                 <div class="block">
                                     <el-date-picker
+                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="sesstion.CheckTime"
                                         type="datetime"
-                                        :placeholder="
-                                            lang.SCMSConsoleWebApiMySql_PleChooseDate
-                                        "
+                                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                                         value-format="yyyy-MM-dd HH:mm:ss"
                                         :disabled="disabled"
                                         v-if="sestion == 1"
                                     ></el-date-picker>
                                     <el-date-picker
+                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="pen.CheckTime"
                                         type="datetime"
-                                        :placeholder="
-                                            lang.SCMSConsoleWebApiMySql_PleChooseDate
-                                        "
+                                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                                         value-format="yyyy-MM-dd HH:mm:ss"
                                         :disabled="disabled"
                                         v-if="sestion == 2"
                                     ></el-date-picker>
                                     <el-date-picker
+                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="time2"
                                         type="datetime"
-                                        :placeholder="
-                                            lang.SCMSConsoleWebApiMySql_PleChooseDate
-                                        "
+                                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                                         value-format="yyyy-MM-dd HH:mm:ss"
                                         :disabled="disabled"
                                         v-if="sestion == 3"
@@ -766,9 +717,7 @@
                             </template>
                         </div>
                         <div class="margin">
-                            <span>{{
-                                lang.EquipmentAccount_EquipmentStatus
-                            }}</span>
+                            <span>{{lang.EquipmentAccount_EquipmentStatus}}</span>
                             <select :disabled="disabled" v-model="device">
                                 <option
                                     v-for="(item, index) in devicestatus"
@@ -780,10 +729,8 @@
                         </div>
                     </div>
                     <div class="zr">
-                        <div class="margin">
-                            <span>{{
-                                lang.EquipmentAccount_PeriodOfDepreciation
-                            }}</span>
+                        <div class="margin" >
+                            <span>{{lang.EquipmentAccount_PeriodOfDepreciation}}</span>
                             <input
                                 type="text"
                                 v-if="sestion == 1"
@@ -807,9 +754,7 @@
                             />
                         </div>
                         <div class="margin">
-                            <span>{{
-                                lang.EquipmentAccount_PurchaseAmount
-                            }}</span>
+                            <span>{{lang.EquipmentAccount_PurchaseAmount}}</span>
                             <input
                                 type="text"
                                 v-if="sestion == 1"
@@ -833,7 +778,7 @@
                             />
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_Contact }}</span>
+                            <span>{{lang.EquipmentAccount_Contact}}</span>
                             <input
                                 type="text"
                                 v-if="sestion == 1"
@@ -857,35 +802,35 @@
                             />
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_StartDate }}</span>
+                            <span>{{lang.EquipmentAccount_StartDate}}</span>
                             <template>
                                 <div class="block">
                                     <el-date-picker
+                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="sesstion.EnableTime"
                                         type="datetime"
-                                        :placeholder="
-                                            lang.SCMSConsoleWebApiMySql_PleChooseDate
-                                        "
+                                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                                         value-format="yyyy-MM-dd HH:mm:ss"
                                         :disabled="disabled"
                                         v-if="sestion == 1"
                                     ></el-date-picker>
                                     <el-date-picker
+                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="pen.EnableTime"
                                         type="datetime"
-                                        :placeholder="
-                                            lang.SCMSConsoleWebApiMySql_PleChooseDate
-                                        "
+                                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                                         value-format="yyyy-MM-dd HH:mm:ss"
                                         :disabled="disabled"
                                         v-if="sestion == 2"
                                     ></el-date-picker>
                                     <el-date-picker
+                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="time3"
                                         type="datetime"
-                                        :placeholder="
-                                            lang.SCMSConsoleWebApiMySql_PleChooseDate
-                                        "
+                                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                                         value-format="yyyy-MM-dd HH:mm:ss"
                                         :disabled="disabled"
                                         v-if="sestion == 3"
@@ -894,9 +839,7 @@
                             </template>
                         </div>
                         <div class="margin">
-                            <span>{{
-                                lang.EquipmentAccount_WarrantyStatus
-                            }}</span>
+                            <span>{{lang.EquipmentAccount_WarrantyStatus}}</span>
                             <select v-model="warry" :disabled="disabled">
                                 <option
                                     v-for="(item, index) in warrantystatus"
@@ -909,9 +852,7 @@
                     </div>
                 </div>
                 <div class="overflow overflow1">
-                    <span class="overflow-remarks">{{
-                        lang.EquipmentAccount_EquipmentRemark
-                    }}</span>
+                    <span class="overflow-remarks">{{lang.EquipmentAccount_EquipmentRemark}}</span>
                     <textarea
                         name
                         id
@@ -942,21 +883,21 @@
                     v-if="sestion == 2"
                     @click="preservation6"
                 >
-                    {{ lang.PopupCommon_Save }}
+                    {{lang.PopupCommon_Save}}
                 </div>
                 <div
                     class="Preservation"
                     v-if="sestion == 3"
                     @click="preservation"
                 >
-                    {{ lang.PopupCommon_Save }}
+                    {{lang.PopupCommon_Save}}
                 </div>
                 <div
                     class="cancel"
                     v-if="sestion == 2 || sestion == 3"
                     @click="cancel"
                 >
-                    {{ lang.PopupCommon_Cancel }}
+                    {{lang.PopupCommon_Cancel}}
                 </div>
             </div>
         </div>
@@ -969,14 +910,12 @@
                 <span
                     v-if="select1 == 1"
                     :class="{ fcolor: $store.state.color == 'grey' }"
-                    >{{ lang.EquipmentAccount_SelectEquipmentType }}</span
+                    >{{lang.EquipmentAccount_SelectEquipmentType}}</span
                 >
                 <span
                     v-if="select1 == 2"
                     :class="{ fcolor: $store.state.color == 'grey' }"
-                    >{{
-                        lang.SCMSConsoleWebApiMySql_SelectInstallPosition
-                    }}</span
+                    >{{lang.SCMSConsoleWebApiMySql_SelectInstallPosition}}</span
                 >
                 <div class="img" @click="cancel2">
                     <img
@@ -1037,57 +976,38 @@
                 v-if="sestion == 3"
                 @click="Preservation2"
             >
-                {{ lang.PopupCommon_Sure }}
+               {{lang.PopupCommon_Sure}}
             </div>
             <div
                 class="Preservation Preservation1"
                 v-if="sestion == 2"
                 @click="Preservation3"
             >
-                {{ lang.PopupCommon_Sure }}
+                {{lang.PopupCommon_Sure}}
             </div>
-            <div class="cancel cancle1" @click="cancel2">
-                {{ lang.PopupCommon_Cancel }}
-            </div>
+            <div class="cancel cancle1" @click="cancel2">{{lang.PopupCommon_Cancel}}</div>
         </div>
-        <div class="tip" v-show="tipchange">
-            <div
-                class="tiphead"
-                style="position:absolute;width: 380px;height: 40px;"
-            ></div>
+        <div class="tip" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" v-show="tipchange">
+            <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
             <div class="tiptop">
                 <img :src="gth" alt />
-                <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
+                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
             </div>
             <div class="tipcontanin">
                 <div class="tipword">{{ tipword }}</div>
                 <div class="tipdetermine" @click="tip1" v-if="deltrue">
-                    {{ lang.MessageBox_Confrim }}
+                   {{lang.MessageBox_Confrim}}
                 </div>
 
                 <div class="delclass" v-if="!deltrue">
-                    <div class="one" @click="no1">{{ lang.MessageBox_NO }}</div>
-                    <div class="two" @click="yes1">
-                        {{ lang.MessageBox_YES }}
-                    </div>
+                    <div class="one" @click="no1">{{lang.MessageBox_NO}}</div>
+                    <div class="two" @click="yes1">{{lang.MessageBox_YES}}</div>
                 </div>
             </div>
         </div>
         <div class="cover1" v-if="change"></div>
         <div class="cover3" v-if="cancel1"></div>
         <div class="cover2" v-if="tipchange"></div>
-        <TipPop
-            v-if="isPopShow"
-            :tipText="tipText"
-            :noCancel="noCancel"
-            @tipCallBack="tipCallBack"
-        />
-
-        <variable-select
-            v-if="isVariableShow"
-            :data="chooseArr"
-            @variableSelectCallBack="variableSelectCallBack"
-        />
     </div>
 </template>
 
@@ -1095,22 +1015,14 @@
 import MySearch from '../public/search01.vue';
 import MyPage from '../public/Pages.vue';
 import XLSX from 'xlsx';
-import VariableSelect from '../../components/public/variableSelect.vue';
-import TipPop from '../../components/public/tipPop.vue';
 export default {
     components: {
         // MySearch,
-        TipPop,
-        VariableSelect,
+
         MyPage
     },
     data() {
         return {
-            isPopShow: false, // 是否显示弹窗
-            tipText: '', // 弹窗提示语
-            noCancel: true, // 弹窗是否带取消按按钮
-            isVariableShow: false, // 选择变量弹窗
-            chooseArr: [], // 变量类型
             a11: 1,
             deltrue: true,
             wselectname3: '',
@@ -1127,8 +1039,7 @@ export default {
                 DepreciationLife: '',
                 PurchaseAmount: '',
                 Contact: '',
-                Remarks: '',
-                InspectionStatus: ''
+                Remarks: ''
             },
             pen: {
                 DeviceName: '',
@@ -1141,8 +1052,7 @@ export default {
                 DepreciationLife: '',
                 PurchaseAmount: '',
                 Contact: '',
-                Remarks: '',
-                InspectionStatus: ''
+                Remarks: ''
             },
             tipchange: false,
             gth: require('../../assets/images/gth.png'),
@@ -1214,39 +1124,37 @@ export default {
             a1: 1,
             a2: 1,
             Meterid: '',
-            jurisdiction: [],
-            buttonarr: [],
-            cxid: '',
-            tjid: '',
-            scid: '',
-            drid: '',
-            dcid: '',
-            ckid: '',
-            bjid: '',
-            xiala: require('../../assets/images/ziyuan4.png'),
-            cxshow: true,
-            tjshow: true,
-            scshow: true,
-            drshow: true,
-            dcshow: true,
-            ckshow: true,
-            bjshow: true,
-            gsb: 1,
-            gaz: 1,
-            lang: JSON.parse(localStorage.getItem('languages'))[
-                localStorage.getItem('currentLang')
-            ]
+            jurisdiction:[],
+            buttonarr:[],
+            cxid:'',
+            tjid:'',
+            scid:'',
+            drid:'',
+            dcid:'',
+            ckid:'',
+            bjid:'',
+             xiala:require('../../assets/images/ziyuan4.png'),
+            cxshow:true,
+            tjshow:true,
+            scshow:true,
+            drshow:true,
+            dcshow:true,
+            ckshow:true,
+            bjshow:true,
+            gsb:1,
+            gaz:1,
+            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
 
     created() {
-        this.getLangData();
+        this.getLangData()
         this.getEquipmentType();
         this.req(1);
         this.time4 = this.getNowTime();
         this.jurisdiction = this.$store.state.btnPowerData;
-        console.log('saddasdas', this.GetUrlParam('id'));
-        console.log('asddaadsads', this.jurisdiction);
+        console.log("saddasdas",this.GetUrlParam('id'))
+        console.log("asddaadsads",this.jurisdiction)
         this.buttonarr = this.findPathByLeafId(
             this.GetUrlParam('id'),
             this.jurisdiction
@@ -1478,76 +1386,31 @@ export default {
         }
     },
     methods: {
-        tipCallBack(str) {
-            // if (str == 'yes') {
-
-            // }
-            this.isPopShow = false;
-            this.noCancel = true;
-        },
-        handleChoose(val) {
-            this.chooseArr = [
-                '不限',
-                '二进制变量',
-                '字符串',
-                '有符号8位整型',
-                '无符号8位整型',
-                '有符号16位整型',
-                '无符号16位整型',
-                '有符号32位整型',
-                '无符号32位整型',
-                '有符号64位整型',
-                '无符号64位整型',
-                '日期时间'
-            ];
-            this.chooseText = val;
-            this.isVariableShow = true;
-        },
-        variableSelectCallBack(str, val) {
-            this.isVariableShow = false;
-            if (str == 'yes') {
-                if (this.sestion == 1) {
-                    this.sesstion[this.chooseText] = val.Name;
-                }
-                if (this.sestion == 2) {
-                    this.pen[this.chooseText] = val.Name;
-                }
-                if (this.sestion == 3) {
-                    this.tip[this.chooseText] = val.Name;
-                }
-            }
-        },
         getLangData() {
-            this.warrantystatus = [
-                this.lang.EquipmentAccount_Inside,
-                this.lang.EquipmentAccount_Outside
-            ];
-            this.devicestatus = [
-                this.lang.EquipmentAccount_Used,
-                this.lang.EquipmentAccount_Stopped,
-                this.lang.EquipmentAccount_Abandoned
-            ];
-            this.warry = this.lang.EquipmentAccount_Inside;
-            this.device = this.lang.EquipmentAccount_Used;
+            this.warrantystatus = [this.lang.EquipmentAccount_Inside, this.lang.EquipmentAccount_Outside]
+            this.devicestatus = [this.lang.EquipmentAccount_Used, this.lang.EquipmentAccount_Stopped, this.lang.EquipmentAccount_Abandoned]
+            this.warry = this.lang.EquipmentAccount_Inside
+            this.device = this.lang.EquipmentAccount_Used
         },
-        atooltip() {
-            let that = this;
-            setTimeout(() => {
-                for (let i = 0; i < $('.atooltip').length; i++) {
-                    $('.atooltip')[i].style.zoom = that.a11;
-                }
-            });
+           atooltip(){
+           let that = this
+            setTimeout(()=>{
+for(let i=0;i<$('.atooltip').length;i++){
+                $('.atooltip')[i].style.zoom = that.a11
+            }
+            })
         },
         move(name, namehead) {
-            //  $(`.${name}`).addClass('center')
-            let left = $(`.${name}`).width() / 2 + 'px';
-            let top = $(`.${name}`).height() / 2 + 'px';
-            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+          //  $(`.${name}`).addClass('center')
+           let left = ($(`.${name}`).width())/2+'px'
+           let top = ($(`.${name}`).height())/2+'px'
+             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
             $(`.${name}`)[0].addEventListener('mousedown', function(e) {
+                
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
-                    $(`.${name}`).removeClass('center');
+                    $(`.${name}`).removeClass('center')
                     window.event.stopPropagation();
                     var x = 0;
                     var y = 0;
@@ -1563,6 +1426,7 @@ export default {
                     isDown = true;
                     var pdmove = false;
 
+                     
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
@@ -1578,9 +1442,9 @@ export default {
                         //计算移动后的左偏移量和顶部的偏移量
                         var nl = nx - (x - l);
                         var nt = ny - (y - t);
-                        console.log(nx);
-                        console.log(x);
-                        console.log(l);
+                        console.log(nx)
+                        console.log(x)
+                        console.log(l)
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
@@ -1658,106 +1522,58 @@ export default {
                     let a = 0;
                     console.log(ws);
                     for (a in ws) {
-                        ws[a].No =
-                            ws[a][
-                                this.lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber
-                            ];
-                        ws[a].DeviceName =
-                            ws[a][this.lang.EquipmentAccount_EquipmentName];
-                        ws[a].DetailDeviceType =
-                            ws[a][this.lang.EquipmentAccount_EquipmentType];
-                        ws[a].DetailInstallationLocation =
-                            ws[a][this.lang.EquipmentAccount_InstallPosition];
-                        ws[a].DeviceNo =
-                            ws[a][this.lang.EquipmentAccount_EquipmentNumber];
-                        (ws[a].DevicePath =
-                            ws[a][this.lang.EquipmentAccount_EquipmentType]),
-                            (ws[a].InstallPath =
-                                ws[a][
-                                    this.lang.EquipmentAccount_InstallPosition
-                                ]),
-                            (ws[a].DeviceType =
-                                ws[a][
-                                    this.lang.EquipmentAccount_EquipmentType
-                                ]),
-                            (ws[a].InstallationLocation =
-                                ws[a][
-                                    this.lang.EquipmentAccount_InstallPosition
-                                ]),
+                        ws[a].No = ws[a][this.lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber];
+                        ws[a].DeviceName = ws[a][this.lang.EquipmentAccount_EquipmentName];
+                        ws[a].DetailDeviceType = ws[a][this.lang.EquipmentAccount_EquipmentType]
+                        ws[a].DetailInstallationLocation = ws[a][this.lang.EquipmentAccount_InstallPosition]
+                        ws[a].DeviceNo = ws[a][this.lang.EquipmentAccount_EquipmentNumber]
+                        ws[a].DevicePath = ws[a][this.lang.EquipmentAccount_EquipmentType],
+                        ws[a].InstallPath = ws[a][this.lang.EquipmentAccount_InstallPosition],
+                        ws[a].DeviceType = ws[a][this.lang.EquipmentAccount_EquipmentType],
+                        ws[a].InstallationLocation = ws[a][this.lang.EquipmentAccount_InstallPosition],
                             // ws[a].DeviceType = (ws[a].设备类型.split('>')[ws[a].设备类型.split('>').length-1]);
-                            (ws[a].DeviceModel =
-                                ws[a][
-                                    this.lang.EquipmentAccount_EquipmentModel
-                                ]);
-                        ws[a].AssetsNo =
-                            ws[a][this.lang.EquipmentAccount_AssetNumber];
+                        ws[a].DeviceModel = ws[a][this.lang.EquipmentAccount_EquipmentModel];
+                        ws[a].AssetsNo = ws[a][this.lang.EquipmentAccount_AssetNumber];
                         // ws[a].InstallationLocation = (ws[a].安装位置.split('>')[ws[a].安装位置.split('>').length-1]);
-                        ws[a].Department =
-                            ws[a][this.lang.EquipmentAccount_Department];
-                        ws[a].PersonInCharge =
-                            ws[a][this.lang.EquipmentAccount_Person];
-                        ws[a].Manufactor =
-                            ws[a][this.lang.EquipmentAccount_Manufacturer];
-                        ws[a].DepreciationLife =
-                            ws[a][
-                                this.lang.EquipmentAccount_PeriodOfDepreciation
-                            ];
-                        ws[a].PurchaseTime =
-                            ws[a][this.lang.EquipmentAccount_PurchaseDate];
-                        ws[a].PurchaseAmount =
-                            ws[a][this.lang.EquipmentAccount_PurchaseAmount];
-                        ws[a].Salesman =
-                            ws[a][this.lang.EquipmentAccount_Salesman];
-                        ws[a].Contact =
-                            ws[a][this.lang.EquipmentAccount_Contact];
+                        ws[a].Department = ws[a][this.lang.EquipmentAccount_Department];
+                        ws[a].PersonInCharge = ws[a][this.lang.EquipmentAccount_Person];
+                        ws[a].Manufactor = ws[a][this.lang.EquipmentAccount_Manufacturer];
+                        ws[a].DepreciationLife = ws[a][this.lang.EquipmentAccount_PeriodOfDepreciation];
+                        ws[a].PurchaseTime = ws[a][this.lang.EquipmentAccount_PurchaseDate];
+                        ws[a].PurchaseAmount = ws[a][this.lang.EquipmentAccount_PurchaseAmount];
+                        ws[a].Salesman = ws[a][this.lang.EquipmentAccount_Salesman];
+                        ws[a].Contact = ws[a][this.lang.EquipmentAccount_Contact];
                         ws[a].CheckTime = !ws[a].验收时间
                             ? ws[a][this.lang.EquipmentAccount_AcceptanceDate]
                             : ws[a].验收时间;
-                        ws[a].EnableTime =
-                            ws[a][this.lang.EquipmentAccount_StartDate];
-                        ws[a].DeviceStatus =
-                            ws[a][this.lang.EquipmentAccount_EquipmentStatus];
-                        ws[a].QualityStatus =
-                            ws[a][this.lang.EquipmentAccount_WarrantyStatus];
-                        ws[a].Remarks =
-                            ws[a][this.lang.EquipmentAccount_EquipmentRemark];
+                        ws[a].EnableTime = ws[a][this.lang.EquipmentAccount_StartDate];
+                        ws[a].DeviceStatus = ws[a][this.lang.EquipmentAccount_EquipmentStatus];
+                        ws[a].QualityStatus = ws[a][this.lang.EquipmentAccount_WarrantyStatus];
+                        ws[a].Remarks = ws[a][this.lang.EquipmentAccount_EquipmentRemark];
                     }
                     let b = 0;
                     for (b in ws) {
-                        delete ws[b][
-                            this.lang
-                                .AlarmRecord_HT_AlarmPointManageUC_SerialNumber
-                        ];
-                        delete ws[b][this.lang.EquipmentAccount_EquipmentName];
-                        delete ws[b][
-                            this.lang.EquipmentAccount_EquipmentNumber
-                        ];
-                        delete ws[b][this.lang.EquipmentAccount_EquipmentType];
-                        delete ws[b][this.lang.EquipmentAccount_EquipmentModel];
-                        delete ws[b][this.lang.EquipmentAccount_AssetNumber];
-                        delete ws[b][
-                            this.lang.EquipmentAccount_InstallPosition
-                        ];
-                        delete ws[b][this.lang.EquipmentAccount_Department];
-                        delete ws[b][this.lang.EquipmentAccount_Person];
-                        delete ws[b][this.lang.EquipmentAccount_Manufacturer];
-                        delete ws[b][
-                            this.lang.EquipmentAccount_PeriodOfDepreciation
-                        ];
-                        delete ws[b][this.lang.EquipmentAccount_PurchaseDate];
-                        delete ws[b][this.lang.EquipmentAccount_PurchaseAmount];
-                        delete ws[b][this.lang.EquipmentAccount_Salesman];
-                        delete ws[b][this.lang.EquipmentAccount_Contact];
-                        delete ws[b][this.lang.EquipmentAccount_AcceptanceDate];
-                        delete ws[b][this.lang.EquipmentAccount_StartDate];
-                        delete ws[b][
-                            this.lang.EquipmentAccount_EquipmentStatus
-                        ];
-                        delete ws[b][this.lang.EquipmentAccount_WarrantyStatus];
-                        delete ws[b][
-                            this.lang.EquipmentAccount_EquipmentRemark
-                        ];
-                        delete ws[b][this.lang.EquipmentAccount_AcceptanceDate];
+                        delete ws[b][this.lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber]
+                        delete ws[b][this.lang.EquipmentAccount_EquipmentName]
+                        delete ws[b][this.lang.EquipmentAccount_EquipmentNumber]
+                        delete ws[b][this.lang.EquipmentAccount_EquipmentType]
+                        delete ws[b][this.lang.EquipmentAccount_EquipmentModel]
+                        delete ws[b][this.lang.EquipmentAccount_AssetNumber]
+                        delete ws[b][this.lang.EquipmentAccount_InstallPosition]
+                        delete ws[b][this.lang.EquipmentAccount_Department]
+                        delete ws[b][this.lang.EquipmentAccount_Person]
+                        delete ws[b][this.lang.EquipmentAccount_Manufacturer]
+                        delete ws[b][this.lang.EquipmentAccount_PeriodOfDepreciation]
+                        delete ws[b][this.lang.EquipmentAccount_PurchaseDate]
+                        delete ws[b][this.lang.EquipmentAccount_PurchaseAmount]
+                        delete ws[b][this.lang.EquipmentAccount_Salesman]
+                        delete ws[b][this.lang.EquipmentAccount_Contact]
+                        delete ws[b][this.lang.EquipmentAccount_AcceptanceDate]
+                        delete ws[b][this.lang.EquipmentAccount_StartDate]
+                        delete ws[b][this.lang.EquipmentAccount_EquipmentStatus]
+                        delete ws[b][this.lang.EquipmentAccount_WarrantyStatus]
+                        delete ws[b][this.lang.EquipmentAccount_EquipmentRemark]
+                        delete ws[b][this.lang.EquipmentAccount_AcceptanceDate]
                     }
                     console.log(ws);
                     this.daorudata = ws;
@@ -1892,7 +1708,7 @@ export default {
                 .then(() => {})
                 .catch(err => {});
             setTimeout(() => {
-                this.tipword = this.lang.FormulaManage_HT_DeletedSuccessfully;
+                this.tipword = this.lang.FormulaManage_HT_DeletedSuccessfully
 
                 setTimeout(() => {
                     $('.tip').css({
@@ -1922,7 +1738,7 @@ export default {
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
                 });
-                this.lang.NoOperationAuthority;
+               this.lang.NoOperationAuthority
                 return;
             }
             if (!this.delarray.length == 0) {
@@ -2017,32 +1833,22 @@ export default {
                         res.data.data.DataList[i].number = ++i;
                         a = --i;
                         if (res.data.data.DataList[a].DeviceStatus == 1) {
-                            res.data.data.DataList[
-                                a
-                            ].DeviceStatus = this.lang.EquipmentAccount_Used;
+                            res.data.data.DataList[a].DeviceStatus = this.lang.EquipmentAccount_Used;
                         } else if (
                             res.data.data.DataList[a].DeviceStatus == 2
                         ) {
-                            res.data.data.DataList[
-                                a
-                            ].DeviceStatus = this.lang.EquipmentAccount_Stopped;
+                            res.data.data.DataList[a].DeviceStatus = this.lang.EquipmentAccount_Stopped;
                         } else if (
                             res.data.data.DataList[a].DeviceStatus == 3
                         ) {
-                            res.data.data.DataList[
-                                a
-                            ].DeviceStatus = this.lang.EquipmentAccount_Abandoned;
+                            res.data.data.DataList[a].DeviceStatus = this.lang.EquipmentAccount_Abandoned;
                         }
                         if (res.data.data.DataList[a].QualityStatus == 1) {
-                            res.data.data.DataList[
-                                a
-                            ].QualityStatus = this.lang.EquipmentAccount_Inside;
+                            res.data.data.DataList[a].QualityStatus = this.lang.EquipmentAccount_Inside;
                         } else if (
                             res.data.data.DataList[a].QualityStatus == 2
                         ) {
-                            res.data.data.DataList[
-                                a
-                            ].QualityStatus = this.lang.EquipmentAccount_Outside;
+                            res.data.data.DataList[a].QualityStatus = this.lang.EquipmentAccount_Outside;
                         }
                         if (res.data.data.DataList[a].Contact == null) {
                             res.data.data.DataList[a].Contact = '';
@@ -2106,8 +1912,7 @@ export default {
                             export_json_to_excel
                         } = require('../../vendor/Export2Excel');
                         const tHeader = [
-                            this.lang
-                                .AlarmRecord_HT_AlarmPointManageUC_SerialNumber,
+                            this.lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber,
                             this.lang.EquipmentAccount_EquipmentName,
                             this.lang.EquipmentAccount_EquipmentNumber,
                             this.lang.EquipmentAccount_EquipmentType,
@@ -2986,7 +2791,7 @@ export default {
         json2excel(tableJson, filenames, autowidth, bookTypes) {
             var that = this;
             //这个是引用插件
-
+            
             import('@/vendor/Export2Excel').then(excel => {
                 var tHeader = [];
                 var dataArr = [];
@@ -3104,29 +2909,13 @@ export default {
                     `/api/EquipmentAccount/EquipmentAccount_SetEquipmentAccount?argClass={
                         "DeviceName":"${this.pen.DeviceName}",
                         "DevicePath":"${this.pen.DetailDeviceType}",
-                        "InstallPath":"${
-                            this.pen.DetailInstallationLocation ===
-                            this.lang.EquipmentAccount_ClickSelect
-                                ? ''
-                                : this.pen.DetailInstallationLocation
-                        }",
+                        "InstallPath":"${this.pen.DetailInstallationLocation === this.lang.EquipmentAccount_ClickSelect ? '' : this.pen.DetailInstallationLocation}",
                         "DeviceNo":"${this.pen.DeviceNo}",
-                        "DeviceType":"${
-                            this.pen.DeviceType ===
-                            this.lang.EquipmentAccount_ClickSelect
-                                ? ''
-                                : this.pen.DeviceType
-                        }",
+                        "DeviceType":"${this.pen.DeviceType === this.lang.EquipmentAccount_ClickSelect ? '' : this.pen.DeviceType}",
                         "DeviceModel":"${this.pen.DeviceModel}",
                         "AssetsNo":"${this.pen.AssetsNo}",
-                        "InstallationLocation":"${
-                            this.pen.InstallationLocation ===
-                            this.lang.EquipmentAccount_ClickSelect
-                                ? ''
-                                : this.pen.InstallationLocation
-                        }",
+                        "InstallationLocation":"${this.pen.InstallationLocation === this.lang.EquipmentAccount_ClickSelect ? '' : this.pen.InstallationLocation}",
                         "Department":"${this.pen.Department}",
-                        "InspectionStatus":"${this.pen.InspectionStatus}",
                         "PersonInCharge":"${this.person1}",
                         "Manufactor":"${this.pen.Manufactor}",
                         "DepreciationLife":"${this.pen.DepreciationLife}",
@@ -3138,25 +2927,11 @@ export default {
                         "EnableTime":"${this.pen.EnableTime}",
                         "DeviceStatus":${this.sbnum},
                         "QualityStatus":${this.warrynum},
-                        "DetailDeviceType":"${
-                            this.pen.DetailDeviceType ===
-                            this.lang.EquipmentAccount_ClickSelect
-                                ? ''
-                                : this.pen.DetailDeviceType
-                        }",
-                        "DetailInstallationLocation":"${
-                            this.pen.DetailInstallationLocation ===
-                            this.lang.EquipmentAccount_ClickSelect
-                                ? ''
-                                : this.pen.DetailInstallationLocation
-                        }",
+                        "DetailDeviceType":"${this.pen.DetailDeviceType === this.lang.EquipmentAccount_ClickSelect ? '' : this.pen.DetailDeviceType}",
+                        "DetailInstallationLocation":"${this.pen.DetailInstallationLocation === this.lang.EquipmentAccount_ClickSelect ? '' : this.pen.DetailInstallationLocation}",
                         "Remarks":"${this.pen.Remarks}",
                         "AddTime":"${this.time4}",
-                        "AID":"${this.pen.AID}",}&argOperateType=2&argOldName=${
-                        this.oldName
-                    }&argLoginUserName=${
-                        this.longinnum
-                    }&argPageSize=50&argPageIndex=1`
+                        "AID":"${this.pen.AID}",}&argOperateType=2&argOldName=${this.oldName}&argLoginUserName=${this.longinnum}&argPageSize=50&argPageIndex=1`
                 )
                 .then(res => {
                     if (res.data.code == 0) {
@@ -3219,25 +2994,19 @@ export default {
                     `/api/EquipmentAccount/EquipmentAccount_SetEquipmentAccount?argClass={"AID":"11111111-1111-1111-1111-111111111111","DeviceName":"${
                         this.tip.DeviceName
                     }","DeviceNo":"${this.tip.DeviceNo}","DeviceType":"${
-                        this.wselectname2 ===
-                        this.lang.EquipmentAccount_ClickSelect
-                            ? ''
-                            : this.wselectname2.split('>')[
-                                  this.wselectname2.split('>').length - 1
-                              ]
+                        this.wselectname2 === this.lang.EquipmentAccount_ClickSelect ? '' :
+                        this.wselectname2.split('>')[
+                            this.wselectname2.split('>').length - 1
+                        ]
                     }","DeviceModel":"${this.tip.DeviceModel}","AssetsNo":"${
                         this.tip.AssetsNo
                     }","InstallationLocation":"${
-                        this.wselectname3 ===
-                        this.lang.EquipmentAccount_ClickSelect
-                            ? ''
-                            : this.wselectname3.split('>')[
-                                  this.wselectname3.split('>').length - 1
-                              ]
+                        this.wselectname3 === this.lang.EquipmentAccount_ClickSelect ? '' :
+                        this.wselectname3.split('>')[
+                            this.wselectname3.split('>').length - 1
+                        ]
                     }","Department":"${
                         this.tip.Department
-                    }","InspectionStatus":"${
-                        this.tip.InspectionStatus
                     }","PersonInCharge":"${this.person1}","Manufactor":"${
                         this.tip.Manufactor
                     }","DepreciationLife":"${
@@ -3247,10 +3016,7 @@ export default {
                     }","Salesman":"${this.tip.Salesman}","Contact":"${
                         this.tip.Contact
                     }","DevicePath":"${this.wselectname2}","InstallPath":"${
-                        this.wselectname3 ===
-                        this.lang.EquipmentAccount_ClickSelect
-                            ? ''
-                            : this.wselectname3
+                        this.wselectname3  === this.lang.EquipmentAccount_ClickSelect ? '' : this.wselectname3
                     }","CheckTime":"${this.time2}","EnableTime":"${
                         this.time3
                     }","DeviceStatus":${this.sbnum},"QualityStatus":${
@@ -3258,15 +3024,9 @@ export default {
                     },"Remarks":"${this.tip.Remarks}","AddTime":"${
                         this.time4
                     }","DetailDeviceType":"${
-                        this.wselectname2 ===
-                        this.lang.EquipmentAccount_ClickSelect
-                            ? ''
-                            : this.wselectname2
+                        this.wselectname2 === this.lang.EquipmentAccount_ClickSelect ? '' : this.wselectname2
                     }","DetailInstallationLocation":"${
-                        this.wselectname3 ===
-                        this.lang.EquipmentAccount_ClickSelect
-                            ? ''
-                            : this.wselectname3
+                        this.wselectname3 === this.lang.EquipmentAccount_ClickSelect ? '' : this.wselectname3
                     }"}&argOperateType=1&argOldName=2019-11-26 11:56:15&argLoginUserName=${
                         this.longinnum
                     }&argPageSize=50&argPageIndex=1`
@@ -3297,7 +3057,6 @@ export default {
                             (this.tip.DeviceModel = ''),
                             (this.tip.AssetsNo = ''),
                             (this.tip.Department = ''),
-                            (this.tip.InspectionStatus = ''),
                             (this.tip.Manufactor = ''),
                             (this.tip.DepreciationLife = ''),
                             (this.tip.PurchaseAmount = ''),
@@ -3583,16 +3342,16 @@ export default {
                         this.a11}px)`
                 });
                 this.change = true;
-                setTimeout(() => {
-                    let w = $('.linetop1').width() + 20 + 'px';
-                    let w1 = $('.linetop2').width() + 20 + 'px';
-                    $('.linetop4').css({
-                        width: `calc(100% - ${w})`
-                    });
-                    $('.linetop3').css({
-                        width: `calc(100% - ${w1})`
-                    });
-                });
+                   setTimeout(()=>{
+                       let w =  $('.linetop1').width() + 20 +'px'
+                let w1 =  $('.linetop2').width() + 20 +'px'
+                $('.linetop4').css({
+                    width:`calc(100% - ${w})`
+                })
+                $('.linetop3').css({
+                    width:`calc(100% - ${w1})`
+                })
+                })
                 this.move('sestion', 'sestionheader1');
             });
             this.device = this.sesstion.DeviceStatus;
@@ -3620,7 +3379,7 @@ export default {
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
                 });
-                this.tipword = this.lang.NoOperationAuthority;
+                  this.tipword = this.lang.NoOperationAuthority;
                 return;
             }
             Object.keys(b).forEach(function(key) {
@@ -3648,17 +3407,17 @@ export default {
                         this.a11}px)`
                 });
                 this.change = true;
-
-                setTimeout(() => {
-                    let w = $('.linetop1').width() + 20 + 'px';
-                    let w1 = $('.linetop2').width() + 20 + 'px';
-                    $('.linetop4').css({
-                        width: `calc(100% - ${w})`
-                    });
-                    $('.linetop3').css({
-                        width: `calc(100% - ${w1})`
-                    });
-                });
+                
+               setTimeout(()=>{
+                       let w =  $('.linetop1').width() + 20 +'px'
+                let w1 =  $('.linetop2').width() + 20 +'px'
+                $('.linetop4').css({
+                    width:`calc(100% - ${w})`
+                })
+                $('.linetop3').css({
+                    width:`calc(100% - ${w1})`
+                })
+                })
                 this.move('sestion', 'sestionheader1');
             });
             console.log(this.sesstion);
@@ -3720,7 +3479,6 @@ export default {
                 DeviceName: '',
                 AssetsNo: '',
                 Department: '',
-                InspectionStatus: '',
                 DeviceNo: '',
                 DeviceModel: '',
                 Manufactor: '',
@@ -3734,7 +3492,6 @@ export default {
                     DeviceName: '',
                     AssetsNo: '',
                     Department: '',
-                    InspectionStatus: '',
                     DeviceNo: '',
                     DeviceModel: '',
                     Manufactor: '',
@@ -3782,25 +3539,22 @@ export default {
                 });
                 this.move('sestion', 'sestionheader1');
                 this.change = true;
-                setTimeout(() => {
-                    let w = $('.linetop1').width() + 20 + 'px';
-                    let w1 = $('.linetop2').width() + 20 + 'px';
-                    $('.linetop4').css({
-                        width: `calc(100% - ${w})`
-                    });
-                    $('.linetop3').css({
-                        width: `calc(100% - ${w1})`
-                    });
-                });
+                 setTimeout(()=>{
+                       let w =  $('.linetop1').width() + 20 +'px'
+                let w1 =  $('.linetop2').width() + 20 +'px'
+                $('.linetop4').css({
+                    width:`calc(100% - ${w})`
+                })
+                $('.linetop3').css({
+                    width:`calc(100% - ${w1})`
+                })
+                })
             });
             let i = 0;
             let j = 1;
             for (i in this.selectname) {
                 if (this.a1 == 1) {
-                    if (
-                        this.selectname[i].NodeName ==
-                        this.lang.EquipmentAccount_EquipmentType
-                    ) {
+                    if (this.selectname[i].NodeName == this.lang.EquipmentAccount_EquipmentType) {
                         this.selectname[i].NID =
                             '11111111-1111-1111-1111-111111111111';
                     }
@@ -3822,10 +3576,7 @@ export default {
             }
             for (i in this.selectname1) {
                 if (this.a2 == 1) {
-                    if (
-                        this.selectname1[i].NodeName ==
-                        this.lang.EquipmentAccount_InstallPosition
-                    ) {
+                    if (this.selectname1[i].NodeName == this.lang.EquipmentAccount_InstallPosition) {
                         this.selectname1[i].NID =
                             '22222222-2222-2222-2222-222222222222';
                     }
@@ -3855,10 +3606,7 @@ export default {
             let j = 1;
             for (i in this.selectname) {
                 if (this.a1 == 1) {
-                    if (
-                        this.selectname[i].NodeName ==
-                        this.lang.EquipmentAccount_EquipmentType
-                    ) {
+                    if (this.selectname[i].NodeName == this.lang.EquipmentAccount_EquipmentType) {
                         this.selectname[i].NID =
                             '11111111-1111-1111-1111-111111111111';
                     }
@@ -3894,9 +3642,7 @@ export default {
         cancel2() {
             if (this.Preservation == this.lang.EquipmentAccount_EquipmentType) {
                 this.Preservation = this.lang.EquipmentAccount_ClickSelect;
-            } else if (
-                this.Preservation5 == this.lang.EquipmentAccount_InstallPosition
-            ) {
+            } else if (this.Preservation5 == this.lang.EquipmentAccount_InstallPosition) {
                 this.Preservation5 = this.lang.EquipmentAccount_ClickSelect;
             } else {
                 this.cancel1 = false;
@@ -3916,7 +3662,7 @@ export default {
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
                 });
-                this.tipword = this.lang.NoOperationAuthority;
+                this.tipword =  this.lang.NoOperationAuthority;
                 return;
             }
             this.getEquipmentType();
@@ -3958,11 +3704,6 @@ export default {
                             res.data.data.DataList[i].Department = ' ';
                         }
                         if (
-                            res.data.data.DataList[i].InspectionStatus == 'null'
-                        ) {
-                            res.data.data.DataList[i].InspectionStatus = ' ';
-                        }
-                        if (
                             res.data.data.DataList[i].DepreciationLife == 'null'
                         ) {
                             res.data.data.DataList[i].DepreciationLife = ' ';
@@ -3987,32 +3728,22 @@ export default {
                         res.data.data.DataList[i].number = ++i;
                         a = --i;
                         if (res.data.data.DataList[a].DeviceStatus == 1) {
-                            res.data.data.DataList[
-                                a
-                            ].DeviceStatus = this.lang.EquipmentAccount_Used;
+                            res.data.data.DataList[a].DeviceStatus = this.lang.EquipmentAccount_Used;
                         } else if (
                             res.data.data.DataList[a].DeviceStatus == 2
                         ) {
-                            res.data.data.DataList[
-                                a
-                            ].DeviceStatus = this.lang.EquipmentAccount_Stopped;
+                            res.data.data.DataList[a].DeviceStatus = this.lang.EquipmentAccount_Stopped;
                         } else if (
                             res.data.data.DataList[a].DeviceStatus == 3
                         ) {
-                            res.data.data.DataList[
-                                a
-                            ].DeviceStatus = this.lang.EquipmentAccount_Abandoned;
+                            res.data.data.DataList[a].DeviceStatus = this.lang.EquipmentAccount_Abandoned;
                         }
                         if (res.data.data.DataList[a].QualityStatus == 1) {
-                            res.data.data.DataList[
-                                a
-                            ].QualityStatus = this.lang.EquipmentAccount_Inside;
+                            res.data.data.DataList[a].QualityStatus = this.lang.EquipmentAccount_Inside;
                         } else if (
                             res.data.data.DataList[a].QualityStatus == 2
                         ) {
-                            res.data.data.DataList[
-                                a
-                            ].QualityStatus = this.lang.EquipmentAccount_Outside;
+                            res.data.data.DataList[a].QualityStatus = this.lang.EquipmentAccount_Outside;
                         }
                     }
 
@@ -4172,11 +3903,15 @@ export default {
         }
     },
     mounted() {
+        this.a11 = Number(parseFloat(window.screen.width / 1920).toFixed(2));
+        if (this.a11 < 1) {
+            this.a11 = 0.8;
+        }
         let that = this;
-        $('body')[0].addEventListener('mousemove', function() {
-            that.atooltip();
-        });
-        console.log(this.a11);
+         $('body')[0].addEventListener("mousemove",function(){
+         that.atooltip()
+     })
+        console.log(this.a11)
         setTimeout(() => {
             let a = this.a11 * 120 + 'px';
             $('.table-container').css({
@@ -4196,8 +3931,8 @@ export default {
     }
 };
 </script>
-<style>
-.margin .el-input__inner {
+<style lang='scss'>
+.margin .el-input__inner{
     text-indent: 0.5em;
     width: 230px;
     height: 36px;
@@ -4207,10 +3942,10 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.linetop1 {
+.linetop1{
     display: inline-block;
 }
-.linetop2 {
+.linetop2{
     display: inline-block;
 }
 .yd3 {
@@ -4224,7 +3959,7 @@ export default {
     position: fixed;
     width: 380px;
     height: 200px;
-    z-index: 399;
+    z-index: 399999900;
     top: 0;
     left: 0;
     right: 0;
@@ -4248,7 +3983,7 @@ export default {
             margin-left: 7px;
         }
     }
-    .tipcontanin {
+    .tipcontanin{
         height: calc(100% - 40px);
     }
     .tipword {
@@ -4339,6 +4074,41 @@ export default {
     height: 60px;
     line-height: 60px;
     padding: 0px 22px 0px 22px;
+
+    &.blackBlueBg{
+        color: #E4E4E4;
+        
+        .seleword{
+            background: #1D2846;
+            border: 1px solid #445992;
+            color: #C6CAD8;
+        }
+        .selectword{
+            background: #1D2846;
+            border: 1px solid #445992;
+            
+            .el-tree{
+                background: #1D2846;
+                color: #C6CAD8;
+            }
+        }
+        .add{
+            background-color: transparent;
+            border: 1px solid #46BE05;
+            color: #46BE05;
+        }
+        .move{
+            background-color: #4F5871;
+            border: 1px solid #4F5871;
+            color: #fff;
+        }
+        .file,.export{
+            border-color: #FDAE22;
+            color: #FDAE22;
+            background-color: transparent;
+        }
+    }
+
     select {
         height: 40px;
         text-indent: 0.5em;
@@ -4450,6 +4220,49 @@ export default {
     .page-container {
         height: 60px;
     }
+
+    &.blackBlueBg{
+        .table-container{
+            border-color: transparent;
+        }
+
+        .sestion{
+            border-color: transparent;
+            .sestioncontain{
+                background: #222D50;
+            }
+            span{
+                color: #fff;
+            }
+        }
+        .el-tree{
+            background: #1D2846;
+            color: #C6CAD8;
+        }
+        .Choice{
+            background: #222D50;
+            .choicecontant{
+                background: #28355B;
+                border: 1px solid #445992;
+                .el-tree{
+                    background: #28355B;
+                }
+            }
+        }
+        .homesetion{
+            .hometop-title{
+                background-color: transparent;
+            }
+        }
+        .line{
+            background-color: #445992;
+        }
+        .input1{
+            color: #C6CAD8;
+            background: #35446D;
+            border-color: #445992;
+        }
+    }
 }
 .table-container .img {
     width: 60px;
@@ -4492,8 +4305,8 @@ export default {
 
 .sestion {
     width: 750px;
-    height: 840px;
-    z-index: 199;
+    height: 780px;
+    z-index: 199999900;
     position: fixed;
     top: 60px;
     left: 0;
@@ -4518,7 +4331,7 @@ export default {
         .no {
             position: absolute;
             top: 0;
-            z-index: 199.5;
+            z-index: 199999950;
             bottom: 0;
             margin: auto;
             height: 25px;
@@ -4593,7 +4406,7 @@ export default {
         }
     }
     .inputimg {
-        z-index: 199.5;
+        z-index: 199999950;
         position: absolute;
         right: 7px;
         top: 0;
@@ -4700,7 +4513,7 @@ textarea {
     right: 0px;
     background-color: #eeeeee;
     box-shadow: 0px 0px 8px black;
-    z-index: 299;
+    z-index: 299999900;
     .choicehead {
         height: 50px;
 
@@ -4716,7 +4529,7 @@ textarea {
             height: 25px;
             right: 20px;
             cursor: pointer;
-            z-index: 299.5;
+            z-index: 299999950;
             img {
                 width: 100%;
                 height: 100%;
@@ -4755,7 +4568,7 @@ textarea {
     position: absolute;
     // top: 0;
     // left: 0;
-    z-index: 19.1;
+    z-index: 19999991;
     // width: 200px;
     overflow: auto;
     // height: 350px;
@@ -4776,7 +4589,7 @@ textarea {
 .cover1 {
     width: 100%;
     height: 100%;
-    z-index: 99;
+    z-index: 99999990;
     position: fixed;
     top: 0;
     left: 0;
@@ -4784,7 +4597,7 @@ textarea {
 .cover2 {
     width: 100%;
     height: 100%;
-    z-index: 2;
+    z-index: 290;
     position: fixed;
     top: 0;
     left: 0;
@@ -4792,7 +4605,7 @@ textarea {
 .cover3 {
     width: 100%;
     height: 100%;
-    z-index: 199;
+    z-index: 199999990;
     position: fixed;
     top: 0;
     left: 0;
@@ -4848,4 +4661,5 @@ img {
 .sblx {
     display: inline-block;
 }
+
 </style>

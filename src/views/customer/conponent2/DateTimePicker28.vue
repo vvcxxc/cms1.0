@@ -17,9 +17,7 @@
                 + 'px; width:'+ item.width + 'px; height:'+ item.height + 'px;'
                 + ';opacity:' + item.opacity + ';border: 1px solid #AAAAAA;overflow:hidden'"
                 v-model="item.value"
-                type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                default-time="12:00:00"
             ></el-date-picker>
         </div>
     </div>

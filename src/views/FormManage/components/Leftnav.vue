@@ -115,7 +115,6 @@
             default-expand-all
         ></el-tree>
         <div class="div" ref="div"></div>
-        <div class="div1" ref="div1"></div>
         <div class="newdiv" ref="newdiv" v-show="treeleft">
             <!-- <div class="newadd" v-if="level < 3" @click="newadd">{{lang.QualityManage_SampleChoseUserControl_New}}</div>
             <div class="newchange" v-if="level !== 1" @click="newchange">{{lang.QualityManage_RuleChoseWindow_Modify}}</div>
@@ -436,14 +435,11 @@ export default {
 
                 if (data.fatherid) {
                     this.$emit('getleftdata', data);
-                }else{
-                    this.$emit('getleftdata1');
                 }
             }
-        },
+        }
     },
     mounted() {
-    
         this.zoomValue =
             Number(parseFloat(window.screen.width / 1920).toFixed(2)) <= 0.8
                 ? 0.8
@@ -512,16 +508,6 @@ export default {
     border-left: 15px solid #4270e4;
     height: 40px;
     top: 0px;
-    z-index: 1;
-    left: -10px;
-    position: absolute;
-    background-color: #fff;
-}
-.div1 {
-    width: calc(100% + 10px);
-    height: 40px;
-    top: 0px;
-    display: none;
     z-index: 1;
     left: -10px;
     position: absolute;

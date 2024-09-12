@@ -34,7 +34,7 @@
             </div>
             
             <!-- 是否下发提示弹窗 -->
-            <!-- <div v-show="commerPopShow" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+            <div v-show="commerPopShow" style="width:100%;height:100%;position:fixed;z-index:2147483647">
                     <div v-if="commerPopShow" class="commerPop_outPop">
                     <div class="commerPop_outHead">
                         <i class="warning el-icon-warning"></i>
@@ -46,10 +46,10 @@
                         <div @click="commerYesFun" class="commerPop_yes">{{lang.MessageBox_YES}}</div>
                     </div>
                     </div>
-            </div> -->
+            </div>
             
             <!-- 权限弹窗 -->
-            <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+            <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
                     <div v-if="commerPopShow1" class="commerPop_outPop">
                     <div class="commerPop_outHead">
                         <i class="warning el-icon-warning"></i>
@@ -60,7 +60,7 @@
                         <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
                     </div>
                     </div>
-            </div> -->
+            </div>
         </div>
     </div>
 </template>
@@ -122,22 +122,13 @@ export default {
         },
         //关闭下发弹窗
         commerNoFun(){
-            //   this.commerPopShow = false
-            this.$emit('shownotip')
+              this.commerPopShow = false
         },
         //执行下发
-       commerYesFun(){
-        
+        commerYesFun(){
+              this.commerPopShow = false
                 //请求接口
-                            this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags`,
-                                  data:this.commonValue
-                             }).then((res1)=>{
-                                  if(res1.data.code === 0){
-                                 this.$emit('shownotip')
-                                
-                                  this.$axios({
+                this.$axios({
                     method: 'post',
                     url: '/api/Base/PostIOServiceTest',
                     data:this.commonValue
@@ -145,17 +136,10 @@ export default {
                 }).catch(function(error) {
                     console.log('err',error);
                 });
-                                  }else{
-                    this.$emit('showtip',res1.data.msg)
-                                  }
-                               
-                              })
-            
         },
         //确认
         Jurisdiction(){
-            //  this.commerPopShow1 = false
-            this.$emit('shownotip')
+             this.commerPopShow1 = false
         },
         //权限请求
         jurisdictionShow(item){
@@ -206,8 +190,7 @@ export default {
               if(EventType.length){
                   self.jurisdictionShow(item).then(val => { 
                       if(self.CanExcuteShow){
-                        //   self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                          self.commerPopShow1 = true
                           return
                       }else{
                           for(var j=0;j<EventType.length;j++){
@@ -221,8 +204,7 @@ export default {
                   if(EventType1.length){
                       self.jurisdictionShow(item).then(val => { 
                            if(self.CanExcuteShow){
-                                // self.commerPopShow1 = true
-                                self.$emit('showtip',self.lang.NoOperationAuthority)
+                                self.commerPopShow1 = true
                                 return
                             }else{
                                 for(var j1=0;j1<EventType1.length;j1++){
@@ -248,8 +230,7 @@ export default {
              if(EventType.length){
                this.jurisdictionShow(item).then(val => { 
                    if(this.CanExcuteShow){
-                    //    this.commerPopShow1 = true
-                    this.$emit('showtip',this.lang.NoOperationAuthority)
+                       this.commerPopShow1 = true
                        return
                    }else{
                        for(var j=0;j<EventType.length;j++){
@@ -279,8 +260,7 @@ export default {
                       self.jurisdictionShow(item).then(val => { 
                           if(EventType.length){
                               if(self.CanExcuteShow){
-                                    // self.commerPopShow1 = true
-                                    self.$emit('showtip',self.lang.NoOperationAuthority)
+                                    self.commerPopShow1 = true
                                     return
                                 }else{
                                     for(var j=0;j<EventType.length;j++){
@@ -297,8 +277,7 @@ export default {
                 if(EventType1.length){
                 self.jurisdictionShow(item).then(val => {
                      if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                     }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -311,22 +290,17 @@ export default {
             }
         },
         //下发
-                issueFun(item){
+        issueFun(item){
+            console.log('item66',item)
               if(item.commonIDarr.length !=0){
                       if(!this.CanExcuteShow){
                           if(item.HasText == true){
-                             this.$emit('showtip',item.WindowText)
+                              this.commerPopShow = true
+                              this.commerText = item.WindowText
                               this.commonValue = item.commonIDarr
                           }else{
-                            
-                              this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags?tagname=${item.commonIDarr[0].Name}&value=${item.commonIDarr[0].Value}`,
-                                  data:item.commonIDarr
-                             }).then((res1)=>{
-                                 console.log("res1",res1.data)
-                                  if(res1.data.code === 0){
-                              this.$emit('shownotip')
+                              this.commerPopShow = false
+                              console.log('66666',item.commonIDarr)
                               this.$axios({                      //下发请求接口
                                   method: 'post',
                                   url: '/api/Base/PostIOServiceTest',
@@ -336,15 +310,9 @@ export default {
                               }).catch(function(error) {
                                 console.log('err',error);
                               });
-                                  }else{
-                      this.$emit('showtip',res1.data.msg)
-                                  }
-                               
-                              })
-
                           }
                       }else{
-                        this.$emit('showtip',this.lang.NoOperationAuthority)
+                          this.commerPopShow1 = true
                       }
               }
         },

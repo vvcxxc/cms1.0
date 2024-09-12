@@ -13,18 +13,23 @@
             element-loading-background="rgba(0, 0, 0, 0.4)"
             v-loading="this.$store.state.isShow"
             v-show="this.$store.state.isShow"
-            style="position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;"
+            style="
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+            "
         ></div>
-        <div class="search-container">
+        <div class="search-container" :style="{ zoom }">
             <my-search
                 :searchList="searchList"
                 :searchData="searchData"
                 @setParams="setParams"
                 @change="change"
+                :multipleSelection="multipleSelection"
+                @setTips="setTips"
+                @exportFn="exportFn"
             ></my-search>
         </div>
         <div class="table-container">
@@ -35,6 +40,7 @@
                 :tip="tip"
                 @handleEdit="handleEdit"
                 @handleEdit1="handleEdit1"
+                @handleSelectionChange="handleSelectionChange"
             ></my-table>
         </div>
         <div class="pages-container">
@@ -42,15 +48,17 @@
         </div>
         <div
             class="look lookq"
+            :class="{ blackBlueBg: $store.state.color === 'blackBlue' }"
             v-show="haschange"
-            :style="{ width: 1330 + 'px', height: 730 + 'px' }"
+            :style="{ width: 1330 * zoom + 'px', height: 730 * zoom + 'px' }"
         >
-            <div class="looktop"></div>
+            <div class="looktop" :style="{ zoom }"></div>
             <div
                 class="lookhead"
+                :style="{ zoom }"
                 :class="[
                     { colordiv: $store.state.color == 'grey' },
-                    { fcolor: $store.state.color == 'grey' }
+                    { fcolor: $store.state.color == 'grey' },
                 ]"
             >
                 {{ lang.AlarmRecord_FaultRetrieva_FaultSearch }}
@@ -65,9 +73,9 @@
             </div>
             <div
                 class="lookcontent"
-                :style="{ padding: 30 + 'px', paddingBottom: 0 }"
+                :style="{ padding: 30 * zoom + 'px', paddingBottom: 0 }"
             >
-                <div class="search">
+                <div class="search" :style="{ zoom }">
                     <input
                         type="text"
                         :placeholder="lang.AlarmRecord_Time_Keyword"
@@ -85,7 +93,10 @@
                         lang.AlarmRecord_FaultRetrieva_Select
                     }}</span>
                 </div>
-                <div class="table atable" :style="{ height: 530 + 'px' }">
+                <div
+                    class="table atable"
+                    :style="{ height: 530 * zoom + 'px' }"
+                >
                     <el-table
                         :data="tableData"
                         v-loading="this.$store.state.isShow"
@@ -93,13 +104,22 @@
                         element-loading-background="rgba(0, 0, 0, 0.8)"
                         height="100%"
                         border
-                        :style="{ width: '100%', fontSize: 14 + 'px' }"
+                        :style="{ width: '100%', fontSize: 14 * zoom + 'px' }"
                         :header-cell-style="{
-                            background: '#dcf0f9',
-                            color: '#5883e7',
-                            'border-left': '1px solid #a7d0e2',
-                            height: 50 + 'px',
-                            padding: '0'
+                            background:
+                                $store.state.color === 'blackBlue'
+                                    ? '#344C8F'
+                                    : '#dcf0f9',
+                            color:
+                                $store.state.color === 'blackBlue'
+                                    ? '#fff'
+                                    : '#5883e7',
+                            'border-left':
+                                $store.state.color === 'blackBlue'
+                                    ? '1px solid #8B98B8'
+                                    : '1px solid #a7d0e2',
+                            height: 50 * zoom + 'px',
+                            padding: '0',
                         }"
                     >
                         <template slot="empty">
@@ -112,7 +132,7 @@
                             :label="
                                 lang.AlarmRecord_FaultRetrieva_DataGrid_Source
                             "
-                            width="“180”"
+                            :width="zoom * 180"
                             :show-overflow-tooltip="true"
                         ></el-table-column>
                         <el-table-column
@@ -120,7 +140,7 @@
                             :label="
                                 lang.AlarmRecord_FaultRetrieva_DataGrid_AlarmTime
                             "
-                            width="“180”"
+                            :width="zoom * 180"
                             :show-overflow-tooltip="true"
                         ></el-table-column>
                         <el-table-column
@@ -128,7 +148,7 @@
                             :label="
                                 lang.AlarmRecord_FaultRetrieva_DataGrid_KeyWord
                             "
-                            width="“180”"
+                            :width="zoom * 180"
                             :show-overflow-tooltip="true"
                         ></el-table-column>
                         <el-table-column
@@ -136,7 +156,7 @@
                             :label="
                                 lang.AlarmRecord_FaultRetrieva_DataGrid_Type
                             "
-                            width="“180”"
+                            :width="zoom * 180"
                             :show-overflow-tooltip="true"
                         ></el-table-column>
                         <el-table-column
@@ -144,7 +164,7 @@
                             :label="
                                 lang.AlarmRecord_FaultRetrieva_DataGrid_Description
                             "
-                            width="“280”"
+                            :width="zoom * 280"
                             :show-overflow-tooltip="true"
                         >
                             <template slot-scope="scope">
@@ -160,7 +180,7 @@
                             :label="
                                 lang.AlarmRecord_FaultRetrieva_DataGrid_Cause
                             "
-                            width="“280”"
+                            :width="zoom * 280"
                             :show-overflow-tooltip="true"
                         ></el-table-column>
                         <el-table-column
@@ -168,7 +188,7 @@
                             :label="
                                 lang.AlarmRecord_FaultRetrieva_DataGrid_User
                             "
-                            width="“180”"
+                            :width="zoom * 180"
                             :show-overflow-tooltip="true"
                         ></el-table-column>
                         <el-table-column
@@ -176,7 +196,7 @@
                             :label="
                                 lang.AlarmRecord_FaultRetrieva_DataGrid_Processor
                             "
-                            width="“180”"
+                            :width="zoom * 180"
                             :show-overflow-tooltip="true"
                         ></el-table-column>
                         <el-table-column
@@ -184,7 +204,7 @@
                             :label="
                                 lang.AlarmRecord_FaultRetrieva_DataGrid_Addtime
                             "
-                            width="“180”"
+                            :width="zoom * 180"
                             :show-overflow-tooltip="true"
                         ></el-table-column>
                         <el-table-column
@@ -192,21 +212,27 @@
                             :label="
                                 lang.AlarmRecord_FaultRetrieva_DataGrid_Method
                             "
-                            width="“260”"
+                            :width="zoom * 260"
                             :show-overflow-tooltip="true"
                         ></el-table-column>
                     </el-table>
                 </div>
-                <div class="page">
+                <div class="page" :style="{ zoom }">
                     <my-page1 :pageData="pageData1" @req="req1"></my-page1>
                 </div>
             </div>
         </div>
-        <div class="tip" ref="kongtiao3" v-show="tipchange">
+        <div
+            class="tip"
+            :class="{ blackBlueBg: $store.state.color === 'blackBlue' }"
+            ref="kongtiao3"
+            v-show="tipchange"
+            :style="{ zoom }"
+        >
             <div class="tiptop">
                 <div
                     class="tiphead"
-                    style="position:absolute;width: 380px;height: 40px;"
+                    style="position: absolute; width: 380px; height: 40px"
                 ></div>
                 <img :src="gth" alt />
                 <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
@@ -229,19 +255,25 @@
         <div class="cover3" v-if="tipchange"></div>
         <div class="cover4" v-if="error"></div>
         <div class="cover4" v-if="error1"></div>
-        <div class="errorsetion errorsetion1" v-show="error" ref="kongtiao4">
+        <div
+            class="errorsetion errorsetion1"
+            :class="{ blackBlueBg: $store.state.color === 'blackBlue' }"
+            v-show="error"
+            ref="kongtiao4"
+            :style="{ zoom }"
+        >
             <div class="errortop"></div>
             <div
                 class="errorhead"
                 :class="[
                     { colordiv: $store.state.color == 'grey' },
-                    { fcolor: $store.state.color == 'grey' }
+                    { fcolor: $store.state.color == 'grey' },
                 ]"
             >
                 <span
                     :class="[
                         { colordiv: $store.state.color == 'grey' },
-                        { fcolor: $store.state.color == 'grey' }
+                        { fcolor: $store.state.color == 'grey' },
                     ]"
                     >{{ lang.AlarmRecord_FaultlDetail_Details }}</span
                 >
@@ -353,14 +385,16 @@
         </div>
         <div
             class="errorsetion errorsetion2"
+            :class="{ blackBlueBg: $store.state.color === 'blackBlue' }"
             v-show="error1"
             ref="kongtiao4"
-            :style="{ width: '900px', height: '740px' }"
+            :style="{ width: 900 * zoom + 'px', height: 740 * zoom + 'px' }"
         >
-            <div class="errortop"></div>
+            <div class="errortop" :style="{ zoom }"></div>
             <div
                 class="errorhead"
                 :class="{ colordiv: $store.state.color == 'grey' }"
+                :style="{ zoom }"
             >
                 <span :class="{ fcolor: $store.state.color == 'grey' }">{{
                     errortitle
@@ -374,7 +408,7 @@
                 />
                 <img :src="no" alt class="no1" @click="error2" v-else />
             </div>
-            <div class="errorcontent">
+            <div class="errorcontent" :style="{ zoom }">
                 <div class="second">
                     <div class="fl">
                         {{ lang.AlarmRecord_FaultAddAndModify_Source }}
@@ -467,10 +501,11 @@ export default {
         MySearch,
         MyTable,
         MyPage,
-        MyPage1
+        MyPage1,
     },
     data() {
         return {
+            multipleSelection: [],
             deltrue: true,
             tipword: '',
             errortitle: '',
@@ -488,22 +523,22 @@ export default {
                     // 3-未确认未恢复 2-已确认未恢复 1-未确认已恢复 0-已确认已恢复
                     optionList: [],
                     value: 'value',
-                    label: 'label'
+                    label: 'label',
                 },
                 {
                     title: '报警时间范围：',
                     model: 'argStartTime',
-                    type: 'time'
+                    type: 'time',
                 },
                 {
                     title: '-',
                     model: 'argEndTime',
-                    type: 'time'
+                    type: 'time',
                 },
                 {
                     model: 'argKeyword',
-                    type: 'key'
-                }
+                    type: 'key',
+                },
             ],
             searchData: {
                 argAlarmArray: '',
@@ -511,23 +546,22 @@ export default {
                 argAlarmType: '',
                 argStartTime: '',
                 argEndTime: '',
-                argKeyword: ''
+                argKeyword: '',
             },
             tableHead: {
                 AlarmTime: '报警时间',
-                AlarmDevice: '报警设备',
-                AlarmMsg: '报警内容',
-                AlarmState: '报警状态',
-                RecoverTime: '恢复时间',
-                AlarmDuration: '报警时长',
-                AlarmValue: '报警值',
-                AlarmGroup: '报警组',
-                AlarmType: '报警类别',
-                AlarmLevel: '报警等级',
-                OperatorName: '报警确认员',
-                ConfirmTime: '确认时间',
+                AlarmTagName: '报警变量名',
                 AlarmTagAddress: '报警地址',
-                AlarmTagName: '报警变量名'
+                AlarmDevice: '报警设备',
+                AlarmType: '报警类别',
+                AlarmGroup: '报警组',
+                AlarmMsg: '报警信息',
+                AlarmValue: '报警值',
+                AlarmLevel: '报警等级',
+                RecoverTime: '恢复时间',
+                ConfirmTime: '确认时间',
+                OperatorName: '报警确认员',
+                AlarmState: '报警状态',
             },
             data: [],
             daochu: '',
@@ -537,7 +571,7 @@ export default {
                 TotalPage: 0,
                 PageIndex: 1,
                 LastEnabled: false,
-                NextEnabled: false
+                NextEnabled: false,
             },
             pageData1: {
                 PageSize: 50,
@@ -545,7 +579,7 @@ export default {
                 TotalPage: 0,
                 PageIndex: 1,
                 LastEnabled: false,
-                NextEnabled: false
+                NextEnabled: false,
             },
             AlarmMsg: '',
             haschange: false,
@@ -558,12 +592,15 @@ export default {
             disabled: false,
             bbb: 1,
             ccc: 1,
+            zoom: 1,
             lang: JSON.parse(localStorage.getItem('languages'))[
                 localStorage.getItem('currentLang')
-            ]
+            ],
         };
     },
     mounted() {
+        this.zoom =
+            window.screen.width / 1920 < 0.7 ? 0.7 : window.screen.width / 1920;
         console.log(this.$refs.table);
     },
     created() {
@@ -578,7 +615,7 @@ export default {
         );
         Object.assign(this.searchData, {
             argStartTime,
-            argEndTime
+            argEndTime,
         });
         this.init();
         this.req(1);
@@ -586,6 +623,163 @@ export default {
         this.getDevice();
     },
     methods: {
+        exportFn() {
+            let filterVal = [
+                'AlarmTime',
+                'AlarmTagName',
+                'AlarmTagAddress',
+                'AlarmDevice',
+                'AlarmType',
+                'AlarmGroup',
+                'AlarmMsg',
+                'AlarmValue',
+                'AlarmLevel',
+                'RecoverTime',
+                'ConfirmTime',
+                'OperatorName',
+                'AlarmStateName',
+            ];
+            let title = [
+                '报警时间',
+                '报警变量名',
+                '报警地址',
+                '报警设备',
+                '报警类别',
+                '报警组',
+                '报警信息',
+                '报警值',
+                '报警等级',
+                '恢复时间',
+                '确认时间',
+                '报警确认员',
+                '报警状态',
+            ];
+            if (this.pageData.TotalCount == 0) {
+                let excelDatas = [
+                    {
+                        tHeader: title,
+                        filterVal: filterVal,
+                        tableDatas: [],
+                        sheetName: 'sheet1',
+                    },
+                    {
+                        tHeader: title,
+                        filterVal: filterVal,
+                        tableDatas: [],
+                        sheetName: 'sheet1',
+                    }, //不知道源码为啥删一次，写两次才正常
+                ];
+                this.json2excel(excelDatas, '历史报警', true, 'xlsx');
+                return;
+            }
+            let params = this.searchData;
+            let userName = '';
+            if (
+                !JSON.parse(sessionStorage.getItem('userInfo1')) ||
+                JSON.parse(sessionStorage.getItem('userInfo1')) == null
+            ) {
+                userName = JSON.parse(
+                    sessionStorage.getItem('sightseerInfo1')
+                ).SCMSUserName;
+            } else {
+                userName = JSON.parse(
+                    sessionStorage.getItem('userInfo1')
+                ).SCMSUserName;
+            }
+            if (params.argAlarmType == undefined) {
+                params.argAlarmType = '';
+            }
+            this.$axios
+                .post(
+                    `/api/HistoricalAlarm/AlarmRecord_GstHistoryAlarmRecord?&argAlarmType=${encodeURIComponent(
+                        params.argAlarmType
+                    )}&argStartTime=${params.argStartTime}&argEndTime=${
+                        params.argEndTime
+                    }&argKeyword=${params.argKeyword}&argPageSize=${
+                        this.pageData.TotalCount
+                    }&argPageIndex=1&argUserAccount=${userName}`
+                )
+                .then((res) => {
+                    if (res.data.code == 0) {
+                        let tableList = [...res.data.data.DataList];
+                        require.ensure([], () => {
+                            const {
+                                expor_json_to_excel,
+                            } = require('../../vendor/Export2Excel');
+                            let excelDatas = [
+                                {
+                                    tHeader: title,
+                                    filterVal: filterVal,
+                                    tableDatas: tableList,
+                                    sheetName: 'sheet1',
+                                },
+                                {
+                                    tHeader: title,
+                                    filterVal: filterVal,
+                                    tableDatas: tableList,
+                                    sheetName: 'sheet1',
+                                }, //不知道源码为啥删一次，写两次才正常
+                            ];
+                            this.json2excel(
+                                excelDatas,
+                                '历史报警',
+                                true,
+                                'xlsx'
+                            );
+                        });
+                    } else {
+                        this.w = res.data.msg;
+                        this.w1 = true;
+                        this.tipword = '';
+                        setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${
+                                    ($('.tip').width() / 2) * this.a11
+                                }px)`,
+                                top: `calc(50% - ${
+                                    ($('.tip').height() / 2) * this.a11
+                                }px)`,
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                    }
+                });
+        },
+        json2excel(tableJson, filenames, autowidth, bookTypes) {
+            var that = this;
+            //这个是引用插件
+            import('@/vendor/Export2Excel').then((excel) => {
+                var tHeader = [];
+                var dataArr = [];
+                var sheetnames = [];
+                for (var i in tableJson) {
+                    tHeader.push(tableJson[i].tHeader);
+                    dataArr.push(
+                        that.formatJson(
+                            tableJson[i].filterVal,
+                            tableJson[i].tableDatas
+                        )
+                    );
+                    sheetnames.push(tableJson[i].sheetName);
+                }
+                excel.export_json_to_excel({
+                    header: tHeader,
+                    data: dataArr,
+                    sheetname: sheetnames,
+                    filename: filenames,
+                    autoWidth: autowidth,
+                    bookType: bookTypes,
+                });
+            });
+        },
+        formatJson(filterVal, jsonData) {
+            return jsonData.map((v) => filterVal.map((j) => v[j]));
+        },
+        handleSelectionChange(val) {
+            this.multipleSelection = val;
+        },
         getLangData() {
             this.searchList = [
                 {
@@ -595,23 +789,40 @@ export default {
                     // 3-未确认未恢复 2-已确认未恢复 1-未确认已恢复 0-已确认已恢复
                     optionList: [],
                     value: 'value',
-                    label: 'label'
+                    label: 'label',
                 },
                 {
                     title: this.lang.AlarmRecord_History_Time,
                     model: 'argStartTime',
-                    type: 'time'
+                    type: 'time',
                 },
                 {
                     title: '-',
                     model: 'argEndTime',
-                    type: 'time'
+                    type: 'time',
                 },
                 {
                     model: 'argKeyword',
-                    type: 'key'
-                }
+                    type: 'key',
+                },
             ];
+            this.tableHead = {
+                AlarmTime: this.lang.AlarmRecord_Time_DataGrid_Time,
+                AlarmTagName: this.lang.AlarmRecord_Time_DataGrid_VariableName,
+                AlarmTagAddress: this.lang.AlarmRecord_Time_DataGrid_Address,
+                AlarmDevice: this.lang.AlarmRecord_Time_DataGrid_Equipment,
+                AlarmType: this.lang.AlarmRecord_Time_DataGrid_Type,
+                AlarmGroup: this.lang.AlarmRecord_Time_DataGrid_Group,
+                AlarmMsg: this.lang.AlarmRecord_Time_DataGrid_Information,
+                AlarmValue: this.lang.AlarmRecord_Time_DataGrid_Value,
+                AlarmLevel: this.lang.AlarmRecord_Time_DataGrid_Grade,
+                RecoverTime: this.lang.AlarmRecord_Time_DataGrid_RecoveryTime,
+                ConfirmTime:
+                    this.lang.AlarmRecord_Time_DataGrid_ConfirmationTime,
+                OperatorName:
+                    this.lang.AlarmRecord_Time_DataGrid_ConfirmationPerson,
+                AlarmStateName: this.lang.AlarmRecord_Time_DataGrid_State,
+            };
         },
         error2() {
             this.bbb = 2;
@@ -621,7 +832,8 @@ export default {
                 this.move('tip', 'tiphead');
             });
             this.w1 = true;
-            this.w = this.lang.AlarmRecord_HT_FaultAddAndModify_DoYouRealyWantToSave;
+            this.w =
+                this.lang.AlarmRecord_HT_FaultAddAndModify_DoYouRealyWantToSave;
         },
         getdata(a) {
             console.log(a);
@@ -649,7 +861,7 @@ export default {
                 .post(
                     `/api/AlarmRecord/AlarmRecord_GetFaultStatus?argAlarmID=${b.ID}&argTableName=${b.TableName}`
                 )
-                .then(res => {
+                .then((res) => {
                     if (res.data.data == '2') {
                         setTimeout(() => {
                             this.tipchange = true;
@@ -665,7 +877,7 @@ export default {
                             .post(
                                 `/api/AlarmRecord/AlarmRecord_GetFault?argAlarmID=${b.ID}&argTableName=${b.TableName}`
                             )
-                            .then(res => {
+                            .then((res) => {
                                 b.KeyWord = res.data.data[0].KeyWord;
                                 b.Reason = res.data.data[0].Reason;
                                 b.FaultTreatment =
@@ -676,7 +888,8 @@ export default {
                         this.changedata = b;
                         setTimeout(() => {
                             this.error1 = true;
-                            this.errortitle = this.lang.AlarmRecord_HT_FaultAddAndModify_FaultRepairRecordAdding;
+                            this.errortitle =
+                                this.lang.AlarmRecord_HT_FaultAddAndModify_FaultRepairRecordAdding;
                             this.move('errorsetion2', 'errortop');
                         });
                     }
@@ -703,7 +916,8 @@ export default {
             this.changedata.AddTime = this.getNowTime();
             this.changedata.AddPerson = this.changedata.OperatorName;
             if (!this.changedata.DealPerson) {
-                this.w = this.lang.AlarmRecord_HT_FaultAddAndModifyViewModel_PEHandler;
+                this.w =
+                    this.lang.AlarmRecord_HT_FaultAddAndModifyViewModel_PEHandler;
                 this.w1 = true;
                 this.tipword = '';
                 setTimeout(() => {
@@ -717,15 +931,17 @@ export default {
                 this.$axios({
                     method: 'post',
                     url: `/api/AlarmRecord/AlarmRecord_SetFault`,
-                    data: this.changedata
+                    data: this.changedata,
                 })
-                    .then(res => {
+                    .then((res) => {
                         console.log(res);
                         if (res.data.msg == '请求成功') {
                             if (this.w == this.lang.AlarmRecord_HT_IsUpdate) {
-                                this.w = this.lang.AlarmRecord_HT_FaultAddAndModify_UpdateSuccess;
+                                this.w =
+                                    this.lang.AlarmRecord_HT_FaultAddAndModify_UpdateSuccess;
                             } else {
-                                this.w = this.lang.AlarmRecord_HT_FaultAddAndModify_SuccessfulEntry;
+                                this.w =
+                                    this.lang.AlarmRecord_HT_FaultAddAndModify_SuccessfulEntry;
                             }
 
                             this.w1 = true;
@@ -753,7 +969,7 @@ export default {
                         //     this.deltrue = true;
                         // }
                     })
-                    .catch(err => {});
+                    .catch((err) => {});
             }
         },
         yes1() {
@@ -766,7 +982,8 @@ export default {
                 this.tipchange = false;
                 setTimeout(() => {
                     this.error1 = true;
-                    this.errortitle = this.lang.AlarmRecord_HT_FaultAddAndModify_FaultRepairRecordUpdate;
+                    this.errortitle =
+                        this.lang.AlarmRecord_HT_FaultAddAndModify_FaultRepairRecordUpdate;
                     this.move('errorsetion2', 'errortop');
                 });
             } else {
@@ -891,7 +1108,7 @@ export default {
             console.log($(`.${name}`));
             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
             $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
-            $(`.${name}`)[0].addEventListener('mousedown', function(e) {
+            $(`.${name}`)[0].addEventListener('mousedown', function (e) {
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
                     $(`.${name}`).removeClass('center');
@@ -913,7 +1130,7 @@ export default {
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
-                    $('body')[0].addEventListener('mousemove', function(e) {
+                    $('body')[0].addEventListener('mousemove', function (e) {
                         pdmove = true;
                         if (isDown == false) {
                             return;
@@ -931,7 +1148,7 @@ export default {
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
-                    $('body')[0].addEventListener('mouseup', function(e) {
+                    $('body')[0].addEventListener('mouseup', function (e) {
                         //开关关闭
                         isDown = false;
                         $('body')[0].style.cursor = 'default';
@@ -1000,7 +1217,7 @@ export default {
             let data = '设备';
             this.$axios
                 .post(`/api/Main/Main_GetProjectName`)
-                .then(res => {
+                .then((res) => {
                     // if (res.data.code === 0) {
                     //     let data = res.data.data;
                     //     if (data === 'SCMS自来水监控系统') {
@@ -1065,16 +1282,16 @@ export default {
                     //     }
                     // }
                 })
-                .catch(err => {});
+                .catch((err) => {});
         },
         change(e) {
             let data = this.deviceList[e];
             if (data.length > 0) {
                 this.searchList[1].optionList = [];
-                data.map(item => {
+                data.map((item) => {
                     this.searchList[1].optionList.push({
                         value: item,
-                        label: item
+                        label: item,
                     });
                 });
             }
@@ -1093,6 +1310,16 @@ export default {
             let s = date.getSeconds();
             s = s < 10 ? '0' + s : s;
             return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
+        },
+        setTips(msg) {
+            setTimeout(() => {
+                this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
+            this.w1 = true;
+
+            this.tipword = '';
+            this.w = msg;
         },
         setParams(params, a) {
             if (!a) {
@@ -1129,7 +1356,7 @@ export default {
                 .post(
                     `/api/AlarmRecord/AlarmRecord_GstFaultRetrieva?argKeyword=${this.keyword}&argPageSize=50&argPageIndex=1&argDescribe=${this.AlarmMsg}`
                 )
-                .then(res => {
+                .then((res) => {
                     console.log(res);
                     this.pageData1 = res.data.data.ParameterList;
                     this.tableData = res.data.data.DataList;
@@ -1141,25 +1368,26 @@ export default {
         getAlarmType() {
             this.$axios
                 .post(`/api/AlarmRecord/AlarmRecord_GstAlarmType`)
-                .then(res => {
+                .then((res) => {
                     if (res.data.code == 0) {
                         this.searchList[0].optionList = [];
                         let data = res.data.data;
-                        data.map(item => {
+                        data.map((item) => {
                             this.searchList[0].optionList.push({
                                 value: item.Value,
-                                label: item.Text
+                                label: item.Text,
                             });
                         });
                         this.searchList[0].optionList.unshift({
                             value: this.lang.AlarmRecord_HT_Unlimited,
-                            label: this.lang.AlarmRecord_HT_Unlimited
+                            label: this.lang.AlarmRecord_HT_Unlimited,
                         });
 
-                        this.searchData.argAlarmType = this.searchList[0].optionList[0].value;
+                        this.searchData.argAlarmType =
+                            this.searchList[0].optionList[0].value;
                     }
                 })
-                .catch(err => {});
+                .catch((err) => {});
         },
         isPositiveInteger(s) {
             //是否为正整数
@@ -1191,7 +1419,8 @@ export default {
                                 this.tipchange = true;
                                 this.move('tip', 'tiphead');
                             });
-                            this.w = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
+                            this.w =
+                                this.lang.DataGrid_Reaction_HT_PEThePageNumber;
                             this.w1 = true;
                             this.tipword = '';
                             return;
@@ -1202,19 +1431,37 @@ export default {
 
             let params = Object.assign(this.searchData, {
                 argPageIndex: pageIndex,
-                argPageSize: this.pageData.PageSize
+                argPageSize: this.pageData.PageSize,
             });
+            let userName = '';
+            if (
+                !JSON.parse(sessionStorage.getItem('userInfo1')) ||
+                JSON.parse(sessionStorage.getItem('userInfo1')) == null
+            ) {
+                userName = JSON.parse(
+                    sessionStorage.getItem('sightseerInfo1')
+                ).SCMSUserName;
+            } else {
+                userName = JSON.parse(
+                    sessionStorage.getItem('userInfo1')
+                ).SCMSUserName;
+            }
+            if (params.argAlarmType == undefined) {
+                params.argAlarmType = '';
+            }
             this.$axios
                 .post(
-                    `/api/AlarmRecord/AlarmRecord_GstHistoryAlarmRecord?&argAlarmType=${encodeURIComponent(
+                    `/api/HistoricalAlarm/AlarmRecord_GstHistoryAlarmRecord?&argAlarmType=${encodeURIComponent(
                         params.argAlarmType
                     )}&argStartTime=${params.argStartTime}&argEndTime=${
                         params.argEndTime
                     }&argKeyword=${params.argKeyword}&argPageSize=${
                         params.argPageSize
-                    }&argPageIndex=${params.argPageIndex}`
+                    }&argPageIndex=${
+                        params.argPageIndex
+                    }&argUserAccount=${userName}`
                 )
-                .then(res => {
+                .then((res) => {
                     console.log(res);
                     let i = 0;
                     if (res.data.code == 0) {
@@ -1231,7 +1478,7 @@ export default {
                     }
                 })
 
-                .catch(err => {});
+                .catch((err) => {});
         },
         req1(pageIndex, s) {
             this.deltrue = true;
@@ -1258,7 +1505,8 @@ export default {
                                 this.tipchange = true;
                                 this.move('tip', 'tiphead');
                             });
-                            this.w = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
+                            this.w =
+                                this.lang.DataGrid_Reaction_HT_PEThePageNumber;
                             this.w1 = true;
                             this.tipword = '';
                             return;
@@ -1269,20 +1517,20 @@ export default {
 
             let params = Object.assign(this.searchData, {
                 argPageIndex: pageIndex,
-                argPageSize: this.pageData1.PageSize
+                argPageSize: this.pageData1.PageSize,
             });
             this.$axios
                 .post(
                     `/api/AlarmRecord/AlarmRecord_GstFaultRetrieva?argKeyword=${this.keyword}&argPageSize=50&argPageIndex=${pageIndex}&argDescribe=${this.AlarmMsg}`
                 )
-                .then(res => {
+                .then((res) => {
                     this.pageData1 = res.data.data.ParameterList;
                     this.tableData = res.data.data.DataList;
                 })
 
-                .catch(err => {});
-        }
-    }
+                .catch((err) => {});
+        },
+    },
 };
 </script>
 
@@ -1359,6 +1607,44 @@ export default {
         height: 530px;
         border: 1px solid #ccc;
         margin-top: 10px;
+    }
+
+    &.blackBlueBg {
+        background-color: #222d50;
+        .lookcontent {
+            .search {
+                background: #28355b;
+                border: 1px solid #445992;
+
+                input {
+                    background: #1d2846;
+                    border: 1px solid #445992;
+                    color: #c6cad8;
+                }
+                span {
+                    background-color: transparent;
+                    border: 1px solid #ffffff;
+                    color: #ffffff;
+                }
+            }
+            .table {
+                color: #8798c9;
+                background: #28355b;
+                border: 1px solid #445992;
+
+                .el-table td {
+                    border-bottom: 1px solid #445992;
+                }
+            }
+            .input {
+                color: #9aa3be;
+            }
+            .el-tooltip {
+                a {
+                    color: #769eff;
+                }
+            }
+        }
     }
 }
 .public-table {

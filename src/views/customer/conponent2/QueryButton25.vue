@@ -57,7 +57,7 @@
 <script>
 
 import {cron} from 'vue-cron'
-import Utils from '../../../assets/js/util.js'
+
 export default {
   
   data() {
@@ -106,11 +106,6 @@ export default {
     if(this.data){
       this.init()
     }
-  },
-  mounted(){
-  Utils.$on('demo',()=>{
-      // this.searchFun()
-    })
   },
   methods: {
    

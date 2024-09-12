@@ -5,7 +5,7 @@
     <div class="single-line-text component-content" :class="last ? 'last-compoennt-content' : ''">
       <div class="component-title">
         {{formData.componentAttribute.title}}
-        <span class="font-2" v-if="formData.componentAttribute && !formData.componentAttribute.required">({{lang.EquipmentAccount_Optional}})</span>
+        <span class="font-2" v-if="formData.componentAttribute && !formData.componentAttribute.required">(选填)</span>
         <el-tooltip 
           class="item" 
           effect="dark" 
@@ -48,33 +48,31 @@ export default {
   data() {
     let defaultData = ""
     if(this.formData.componentAttribute.unit.length > 0){
-      defaultData = this.formData.value.Value2.slice(0, this.formData.value.Value2.length - this.formData.componentAttribute.unit.length)
+      defaultData = this.formData.value.Value.slice(0, this.formData.value.Value.length - this.formData.componentAttribute.unit.length)
     }else{
-      defaultData = this.formData.value.Value2
+      defaultData = this.formData.value.Value
     }
-    if(this.formData.componentAttribute.type === 'number' || this.formData.type === "realTimeVariable"){
+    if(this.formData.componentAttribute.type === 'number'){
       this.$nextTick(()=>{
-        this.numberChange(defaultData)
+        defaultData = this.numberChange(defaultData)
       })
     }
     return {
       dataValue: defaultData,
       color: this.formData.value.Color === '' ? '#000' : this.formData.value.Color,
-      thresholdFeedback: [...this.formData.componentAttribute.thresholdFeedback],
-      warning: require('../../../assets/images/warning.png'),
-      lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
+      thresholdFeedback: this.formData.componentAttribute.thresholdFeedback,
+      warning: require('../../../assets/images/warning.png')
     }
   },
   watch:{
     dataValue(newValue, oldValue){
-      if(this.formData.componentAttribute.type === 'number' || this.formData.type === "realTimeVariable"){
-        this.formData.value.Value = newValue.replace(/,/g, "") + this.formData.componentAttribute.unit
-        this.formData.value.Value2 = newValue.replace(/,/g, "") + this.formData.componentAttribute.unit
-      }else{
-        this.formData.value.Value = newValue + this.formData.componentAttribute.unit
-        this.formData.value.Value2 = newValue + this.formData.componentAttribute.unit
+      this.formData.value.Value = newValue + this.formData.componentAttribute.unit
+      if(this.formData.componentAttribute.type === 'number'){
       }
     }
+  },
+  mounted(){
+    this.checkData(this.dataValue)
   },
   methods: {
     /*  
@@ -106,38 +104,37 @@ export default {
     },
     change(e){
       let val = e.target.value;
-      if(this.formData.componentAttribute.type === 'number' || this.formData.type === "realTimeVariable"){
+      if(this.formData.componentAttribute.type === 'number'){
         let value = val.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g, '')
         this.numberChange(value)
       }
-      setTimeout(()=>{
-        this.checkData(this.formData.value.Value)
-      }, 500)
+      this.checkData(val)
     },
     checkData(val){
       let isErr = false;
       for(let i=0; i<this.thresholdFeedback.length;i++){
         let {condition, value} = this.thresholdFeedback[i]
-        if(!isErr){
-          if(condition === '数值范围'){
-            let numberRange = value.split(",")
-            if(val !== "" && !isNaN(Number(val)) && val >= Number(numberRange[0]) && val <= Number(numberRange[1])){
+        if(isErr){
+          return
+        }
+        if(condition === '数值范围'){
+          let numberRange = value.split(",")
+          if(val !== "" && !isNaN(Number(val)) && val >= Number(numberRange[0]) && val <= Number(numberRange[1])){
+            isErr = true
+          }
+        }else if(condition === '文本序列'){
+          let textRange = value.split(",")
+          if(textRange.some(text=> val === text)){
+            isErr = true
+          }
+        }else{
+          if(!isNaN(Number(val))){
+            if(val !== "" && eval(`${val}${condition}${value}`)){
               isErr = true
             }
-          }else if(condition === '文本序列'){
-            let textRange = value.split(",")
-            if(textRange.some(text=> val === text)){
+          }else if(isNaN(Number(val)) && condition === "=="){ //文本只对==有效
+            if(val !== "" && val === value){
               isErr = true
-            }
-          }else{
-            if(!isNaN(Number(val))){
-              if(val !== "" && eval(`${val}${condition}${value}`)){
-                isErr = true
-              }
-            }else if(isNaN(Number(val)) && condition === "=="){ //文本只对==有效
-              if(val !== "" && val === value){
-                isErr = true
-              }
             }
           }
         }
@@ -156,14 +153,14 @@ export default {
     }
   },
   mounted(){
-    this.checkData(this.formData.value.Value2)
+    this.checkData(this.formData.value.Value)
   }
 }
 </script>
 <style lang='scss' scoped>
   .component-content{
     position: relative;
-    padding: 8px 26px;
+    padding: 10px 16px;
     flex-wrap: wrap;
     display: flex;
     flex-direction: row;
@@ -173,18 +170,19 @@ export default {
 
     .component-title{
       line-height: 28px;
+      font-family: Source Han Sans CN;
       font-size: 14px;
       font-weight: 400;
       color: #7C7F8E;
       min-width: 300px;
       padding: 8px 0;
-      font-family: 'SourceHanSansCN-Normal';
 
       .font-2 {
+          font-family: PingFang SC;
           font-size: 12px;
           font-weight: 500;
           line-height: 20px;
-          color: #999;
+          color: #7C7F8E;
       }
 
       .icon-warning{
@@ -207,7 +205,7 @@ export default {
         justify-content: space-between;
         align-items: center;
         min-width: 116px;
-        color:#333;
+        color: #000;
         background: #f8f8f8;
         padding: 6px 9px 6px 0;
         box-sizing: border-box;
@@ -223,12 +221,11 @@ export default {
           width: calc(100% - 70px);
           line-height: 1;
           box-sizing: border-box;
-          font-size: 14px;
-          color: #333;
-          font-family: 'SourceHanSansCN-Normal';
+          color: #000;
         }
       }
       .unit{
+        font-family: Source Han Sans CN;
         font-size: 14px;
         line-height: 20px;
         font-weight: 400;
@@ -236,7 +233,6 @@ export default {
         max-width: 70px;
         word-break: break-all;
         text-align: left; 
-        font-family: 'SourceHanSansCN-Normal';
       }
     }
 

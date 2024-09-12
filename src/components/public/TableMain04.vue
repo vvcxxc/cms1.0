@@ -6,13 +6,19 @@
  * @LastEditTime: 2020-08-06 18:30:43
  -->
 <template>
-    <div class="table-container">
+    <div class="table-container" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
         <el-table
         :popper-append-to-body="false"
             :data="data"
            border
               highlight-current-row
-             :header-cell-style="{background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',color:($store.state.color=='grey')?'#000':'#fff','border-left':'1px solid #cccccc',height:50*a1+'px',padding:'0'}"
+             :header-cell-style="{
+            background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+            color:($store.state.color=='grey')?'#000':'#fff',
+            'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+             height:50*a1+'px',
+             padding:'0'
+            }"
             row-class-name="high-light"
             height="100%"
             width="100%"
@@ -63,6 +69,10 @@ export default {
         };
     },
     mounted(){
+this.a1 = Number(parseFloat(window.screen.width/1920).toFixed(2))
+    if(this.a1 <1){
+        this.a1  = 0.8
+    }
     },
     methods: {
         handleEdit1(a,b){

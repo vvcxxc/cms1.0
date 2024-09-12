@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-11 10:13:58
  -->
 <template>
-    <div class="tapwater cpktable"    
+    <div class="tapwater cpktable" :class="{blackBlueBg: $store.state.color === 'blackBlue'}"
                     :style="{top:100*zoomValue+'px'}"
                   >
                     			<div class="loadcover" element-loading-spinner="el-icon-loading"
@@ -71,6 +71,8 @@
                 <!-- <div class="fl"> -->
                     <span class="ss">{{lang.QualityManage_SampleChoseWindow_StartTime}}</span>
                     <el-date-picker
+                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                         v-model="value1"
                         type="datetime"
                         @focus="sx()"
@@ -80,6 +82,8 @@
                     ></el-date-picker>
                     <span class="ss">{{lang.QualityManage_SampleChoseWindow_EndTime}}</span>
                     <el-date-picker
+                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                         v-model="value2"
                         type="datetime"
                         @focus="sx()"
@@ -155,9 +159,9 @@
                     }"
                     :row-style="{ height: 50 * zoomValue + 'px' }"
                     :header-cell-style="{
-                        background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',
+                        background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
                         color:($store.state.color=='grey')?'#000':'#fff',
-                        'border-left':'1px solid #cccccc',
+                        'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
                         height: 50 * zoomValue + 'px',
                         padding:'0'
                     }"
@@ -304,7 +308,7 @@ export default {
             outputs: [],
             handleRow: {},
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
-            zoomValue: 1,
+            zoomValue: 0,
         };
     },
     methods: {
@@ -557,10 +561,9 @@ this.tipchange1 = true;
                             this.$store.state.a.num = this.Number1;
                             this.dom = this.$refs.multipleTable.bodyWrapper;
                             this.dom.addEventListener('scroll', () => {
-                                console.log(this.tabledata1);
+                                console.log(this.all);
                                 if (this.all == this.lang.QualityManage_HT_SampleChoseUserControlViewModel_DisplaySelected) {
                                     if (this.tabledata1.length > 30) {
-                                    
                                         // 滚动距离
                                         let scrollTop = this.dom.scrollTop;
                                         // 变量windowHeight是可视区的高度
@@ -586,9 +589,7 @@ this.tipchange1 = true;
                                                 for (let i = this.tablenumber; i < this.tabledata1.length; i++) {
                                                     this.tableData.push(this.tabledata1[i]);
                                                 }
-                                                
                                             } else {
-                                              
                                                 return;
                                             }
                                         }
@@ -1039,20 +1040,13 @@ this.tipchange1 = true;
                     this.deldatal.splice(index,1)
                 }
             })
-                this.tabledata1.forEach((item, index)=>{
-                if(item.number === this.handleRow.number){
-                    this.tabledata1.splice(index,1)
-                  
-                }
-            })
+            
             this.tableData.forEach((item, index)=>{
                 if(item.number === this.handleRow.number){
                     this.tableData.splice(index,1)
                     this.handleRow = {}
                 }
             })
-          
-            
 
             // let a1 = [];
             // let j = 0;
@@ -2411,6 +2405,13 @@ this.tipchange1 = true;
         getMoreLog() {}
     },
     mounted() {
+        this.$nextTick(() => {
+            this.zoomValue = Number(parseFloat(window.screen.width/2000).toFixed(2)) <= 0.66 ? 0.66 : Number(parseFloat(window.screen.width/1920).toFixed(2))
+            this.$refs.search.style.zoom = this.zoomValue
+            // console.log(this.$refs.btns)
+            // this.$refs.btns.style.zoom = this.zoomValue
+        })
+
         this.getLangData()
         this.data = JSON.parse(this.$route.query.id)
         this.PrMethod = this.data.PrMethod;
@@ -2529,7 +2530,6 @@ this.tipchange1 = true;
         this.dom.addEventListener('scroll', () => {
             if (this.all == this.lang.QualityManage_HT_SampleChoseUserControlViewModel_DisplaySelected) {
                 if (this.tabledata1.length > 30) {
-                   
                     // 滚动距离
                     let scrollTop = this.dom.scrollTop;
                     // 变量windowHeight是可视区的高度
@@ -2642,6 +2642,42 @@ this.tipchange1 = true;
     padding: 20px;
     width: 100%;
     background-color: #eeeeee;
+
+    &.blackBlueBg{
+        background: #06091F;
+
+        .linebox{
+            background: #081027;
+            border-color: #38415A;
+        }
+        .table{
+            background: #0B1530;
+            border-color: #38415A;
+            color: #E4E4E4;
+
+            .newdel{
+                background-color: #4F5871!important;
+                border-color: #4F5871!important;
+                color: #fff;
+            }
+            .dr,.dc{
+                background-color: transparent!important;
+                border-color: #FDA100!important;
+                color: #FDA100!important;
+            
+                .file{
+                    background-color: transparent;
+                    border-color: transparent;
+                }
+            }
+            .js{
+                background-color: transparent!important;
+                border-color: #4ABFCD!important;
+                color: #4ABFCD!important;
+            }
+        }
+    }
+
     .linebox {
         height: 100%;
         width: 100%;

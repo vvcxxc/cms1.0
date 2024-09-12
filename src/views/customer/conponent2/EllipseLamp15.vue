@@ -387,7 +387,7 @@ export default {
                       resValue = 0
                   }else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                         resValue = data[i].Value
-                  }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
+                  }else if(typeof(Number(resValueNumber)) == 'number'){
                     resValue = Number(data[i].Value)
                   }else{
                     resValue = data[i].Value
@@ -399,7 +399,7 @@ export default {
                     }
                     else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                           ArrValue =  TextAnimationListData[i].Compare
-                    }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
+                    }else if(typeof(Number(resValueNumber)) == 'number'){
                       ArrValue = Number( TextAnimationListData[i].Compare)
                     }else{
                       ArrValue =  TextAnimationListData[i].Compare

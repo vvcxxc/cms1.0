@@ -1303,11 +1303,11 @@ video{
 .public-table .addPop{
   z-index: 9999999999999999999;
 }
-.search-item{
-  input{
-    height: 100%;
-  }
-}
+// .search-item{
+//   input{
+//     height: 100%;
+//   }
+// }
 .conterbox .bottom_fool{
   .cell{
     line-height: 100% !important;
@@ -1401,16 +1401,7 @@ video{
    
   }
 }
-.apptable{
-  .cell{
-    white-space:nowrap !important;
-    span{
-      white-space:nowrap !important;
-    }
-  }
-}
 .formleft{
- 
 .el-tree-node__content{
   .expanded{
     transform: rotate(90deg) !important;
@@ -1431,191 +1422,3 @@ video{
 //   height: calc(100% - 50px) !important;
 // }
 // }
-.maxbox{
-  .left-container{
-    .el-tree-node{
-      position: relative;
-      padding-left: 16px;
-    }
-    .el-tree-node__children{
-      padding-left: 16px;
-    }
-    .el-tree-node :last-child:before {
-      height: 38px;
-    }
-    .el-tree-node.is-current > .el-tree-node__content {
-   
-      // background-color: #ffffff !important;
-      // color: #87c5ff !important;
-      // position: relative;
-      
-  
-  }
-  .el-tree-node.is-current > .el-tree-node__content::before{
-    background-color: red !important;
-    position: absolute  !important;
-    top: 0px  !important;
-    left: 0px  !important;
-    display: block  !important;
-    width: 20px  !important;
-    height: 20px  !important;
-  }
-    .el-tree>.el-tree-node:before{
-      border-left: none;
-    }
-    .el-tree>.el-tree-node:after{
-      border-top: none;
-    }
-    .el-tree-node:before,.el-tree-node:after{
-      content: "";
-      left: -4px;
-      position: absolute;
-      right: auto;
-      border-width: 1px;
-    }
-    .tree :first-child .el-tree-node:before{
-      border-left: none;
-    }
-    .el-tree-node:before {
-      border-left: 2px solid #cccccc;
-      bottom: 0px;
-      height: 100%;
-      top: -17px;
-      width: 1px;
-    }
-    .el-tree-node:after {
-      border-top: 2px solid #cccccc;
-      height: 20px;
-      top: 21px;
-      width: 24px;
-    }
-    .el-tree-node__expand-icon.expanded{
-      transform: rotate(-180deg);
-    }
-    .el-tree-node__content>.el-tree-node__expand-icon{
-      position: absolute;
-      right: 10px;
-    }
-    .el-tree{
-      // background-color: #e9eeef;
-      background-color: rgba(0,0,0,0);
-      z-index: 3;
-  
-    }
-    .el-tree-node__content{
-      height: 40px;
-      padding-left: 25px !important;
-    }
-    .el-tree >.el-tree-node:first-child >.el-tree-node__content{
-      padding-left: 2px !important;
-    }
-    .left-container .el-tree-node{
-      padding-left: 0px;
-    }
-  }
-.el-tree-node:focus>.el-tree-node__content{
-  background-color: #fff !important;
-}
-.el-tree-node:hover>.el-tree-node__content{
-  background-color: #fff !important;
-}
-}
-
-.el-popup-parent--hidden{
-  .el-select-dropdown__item:hover{
-    background-color: #ADD6FC !important; 
-  }
-
-}
-.page{
-  .el-checkbox__inner{
-    border-color: #EFEFEF !important;
-  }
-}
-
-.place{
-  .el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
-    background-color: #ADD6FC !important; 
-  }
-  .el-select-dropdown__item,.hover{
-   background-color: #ADD6FC !important; 
-  }
-  .el-checkbox__inner{
-    background-color: #EFEFEF !important;
-    border-color: #EFEFEF !important;
-  }
-}
-.el-dialog__body{
- 
-
-.el-radio__inner{
-  background-color: #EFEFEF !important;
-  border-color: #EFEFEF !important;
-  width: 20px;
-  height: 20px;
-}
-.el-radio__inner::after{
-  width: 12px;
-  height: 12px;
-  background-color: #8ACC70 !important;
-}
-}
-.scope-cover{
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-}
-.el-button--primary{
-  // display: flex;
-  // justify-content: center;
-  // span{  // 此处影响到了全局样式，加个class单独修改吧
-  //   position: relative;
-  //   top: -2px;
-  // }
-  // .header-search{
-  //   position: absolute !important;
-  //   top: 0 !important;
-  //   bottom: 0 !important;
-  //   right: 0 !important;
-  //   left: 0 !important;
-  //   margin: auto !important;
-  // }
-}
-.alarm-container{
-  .el-switch{
-    width: 30%;
-    span{
-      float: right;
-      line-height: 100%;
-      position: relative;
-      top: 2px;
-      // right: 0;
-      // left: auto;
-      // position: absolute;
-      // top: 0;
-      // bottom: 0;
-      // margin: auto;
-    }
-
-
-  }
-  .alarm-container,.is-checked{
-    .is-active{
-      span{
-        // left: 0;
-        // right:auto;
-        // position: absolute;
-        float: left;
-        // top: 0;
-        // bottom: 0;
-        // margin: auto;
-      }
-    }
-  }
-  .cell.el-tooltip{
-    height: 100%;
-  }
-}

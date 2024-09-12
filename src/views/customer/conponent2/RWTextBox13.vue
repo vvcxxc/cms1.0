@@ -140,15 +140,7 @@ export default {
       }
     },
     methods: {
-      getPointNum(num, n) {
-			 if(isNaN(num)||num===null){
-		     return null
-	         }else{
-        
-		     return Number(num).toFixed(n)
-             }
-		  },
-      // 关闭键盘
+          // 关闭键盘
       closeshow(){
          this.showkey = false
       },
@@ -231,7 +223,7 @@ export default {
                 for(let j=0;j<this.digitArr.length;j++){
                    if(this.digitArr[j].name == item.class){
                      if(this.digitArr[j].digit != null && this.digitArr[j].digit.length != 0){
-                        item.text = this.getPointNum(Number(this.ValueArr[i]),this.digitArr[j].digit)
+                       item.text = Number(this.ValueArr[i]).toFixed(this.digitArr[j].digit)
                      }else{
                        item.text = this.ValueArr[i]
                      }
@@ -420,7 +412,6 @@ export default {
          var arr = []
          if(item.TagName != ''){
            this.jurisdictionShow(item).then(val => { 
-             
               if(this.CanExcuteShow){
                     this.commerPopShow1 = true
                     return
@@ -442,12 +433,6 @@ export default {
                           arr.push(value)
                           this.isOriginal = false  //下发禁止离焦触发
                           //请求接口 //下发数据
-                                                   this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags`,
-                                  data:arr
-                             }).then((res1)=>{
-                                  if(res1.data.code === 0){
                          this.$axios({
                                method: 'post',
                                url: '/api/Base/PostIOServiceTest',
@@ -456,10 +441,10 @@ export default {
                              if(res.data.data == true){
                           
                                  item.isShow = true
-                                 this.isOriginal = false
-                                //  setTimeout(()=>{
-                                //     e.path[0].blur()
-                                //  },300)
+                                 this.isOriginal = true
+                                 setTimeout(()=>{
+                                    e.path[0].blur()
+                                 },300)
                              }else{
                                 this.TextBoxShow = true
                                 setTimeout(()=>{
@@ -467,7 +452,6 @@ export default {
                                   document.querySelector('.TextBoxPop_conter').style.textAlign='center'
                                   document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
                                 })
-                                 this.isOriginal = true;
                                //恢复原来值
                                   setTimeout(()=>{
                                       e.path[0].blur()
@@ -480,28 +464,11 @@ export default {
                                 document.querySelector('.TextBoxPop_conter').style.textAlign='center'
                                 document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
                               })
-                               this.isOriginal = true;
                               //恢复原来值
                               setTimeout(()=>{
                                   e.path[0].blur()
                               },300)
                            });
-                                  }else{
-                         this.TextBoxShow = true
-                              setTimeout(()=>{
-                                document.querySelector('.TextBoxPop_outPop').style.display='block'
-                                document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                                document.querySelector('.TextBoxPop_conter').innerHTML=res1.data.msg
-                              })
-                              //恢复原来值
-                               this.isOriginal = true;
-                              setTimeout(()=>{
-                                    e.path[0].blur()
-                              },300)
-                                  }
-                               
-                              })
-
                        }else{
                           this.TextBoxShow = true
                           setTimeout(()=>{
@@ -565,34 +532,14 @@ export default {
                             document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${this.lang['时间']}${this.lang.SCMSExplorerData_ProtocolDataType_Time}`
                            })
                      }else{
-                      let Max = item.MaxValue;
-                       let Min = item.MinValue
-                       if(Max){
-                         Max = Number(Max)
-                       }else{
-                         Max = ''
-                       }
-                         if(Min){
-                         Min = Number(Min)
-                       }else{
-                         Min = ''
-                       }
                         var value4 = {
                              "Name":item.TagName,
-                               "Value":time,
-                               Max:Max,
-                               Min:Min
+                               "Value":time
                           }
                             arr.push(value4)
                             this.isOriginal = false  //下发禁止离焦触发
                           //请求接口 //下发数据
-                                                                             this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags`,
-                                  data:arr
-                             }).then((res1)=>{
-                                  if(res1.data.code === 0){
-                          this.$axios({
+                         this.$axios({
                                method: 'post',
                                url: '/api/Base/PostIOServiceTest',
                                data:arr
@@ -600,10 +547,10 @@ export default {
                               if(res.data.data==true){
                              
                                   item.isShow = true
-                                  item.isOriginal = false
-                                  // setTimeout(()=>{
-                                  //     e.path[0].blur()
-                                  // },300)
+                                  item.isOriginal = true
+                                  setTimeout(()=>{
+                                      e.path[0].blur()
+                                  },300)
                               
                               }else{
                                   this.TextBoxShow = true
@@ -613,7 +560,6 @@ export default {
                                     document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
                                   })
                                   //恢复原来值
-                                   this.isOriginal = true;
                                   setTimeout(()=>{
                                       e.path[0].blur()
                                   },300)
@@ -626,27 +572,10 @@ export default {
                                 document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
                               })
                              //恢复原来值
-                              this.isOriginal = true;
                                 setTimeout(()=>{
                                     e.path[0].blur()
                                 },300)
                            });
-                                  }else{
-                          this.TextBoxShow = true
-                              setTimeout(()=>{
-                                document.querySelector('.TextBoxPop_outPop').style.display='block'
-                                document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                                document.querySelector('.TextBoxPop_conter').innerHTML=res1.data.msg
-                              })
-                              //恢复原来值
-                               this.isOriginal = true;
-                              setTimeout(()=>{
-                                    e.path[0].blur()
-                              },300)
-                                  }
-                               
-                              })
-
                      }
                       return
                    }else if(variableName == this.lang['日期时间']){
@@ -673,13 +602,7 @@ export default {
                             arr.push(value3)
                             this.isOriginal = false  //下发禁止离焦触发
                           //请求接口 //下发数据
-                                                                                                       this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags`,
-                                  data:arr
-                             }).then((res1)=>{
-                                  if(res1.data.code === 0){
-        this.$axios({
+                         this.$axios({
                                method: 'post',
                                url: '/api/Base/PostIOServiceTest',
                                data:arr
@@ -687,10 +610,10 @@ export default {
                              if(res.data.data == true){
                             
                                  item.isShow = true
-                                 this.isOriginal = false
-                                //  setTimeout(()=>{
-                                //       e.path[0].blur()
-                                //   },300)
+                                 this.isOriginal = true
+                                 setTimeout(()=>{
+                                      e.path[0].blur()
+                                  },300)
                              
                              }else{
                                this.TextBoxShow = true
@@ -700,7 +623,6 @@ export default {
                                   document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
                                 })
                                //恢复原来值
-                                this.isOriginal = true;
                                 setTimeout(()=>{
                                       e.path[0].blur()
                                 },300)
@@ -713,27 +635,10 @@ export default {
                                 document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
                               })
                                //恢复原来值
-                                this.isOriginal = true;
                                 setTimeout(()=>{
                                       e.path[0].blur()
                                 },300)
                            });
-                                  }else{
-                         this.TextBoxShow = true
-                              setTimeout(()=>{
-                                document.querySelector('.TextBoxPop_outPop').style.display='block'
-                                document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                                document.querySelector('.TextBoxPop_conter').innerHTML=res1.data.msg
-                              })
-                              //恢复原来值
-                               this.isOriginal = true;
-                              setTimeout(()=>{
-                                    e.path[0].blur()
-                              },300)
-                                  }
-                               
-                              })
-                      
                            return
                    }
                   }
@@ -743,23 +648,17 @@ export default {
            //下发接口
       tagAxios(arr,item,e){
                    //请求接口 //下发数据
-                           this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags`,
-                                  data:arr
-                             }).then((res1)=>{
-                                  if(res1.data.code === 0){
-                                  this.$axios({
+              this.$axios({
                     method: 'post',
                     url: '/api/Base/PostIOServiceTest',
                     data:arr
                 }).then(res => {
                    if(res.data.data == true){
                          item.isShow = true
-                         this.isOriginal = false  //下发允许离焦触发
-                          // setTimeout(()=>{
-                          //     e.path[0].blur()
-                          // },300)
+                         this.isOriginal = true  //下发允许离焦触发
+                          setTimeout(()=>{
+                              e.path[0].blur()
+                          },300)
                    }else{
                        this.TextBoxShow = true
                        setTimeout(()=>{
@@ -768,7 +667,6 @@ export default {
                          document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
                        })
                      //恢复原来值
-                      this.isOriginal = true;
                       setTimeout(()=>{
                           e.path[0].blur()
                       },300)
@@ -781,153 +679,129 @@ export default {
                       document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
                     })
                     //恢复原来值
-                     this.isOriginal = true;
                     setTimeout(()=>{
                         e.path[0].blur()
                     },300)
                 });
-                                  }else{
-                this.TextBoxShow = true
-                              setTimeout(()=>{
-                                document.querySelector('.TextBoxPop_outPop').style.display='block'
-                                document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                                document.querySelector('.TextBoxPop_conter').innerHTML=res1.data.msg
-                              })
-                              //恢复原来值
-                               this.isOriginal = true;
-                              setTimeout(()=>{
-                                    e.path[0].blur()
-                              },300)
-                                  }
-                             })
-             
       },
       //数值类型判断
       judgeFun(num,max,min,MaxValue,MinValue,TagType,item,type,e){
-                var arr = []
-           var text2 = Number(num)
-       if(MaxValue){
+      if(MaxValue){
              MaxValue = Number(MaxValue)
-        }else{
-          MaxValue = ''
         }
         if(MinValue){
              MinValue = Number(MinValue)
-        }else{
-          MinValue  = ''
         }
         var arr = []
            var text2 = Number(num)
-      //      if(num.length == 0){
-      //         this.TextBoxShow = true
-      //         setTimeout(()=>{
-      //           document.querySelector('.TextBoxPop_outPop').style.display='block'
-      //           // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
-      //           document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
-      //         })
-      //        return
-      //      }
+           if(num.length == 0){
+              this.TextBoxShow = true
+              setTimeout(()=>{
+                document.querySelector('.TextBoxPop_outPop').style.display='block'
+                // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
+                document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
+              })
+             return
+           }
 
-      //      if(TagType==this.lang['F32位浮点数IEEE754'] || TagType==this.lang['F64位浮点数IEEE754'] || this.lang['无符号64位整型'] || this.lang['有符号64位整型']){
-      //          this.CheckTagFun(TagType,num,MaxValue,MinValue).then(val=>{
-      //            if(val){
-      //               let value = {
-      //                 "Name":item.TagName,
-      //                 "Value":num
-      //               }
-      //               arr.push(value)
-      //               this.isOriginal = false  //下发禁止离焦触发
-      //               this.tagAxios(arr,item,e)
-      //            }
-      //          })
-
-      //      }else if(isNaN(text2)){
-      //         this.TextBoxShow = true
-      //         setTimeout(()=>{
-      //           document.querySelector('.TextBoxPop_outPop').style.display='block'
-      //           // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
-      //           document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
-
-      //         })
-      //         return
-      //      }
-      //     if(text2 == '' && text2 != 0){
-      //        this.TextBoxShow = true
-      //        setTimeout(()=>{
-      //          document.querySelector('.TextBoxPop_outPop').style.display='block'
-      //         //  document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
-      //         document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
-      //        })
-      //        return
-      //     }
-      //     if(text2 >= min && text2<= max){
-      //       if(type == '整'){
-      //         let indexNum = num.indexOf('.')
-      //         if(indexNum != -1){
-      //           this.TextBoxShow = true
-      //             setTimeout(()=>{
-      //                document.querySelector('.TextBoxPop_outPop').style.display='block'
-      //               //  document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
-      //               document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
-      //             })
-      //            return
-      //         }
-      //       }
-      //        if(MaxValue != null){
-      //          if(text2 > MaxValue){
-      //             this.TextBoxShow = true
-      //             setTimeout(()=>{
-      //               document.querySelector('.TextBoxPop_outPop').style.display='block'
-      //               // document.querySelector('.TextBoxPop_conter').innerHTML=`操作无效，输入值<${text2}>大于最大值<${MaxValue}>!`
-      //               let msg = this.lang.HMI_HT_HMIUserControlViewModel_InputGreaterThanMaximumValue
-      //               let firstL = msg.indexOf('<')
-      //               let firstR = msg.indexOf('>') + 1
-      //               let lastL = msg.lastIndexOf('<')
-      //               let lastR = msg.lastIndexOf('>') + 1
-      //               let str1 = msg.slice(firstL, firstR)
-      //               let str2 = msg.slice(lastL, lastR)
-      //               msg = msg.replace(str1, `<${text2}>`)
-      //               msg = msg.replace(str2, `<${MaxValue}>`)
-      //               document.querySelector('.TextBoxPop_conter').innerHTML=`${msg}`
-      //             })
-      //            return
-      //          }
-      //          if(text2 < MinValue){
-      //             this.TextBoxShow = true
-      //             setTimeout(()=>{
-      //               document.querySelector('.TextBoxPop_outPop').style.display='block'
-      //               // document.querySelector('.TextBoxPop_conter').innerHTML=`操作无效，输入值<${text2}>小于最小值<${MinValue}>!`
-      //               let msg = this.lang.HMI_HT_HMIUserControlViewModel_InputLessThanMinimumValue
-      //               let firstL = msg.indexOf('<')
-      //               let firstR = msg.indexOf('>') + 1
-      //               let lastL = msg.lastIndexOf('<')
-      //               let lastR = msg.lastIndexOf('>') + 1
-      //               let str1 = msg.slice(firstL, firstR)
-      //               let str2 = msg.slice(lastL, lastR)
-      //               msg = msg.replace(str1, `<${text2}>`)
-      //               msg = msg.replace(str2, `<${MinValue}>`)
-      //               document.querySelector('.TextBoxPop_conter').innerHTML=`${msg}`
-      //             })
-      //            return
-      //          }
-      //        }
-              let value = {
+           if(TagType==this.lang['F32位浮点数IEEE754'] || TagType==this.lang['F64位浮点数IEEE754'] || this.lang['无符号64位整型'] || this.lang['有符号64位整型']){
+               this.CheckTagFun(TagType,num,MaxValue,MinValue).then(val=>{
+                 if(val){
+                    let value = {
                       "Name":item.TagName,
-                      "Value":text2,
-                       Min:MinValue,
-                       Max:MaxValue,
-                  }
+                      "Value":num
+                    }
+                    arr.push(value)
+                    this.isOriginal = false  //下发禁止离焦触发
+                    this.tagAxios(arr,item,e)
+                 }
+               })
+
+           }else if(isNaN(text2)){
+              this.TextBoxShow = true
+              setTimeout(()=>{
+                document.querySelector('.TextBoxPop_outPop').style.display='block'
+                // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
+                document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
+
+              })
+              return
+           }
+          if(text2 == '' && text2 != 0){
+             this.TextBoxShow = true
+             setTimeout(()=>{
+               document.querySelector('.TextBoxPop_outPop').style.display='block'
+              //  document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
+              document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
+             })
+             return
+          }
+          if(text2 >= min && text2<= max){
+            if(type == '整'){
+              let indexNum = num.indexOf('.')
+              if(indexNum != -1){
+                this.TextBoxShow = true
+                  setTimeout(()=>{
+                     document.querySelector('.TextBoxPop_outPop').style.display='block'
+                    //  document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
+                    document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
+                  })
+                 return
+              }
+            }
+             if(MaxValue != null){
+               if(text2 > MaxValue){
+                  this.TextBoxShow = true
+                  setTimeout(()=>{
+                    document.querySelector('.TextBoxPop_outPop').style.display='block'
+                    // document.querySelector('.TextBoxPop_conter').innerHTML=`操作无效，输入值<${text2}>大于最大值<${MaxValue}>!`
+                    let msg = this.lang.HMI_HT_HMIUserControlViewModel_InputGreaterThanMaximumValue
+                    let firstL = msg.indexOf('<')
+                    let firstR = msg.indexOf('>') + 1
+                    let lastL = msg.lastIndexOf('<')
+                    let lastR = msg.lastIndexOf('>') + 1
+                    let str1 = msg.slice(firstL, firstR)
+                    let str2 = msg.slice(lastL, lastR)
+                    msg = msg.replace(str1, `<${text2}>`)
+                    msg = msg.replace(str2, `<${MaxValue}>`)
+                    document.querySelector('.TextBoxPop_conter').innerHTML=`${msg}`
+                  })
+                 return
+               }
+               if(text2 < MinValue){
+                  this.TextBoxShow = true
+                  setTimeout(()=>{
+                    document.querySelector('.TextBoxPop_outPop').style.display='block'
+                    // document.querySelector('.TextBoxPop_conter').innerHTML=`操作无效，输入值<${text2}>小于最小值<${MinValue}>!`
+                    let msg = this.lang.HMI_HT_HMIUserControlViewModel_InputLessThanMinimumValue
+                    let firstL = msg.indexOf('<')
+                    let firstR = msg.indexOf('>') + 1
+                    let lastL = msg.lastIndexOf('<')
+                    let lastR = msg.lastIndexOf('>') + 1
+                    let str1 = msg.slice(firstL, firstR)
+                    let str2 = msg.slice(lastL, lastR)
+                    msg = msg.replace(str1, `<${text2}>`)
+                    msg = msg.replace(str2, `<${MinValue}>`)
+                    document.querySelector('.TextBoxPop_conter').innerHTML=`${msg}`
+                  })
+                 return
+               }
+             }
+               var value = {
+                  "Name":item.TagName,
+                  "Value":text2
+               }
                 arr.push(value)
                 this.isOriginal = false  //下发禁止离焦触发
              this.tagAxios(arr,item,e)
-          // }else{
-          //    this.TextBoxShow = true
-          //    setTimeout(()=>{
-          //      document.querySelector('.TextBoxPop_outPop').style.display='block'
-          //     //  document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
-          //       document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
-          //    })
-          // }
+          }else{
+             this.TextBoxShow = true
+             setTimeout(()=>{
+               document.querySelector('.TextBoxPop_outPop').style.display='block'
+              //  document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
+                document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
+             })
+          }
       },
            //校验64位数值类型
       CheckTagFun(type,text,max,min){
@@ -944,7 +818,7 @@ export default {
               }
               this.$axios({                      
                   method: 'post',
-                  url: `/api/Base/CheckTag?y=${type12}&aValue=${text}&argMax=${max}&argMin=${min}`,
+                  url: `/api/Base/CheckTag?argType=${type12}&argValue=${text}&argMax=${max}&argMin=${min}`,
                   argType:type12,
                   argValue:text,
                   argMax:max,
@@ -1106,12 +980,6 @@ export default {
                 arr.push(value)
                 this.isOriginal = false  //下发禁止离焦触发
                //请求接口  //下发数据
-                                                                                                               this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags`,
-                                  data:arr
-                             }).then((res1)=>{
-                                  if(res1.data.code === 0){
               this.$axios({
                     method: 'post',
                     url: '/api/Base/PostIOServiceTest',
@@ -1119,11 +987,11 @@ export default {
                 }).then(res => {
                   if(res.data.data == true){
                  
-                      this.isOriginal = false
+                      this.isOriginal = true
                       item.isShow = true
-                      // setTimeout(()=>{
-                      //     e.path[0].blur()
-                      // },300)
+                      setTimeout(()=>{
+                          e.path[0].blur()
+                      },300)
                    
                   }else{
                     this.TextBoxShow = true
@@ -1133,7 +1001,6 @@ export default {
                       document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
                     })
                      //恢复原来值
-                      this.isOriginal = true;
                      setTimeout(()=>{
                           e.path[0].blur()
                       },300)
@@ -1146,27 +1013,10 @@ export default {
                       document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
                     })
                      //恢复原来值
-                      this.isOriginal = true;
                        setTimeout(()=>{
                           e.path[0].blur()
                       },300)
                 });
-                                  }else{
-                          this.TextBoxShow = true
-                              setTimeout(()=>{
-                                document.querySelector('.TextBoxPop_outPop').style.display='block'
-                                document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                                document.querySelector('.TextBoxPop_conter').innerHTML=res1.data.msg
-                              })
-                              //恢复原来值
-                               this.isOriginal = true;
-                              setTimeout(()=>{
-                                    e.path[0].blur()
-                              },300)
-                                  }
-                               
-                              })
-
           }
       },
 
@@ -1406,7 +1256,7 @@ export default {
                                 var index8 = this.cla.indexOf(this.textBbockArr[i])
                                 if(this.dataValue[index8] != undefined){
                                   if(this.dataValue[index8].isShow){
-                                      this.dataValue[index8].text = this.getPointNum(Number(num),toFixed(fix))
+                                    this.dataValue[index8].text = Number(num).toFixed(fix)
                                   }
                                 }
                               }
@@ -1657,7 +1507,7 @@ export default {
                    MinValue:RWDataList[j].MinValue,
                    TagName:RWDataList[j].TagName,
                    TagDataType:RWDataList[j].TagDataType,
-                   text:'Loading...',
+                   text:'读写框',
                    backgroundColor:backgroundColor,
                    BorderBrush:borderColor,
                    BorderThickness:this.textblockData[i].PropertyList.BorderThickness,
@@ -1927,7 +1777,7 @@ export default {
                   resValue = 0
               }else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                     resValue = Value
-              }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
+              }else if(typeof(Number(resValueNumber)) == 'number'){
                 resValue = Number(Value)
               }else{
                 resValue = Value

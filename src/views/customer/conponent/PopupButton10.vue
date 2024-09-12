@@ -28,7 +28,7 @@
           </div>
       </div>
        <!-- 权限弹窗 -->
-      <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:99">
+      <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:99">
             <div v-if="commerPopShow1" class="commerPop_outPop">
             <div class="commerPop_outHead">
                 <i class="warning el-icon-warning"></i>
@@ -39,10 +39,12 @@
                 <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
             </div>
             </div>
-      </div> -->
+      </div>
     </div>
-         <div class="Pop10" v-if="isShow">
-            <div  style="position:absolute;left:0;top:0;right:0;bottom:0;z-index:99999;"></div>
+
+            <!-- 弹窗 -->
+        <div class="Pop10">
+            <div v-if="isShow" style="position:absolute;left:0;top:0;right:0;bottom:0;z-index:99999;"></div>
             <div  v-drag v-for="(item,index) in PopList22" :key="index" :class="'popbox' +item.ElementName" 
               class="popbox" :style="'width:' + (item.viewWidth) + 'px; height:' 
               + item.viewHeight + 'px; position:absolute; left:' + item.viewpositionX + 'px; top:'
@@ -56,7 +58,6 @@
             </div>
         </div>
       </div>
-
   </div>
 </template>
 
@@ -170,8 +171,7 @@ export default {
       }
     },
     Jurisdiction(){
-      // this.commerPopShow1 = false
-      this.$emit('shownotip')
+      this.commerPopShow1 = false
     },
      jurisdictionShow(item){
           return new Promise((resolve, reject) => {
@@ -222,8 +222,7 @@ export default {
               if(EventType.length){
                self.jurisdictionShow(item).then(val => { 
                   if(self.CanExcuteShow){
-                    // self.commerPopShow1 = true
-                    self.$emit('showtip',self.lang.NoOperationAuthority)
+                    self.commerPopShow1 = true
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -237,8 +236,7 @@ export default {
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                          // self.commerPopShow1 = true
-                          self.$emit('showtip',self.lang.NoOperationAuthority)
+                          self.commerPopShow1 = true
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -271,8 +269,7 @@ export default {
               if(EventType.length){
                 self.jurisdictionShow(item).then(val => { 
                      if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                     }else{
                       for(var j=0;j<EventType.length;j++){
@@ -286,8 +283,7 @@ export default {
                if(EventType1.length){
                  self.jurisdictionShow(item).then(val => { 
                        if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                       }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -313,8 +309,7 @@ export default {
            if(EventType.length){
              this.jurisdictionShow(item).then(val => { 
                   if(this.CanExcuteShow){
-                        //  this.commerPopShow1 = true
-                        this.$emit('showtip',this.lang.NoOperationAuthority)
+                         this.commerPopShow1 = true
                          return
                    }else{
                      for(var j=0;j<EventType.length;j++){
@@ -329,7 +324,6 @@ export default {
 
     //弹窗按钮
     popbox(item){
-      
                  for(let i=0;i<this.PopList.length;i++){
                    var dom = item.class
                    if(this.PopList[i].ElementName == dom){
@@ -340,15 +334,12 @@ export default {
                               this.PopList22.push(JSON.parse(poplist))
                               this.popdata = this.PopList[i].viewName
                               this.popShow = true
-                              console.log(this.dataValue)
-                              console.log(this.PopList22)
                               this.isShow = true
                               this.$nextTick(()=>{
                                 document.querySelector('.popbox').style.display = 'block'
                               })
                             }else{
-                                // this.commerPopShow1 = true
-                                this.$emit('showtip',this.lang.NoOperationAuthority)
+                                this.commerPopShow1 = true
                             }
                           })
                      }

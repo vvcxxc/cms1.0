@@ -9,7 +9,7 @@
           <span
             class="font-2"
             v-if="!formData.componentAttribute.required"
-          >({{lang.EquipmentAccount_Optional}})</span>
+          >(选填)</span>
           <span class="min-icon" v-if="formData.componentAttribute.tipText">
             <el-tooltip
               class="item"
@@ -74,8 +74,7 @@ export default {
         filelistData: [], //当前列表文件
         delFileList: [], //删除的文件
         isShow: true,
-        currentVideo: '',
-        lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
+        currentVideo: ''
       };
     },
     watch: {
@@ -136,12 +135,12 @@ export default {
         }else if(file.name.substring(file.name.length-4) === choiceType[3]){
           fileType = 'video/flv'
         }else{
-          this.$emit("uploadErr", this.lang.APPFormManage_UnsupportedFileFormat)
+          this.$emit("uploadErr", "不支持的文件格式")
           return
         }
         console.log(this.filelistData.length > 1, fileType.includes("video"))
         if(this.filelistData.length > 0 && fileType.includes("video")){
-          this.$emit("uploadErr", this.lang.APPFormManage_AttachmentsCannotMixed)
+          this.$emit("uploadErr", "附件不能混合上传")
           return
         }
         if(fileType.includes("video")){
@@ -158,7 +157,7 @@ export default {
           flvPlayer.play();
           setTimeout(()=>{
             if(flvPlayer.duration > 10){
-              this.$emit("uploadErr", this.lang.APPFormManage_VideoLengthTooLong)
+              this.$emit("uploadErr", "不可上传超过10s的视频")
               return
             }else{
               this.filelistData.push({
@@ -328,7 +327,7 @@ export default {
 }
 .component-content{
     position: relative;
-    padding: 8px 26px;
+    padding: 10px 16px;
     flex-wrap: wrap;
     display: flex;
     flex-direction: row;
@@ -338,6 +337,7 @@ export default {
 
     .component-title{
       line-height: 28px;
+      font-family: Source Han Sans CN;
       font-size: 14px;
       font-weight: 400;
       color: #7C7F8E;
@@ -345,6 +345,7 @@ export default {
       padding: 8px 0;
 
       .font-2 {
+          font-family: PingFang SC;
           font-size: 12px;
           font-weight: 500;
           line-height: 20px;

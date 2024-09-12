@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-11 10:13:58
  -->
 <template>
-    <div class="tapwater" ref="wrap" >
+    <div class="tapwater" ref="wrap" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
         <div class="linebox"  :class="[{colortip:$store.state.color=='grey'},{fcolor:$store.state.color=='grey'}]">
             <div class="table clearfix">
                 <span class="img" @click="kz" :class="{xz:xz==1}">{{lang.QualityManage_ControlGraphUserControl_ControlCharts}}</span>
@@ -230,7 +230,12 @@
                         border
                         ref="multipleTable"
                         @row-click="a123"
-                       :header-cell-style="{background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',color:($store.state.color=='grey')?'#000':'#fff','border-left':'1px solid #cccccc',height:'50px',padding:'0'}"
+                       :header-cell-style="{
+                            background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+                            color:($store.state.color=='grey')?'#000':'#fff',
+                            'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                            height: 50 * zoomValue + 'px',
+                           height:'50px',padding:'0'}"
                     >
                         <template slot="empty">
                             <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
@@ -259,7 +264,12 @@
                         stripe
                         border
                         @row-click="a123"
-                       :header-cell-style="{background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',color:($store.state.color=='grey')?'#000':'#fff','border-left':'1px solid #cccccc',height:'50px',padding:'0'}"
+                       :header-cell-style="{
+                            background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+                            color:($store.state.color=='grey')?'#000':'#fff',
+                            'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                            height: 50 * zoomValue + 'px',
+                           height:'50px',padding:'0'}"
                     >
                         <el-table-column prop="number" :label="$t('CpkMsg.CpkSerialNumber')"></el-table-column>
                         <el-table-column  v-for="(item,index) in data.SampleList[0].datasource" :key='index' :label="$t('CpkMsg.CpkSample')+(index+1)" >
@@ -703,6 +713,23 @@ export default {
     padding: 20px;
     width: 100%;
     background-color: #eeeeee;
+
+    &.blackBlueBg{
+        background: #06091F;
+
+        .linebox{
+            background: #081027;
+            border-color: #38415A;
+
+            .ww,.bc{
+                background-color: #081027;
+            }
+        }
+        .fr-btn{
+            background-color: transparent;
+        }
+    }
+    
     .linebox {
         height: 100%;
         width: 100%;

@@ -24,7 +24,7 @@
             :style="'color:'+ item.Foreground +';width:100%;height:100%;background:' 
             + item.Background +';boxShadow:'+item.Shadow+';fontWeight:' + item.Blod 
             + ';text-decoration:' + item.TextDecorations +';'">
-              {{item.text}}</div>
+              {{text}}</div>
       </div>
     </div>
    <!-- 天 -->
@@ -110,7 +110,7 @@
     </div>
 
     <!-- 权限弹窗 -->
-    <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+    <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
           <div v-if="commerPopShow1" class="commerPop_outPop">
             <div class="commerPop_outHead">
                 <i class="warning el-icon-warning"></i>
@@ -121,7 +121,7 @@
                 <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
             </div>
             </div>
-    </div> -->
+    </div>
 
 </div>
 </template>
@@ -255,8 +255,7 @@ export default {
 
     //确认
     Jurisdiction(){
-        // this.commerPopShow1 = false
-        this.$emit('shownotip')
+        this.commerPopShow1 = false
     },
     //权限按钮请求
     jurisdictionShow(item){
@@ -309,8 +308,7 @@ export default {
               if(EventType.length){
                self.jurisdictionShow(item).then(val => { 
                   if(self.CanExcuteShow){
-                    // self.commerPopShow1 = true
-                    self.$emit('showtip',self.lang.NoOperationAuthority)
+                    self.commerPopShow1 = true
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -324,8 +322,7 @@ export default {
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                          // self.commerPopShow1 = true
-                          self.$emit('showtip',self.lang.NoOperationAuthority)
+                          self.commerPopShow1 = true
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -358,8 +355,7 @@ export default {
               if(EventType.length){
                 self.jurisdictionShow(item).then(val => { 
                      if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                     }else{
                       for(var j=0;j<EventType.length;j++){
@@ -373,8 +369,7 @@ export default {
                if(EventType1.length){
                  self.jurisdictionShow(item).then(val => { 
                        if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                       }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -1122,7 +1117,7 @@ export default {
                           resValue = 0
                       }else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                             resValue = data[i].Value
-                      }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
+                      }else if(typeof(Number(resValueNumber)) == 'number'){
                         resValue = Number(data[i].Value)
                       }else{
                         resValue = data[i].Value
@@ -1134,7 +1129,7 @@ export default {
                       }
                       else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                             ArrValue =  ColorAnimationList[i].Compare
-                      }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
+                      }else if(typeof(Number(resValueNumber)) == 'number'){
                         ArrValue = Number( ColorAnimationList[i].Compare)
                       }else{
                         ArrValue =  ColorAnimationList[i].Compare
@@ -1264,14 +1259,6 @@ export default {
         }
         return arr
   },
-        getPointNum(num, n) {
-			 if(isNaN(num)||num===null){
-		     return null
-	         }else{
-           
-		     return Number(num).toFixed(n)
-             }
-		  },
    //条件判断方法
   judgeFun3(data){
       if(data == []){
@@ -1288,7 +1275,7 @@ export default {
               var fix = Number(this.digit[i])
               var num = data[i].Value
               Number(num).toFixed(fix)
-                   document.querySelector(Dom).innerHTML = this.getPointNum(Number(num),fix)
+                    document.querySelector(Dom).innerHTML =  Number(num).toFixed(fix)
               }else{
                   var num1 = data[i].Value
                   var value = /Date/
@@ -1636,8 +1623,7 @@ export default {
                   Shadow:Shadow,
                   Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
                   TextDecorations:this.textblockData[i].PropertyList.TextDecorations == 'False' ? 'none' : 'underline',
-                  ZIndex:this.ZIndex,
-                  text:this.Sarr.includes(this.textblockData[i].Name)?'Loading...':'数值显示'
+                  ZIndex:this.ZIndex
                 }
                 this.dataValue.unshift(value)
           }
@@ -1708,8 +1694,7 @@ export default {
         if(this.data.Data.DataAnimationList.length == 0){
             this.jurisdictionShow(item).then(val => { 
                   if(this.CanExcuteShow){
-                    //  this.commerPopShow1 = true
-                    self.$emit('showtip',self.lang.NoOperationAuthority)
+                     this.commerPopShow1 = true
                       return
                   }else{
                       //脚本事件
@@ -1731,8 +1716,7 @@ export default {
              if(this.data.Data.DataAnimationList[i].ElementName == this.textClass ){
                this.jurisdictionShow(item).then(val => { 
                  if(this.CanExcuteShow){
-                    // this.commerPopShow1 = true
-                    self.$emit('showtip',self.lang.NoOperationAuthority)
+                    this.commerPopShow1 = true
                      return
                  }else{
                    //脚本事件
@@ -1761,8 +1745,7 @@ export default {
               if(EventType.length){
                 this.jurisdictionShow(item).then(val => { 
                     if(this.CanExcuteShow){
-                            // this.commerPopShow1 = true
-                            self.$emit('showtip',self.lang.NoOperationAuthority)
+                            this.commerPopShow1 = true
                             return
                       }else{
                         for(var j3=0;j3<EventType.length;j3++){

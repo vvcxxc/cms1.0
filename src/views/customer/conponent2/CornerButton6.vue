@@ -138,38 +138,15 @@ export default {
         commerYesFun(){
               this.commerPopShow = false
                 //请求接口
-                                        this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags`,
-                                  data:this.commonValue
-                             }).then((res1)=>{
-                                  if(res1.data.code === 0){
-                                this.commerPopShow = false
-                                 this.commerPopShow1value =  '该账户无操作权限'
-                                  this.$axios({
+                this.$axios({
                     method: 'post',
                     url: '/api/Base/PostIOServiceTest',
                     data:this.commonValue
                 }).then(res => {
+                    console.log('res111',res)
                 }).catch(function(error) {
-                    console.log('err',error);
+                console.log(error);
                 });
-                            //   this.$axios({                      //下发请求接口
-                            //       method: 'post',
-                            //       url: '/api/Base/PostIOServiceTest',
-                            //       data:item.commonIDarr
-                            //   }).then(res => {
-                            //       console.log('res',res)
-                            //   }).catch(function(error) {
-                            //     console.log('err',error);
-                            //   });
-                                  }else{
-                       console.log("res1",res1)
-                               this.commerPopShow1 = true   
-                               this.commerPopShow1value = res1.data.msg
-                                  }
-                               
-                              })
         },
         //确认
         Jurisdiction(){
@@ -335,7 +312,7 @@ export default {
         },
 
                 //下发
-             issueFun(item){
+        issueFun(item){
             console.log('item66',item)
               if(item.commonIDarr.length !=0){
                       if(!this.CanExcuteShow){
@@ -345,16 +322,6 @@ export default {
                               this.commonValue = item.commonIDarr
                           }else{
                               this.commerPopShow = false
-                                this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags?tagname=${item.commonIDarr[0].Name}&value=${item.commonIDarr[0].Value}`,
-                                  data:item.commonIDarr
-                             }).then((res1)=>{
-                                 console.log("res1",res1.data)
-                                  if(res1.data.code === 0){
-                                this.commerPopShow = false
-                                 this.commerPopShow1value =  '该账户无操作权限'
-                              console.log('66666',item.commonIDarr)
                               this.$axios({                      //下发请求接口
                                   method: 'post',
                                   url: '/api/Base/PostIOServiceTest',
@@ -364,13 +331,6 @@ export default {
                               }).catch(function(error) {
                                 console.log('err',error);
                               });
-                                  }else{
-                       console.log("res1",res1)
-                               this.commerPopShow1 = true   
-                               this.commerPopShow1value = res1.data.msg
-                                  }
-                               
-                              })
                           }
                       }else{
                           this.commerPopShow1 = true

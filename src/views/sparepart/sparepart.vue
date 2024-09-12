@@ -6,8 +6,8 @@
  * @LastEditTime: 2019-11-28 16:13:39
  -->
 <template>
-    <div class="alarm-container" :class="{colordiv:$store.state.color=='grey'}" >
-        <aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200+'px'}]">
+    <div class="alarm-container" :class="{colordiv:$store.state.color=='grey',blackBlueBg: $store.state.color === 'blackBlue'}" >
+        <aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200*(width/1920)+'px'}]">
             <left-nav @tabComponent="tabComponent"></left-nav>
         </aside>
        <section class="content-container">

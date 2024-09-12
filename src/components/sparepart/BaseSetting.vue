@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-25 19:15:48
  -->
 <template>
-    <div class="base">
+    <div class="base" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
         <div class="header" :style="{ zoom: a11 }">
             <div
                 class="equipment"
@@ -71,12 +71,9 @@
                     highlight-current-row
                     :row-style="{ height: 50 * a11 + 'px' }"
                     :header-cell-style="{
-                        background:
-                            $store.state.color == 'grey'
-                                ? '#D9DBDE'
-                                : '#5a6c98',
-                        color: $store.state.color == 'grey' ? '#000' : '#fff',
-                        'border-left': '1px solid #cccccc',
+                        background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+                        color:($store.state.color=='grey')?'#000':'#fff',
+                        'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
                         height: 50 * a11 + 'px',
                         padding: '0'
                     }"
@@ -1288,6 +1285,33 @@ export default {
 };
 </script>
 
+<style lang="scss">
+.blackBlueBg{
+    &.base{
+        .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
+            background-color: #273E7E;
+        }
+        .el-table tr{
+            td{
+                background-color: #121C3A;
+            }
+
+            &:nth-child(odd){
+                td{
+                    background-color: #0E1732;
+                }
+            }
+        }
+        .el-table--striped .el-table__body tr:hover td{
+            background-color: #2A3A65;
+        }
+        .el-table--striped .el-table__body tr.current-row td{
+            background-color: #273E7E!important;
+        }
+    }
+}
+
+</style>
 <style lang="scss" scoped>
 .add1 {
     width: 100%;
@@ -1448,6 +1472,54 @@ export default {
 .base {
     height: 100%;
     border: 1px solid #cccccc;
+    &.blackBlueBg{
+        border-color: #1E244B;
+
+        .addcontent{
+            background-color: #233056;
+            color: #fff;
+        }
+        input,select,textarea{
+            color: #C6CAD8;
+            background: #1D2846;
+            border-color: #445992;
+
+            &:disabled{
+                background: #35446D;
+                border-color: #445992;
+            }
+
+            &::-webkit-input-placeholder{
+                color: #9AA3BE;
+            }
+        }
+        .header{
+            // background: #0B1530;
+            // border-bottom: 1px solid #38415A;
+
+            // .equipment{
+            //     background: #0F1B3E;
+            //     color: #3F81FF;
+            //     border: 1px solid #3F81FF;
+            // }
+        }
+
+        .Dendrogram{
+            background-color: #0E1732;
+            border-color: #2A3058;
+            
+            .imglist{
+                background-color: transparent;
+                border-color: transparent;
+                border-bottom: 1px solid #2A3058;
+            }
+        }
+        .el-tree{
+            background: #0E1732;
+            color: #C6CAD8;
+        }
+    }
+
     .container {
         height: calc(100% - 60px);
         padding: 20px 20px 0px 20px;

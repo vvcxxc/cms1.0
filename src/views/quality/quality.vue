@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-27 14:53:55
  -->
 <template>
-    <div class="alarm-container" >
+    <div class="alarm-container" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
         <aside class="left-container" ref="left" :class="{colordiv:$store.state.color=='grey'}" @click="yc">
          <left-nav @tabComponent="tabComponent" @tabledata="tabledata" :class="{colordiv:$store.state.color=='grey'}"></left-nav>
         </aside>
@@ -50,7 +50,7 @@ export default {
             scshow:true,
             cpkid:'',
             cpkshow:true,
-            zoomValue: 1,
+            zoomValue: 0,
         };
     },
     watch:{
@@ -157,6 +157,7 @@ export default {
     },
     created() {
         this.$nextTick(() => {
+            this.zoomValue = Number(parseFloat(window.screen.width/1920).toFixed(2)) <= 0.8 ? 0.8 : Number(parseFloat(window.screen.width/1920).toFixed(2))
             let value = 200 * this.zoomValue
             this.$refs.left.style.zoom =  this.zoomValue
             this.$refs.content.style.width =  `calc(100% - ${value}px)`
@@ -326,7 +327,7 @@ export default {
     // width: 100%;
     // height: 100%;
     // flex: 1;
-    height: calc(100% - 130px);
+    height: 86vh;
     overflow: hidden;
     color: #000;
     margin-top: 100px;

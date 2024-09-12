@@ -1,13 +1,13 @@
 <!--
- * @Description: 文档管理
+ * @Description: 报警管理
  * @Date: 2019-11-23 11:54:01
  * @Author: 随风
  * @LastEditors: 随风
  * @LastEditTime: 2019-11-27 14:53:55
  -->
 <template>
-	<div class="alarm-container">
-		<aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200+'px'}]">
+	<div class="alarm-container" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+		<aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200*(width/1920)+'px'}]">
 			<left-nav @tabComponent="tabComponent"></left-nav>
 		</aside>
 		<section class="content-container">
@@ -35,8 +35,12 @@ export default {
 	},
 	mounted(){
 		this.width = window.screen.width
+		this.zoom = (this.width/1920)>1?1:(this.width/1920)
 		setTimeout(()=>{
-		let a = 200+'px'
+		$('.alarm-container').css({
+        marginTop:$('.v-toolbar').height()*$('.v-toolbar')[0].style.zoom+10+'px'
+		});
+		let a = 200*(this.width/1920)+'px'
 		$('.content-container').css({
 				width:`calc(100% - ${a})`
 		})
@@ -61,7 +65,7 @@ export default {
 	// width: 100%;
 	// height: 100%;
 	// flex: 1;
-	height: calc(100% - 130px);
+	height: 86vh;
 	overflow: hidden;
 	color: #000;
 	margin-top: 100px;

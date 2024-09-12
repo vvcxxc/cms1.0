@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-27 14:47:42
  -->
 <template>
-	<div class="alarm-container">
+	<div class="alarm-container" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
 		<section class="content-container">
 			<component :is="componentName"></component>
 		</section>
@@ -25,6 +25,17 @@ export default {
 		};
 	},
 	mounted(){
+	setTimeout(()=>{
+	let a1 = $('.v-toolbar').height()*$('.v-toolbar')[0].style.zoom+10+$('.v-footer').height()*$('.v-footer')[0].style.zoom+'px'
+	$('.alarm-container').css({
+        marginTop:$('.v-toolbar').height()*$('.v-toolbar')[0].style.zoom+10+'px',
+		height:`calc(100% - ${a1})`
+		});
+		let a = $('.left-container').width()+'px'
+		$('.content-container').css({
+			width:`calc(100%)`
+		})
+		})
 	},
 	created() {},
 	methods: {
@@ -41,7 +52,7 @@ export default {
 <style lang='scss' scoped>
 .alarm-container {
 	width: 100%;
-	height: calc(100% - 130px);
+	// height: 100%;
 	color: #000;
 	margin-top: 100px;
 	display: flex;

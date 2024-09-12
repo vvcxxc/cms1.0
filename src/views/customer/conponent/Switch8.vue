@@ -78,7 +78,7 @@
                 </div>
         </div>
         <!-- 开关弹窗提示 -->
-        <!-- <div v-show="commerPopShow" style="width:100%;height:100%;position:fixed;z-index:99">
+        <div v-show="commerPopShow" style="width:100%;height:100%;position:fixed;z-index:99">
             <div v-if="commerPopShow" class="commerPop_outPop">
             <div class="commerPop_outHead">
                 <i class="warning el-icon-warning"></i>
@@ -89,9 +89,9 @@
                 <div @click="commerNoFun" class="commerPop_no">确定</div>
             </div>
             </div>
-        </div> -->
+        </div>
         <!-- 权限提示 -->
-        <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+        <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
             <div v-if="commerPopShow1" class="commerPop_outPop">
             <div class="commerPop_outHead">
                 <i class="warning el-icon-warning"></i>
@@ -102,7 +102,7 @@
                 <div class="commerPop_no" @click="Jurisdiction()">确定</div>
             </div>
             </div>
-        </div> -->
+        </div>
     </div>
 </div>
 </template>
@@ -355,8 +355,7 @@ export default{
 
   //确认
     Jurisdiction(){
-        // this.commerPopShow1 = false
-        this.$emit('shownotip')
+        this.commerPopShow1 = false
     },
     //权限配置请求接口
      jurisdictionShow(item){
@@ -403,7 +402,7 @@ export default{
               if(EventType.length){
                self.jurisdictionShow(item).then(val => { 
                   if(self.CanExcuteShow){
-                   self.$emit('showtip',self.lang.NoOperationAuthority) 
+                    self.commerPopShow1 = true
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -417,7 +416,7 @@ export default{
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                         self.$emit('showtip',self.lang.NoOperationAuthority) 
+                          self.commerPopShow1 = true
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -449,7 +448,7 @@ export default{
               if(EventType.length){
                 self.jurisdictionShow(item).then(val => { 
                      if(self.CanExcuteShow){
-                        self.$emit('showtip',self.lang.NoOperationAuthority) 
+                        self.commerPopShow1 = true
                         return
                     }else{
                       for(var j=0;j<EventType.length;j++){
@@ -463,7 +462,7 @@ export default{
                if(EventType1.length){
                  self.jurisdictionShow(item).then(val => { 
                        if(self.CanExcuteShow){
-                        self.$emit('showtip',self.lang.NoOperationAuthority) 
+                        self.commerPopShow1 = true
                         return
                       }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -513,15 +512,7 @@ export default{
                         "Value": valueShow
                     }
                     arr.push(value)
-                           //请求接口
-                            this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags`,
-                                  data:arr
-                             }).then((res1)=>{
-                                  if(res1.data.code === 0){
-                         this.$emit('shownotip')
-                   this.$axios({
+                    this.$axios({
                     method: 'post',
                     url: '/api/Base/PostIOServiceTest',
                     data: arr
@@ -534,11 +525,6 @@ export default{
                     }).catch(function(error) {
                         console.log('err',error);
                     });
-                                  }else{
-                     this.$emit('showtip',res1.data.msg) 
-                                  }
-                               
-                              })
              }else{
                      var iptCheck = document.querySelector(`.${item.class}ipt`).checked
                      if(iptCheck == true){
@@ -546,7 +532,7 @@ export default{
                      }else{
                          document.querySelector(`.${item.class}ipt`).checked = true
                      }
-                    this.$emit('showtip',this.lang.NoOperationAuthority) 
+                    this.commerPopShow1 = true
              }
          }else{
              //没有变量走接口默认开关

@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-12-01 18:03:27
  -->
 <template>
-    <div class="public-table">
+    <div class="public-table" :class="{blackBlueBg: $store.state.color==='blackBlue'}">
         <div class="search-container" :style="[{ height: 60 * a1 + 'px' }]">
             <my-search
                 :searchList="searchList"
@@ -24,7 +24,7 @@
         <div class="pages-container">
             <my-page :pageData="pageData" @req="req"></my-page>
         </div>
-        <div class="tip" v-show="change" ref="kongtiao1">
+        <div class="tip1" :class="{blackBlueBg: $store.state.color==='blackBlue'}" v-show="change" ref="kongtiao1">
             <div class="tiphead">
                 <div class="tiphead1"></div>
                 <div class="img" @click="cancel2">
@@ -58,7 +58,7 @@
                 </div>
             </div>
         </div>
-        <div class="tip11" ref="kongtiao3" v-show="tipchange1">
+        <div class="tip11" :class="{blackBlueBg: $store.state.color==='blackBlue'}" ref="kongtiao3" v-show="tipchange1">
              <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
             <div class="tiptop">
                 <img :src="gth" alt />
@@ -137,6 +137,10 @@ export default {
         };
     },
     mounted() {
+        this.a1 = Number(parseFloat(window.screen.width / 1920).toFixed(2));
+        if (this.a1 < 1) {
+            this.a1 = 0.8;
+        }
     },
     created() {
         this.getLangData()
@@ -254,20 +258,32 @@ export default {
         getdata(a) {
             this.sestion = a;
             setTimeout(() => {
-                let a1 = 1
-                $('.tip').css({
+                let a1 = Number(
+                    parseFloat(window.screen.width / 1920).toFixed(2)
+                );
+                if (a1 < 1) {
+                    a1 = 0.8;
+                }
+                this.a1 = a1;
+                $('.tip1').css({
                     zoom: a1,
-                    left: `calc(50% - ${($('.tip').width() / 2) * a1}px)`,
-                    top: `calc(50% - ${($('.tip').height() / 2) * a1}px)`
+                    left: `calc(50% - ${($('.tip1').width() / 2) * a1}px)`,
+                    top: `calc(50% - ${($('.tip1').height() / 2) * a1}px)`
                 });
                 this.change = true;
-                this.move('tip', 'tiphead1');
+                this.move('tip1', 'tiphead1');
             });
         },
         setParams(params, a) {
             if (!a) {
                 setTimeout(() => {
-                    let a1 = 1
+                    let a1 = Number(
+                        parseFloat(window.screen.width / 1920).toFixed(2)
+                    );
+                    if (a1 < 1) {
+                        a1 = 0.8;
+                    }
+                    this.a1 = a1;
                     $('.tip11').css({
                         zoom: a1,
                         left: `calc(50% - ${($('.tip11').width() / 2) * a1}px)`,
@@ -290,7 +306,13 @@ export default {
                 !Regex.test(params.argEndTime)
             ) {
                 setTimeout(() => {
-                    let a1 = 1
+                    let a1 = Number(
+                        parseFloat(window.screen.width / 1920).toFixed(2)
+                    );
+                    if (a1 < 1) {
+                        a1 = 0.8;
+                    }
+                    this.a1 = a1;
                     $('.tip11').css({
                         zoom: a1,
                         left: `calc(50% - ${($('.tip11').width() / 2) * a1}px)`,
@@ -307,7 +329,13 @@ export default {
                 new Date(params.argEndTime).getTime()
             ) {
                 setTimeout(() => {
-                    let a1 = 1;
+                    let a1 = Number(
+                        parseFloat(window.screen.width / 1920).toFixed(2)
+                    );
+                    if (a1 < 1) {
+                        a1 = 0.8;
+                    }
+                    this.a1 = a1;
                     $('.tip11').css({
                         zoom: a1,
                         left: `calc(50% - ${($('.tip11').width() / 2) * a1}px)`,
@@ -332,7 +360,13 @@ export default {
             if (s == 'jump') {
                 if (!this.isPositiveInteger(pageIndex)) {
                     setTimeout(() => {
-                        let a1 = 1;
+                        let a1 = Number(
+                            parseFloat(window.screen.width / 1920).toFixed(2)
+                        );
+                        if (a1 < 1) {
+                            a1 = 0.8;
+                        }
+                        this.a1 = a1;
                         $('.tip11').css({
                             zoom: a1,
                             left: `calc(50% - ${($('.tip11').width() / 2) *
@@ -355,7 +389,15 @@ export default {
                             pageIndex > this.pageData.TotalPage
                         ) {
                             setTimeout(() => {
-                                let a1 = 1;
+                                let a1 = Number(
+                                    parseFloat(
+                                        window.screen.width / 1920
+                                    ).toFixed(2)
+                                );
+                                if (a1 < 1) {
+                                    a1 = 0.8;
+                                }
+                                this.a1 = a1;
                                 $('.tip11').css({
                                     zoom: a1,
                                     left: `calc(50% - ${($('.tip11').width() /
@@ -401,7 +443,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tip {
+.tip1 {
     width: 940px;
     box-shadow: 0px 0px 8px black;
     height: 460px;
@@ -472,6 +514,27 @@ export default {
         img {
             width: 100%;
             height: 100%;
+        }
+    }
+
+    &.blackBlueBg{
+        color: #fff;
+        background-color: #233056;
+
+        input, textarea{
+            background-color: #1D2846!important;
+            border: 1px solid #445992!important;
+            color: #9AA3BE;
+
+            &:focus{
+                border-color: #B2C0E4!important;
+            }
+
+            &:disabled{
+                background: #35446D!important;
+                border: 1px solid #445992!important;
+                color: #8798C9;
+            }
         }
     }
 }

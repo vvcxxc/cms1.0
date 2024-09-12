@@ -13,7 +13,7 @@
     height: 100%;
     top: 0;
     left: 0;"></div>
-        <div class="search-container">
+        <div class="search-container" :style="{zoom}">
             <my-search
                 :searchList="searchList"
                 :searchData="searchData"
@@ -30,7 +30,7 @@
         <div class="pages-container">
             <my-page :pageData="pageData" @req="req"></my-page>
         </div>
-        <div class="tip" ref="kongtiao2" v-show="tipchange">
+        <div class="tip" :class="{blackBlueBg: $store.state.color==='blackBlue'}" ref="kongtiao2" v-show="tipchange" :style="{zoom}">
               <div
                 class="tiphead"
                 style="position:absolute;width: 380px;height: 40px;"
@@ -130,6 +130,7 @@ export default {
                 LastEnabled: false,
                 NextEnabled: false
             },
+            zoom: 1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
@@ -153,15 +154,18 @@ export default {
         this.req(1);
     },
     mounted(){
+        this.zoom = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
     },
     methods: {
-        move(name, namehead) {
-            let left = ($(`.${name}`).width())/2+'px'
-            let top = ($(`.${name}`).height())/2+'px'
-            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+               move(name, namehead) {
+          //  $(`.${name}`).addClass('center')
+           let left = ($(`.${name}`).width())/2+'px'
+           let top = ($(`.${name}`).height())/2+'px'
+             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
             $(`.${name}`)[0].addEventListener('mousedown', function(e) {
                 
+                console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
                     $(`.${name}`).removeClass('center')
                     window.event.stopPropagation();

@@ -31,14 +31,12 @@
                 :style="'text-align:center;width:100%; height:100%;'
                 + ';opacity:' + item.opacity + 'overflow:hidden;zIndex:'+item.ZIndex"
                 v-model="item.value"
-                type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                default-time="12:00:00"
             ></el-date-picker>
             </div>
         </div>
 
-        <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+        <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
             <div v-if="commerPopShow1" class="commerPop_outPop">
             <div class="commerPop_outHead">
                 <i class="warning el-icon-warning"></i>
@@ -49,7 +47,7 @@
                 <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
             </div>
             </div>
-        </div> -->
+        </div>
 
     </div>
 </template>
@@ -156,8 +154,7 @@ export default {
                 if(EventType.length){
                       self.jurisdictionShow(item).then(val => { 
                           if(self.CanExcuteShow){
-                                // self.commerPopShow1 = true
-                                self.$emit('showtip',self.lang.NoOperationAuthority)
+                                self.commerPopShow1 = true
                                 return
                             }else{
                                 for(var j=0;j<EventType.length;j++){
@@ -171,8 +168,7 @@ export default {
                 if(EventType1.length){
                 self.jurisdictionShow(item).then(val => {
                      if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                     }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -198,8 +194,7 @@ export default {
              if(EventType.length){
                this.jurisdictionShow(item).then(val => { 
                    if(this.CanExcuteShow){
-                    //    this.commerPopShow1 = true
-                    this.$emit('showtip',this.lang.NoOperationAuthority)
+                       this.commerPopShow1 = true
                        return
                    }else{
                        for(var j=0;j<EventType.length;j++){
@@ -234,8 +229,7 @@ export default {
               if(EventType.length){
                self.jurisdictionShow(item).then(val => { 
                   if(self.CanExcuteShow){
-                    // self.commerPopShow1 = true
-                    self.$emit('showtip',self.lang.NoOperationAuthority)
+                    self.commerPopShow1 = true
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -249,8 +243,7 @@ export default {
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                        //   self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                          self.commerPopShow1 = true
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -361,8 +354,7 @@ export default {
         ClickTimeFun(item){
              this.jurisdictionShow(item).then(val => { 
             if(this.CanExcuteShow){
-                // this.commerPopShow1 = true
-                this.$emit('showtip',this.lang.NoOperationAuthority)
+                this.commerPopShow1 = true
                 item.disabled = true
                 document.querySelector('.el-picker-panel').style.display='none'
             }else{
@@ -373,8 +365,7 @@ export default {
         },
          //确认
         Jurisdiction(){
-        // this.commerPopShow1 = false
-        this.$emit('shownotip')
+        this.commerPopShow1 = false
         },
               //渐变色+阴影
          colorFun(borderSadow,foregoundArr,borderbrushArr,backgroundArr){

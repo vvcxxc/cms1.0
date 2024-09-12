@@ -16,7 +16,7 @@
         
             <div v-html="item.ParameterReportItemtList.dd.zhtml"></div>
         </div>
-        <!-- <div class="tip12" ref="kongtiao2" v-if="tipchange" :class="{yd:pdyd3}">
+        <div class="tip12" ref="kongtiao2" v-if="tipchange" :class="{yd:pdyd3}">
             <div
                 class="tiptop"
                 @mousedown="mouseDownHandleelse2($event)"
@@ -29,7 +29,7 @@
                 <div class="tipword">{{tipword}}</div>
                 <div class="tipdetermine" @click="tip1">{{lang.MessageBox_Confrim}}</div>
             </div>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -226,8 +226,7 @@ export default {
             }
         },
         tip1() {
-            // this.tipchange = false;
-           this.$emit('shownotip')
+            this.tipchange = false;
         },
         dealWithData2(data) {
             let c = [];
@@ -977,16 +976,19 @@ export default {
         },
 
         getPointNum(num, n) {
-            if (num==null||num==undefined||num==='') {
+            if (!num) {
                 let str = null;
                 return str;
             } else {
-                 let str = Number(num);
-              if(isNaN(str)&&n==0){
-                     return num
-                 }else{
-                   return  str.toFixed(n)
-                 }
+                let str = String(num);
+                if (str.indexOf('.') > -1) {
+                    let index = str.indexOf('.');
+                    let str1 = str.substring(0, index + n + 1);
+                    str1 = Number(str1);
+                    return str1;
+                } else {
+                    return str;
+                }
             }
         },
           delay(index,i){
@@ -1053,9 +1055,8 @@ setTimeout(resolve,index*0.001);
                        $('.btableconterword')[0].innerHTML = word
                     // setTimeout(() => {
                         if (this.cavantable[dc].data.length > 10000) {
-                            // this.tipchange = true;
-                            // this.tipword = this.lang.ReportForm_ExportDataUpTo10000;
-                            this.$emit('showtip',this.lang.ReportForm_ExportDataUpTo10000)
+                            this.tipchange = true;
+                            this.tipword = this.lang.ReportForm_ExportDataUpTo10000;
                             this.pdyd3 = true;
                                   this.$store.state.isShow = false;
                                    $('.btablecover').hide()
@@ -3003,8 +3004,7 @@ setTimeout(resolve,index*0.001);
         },
         //搜索
      async  search(a,Numbervalue,i1) {
-         debugger
-               console.log("sssssssssssssssssssssssssssssss")
+            //    console.log("sssssssssssssssssssssssssssssss")
              this.$store.state.report = false
             var wantnum;
             var end = {};
@@ -3478,7 +3478,6 @@ setTimeout(resolve,index*0.001);
                         data: end
                     })
                         .then(res => {
-                           console.log("res",JSON.parse(res.data.data))
                            var a2 = [];
                              if (res.data.data !== '无数据') {
                                a2 = JSON.parse(res.data.data);
@@ -4048,25 +4047,22 @@ if(!b&&b!==undefined){
                                             ) == ''
                                         ) {
                                             if (de !== '') {
-                                //                      if($(
-                                //         $('#' + this.cavantable[is].Name).find(
-                                //             `#row-` + this.enum
-                                //         )[0]
-                                //     )
-                                //         .find('input')[0]){
-                                //             if($(
-                                //         $('#' + this.cavantable[is].Name).find(
-                                //             `#row-` + this.enum
-                                //         )[0]
-                                //     )
-                                //         .find('input')[0].value){
-                                //   inp.value = de;
-                                //         }
-                                                   
-                                //                 }
-                                     if(inp.id == 'null'){
-                                         inp.value = de;
+                                                     if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0]){
+                                            if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0].value){
+                                  inp.value = de;
                                         }
+                                                   
+                                                }
                                             } else {
                                                 inp.value = this.getPointNum(
                                                     this.cavantable[is].nowdata[
@@ -4091,25 +4087,22 @@ if(!b&&b!==undefined){
                                         ) {
                                             if (de !== '') {
                                                
-                                    //                     if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0]){
-                                    //          if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0].value){
-                                    //                 inp.value = de;
-                                    //             }
+                                                        if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0]){
+                                             if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0].value){
+                                                    inp.value = de;
+                                                }
                                                     
-                                    //             }
-                                         if(inp.id == 'null'){
-                                         inp.value = de;
-                                        }
+                                                }
                                             } else {
                                                 inp.value = this.cavantable[
                                                     is
@@ -4331,25 +4324,22 @@ if(!b&&b!==undefined){
                                           
                                             if (de !== '') {
                                             //    禅道16476
-                                    //                    if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0]){
-                                    //         if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0].value){
-                                    //              inp.value = de;
-                                    //         }
+                                                       if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0]){
+                                            if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0].value){
+                                                 inp.value = de;
+                                            }
                                                    
-                                    //             }
-                                         if(inp.id == 'null'){
-                                         inp.value = de;
-                                        }
+                                                }
                                             } else {
                                                 inp.value = this.getPointNum(
                                                     this.cavantable[is].nowdata[
@@ -4374,24 +4364,22 @@ if(!b&&b!==undefined){
                                                 .value == ''
                                         ) {
                                             if (de !== '') {
-                                //                 if($($(
-                                //         $('#' + this.cavantable[is].Name).find(
-                                //             `#row-` + this.enum
-                                //         )[0]
-                                //     )
-                                //         .find('input')[0])){
-                                //    if($(
-                                //         $('#' + this.cavantable[is].Name).find(
-                                //             `#row-` + this.enum
-                                //         )[0]
-                                //     )
-                                //         .find('input')[0].value){
-                                //                     inp.value = de;
-                                //                 }
-                                //                 }
-                                                 if(inp.id == 'null'){
-                                         inp.value = de;
-                                        }
+                                                if($($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0])){
+                                   if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0].value){
+                                                    inp.value = de;
+                                                }
+                                                }
+                                            
                                             } else {
                                                 inp.value = this.cavantable[
                                                     is
@@ -4670,25 +4658,22 @@ if(!b&&b!==undefined){
                                             ) == ''
                                         ) {
                                             if (de !== '') {
-                                    //                     if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0]){
-                                    //             if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0].value){
-                                    //            inp.value = de;
-                                    //         }
+                                                        if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0]){
+                                                if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0].value){
+                                               inp.value = de;
+                                            }
                                                  
-                                    //             }
-                                         if(inp.id == 'null'){
-                                         inp.value = de;
-                                        }
+                                                }
                        
                                             } else {
                                                 inp.value = this.getPointNum(
@@ -4713,25 +4698,22 @@ if(!b&&b!==undefined){
                                                 .value == ''
                                         ) {
                                             if (de !== '') {
-                                                     if(inp.id == 'null'){
-                                         inp.value = de;
-                                        }
-                                    //                     if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0]){
-                                    //         if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0].value){
-                                    //             inp.value = de;
-                                    //         }
+                                                        if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0]){
+                                            if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0].value){
+                                                inp.value = de;
+                                            }
                                                     
-                                    //             }
+                                                }
                                             } else {
                                                 inp.value = this.cavantable[
                                                     is
@@ -4980,25 +4962,22 @@ if(!b&&b!==undefined){
                                     //         `#row-` + this.enum
                                     //     )[0]
                                     // ).find('input')[0])
-                                    //             if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0]){
-                                    //         if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0].value){
-                                        if(inp.id == 'null'){
-                                         inp.value = de;
-                                        }
-                                            
-                                            // }
+                                                if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0]){
+                                            if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0].value){
+                                             inp.value = de;
+                                            }
                                                    
-                                            //     }
+                                                }
                                                  
                                             } else {
                                                 inp.value = this.getPointNum(
@@ -5025,25 +5004,22 @@ if(!b&&b!==undefined){
                                         ) {
                                             if (de !== '') {
                                                 
-                                    //                      if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0]){
-                                    //         if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0].value){
-                                    //        inp.value = de;
-                                    //         }
+                                                         if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0]){
+                                            if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0].value){
+                                           inp.value = de;
+                                            }
                                                   
-                                    //             }
-                                         if(inp.id == 'null'){
-                                         inp.value = de;
-                                        }
+                                                }
                                             } else {
                                                 inp.value = this.cavantable[
                                                     is
@@ -6270,25 +6246,22 @@ if(!b&&b!==undefined){
                                             ) == ''
                                         ) {
                                             if (de !== '') {
-                                    //                     if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0]){
-                                    //              if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0].value){
-                                    //         inp.value = de;
-                                    //     }
-                                                 
-                                    //             }
-                                         if(inp.id == 'null'){
-                                         inp.value = de;
+                                                        if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0]){
+                                                 if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0].value){
+                                            inp.value = de;
                                         }
+                                                 
+                                                }
                                             } else {
                                                 inp.value = this.getPointNum(
                                                     this.cavantable[is].nowdata[
@@ -6312,25 +6285,22 @@ if(!b&&b!==undefined){
                                                 .value == ''
                                         ) {
                                             if (de !== '') {
-                                    //                    if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0]){
-                                    //         if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0].value){
-                                    //      inp.value = de;
-                                    //     }
-                                                   
-                                    //             }
-                                         if(inp.id == 'null'){
+                                                       if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0]){
+                                            if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0].value){
                                          inp.value = de;
                                         }
+                                                   
+                                                }
                                             } else {
                                                 inp.value = this.cavantable[
                                                     is
@@ -6559,25 +6529,22 @@ if(!b&&b!==undefined){
                                             ) == ''
                                         ) {
                                             if (de !== '') {
-                                    //                   if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0]){
-                                    //          if($(
-                                    //     $('#' + this.cavantable[is].Name).find(
-                                    //         `#row-` + this.enum
-                                    //     )[0]
-                                    // )
-                                    //     .find('input')[0].value){
-                                    //      inp.value = de;
-                                    //     }
-                                                    
-                                    //             }
-                                         if(inp.id == 'null'){
+                                                      if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0]){
+                                             if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0].value){
                                          inp.value = de;
                                         }
+                                                    
+                                                }
                                             } else {
                                                 inp.value = this.getPointNum(
                                                  de,
@@ -6599,25 +6566,22 @@ if(!b&&b!==undefined){
                                                 .value == ''
                                         ) {
                                             if (de !== '') {
-                                //                         if($(
-                                //         $('#' + this.cavantable[is].Name).find(
-                                //             `#row-` + this.enum
-                                //         )[0]
-                                //     )
-                                //         .find('input')[0]){
-                                //             if($(
-                                //         $('#' + this.cavantable[is].Name).find(
-                                //             `#row-` + this.enum
-                                //         )[0]
-                                //     )
-                                //         .find('input')[0].value){
-                                // inp.value = de;
-                                //             }
+                                                        if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0]){
+                                            if($(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            `#row-` + this.enum
+                                        )[0]
+                                    )
+                                        .find('input')[0].value){
+                                inp.value = de;
+                                            }
                                                 
-                                //                 }
-                                     if(inp.id == 'null'){
-                                         inp.value = de;
-                                        }
+                                                }
                                             } else {
                                                 inp.value = this.cavantable[
                                                     is

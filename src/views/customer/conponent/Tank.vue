@@ -48,7 +48,7 @@
     </div>
     
      <!-- 权限弹窗 -->
-     <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+     <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
       <div v-if="commerPopShow1" class="commerPop_outPop">
       <div class="commerPop_outHead">
           <i class="warning el-icon-warning"></i>
@@ -59,7 +59,7 @@
           <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
       </div>
       </div>
-     </div> -->
+     </div>
 </div>
 </div>
 </template>
@@ -103,32 +103,16 @@ export default {
       }
     },
     methods: {
-           getPointNum(num, n) {
-			 if(isNaN(num)||num===null){
-		     return null
-	         }else{
-            
-		     return Number(num).toFixed(n)
-             }
-		  },
            JoinVarFun(){
             console.log("ffff",this.dataValue)
       },
                //websocket触发该方法
       axioImg2(resArr1){
-        console.log(resArr1)
-        if(resArr1.value=='???'){
-          return
-        }
         let resArr = JSON.parse(JSON.stringify(resArr1))
         if(resArr.value == 'true'){
           resArr.value = 1
         }else if(resArr.value == 'false'){
           resArr.value = 0
-        }else if(resArr.value == 'False'){
-           resArr.value = 0
-        }else if(resArr.value == 'True'){
-        resArr.value = 1
         }
 
      this.dataValue.forEach((item)=>{
@@ -143,13 +127,11 @@ export default {
                   item.Max = parseFloat(resArr.value)
                
                   }
-                  
-                            // console.log(item.TankFillAnimationList[i].Compare )
+             
                   if(resArr.name == item.FillTagName){
-                    // console.log(resArr.value)
                       if(Number(resArr.value)+'' !==NaN+''){
                        if(item.TankText){
-                   item.TankText = this.getPointNum(parseFloat(resArr.value),item.DecimalCount)+item.Unit
+                    item.TankText = parseFloat(resArr.value).toFixed(item.DecimalCount)+item.Unit
                      for(let i=0;i<item.TankFillAnimationList.length;i++){
                          if(item.TankFillAnimationList[i].NO!==0){
                         
@@ -285,10 +267,10 @@ export default {
                   }
                       if(item.Fillvalue){
                     if(item.Unit == '%'){
-                 item.TankText = this.getPointNum(((parseFloat(item.TankLiquidHeight)/parseFloat(item.TankLiquidHeight1))*100),item.DecimalCount)+item.Unit
+                 item.TankText =((parseFloat(item.TankLiquidHeight)/parseFloat(item.TankLiquidHeight1))*100).toFixed(item.DecimalCount)+item.Unit
              
                     }else{
-                   item.TankText =this.getPointNum(parseFloat(item.Fillvalue),item.DecimalCount)+item.Unit
+                 item.TankText = parseFloat(item.Fillvalue).toFixed(item.DecimalCount)+item.Unit
                     }
                 
                 }
@@ -384,7 +366,7 @@ export default {
                self.jurisdictionShow(item).then(val => { 
               
                   if(self.CanExcuteShow){
-                   self.$emit('showtip',self.lang.NoOperationAuthority)
+                    self.commerPopShow1 = true
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -398,7 +380,7 @@ export default {
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                          self.$emit('showtip',self.lang.NoOperationAuthority)
+                          self.commerPopShow1 = true
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -425,7 +407,7 @@ export default {
            if(EventType.length){
              this.jurisdictionShow(item).then(val => { 
                   if(this.CanExcuteShow){
-                         this.$emit('showtip',this.lang.NoOperationAuthority)
+                         this.commerPopShow1 = true
                          return
                    }else{
                      for(var j=0;j<EventType.length;j++){
@@ -459,7 +441,7 @@ export default {
                 self.jurisdictionShow(item).then(val => { 
     
                      if(self.CanExcuteShow){
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                     }else{
                       for(var j=0;j<EventType.length;j++){
@@ -473,7 +455,7 @@ export default {
                if(EventType1.length){
                  self.jurisdictionShow(item).then(val => { 
                        if(self.CanExcuteShow){
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                       }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -535,18 +517,12 @@ export default {
               url: '/api/Base/PostRediusTest',
               data: this.resTagName
           }).then(res => {
-      
-let res1 = res.data.data.filter(item=>item.Value !== '???')
-
-          res1.forEach((item)=>{
+                console.log('res',res.data.data)
+          res.data.data.forEach((item)=>{
               if(item.Value == 'true'){
           item.Value = 1
         }else if(item.Value == 'false'){
           item.Value = 0
-        }else if(item.Value == 'False'){
-           item.Value  = 0
-        }else if(item.Value  == 'True'){
-        item.Value  = 1
         }
           })
       
@@ -562,7 +538,7 @@ let res1 = res.data.data.filter(item=>item.Value !== '???')
                                      if(item1.FillTagDataType){
                                  item.TankText = item.Fillvalue+item1.Unit
                                   }else{
-                                item.TankText = this.getPointNum(parseFloat(item.Fillvalue),item1.DecimalCount)+item1.Unit
+                                 item.TankText = parseFloat(item.Fillvalue).toFixed(item1.DecimalCount)+item1.Unit
                                   }
                                   }else{
                                        item.TankText= ''
@@ -625,7 +601,7 @@ let res1 = res.data.data.filter(item=>item.Value !== '???')
                  if(item.class == 'Tank59'||item.class == 'Tank2'){
                    console.log(item)
                  }
-              res1.forEach((item1)=>{
+              res.data.data.forEach((item1)=>{
                        if(item.MinName == item1.Name){
             
                   item.Min = parseFloat(item1.Value)
@@ -650,7 +626,7 @@ let res1 = res.data.data.filter(item=>item.Value !== '???')
                      for(let i=0;i<item.TankFillAnimationList.length;i++){
                          if(item.TankFillAnimationList[i].NO!==0){
     if(item.TankFillAnimationList[i].Condition == "=="){
-                             if(parseFloat(item1.Value)  == parseFloat(item.TankFillAnimationList[i].Compare)){
+                             if(item1.Value == item.TankFillAnimationList[i].Compare){
                                 let one = item.TankFillAnimationList[i].Color.slice(1,3)
                                 let two = item.TankFillAnimationList[i].Color.split("")
                                 two.splice(1,2)
@@ -781,11 +757,11 @@ let res1 = res.data.data.filter(item=>item.Value !== '???')
                 
                       if(item.Fillvalue){
                     if(item.Unit == '%'){
-                 item.TankText = this.getPointNum(((parseFloat(item.TankLiquidHeight)/parseFloat(item.TankLiquidHeight1))*100),item.DecimalCount)+item.Unit
+                 item.TankText =((parseFloat(item.TankLiquidHeight)/parseFloat(item.TankLiquidHeight1))*100).toFixed(item.DecimalCount)+item.Unit
              
                     }else{
                     
-                 item.TankText = this.getPointNum(parseFloat(item.Fillvalue),item.DecimalCount)+item.Unit
+                 item.TankText = parseFloat(item.Fillvalue).toFixed(item.DecimalCount)+item.Unit
                     }
                 
                 }
@@ -844,7 +820,7 @@ let res1 = res.data.data.filter(item=>item.Value !== '???')
      },
       //确认
         Jurisdiction(){
-             this.$emit('shownotip')
+             this.commerPopShow1 = false
         },
         //权限配置请求接口
      jurisdictionShow(item){

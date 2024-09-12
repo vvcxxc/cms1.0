@@ -1,7 +1,7 @@
 <template>
     <div class="tipsPop">
         <div class="myDialog" id="myDialog">
-            <div class="popHeader" v-drager>
+            <div class="popHeader">
                 <img :src="gth" alt="" />
                 <span>提示</span>
             </div>
@@ -26,7 +26,7 @@ export default {
     props: ['tipText', 'noCancel'],
     data() {
         return {
-            gth: require('@/assets/images/gth.png'),
+            gth: require('../../assets/images/gth.png'),
         };
     },
     methods: {
@@ -34,38 +34,17 @@ export default {
             this.$emit('tipCallBack', str);
         },
     },
-    directives: {
-        drag: function (el) {
-            let dragBox = document.getElementById('myDialog'); //获取当前元素
-            el.onmousedown = e => {
-                //算出鼠标相对元素的位置
-                let disX = e.clientX - dragBox.offsetLeft;
-                let disY = e.clientY - dragBox.offsetTop;
-                document.onmousemove = e => {
-                    //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
-                    let left = e.clientX - disX;
-                    let top = e.clientY - disY;
-                    //移动当前元素
-                    dragBox.style.left = left + "px";
-                    dragBox.style.top = top + "px";
-                };
-                document.onmouseup = e => {
-                    document.onmousemove = null;
-                    document.onmouseup = null;
-                };
-            };
-        }
-    },
 };
 </script>
 
 <style lang="scss" scoped>
 .tipsPop {
-    position: fixed;
-    top: 50vh;
-    left: 50vw;
-    transform: translate(-50%, -50%);
-    z-index: 101;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
 
     .myDialog {
         position: relative;

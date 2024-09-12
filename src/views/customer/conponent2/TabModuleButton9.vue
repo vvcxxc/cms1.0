@@ -16,8 +16,12 @@
       + 'px; width:'+ item.width + 'px; height:'+ item.height + 'px; borderRadius:' + item.radiusLeft + 'px ' 
       + item.radiusTop + 'px ' + item.radiusRight + 'px ' + item.radiusButton + 'px; fontFamily:'+ item.family 
       + '; fontSize:'+ item.fontSize + 'px; opacity:' + item.opacity + '; transform:rotate(' + item.rotate 
-      + 'deg); cursor:pointer;zIndex:'+item.ZIndex+'; background:' + item.BorderBrush + ';boxSizing:border-box;padding:'
-      + item.BorderThickness + 'px;overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow">
+      + 'deg); cursor:pointer;zIndex:'+item.ZIndex+'; background:' + item.BorderBrush + ';boxSizing:border-box;'
+      + 'overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow
+      + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
+      + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`
+      /* + `;${item.showBorder ? `border: ${item.BorderThickness}px solid ${item.borderStyle}` : `padding: ${item.BorderThickness}px`}`
+      + `;${item.showBack ? `border: ${item.BorderThickness}px solid ${item.borderStyle}`: `background: ${item.BorderBrush}`}`  */">
 
       <span class="contenText" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto;line-height:'
       +item.height + 'px;color:'+item.Foreground + ';fontWeight:'+item.Blod">{{item.text}}</span>
@@ -442,23 +446,29 @@ export default {
         }
 
           //边框色渐变
+          let showLinear = false
+          let linearStyle = ''
          if(borderbrushArr.ColorType == 'SolidColor'){
              borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
          }else{
-                 borderColor = ''
+                 // 此处为渐变色
+                let linearColor = ''
                  lagel3 = borderbrushArr.Data.Angel.toFixed(0)
              for(var f2=0;f2<borderbrushArr.Data.GradientStops.length;f2++){
                  gradient3 = borderbrushArr.Data.GradientStops[f2]
-                 borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                 linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
              }
-                 borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
+                //  borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
+                showLinear = true
+                borderColor = 'transparent'
+                linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
          }
         //背景色渐变
         if(backgroundArr.ColorType == 'SolidColor'){
             backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
             if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                backColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
-            }
+              // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+              }
         }else{
                 backColor = ''
                 lagel2 = backgroundArr.Data.Angel.toFixed(0)
@@ -512,7 +522,9 @@ export default {
           Shadow:Shadow,
           Shadow2:Shadow2,
            Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-          ZIndex:this.ZIndex
+          ZIndex:this.ZIndex,
+          showLinear,
+          linearStyle
         }
         this.dataValue.push(value)
       }
@@ -527,8 +539,11 @@ export default {
   display: block;
 }
 .TabModuleButton90aa:hover{
+  // background-color: #71A2C7ff !important;
+  // background: #71A2C7ff !important;
   background-color: #71A2C7ff !important;
-  background: #71A2C7ff !important;
+  background: #4EBAF3ff !important;
+  border-color: #71A2C7 !important;
 }
 
 .TabModuleButton90aa:hover .conten{

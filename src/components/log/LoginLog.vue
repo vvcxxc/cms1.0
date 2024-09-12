@@ -21,14 +21,19 @@
             <my-page :pageData="pageData" @req="req"></my-page>
         </div>
         <div class="tip" ref="kongtiao3" v-show="tipchange1">
-              <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
+            <div
+                class="tiphead"
+                style="position:absolute;width: 380px;height: 40px;"
+            ></div>
             <div class="tiptop">
                 <img :src="gth" alt />
-                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
+                <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
             </div>
             <div class="tipcontanin">
                 <div class="w">{{ w }}</div>
-                <div class="tipdetermine" @click="tip2">{{lang.MessageBox_Confrim}}</div>
+                <div class="tipdetermine" @click="tip2">
+                    {{ lang.MessageBox_Confrim }}
+                </div>
             </div>
         </div>
         <div class="cover3" v-if="tipchange1"></div>
@@ -89,7 +94,16 @@ export default {
                 LastEnabled: false,
                 NextEnabled: false
             },
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
+            lang: JSON.parse(localStorage.getItem('languages'))[
+                localStorage.getItem('currentLang')
+            ],
+            jurisdiction: [],
+            buttonarr: [],
+            cxid: '',
+            dcid: '',
+
+            cxshow: true,
+            dcshow: true
         };
     },
     computed: {
@@ -97,8 +111,13 @@ export default {
             return this.$store.state.btnPowerData;
         }
     },
+    watch: {
+        VpowerData(val) {
+            this.btnPowerData();
+        }
+    },
     created() {
-        this.getLangData()
+        this.getLangData();
         let argStartTime = this.$getDate(
             new Date(new Date().toLocaleDateString()).getTime()
         );
@@ -118,9 +137,93 @@ export default {
         if (this.a1 < 1) {
             this.a1 = 0.8;
         }
+        this.btnPowerData();
     },
     methods: {
-         getLangData() {
+        btnPowerData() {
+            this.jurisdiction = this.$store.state.btnPowerData;
+            this.buttonarr = this.findPathByLeafId(
+                this.GetUrlParam('id'),
+                this.jurisdiction
+            )[0].Children;
+            console.log('nut', this.buttonarr);
+            this.buttonarr.forEach(item => {
+                if (item.RightName == '用户登录记录-查询按钮') {
+                    this.cxid = item.RightID;
+                } else if (item.RightName == '用户登录记录-导出按钮') {
+                    this.dcid = item.RightID;
+                }
+            });
+            var userid = '';
+            if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+                userid = JSON.parse(sessionStorage.getItem('sightseerInfo1'))
+                    .SCMSUserID;
+            } else {
+                userid = JSON.parse(sessionStorage.getItem('userInfo1'))
+                    .SCMSUserID;
+            }
+            this.$axios({
+                method: 'post',
+                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`
+            })
+                .then(res => {
+                    this.cxshow = res.data.data;
+                })
+                .catch(err => {
+                    console.log('err', err);
+                });
+            this.$axios({
+                method: 'post',
+                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.dcid}`
+            })
+                .then(res => {
+                    this.dcshow = res.data.data;
+                })
+                .catch(err => {
+                    console.log('err', err);
+                });
+        },
+        findPathByLeafId(id, node, path) {
+            if (!path) {
+                path = [];
+            }
+            for (let i = 0; i < node.length; i++) {
+                var temPath = path.concat();
+
+                if (id == node[i].RightID) {
+                    temPath.push(node[i]);
+                    return temPath;
+                }
+                if (node[i].Children) {
+                    var findResult = this.findPathByLeafId(
+                        id,
+                        node[i].Children,
+                        temPath
+                    );
+                    if (findResult) {
+                        return findResult;
+                    }
+                }
+            }
+        },
+        GetUrlParam(paraName) {
+            let url = document.location.toString();
+            let arrObj = url.split('?');
+            if (arrObj.length > 1) {
+                let arrPara = arrObj[1].split('&');
+                let arr;
+                for (let i = 0; i < arrPara.length; i++) {
+                    arr = arrPara[i].split('=');
+                    if (arr && arr[0] == paraName) {
+                        return arr[1];
+                    }
+                }
+                return '';
+            } else {
+                return '';
+            }
+        },
+        getLangData() {
             this.searchList = [
                 {
                     title: this.lang.LogManage_LoginRecord_TimeOfOccurrence,
@@ -137,25 +240,24 @@ export default {
                     type: 'key',
                     placeholder: this.lang.LogManage_LoginRecord_UserName
                 }
-            ]
-            this.tableHead =  {
+            ];
+            this.tableHead = {
                 Time: this.lang.LogManage_LoginRecord_DataGrid_Time,
                 UserName: this.lang.LogManage_LoginRecord_DataGrid_UserName,
                 // Time: '报警设备',
                 Type: this.lang.LogManage_LoginRecord_DataGrid_OperationType
-            }
-        },  
-     move(name, namehead) {
-          //  $(`.${name}`).addClass('center')
-           let left = ($(`.${name}`).width())/2+'px'
-           let top = ($(`.${name}`).height())/2+'px'
-             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+            };
+        },
+        move(name, namehead) {
+            //  $(`.${name}`).addClass('center')
+            let left = $(`.${name}`).width() / 2 + 'px';
+            let top = $(`.${name}`).height() / 2 + 'px';
+            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
             $(`.${name}`)[0].addEventListener('mousedown', function(e) {
-                
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
-                    $(`.${name}`).removeClass('center')
+                    $(`.${name}`).removeClass('center');
                     window.event.stopPropagation();
                     var x = 0;
                     var y = 0;
@@ -171,7 +273,6 @@ export default {
                     isDown = true;
                     var pdmove = false;
 
-                     
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
@@ -187,9 +288,9 @@ export default {
                         //计算移动后的左偏移量和顶部的偏移量
                         var nl = nx - (x - l);
                         var nt = ny - (y - t);
-                        console.log(nx)
-                        console.log(x)
-                        console.log(l)
+                        console.log(nx);
+                        console.log(x);
+                        console.log(l);
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
@@ -202,7 +303,9 @@ export default {
             });
         },
         tip2() {
-            if (this.w == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect) {
+            if (
+                this.w == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect
+            ) {
                 this.searchData.argStartTime = new Date(
                     new Date().toLocaleDateString()
                 );
@@ -216,27 +319,11 @@ export default {
         },
 
         setParams(params, a) {
-            if (!a) {
-                setTimeout(() => {
-                    let a1 = Number(
-                        parseFloat(window.screen.width / 1920).toFixed(2)
-                    );
-                    if (a1 < 1) {
-                        a1 = 0.8;
-                    }
-                    this.a1 = a1;
-                    $('.tip').css({
-                        zoom: a1,
-                        left: `calc(50% - ${($('.tip').width() / 2) * a1}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) * a1}px)`
-                    });
-                    this.tipchange1 = true;
-                    this.move('tip', 'tiphead');
-                });
-                this.w =  this.lang.NoOperationAuthority;
+            if (!this.cxshow) {
+                this.isPopShow = true;
+                this.tipText = this.lang.NoOperationAuthority;
                 return;
             }
-
             var timeRegex =
                 '^((([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-' +
                 '(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})' +
@@ -263,7 +350,7 @@ export default {
                     this.tipchange1 = true;
                     this.move('tip', 'tiphead');
                 });
-                this.w =  this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect;
+                this.w = this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect;
                 return;
             }
             if (
@@ -293,6 +380,7 @@ export default {
             this.searchData.argUserName = params.argKeyword;
 
             // console.log(this.searchData);
+            this.req(1);
         },
         isPositiveInteger(s) {
             //是否为正整数

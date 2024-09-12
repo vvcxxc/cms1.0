@@ -7,48 +7,40 @@
  -->
 <template>
     <div v-if="show">
-        <div
-            v-for="(item, key) in cavantable"
-            :key="key"
-            :id="item.Name"
-            :style="
-                'position:absolute;' +
-                'left:' +
-                item.PropertyList.Left +
-                'px; top:' +
-                item.PropertyList.Top +
-                'px; width:' +
-                item.PropertyList.Width +
-                'px; height:' +
-                item.PropertyList.Height +
-                'px;' +
-                'RotateAngle:' +
-                item.PropertyList.RotateAngle +
-                'Opacity:' +
-                item.PropertyList.Opacity +
-                ';zIndex:' +
-                item.PropertyList.ZIndex
-            "
-        >
-            <div
-                v-html="item.ParameterReportItemtList.dd.zhtml"
-                class="table-box"
-            ></div>
-        </div>
-        <!-- <div class="tip12" ref="kongtiao2" v-if="tipchange" :class="{yd:pdyd3}">
+        <div v-for="(item, key) in cavantable" :key="key" :id="item.Name" :style="
+            'position:absolute;' +
+            'left:' +
+            item.PropertyList.Left +
+            'px; top:' +
+            item.PropertyList.Top +
+            'px; width:' +
+            item.PropertyList.Width +
+            'px; height:' +
+            item.PropertyList.Height +
+            'px;' +
+            'RotateAngle:' +
+            item.PropertyList.RotateAngle +
+            'Opacity:' +
+            item.PropertyList.Opacity +
+            ';zIndex:' +
+            item.PropertyList.ZIndex
+        ">
+        <div v-html="item.ParameterReportItemtList.dd.zhtml" class="table-box"></div>
+    </div>
+    <!-- <div class="tip12" ref="kongtiao2" v-if="tipchange" :class="{yd:pdyd3}">
             <div
                 class="tiptop"
                 @mousedown="mouseDownHandleelse2($event)"
                 @mouseup="mouseUpHandleelse2($event)"
             >
                 <img :src="gth" alt />
-                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
-            </div>
-            <div class="tipcontanin">
-                <div class="tipword">{{tipword}}</div>
-                <div class="tipdetermine" @click="tip1">{{lang.MessageBox_Confrim}}</div>
-            </div>
-        </div> -->
+                                                                    <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
+                                                                </div>
+                                                                <div class="tipcontanin">
+                                                                    <div class="tipword">{{tipword}}</div>
+                                                                    <div class="tipdetermine" @click="tip1">{{lang.MessageBox_Confrim}}</div>
+                                                                </div>
+                                                            </div> -->
     </div>
 </template>
 
@@ -192,9 +184,9 @@ export default {
                                 $('#' + this.cavantable[i].Name).find(
                                     '.datareadyhead'
                                 )[
-                                    $('#' + this.cavantable[i].Name).find(
-                                        '.datareadyhead'
-                                    ).length - 1
+                                $('#' + this.cavantable[i].Name).find(
+                                    '.datareadyhead'
+                                ).length - 1
                                 ]
                             )
                                 .attr('id')
@@ -203,9 +195,9 @@ export default {
                                 $('#' + this.cavantable[i].Name).find(
                                     '.datareadyfoot'
                                 )[
-                                    $('#' + this.cavantable[i].Name).find(
-                                        '.datareadyfoot'
-                                    ).length - 1
+                                $('#' + this.cavantable[i].Name).find(
+                                    '.datareadyfoot'
+                                ).length - 1
                                 ]
                             )
                                 .attr('id')
@@ -215,9 +207,9 @@ export default {
                                 $('#' + this.cavantable[i].Name).find(
                                     '.datareadyhead'
                                 )[
-                                    $('#' + this.cavantable[i].Name).find(
-                                        '.datareadyhead'
-                                    ).length - 1
+                                $('#' + this.cavantable[i].Name).find(
+                                    '.datareadyhead'
+                                ).length - 1
                                 ]
                             )
                                 .attr('id')
@@ -226,44 +218,76 @@ export default {
                                 $('#' + this.cavantable[i].Name).find(
                                     '.dataready'
                                 )[
-                                    $('#' + this.cavantable[i].Name).find(
-                                        '.dataready'
-                                    ).length - 1
+                                $('#' + this.cavantable[i].Name).find(
+                                    '.dataready'
+                                ).length - 1
                                 ]
                             )
                                 .attr('id')
                                 .split('-')[0];
                         }
+                        for (let i1 = 0; i1 <= endx; i1++) {
+                            left =
+                                left +
+                                parseFloat(
+                                    $(
+                                        $('#' + this.cavantable[i].Name).find(
+                                            '#' + i1 + '-' + startx
+                                        )[0]
+                                    ).width()
+                                );
+                            if (
+                                $(
+                                    $('#' + this.cavantable[i].Name).find(
+                                        '#' + i1 + '-' + startx
+                                    )[0]
+                                ).hasClass('borderleft')
+                            ) {
+                                left += 1;
+                            }
+                        }
+                        for (let i1 = 0; i1 <= endy; i1++) {
+                            top =
+                                top +
+                                parseFloat(
+                                    $(
+                                        $('#' + this.cavantable[i].Name).find(
+                                            '#' + starty + '-' + i
+                                        )[0]
+                                    ).height()
+                                );
+                            if (
+                                $(
+                                    $('#' + this.cavantable[i].Name).find(
+                                        '#' + starty + '-' + i
+                                    )[0]
+                                ).hasClass('bordertop')
+                            ) {
+                                top += 1;
+                            }
+                        }
+                        left =
+                            parseInt(
+                                $('#' + this.cavantable[i].Name)[0].style.left
+                            ) + left;
+                        top =
+                            parseInt(
+                                $('#' + this.cavantable[i].Name)[0].style.top
+                            ) +
+                            top +
+                            1;
+                        if (left <= 0) {
+                            $(
+                                '#' + this.cavantable[i].Name + 'page'
+                            )[0].style.left = 0 + 'px';
+                        } else {
+                            $(
+                                '#' + this.cavantable[i].Name + 'page'
+                            )[0].style.left = left + 'px';
+                        }
 
                         $('#' + this.cavantable[i].Name + 'page')[0].style.top =
-                            Number(
-                                $(
-                                    '#' + this.cavantable[i].Name
-                                )[0].style.top.replace('px', '')
-                            ) +
-                            Number(
-                                $(
-                                    '#' + this.cavantable[i].Name
-                                )[0].style.height.replace('px', '')
-                            ) +
-                            2 +
-                            'px';
-
-                        $(
-                            '#' + this.cavantable[i].Name + 'page'
-                        )[0].style.left =
-                            Number(
-                                $(
-                                    '#' + this.cavantable[i].Name
-                                )[0].style.left.replace('px', '')
-                            ) +
-                            Number(
-                                $(
-                                    '#' + this.cavantable[i].Name
-                                )[0].style.width.replace('px', '')
-                            ) -
-                            200 +
-                            'px';
+                            top + 'px';
                     } else if (end.kzdirection == '纵向扩展') {
                         endy = 0;
                         endx = 0;
@@ -295,9 +319,9 @@ export default {
                                 $('#' + this.cavantable[i].Name).find(
                                     '.datareadyfoot'
                                 )[
-                                    $('#' + this.cavantable[i].Name).find(
-                                        '.datareadyfoot'
-                                    ).length - 1
+                                $('#' + this.cavantable[i].Name).find(
+                                    '.datareadyfoot'
+                                ).length - 1
                                 ]
                             )
                                 .attr('id')
@@ -306,9 +330,9 @@ export default {
                                 $('#' + this.cavantable[i].Name).find(
                                     '.datareadyfoot'
                                 )[
-                                    $('#' + this.cavantable[i].Name).find(
-                                        '.datareadyfoot'
-                                    ).length - 1
+                                $('#' + this.cavantable[i].Name).find(
+                                    '.datareadyfoot'
+                                ).length - 1
                                 ]
                             )
                                 .attr('id')
@@ -318,9 +342,9 @@ export default {
                                 $('#' + this.cavantable[i].Name).find(
                                     '.dataready'
                                 )[
-                                    $('#' + this.cavantable[i].Name).find(
-                                        '.dataready'
-                                    ).length - 1
+                                $('#' + this.cavantable[i].Name).find(
+                                    '.dataready'
+                                ).length - 1
                                 ]
                             )
                                 .attr('id')
@@ -329,44 +353,79 @@ export default {
                                 $('#' + this.cavantable[i].Name).find(
                                     '.dataready'
                                 )[
-                                    $('#' + this.cavantable[i].Name).find(
-                                        '.dataready'
-                                    ).length - 1
+                                $('#' + this.cavantable[i].Name).find(
+                                    '.dataready'
+                                ).length - 1
                                 ]
                             )
                                 .attr('id')
                                 .split('-')[0];
                         }
+                        for (let i1 = 0; i1 <= endx; i1++) {
+                            left =
+                                left +
+                                parseFloat(
+                                    $(
+                                        $('#' + this.cavantable[i].Name).find(
+                                            '#' + i1 + '-' + startx
+                                        )[0]
+                                    ).width()
+                                );
+                            if (
+                                $(
+                                    $('#' + this.cavantable[i].Name).find(
+                                        '#' + i1 + '-' + startx
+                                    )[0]
+                                ).hasClass('borderleft')
+                            ) {
+                                left += 1;
+                            }
+                        }
+                        for (let i1 = 0; i1 <= endy; i1++) {
+                            top =
+                                top +
+                                parseFloat(
+                                    $(
+                                        $('#' + this.cavantable[i].Name).find(
+                                            '#' + starty + '-' + i
+                                        )[0]
+                                    ).height()
+                                );
+                            if (
+                                $(
+                                    $('#' + this.cavantable[i].Name).find(
+                                        '#' + starty + '-' + i
+                                    )[0]
+                                ).hasClass('bordertop')
+                            ) {
+                                top += 1;
+                            }
+                        }
+
+                        left =
+                            parseInt(
+                                $('#' + this.cavantable[i].Name)[0].style.left
+                            ) +
+                            left -
+                            190;
+                        top =
+                            parseInt(
+                                $('#' + this.cavantable[i].Name)[0].style.top
+                            ) +
+                            top +
+                            1;
+                        if (left <= 0) {
+                            $(
+                                '#' + this.cavantable[i].Name + 'page'
+                            )[0].style.left = 0 + 'px';
+                        } else {
+                            $(
+                                '#' + this.cavantable[i].Name + 'page'
+                            )[0].style.left = left + 'px';
+                        }
 
                         $('#' + this.cavantable[i].Name + 'page')[0].style.top =
-                            Number(
-                                $(
-                                    '#' + this.cavantable[i].Name
-                                )[0].style.top.replace('px', '')
-                            ) +
-                            Number(
-                                $(
-                                    '#' + this.cavantable[i].Name
-                                )[0].style.height.replace('px', '')
-                            ) +
-                            2 +
-                            'px';
-
-                        $(
-                            '#' + this.cavantable[i].Name + 'page'
-                        )[0].style.left =
-                            Number(
-                                $(
-                                    '#' + this.cavantable[i].Name
-                                )[0].style.left.replace('px', '')
-                            ) +
-                            Number(
-                                $(
-                                    '#' + this.cavantable[i].Name
-                                )[0].style.width.replace('px', '')
-                            ) -
-                            200 +
-                            'px';
+                            top + 'px';
                     }
                 }
             }
@@ -602,11 +661,11 @@ export default {
                                     ].id.split('-');
                                 this.cavantable[i].shi2.push(
                                     parseInt(shi2[0]) -
-                                        parseInt(
-                                            this.cavantable[i]
-                                                .ParameterReportItemtList.dd
-                                                .startpox
-                                        )
+                                    parseInt(
+                                        this.cavantable[i]
+                                            .ParameterReportItemtList.dd
+                                            .startpox
+                                    )
                                 );
                             }
                         }
@@ -640,11 +699,11 @@ export default {
                                         ].id.split('-');
                                     this.cavantable[i].shi3.push(
                                         parseInt(shi3[0]) -
-                                            parseInt(
-                                                this.cavantable[i]
-                                                    .ParameterReportItemtList.dd
-                                                    .startpox
-                                            )
+                                        parseInt(
+                                            this.cavantable[i]
+                                                .ParameterReportItemtList.dd
+                                                .startpox
+                                        )
                                     );
                                 }
                             }
@@ -765,7 +824,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[i].Name
+                                                    this.cavantable[i].Name
                                                 ).find('tr')[i2]
                                             ).find('td')[i3]
                                         ).hasClass('dataready')
@@ -810,7 +869,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[i].Name
+                                                    this.cavantable[i].Name
                                                 ).find('tr')[i2]
                                             ).find('td')[i3]
                                         ).hasClass('dataready')
@@ -996,9 +1055,9 @@ export default {
                                 i3 <
                                 $(
                                     $('#' + this.cavantable[i].Name).find('tr')[
-                                        this.cavantable[i]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
+                                    this.cavantable[i]
+                                        .ParameterReportItemtList.dd
+                                        .startpoy
                                     ]
                                 ).find('td').length;
                                 i3++
@@ -1009,9 +1068,9 @@ export default {
                                             $(
                                                 '#' + this.cavantable[i].Name
                                             ).find('tr')[
-                                                this.cavantable[i]
-                                                    .ParameterReportItemtList.dd
-                                                    .startpoy
+                                            this.cavantable[i]
+                                                .ParameterReportItemtList.dd
+                                                .startpoy
                                             ]
                                         ).find('td')[i3]
                                     ).hasClass('dataready')
@@ -1049,7 +1108,7 @@ export default {
                                 this.cavantable[i].shi2.length;
                             this.cavantable[i].numpage = Math.ceil(
                                 this.cavantable[i].data.length /
-                                    this.cavantable[i].nowlength
+                                this.cavantable[i].nowlength
                             );
                             let adata = JSON.stringify(this.cavantable[i].data);
                             this.cavantable[i].nowdata = JSON.parse(
@@ -1065,9 +1124,9 @@ export default {
                                 i3 <
                                 $(
                                     $('#' + this.cavantable[i].Name).find('tr')[
-                                        this.cavantable[i]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
+                                    this.cavantable[i]
+                                        .ParameterReportItemtList.dd
+                                        .startpoy
                                     ]
                                 ).find('td').length;
                                 i3++
@@ -1078,9 +1137,9 @@ export default {
                                             $(
                                                 '#' + this.cavantable[i].Name
                                             ).find('tr')[
-                                                this.cavantable[i]
-                                                    .ParameterReportItemtList.dd
-                                                    .startpoy
+                                            this.cavantable[i]
+                                                .ParameterReportItemtList.dd
+                                                .startpoy
                                             ]
                                         ).find('td')[i3]
                                     ).hasClass('dataready')
@@ -1104,7 +1163,7 @@ export default {
                                 this.cavantable[i].shi2.length;
                             this.cavantable[i].numpage = Math.ceil(
                                 this.cavantable[i].data.length /
-                                    this.cavantable[i].nowlength
+                                this.cavantable[i].nowlength
                             );
                             let adata = JSON.stringify(this.cavantable[i].data);
                             this.cavantable[i].nowdata = JSON.parse(
@@ -1163,2742 +1222,42 @@ export default {
         },
         //    导出
         async export(it) {
-            console.log('data999', new Date());
-            //  this.$emit('percentage1',0)
-            var dcnum = 0;
-            var dcnum1 = 0;
-            //            for (let dc1 = 0; dc1 < this.cavantable.length; dc1++) {
-            //                 if (
-            //                     this.cavantable[dc1].ParameterReportItemtList.dd
-            //                         .dckongjian == it.class
-            //                 ) {
-            //                if(this.cavantable[dc1].numpage == 0){
-            //                 dcnum1+=parseInt($('#'+this.cavantable[dc1].Name).find('td').length)
-            //                }else{
-            //                dcnum1+=parseInt($('#'+this.cavantable[dc1].Name).find('td').length)+(parseInt(this.cavantable[dc1].ParameterReportItemtList.dd.endpoy)-parseInt(this.cavantable[dc1].ParameterReportItemtList.dd.startpoy))*(parseInt(this.cavantable[dc1].ParameterReportItemtList.dd.endpox)-parseInt(this.cavantable[dc1].ParameterReportItemtList.dd.startpox))*(parseInt(this.cavantable[dc1].numpage)-1)
 
-            //                }
+            let _obj = this.cavantable.find(_ => _.ParameterReportItemtList.dd.dckongjian == it.class)
+            if (_obj) {
+                let _data = _obj.ParameterReportItemtList.dd
+                console.log("_", _obj)
 
-            //                 }
-            //   }
-            //   if(dcnum1>10000){
-            //         this.tipchange = true;
-            //         this.tipword = '导出数据不能超过10000!';
-            //         this.pdyd3 = true;
-            //         this.$store.state.isShow = false;
-            //         return;
-            //   }
-            for (let dc1 = 0; dc1 < this.cavantable.length; dc1++) {
-                console.log(JSON.parse(JSON.stringify(this.cavantable)));
-                if (
-                    this.cavantable[dc1].ParameterReportItemtList.dd
-                        .dckongjian == it.class
-                ) {
-                    dcnum++;
+                let starttime = $($('.' + _data.startkongjian)[0])
+                    .find('input')
+                    .val();
+                let endtime = $($('.' + _data.endkongjian)[0])
+                    .find('input')
+                    .val()
+                console.log("_2", starttime)
+                let data = {
+                    // ..._data,
+                    argwaibuparalist: _data.kopngjianarray,
+                    kzbanciwd: _data.kzbanciwd,
+                    kzresource: _data.kzresource,
+                    kzresourcedataitemarray: _data.kzresourcedataitemarray,
+                    kzresourceid: _data.kzresourceid,
+                    kztimewd: _data.kztimewd,
+                    starttime,
+                    endtime
                 }
+                this.$axios({
+                    method: 'post',
+                    url: `/api/ParameterReport/Export`,
+                    data: data,
+                    responseType: 'blob',
+                })
+                    .then((res) => {
+                        this.downloadFile(res.data, `自定义报表${'' + new Date().getFullYear() + Number(new Date().getMonth() + 1) + new Date().getDate() + new Date().getTime()
+                            }.xlsx`)
+                    })
             }
 
-            for (let dc = 0; dc < this.cavantable.length; dc++) {
-                if (
-                    this.cavantable[dc].ParameterReportItemtList.dd
-                        .dckongjian == it.class
-                ) {
-                    this.footarr = [];
-                    this.$store.state.isShow = true;
-                    $('.btablecover').hide();
-                    this.$emit('percentage1', 0);
-
-                    await this.delay(100);
-                    $('.btablecover').show();
-                    let word = this.lang.ReportForm_Exporting.replace(
-                        '{0}',
-                        dc + 1
-                    );
-                    $('.btableconterword')[0].innerHTML = word;
-                    // setTimeout(() => {
-                    if (this.cavantable[dc].data.length > 10000) {
-                        // this.tipchange = true;
-                        // this.tipword = this.lang.ReportForm_ExportDataUpTo10000;
-                        this.$emit(
-                            'showtip',
-                            this.lang.ReportForm_ExportDataUpTo10000
-                        );
-                        this.pdyd3 = true;
-                        this.$store.state.isShow = false;
-                        $('.btablecover').hide();
-                        return;
-                    }
-
-                    var nowdai = JSON.stringify(this.cavantable[dc]);
-                    let daiti = this.cavantable[dc].ParameterReportItemtList.dd;
-
-                    if (daiti.kzdirection == '纵向扩展') {
-                        let adiv = this.cavantable[dc].daochutable;
-
-                        let a = $(this.cavantable[dc].daochutable)[0].cloneNode(
-                            true
-                        );
-                        let b = $(this.cavantable[dc].daochutable)[0].cloneNode(
-                            true
-                        );
-                        //               for(let a1=0;a1<$(b).find('.heibin').length;a1++){
-                        //             if(parseFloat($(b).find('.heibin')[a1].id.split('-')[0])<parseFloat(this.cavantable[dc].ParameterReportItemtList.dd.startpox)&&parseFloat($(b).find('.heibin')[a1].id.split('-')[1])>parseFloat(this.cavantable[dc].ParameterReportItemtList.dd.startpoy)){
-                        //    if(parseFloat($(b).find('.heibin')[a1].id.split('-')[0])+parseFloat($($('.heibin')[a1]).attr('colspan'))>parseFloat(this.cavantable[dc].ParameterReportItemtList.dd.startpox)){
-                        //                        let c = parseFloat(this.cavantable[dc].ParameterReportItemtList.dd.startpox);
-                        //                        $($(b).find('.heibin')[a1]).attr('rowspan',c)
-                        //                        for(let a2=0;a2<$($(b).find('.heibin')[a1]).attr('name').split(',').length;a2++){
-                        //                            let c1 = $($(b).find('.heibin')[a1]).attr('name').split(',')[a2]
-                        //                            if(c1){
-                        //                 if(this.cavantable[dc].shi5.includes($('#'+c1)[0].id.split('-')[0])){
-                        //                             $($($(b).find('.heibin')[a1]).find('#'+c1)).show()
-                        //                          }
-                        //                            }
-
-                        //                        }
-                        //                     // console.log("sadsadsad",$($(b).find('.heibin')[a1]))
-
-                        //             }
-                        //             }
-
-                        //         }
-                        if ($('#' + this.cavantable[dc].Name + 'page')[0]) {
-                            for (
-                                let cc = 0;
-                                cc < $(b).find('.dataready').length;
-                                cc++
-                            ) {
-                                $($(b).find('.dataready')[cc])
-                                    .find('input')[0]
-                                    .setAttribute('value', '');
-                                $($(b).find('.dataready')[cc]).find(
-                                    'input'
-                                )[0].value = '';
-                            }
-
-                            for (
-                                let ai = 0;
-                                ai <
-                                this.cavantable[dc].ParameterReportItemtList.dd
-                                    .cellparaarray.length;
-                                ai++
-                            ) {
-                                $(b).find(
-                                    '#' +
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .cellparaarray[ai].id
-                                )[0].innerHTML = $(
-                                    '#' + this.cavantable[dc].Name
-                                ).find(
-                                    '#' +
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .cellparaarray[ai].id
-                                )[0].innerHTML;
-                            }
-
-                            let div = document.createElement('table');
-                            let length = $(a).find('.daochu').length;
-                            for (
-                                let i1 = 0;
-                                i1 < $(a).find('td').length;
-                                i1++
-                            ) {
-                                if (
-                                    $(a).find('td')[i1].style.display ==
-                                        'none' &&
-                                    parseInt(
-                                        $($(a).find('td')[i1])
-                                            .attr('id')
-                                            .split('-')[0]
-                                    ) <
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .startpox
-                                ) {
-                                    $(a).find('td')[i1].style.display = 'block';
-                                }
-                            }
-                            for (let i1 = 0; i1 < length; i1++) {
-                                let a1 = 0;
-                                div.append($(a).find('.daochu')[a1]);
-
-                                this.$emit(
-                                    'percentage1',
-                                    parseInt(10 / (length - i1))
-                                );
-
-                                await this.delay(i1);
-                            }
-
-                            let div1 = $(div)[0].cloneNode(true);
-
-                            for (
-                                let i = 0;
-                                i < $(div1).find('input').length;
-                                i++
-                            ) {
-                                $(div1).find('input')[i].value = null;
-                            }
-                            let sumdata1 = daiti.kzsummotype.split(',');
-                            let length1 = $($(div).find('tr')[0]).find(
-                                'input'
-                            ).length;
-                            let y1 = $(div).find('input').length;
-
-                            let endlength;
-                            var xzdata =
-                                Math.ceil(
-                                    this.cavantable[dc].data.length /
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .kzresourcedataitemarray.length
-                                ) +
-                                Number(
-                                    this.cavantable[dc].ParameterReportItemtList
-                                        .dd.startpoy
-                                );
-                            if (daiti.kzsummopos !== '分布在前') {
-                                endlength =
-                                    parseInt(length) +
-                                    parseInt(
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
-                                    );
-                            } else {
-                                endlength =
-                                    parseInt(length) +
-                                    sumdata1.length +
-                                    parseInt(
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
-                                    );
-                            }
-
-                            let shi5 = this.cavantable[dc].shi5;
-                            let shi6 = this.cavantable[dc].shi6;
-                            let lenght3;
-                            for (
-                                let cc1 = 1;
-                                cc1 < this.cavantable[dc].numpage;
-                                cc1++
-                            ) {
-                                lenght3 = length - 1;
-                                for (let cc = 0; cc < length; cc++) {
-                                    //         if(cc==1){
-                                    //                for (
-                                    //     let i = 0;
-                                    //     i < $(div1).find('td').length;
-                                    //     i++
-                                    // ) {
-                                    //     if( $(div1).find('td')[i].innerText){
-                                    //     //   $(div1).find('td')[i].innerText = '';
-                                    //     //   $($(div1).find('td')[i]).removeAttr('class')
-                                    //     }
-
-                                    // }
-                                    //         }
-                                    let div3 = $($(div1).find('tr'))[
-                                        lenght3
-                                    ].cloneNode(true);
-                                    for (
-                                        let a22 = 0;
-                                        a22 < $(div3).find('.heibin').length;
-                                        a22++
-                                    ) {
-                                        $($(div3).find('.heibin')[a22]).attr(
-                                            'rowspan',
-                                            1
-                                        );
-                                        $($(div3).find('.heibin')[a22]).attr(
-                                            'colspan',
-                                            1
-                                        );
-                                    }
-                                    //         if(cc1>1){
-
-                                    // 	for (let cc11 = 0; cc11 < $(div3).find('td').length; cc11++) {
-                                    // 		if(!$($(div3).find('td')[cc11]).hasClass('dataready')&&!$($(div3).find('td')[cc11]).hasClass('datareadyfoot')){
-                                    // 			// $(div3).find('td')[cc11].innerHTML = ''
-                                    // 			// $($(div3).find('td')[cc11]).removeAttr('style')
-                                    // 		// if($($(div3).find('td')[cc11]).hasClass('item')){
-                                    // 		// 	$($(div3).find('td')[cc11]).removeAttr('class')
-                                    // 		// }
-
-                                    // 		}
-                                    // 	}
-                                    // }
-
-                                    $($(b).find('#row-' + endlength)[0]).after(
-                                        div3
-                                    );
-
-                                    lenght3--;
-                                }
-                                var changeii = [];
-
-                                if (
-                                    this.cavantable[dc].numpage > 1 &&
-                                    $(
-                                        '#' + this.cavantable[dc].Name + 'page'
-                                    )[0]
-                                ) {
-                                    for (
-                                        let ii = parseInt(endlength);
-                                        ii <
-                                        parseInt(endlength) +
-                                            parseInt(
-                                                $(
-                                                    $(
-                                                        '#' +
-                                                            this.cavantable[dc]
-                                                                .Name
-                                                    ).find('td')[
-                                                        $(
-                                                            '#' +
-                                                                this.cavantable[
-                                                                    dc
-                                                                ].Name
-                                                        ).find('td').length - 1
-                                                    ]
-                                                )
-                                                    .attr('id')
-                                                    .split('-')[1]
-                                            ) -
-                                            parseInt(
-                                                $(
-                                                    $(
-                                                        '#' +
-                                                            this.cavantable[dc]
-                                                                .Name
-                                                    ).find('.dataready')[
-                                                        $(
-                                                            '#' +
-                                                                this.cavantable[
-                                                                    dc
-                                                                ].Name
-                                                        ).find('.dataready')
-                                                            .length - 1
-                                                    ]
-                                                )
-                                                    .attr('id')
-                                                    .split('-')[1]
-                                            );
-                                        ii++
-                                    ) {
-                                        let changeil = [];
-                                        for (
-                                            let cc11 = 0;
-                                            cc11 <
-                                            $($(b).find('#row-' + ii)[0]).find(
-                                                'td'
-                                            ).length;
-                                            cc11++
-                                        ) {
-                                            if (
-                                                !$(
-                                                    $(
-                                                        $(b).find(
-                                                            '#row-' + ii
-                                                        )[0]
-                                                    ).find('td')[cc11]
-                                                ).hasClass('dataready') &&
-                                                !$(
-                                                    $(
-                                                        $(b).find(
-                                                            '#row-' + ii
-                                                        )[0]
-                                                    ).find('td')[cc11]
-                                                ).hasClass('datareadyfoot')
-                                            ) {
-                                                if (
-                                                    ii <=
-                                                    this.cavantable[dc].endpoy +
-                                                        this.cavantable[
-                                                            dc
-                                                        ].ParameterReportItemtList.dd.kzsummotype.split(
-                                                            ','
-                                                        ).length
-                                                ) {
-                                                    if (
-                                                        $(
-                                                            $(
-                                                                '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        dc
-                                                                    ].Name
-                                                            ).find(
-                                                                '#row-' + ii
-                                                            )[0]
-                                                        ).find('td')[cc11]
-                                                    ) {
-                                                        if (
-                                                            $(
-                                                                $(
-                                                                    $(
-                                                                        '#' +
-                                                                            this
-                                                                                .cavantable[
-                                                                                dc
-                                                                            ]
-                                                                                .Name
-                                                                    ).find(
-                                                                        '#row-' +
-                                                                            ii
-                                                                    )[0]
-                                                                ).find('td')[
-                                                                    cc11
-                                                                ]
-                                                            ).attr('style') ||
-                                                            $(
-                                                                $(
-                                                                    '#' +
-                                                                        this
-                                                                            .cavantable[
-                                                                            dc
-                                                                        ].Name
-                                                                ).find(
-                                                                    '#row-' + ii
-                                                                )[0]
-                                                            ).find('td')[cc11]
-                                                                .innerHTML ||
-                                                            $(
-                                                                $(
-                                                                    $(
-                                                                        '#' +
-                                                                            this
-                                                                                .cavantable[
-                                                                                dc
-                                                                            ]
-                                                                                .Name
-                                                                    ).find(
-                                                                        '#row-' +
-                                                                            ii
-                                                                    )[0]
-                                                                ).find('td')[
-                                                                    cc11
-                                                                ]
-                                                            ).hasClass(
-                                                                'bordertop'
-                                                            ) ||
-                                                            $(
-                                                                $(
-                                                                    $(
-                                                                        '#' +
-                                                                            this
-                                                                                .cavantable[
-                                                                                dc
-                                                                            ]
-                                                                                .Name
-                                                                    ).find(
-                                                                        '#row-' +
-                                                                            ii
-                                                                    )[0]
-                                                                ).find('td')[
-                                                                    cc11
-                                                                ]
-                                                            ).hasClass(
-                                                                'borderleft'
-                                                            )
-                                                        ) {
-                                                            changeil.push({
-                                                                index: cc11,
-                                                                text: $(
-                                                                    $(
-                                                                        '#' +
-                                                                            this
-                                                                                .cavantable[
-                                                                                dc
-                                                                            ]
-                                                                                .Name
-                                                                    ).find(
-                                                                        '#row-' +
-                                                                            ii
-                                                                    )[0]
-                                                                ).find('td')[
-                                                                    cc11
-                                                                ].innerHTML,
-                                                                style: $(
-                                                                    $(
-                                                                        $(
-                                                                            '#' +
-                                                                                this
-                                                                                    .cavantable[
-                                                                                    dc
-                                                                                ]
-                                                                                    .Name
-                                                                        ).find(
-                                                                            '#row-' +
-                                                                                ii
-                                                                        )[0]
-                                                                    ).find(
-                                                                        'td'
-                                                                    )[cc11]
-                                                                ).attr('style'),
-                                                                classname: $(
-                                                                    $(
-                                                                        $(
-                                                                            '#' +
-                                                                                this
-                                                                                    .cavantable[
-                                                                                    dc
-                                                                                ]
-                                                                                    .Name
-                                                                        ).find(
-                                                                            '#row-' +
-                                                                                ii
-                                                                        )[0]
-                                                                    ).find(
-                                                                        'td'
-                                                                    )[cc11]
-                                                                ).attr('class'),
-                                                            });
-                                                        }
-                                                    }
-
-                                                    $(
-                                                        $(b).find(
-                                                            '#row-' + ii
-                                                        )[0]
-                                                    ).find('td')[
-                                                        cc11
-                                                    ].innerHTML = '';
-                                                    $(
-                                                        $(
-                                                            $(b).find(
-                                                                '#row-' + ii
-                                                            )[0]
-                                                        ).find('td')[cc11]
-                                                    ).removeAttr('style');
-                                                    $(
-                                                        $(
-                                                            $(b).find(
-                                                                '#row-' + ii
-                                                            )[0]
-                                                        ).find('td')[cc11]
-                                                    ).removeAttr('class');
-                                                }
-                                            }
-                                        }
-                                        changeii.push(changeil);
-                                    }
-                                }
-                                this.$emit(
-                                    'percentage1',
-                                    parseInt(
-                                        70 /
-                                            (this.cavantable[dc].numpage -
-                                                cc1) +
-                                            10
-                                    )
-                                );
-
-                                await this.delay(cc1);
-                            }
-
-                            // return
-
-                            let shengxiadata =
-                                y1 * this.cavantable[dc].numpage -
-                                this.cavantable[dc].data.length;
-
-                            for (let i = 0; i < shengxiadata; i++) {
-                                this.cavantable[dc].data.push({
-                                    value: null,
-                                });
-                            }
-
-                            let now =
-                                parseInt(
-                                    this.cavantable[dc].ParameterReportItemtList
-                                        .dd.startpoy
-                                ) + 1;
-
-                            let nowii = 0;
-                            let nowi2 = 0;
-                            let sumnum = 0;
-
-                            for (
-                                let i2 = 0;
-                                i2 <
-                                $('#' + this.cavantable[dc].Name).find('tr')
-                                    .length;
-                                i2++
-                            ) {
-                                for (
-                                    let i3 = 0;
-                                    i3 <
-                                    $(
-                                        $('#' + this.cavantable[dc].Name).find(
-                                            'tr'
-                                        )[i2]
-                                    ).find('td').length;
-                                    i3++
-                                ) {
-                                    if (
-                                        $(
-                                            $(
-                                                $(
-                                                    '#' +
-                                                        this.cavantable[dc].Name
-                                                ).find('tr')[i2]
-                                            ).find('td')[i3]
-                                        ).hasClass('datareadyfoot')
-                                    ) {
-                                        sumnum = sumnum + 1;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (daiti.kzsummopos == '分布在前') {
-                                now += sumnum;
-                            }
-                            let length5 =
-                                length * this.cavantable[dc].numpage + now;
-                            if (daiti.kzsummopos == '分布在后') {
-                                length5 =
-                                    length * this.cavantable[dc].numpage + now;
-                            }
-                            let removeid =
-                                parseInt(endlength) +
-                                parseInt(
-                                    $(
-                                        $('#' + this.cavantable[dc].Name).find(
-                                            'td'
-                                        )[
-                                            $(
-                                                '#' + this.cavantable[dc].Name
-                                            ).find('td').length - 1
-                                        ]
-                                    )
-                                        .attr('id')
-                                        .split('-')[1]
-                                ) -
-                                parseInt(
-                                    $(
-                                        $('#' + this.cavantable[dc].Name).find(
-                                            '.dataready'
-                                        )[
-                                            $(
-                                                '#' + this.cavantable[dc].Name
-                                            ).find('.dataready').length - 1
-                                        ]
-                                    )
-                                        .attr('id')
-                                        .split('-')[1]
-                                );
-                            let nowcii = 0;
-                            if (
-                                this.cavantable[dc].numpage > 1 &&
-                                $('#' + this.cavantable[dc].Name + 'page')[0]
-                            ) {
-                                for (let ii = now; ii < length5; ii++) {
-                                    if (
-                                        this.cavantable[dc].numpage > 1 &&
-                                        $(
-                                            '#' +
-                                                this.cavantable[dc].Name +
-                                                'page'
-                                        )[0]
-                                    ) {
-                                        if (ii > endlength) {
-                                            for (
-                                                let cc11 = 0;
-                                                cc11 <
-                                                $($(b).find('tr')[ii]).find(
-                                                    'td'
-                                                ).length;
-                                                cc11++
-                                            ) {
-                                                if (
-                                                    !$(
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('td')[cc11]
-                                                    ).hasClass('dataready') &&
-                                                    !$(
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('td')[cc11]
-                                                    ).hasClass('datareadyfoot')
-                                                ) {
-                                                    $($(b).find('tr')[ii]).find(
-                                                        'td'
-                                                    )[cc11].innerHTML = '';
-                                                    $(
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('td')[cc11]
-                                                    ).removeAttr('style');
-                                                    $(
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('td')[cc11]
-                                                    ).removeAttr('class');
-                                                }
-                                            }
-                                        }
-                                        if (ii > endlength && ii < removeid) {
-                                            if (changeii.length > 0) {
-                                                //    for(let cc12 = 0; cc12 < changeii.length; cc12++){
-                                                for (
-                                                    let cc11 = 0;
-                                                    cc11 <
-                                                    changeii[nowcii].length;
-                                                    cc11++
-                                                ) {
-                                                    if (
-                                                        changeii[nowcii][cc11]
-                                                            .index >
-                                                            parseInt(
-                                                                this.cavantable[
-                                                                    dc
-                                                                ].endpox
-                                                            ) ||
-                                                        changeii[nowcii][cc11]
-                                                            .index <
-                                                            parseInt(
-                                                                this.cavantable[
-                                                                    dc
-                                                                ].startpox
-                                                            )
-                                                    ) {
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('td')[
-                                                            changeii[nowcii][
-                                                                cc11
-                                                            ].index
-                                                        ].innerHTML =
-                                                            changeii[nowcii][
-                                                                cc11
-                                                            ].text;
-                                                        $(
-                                                            $(
-                                                                $(b).find('tr')[
-                                                                    ii
-                                                                ]
-                                                            ).find('td')[
-                                                                changeii[
-                                                                    nowcii
-                                                                ][cc11].index
-                                                            ]
-                                                        ).attr(
-                                                            'class',
-                                                            changeii[nowcii][
-                                                                cc11
-                                                            ].classname
-                                                        );
-                                                        $(
-                                                            $(
-                                                                $(b).find('tr')[
-                                                                    ii
-                                                                ]
-                                                            ).find('td')[
-                                                                changeii[
-                                                                    nowcii
-                                                                ][cc11].index
-                                                            ]
-                                                        ).attr(
-                                                            'style',
-                                                            changeii[nowcii][
-                                                                cc11
-                                                            ].style
-                                                        );
-                                                    }
-                                                }
-                                                nowcii++;
-                                                //    }
-                                            }
-                                        }
-                                    }
-                                    //               if(removeid.indexOf( $($($(b).find('tr')[ii]).find('td')[0]).attr('id').split('-')[0])>0){
-
-                                    // 	}
-                                    //         }else{
-                                    //  removeid.push( $($($(b).find('tr')[ii]).find('td')[0]).attr('id').split('-')[0])
-                                    //         }
-
-                                    for (let i2 = 0; i2 < length1; i2++) {
-                                        let an = nowi2;
-
-                                        if (
-                                            $($(b).find('tr')[ii]).find(
-                                                'input'
-                                            )[i2].id !== 'undefined'
-                                        ) {
-                                            let xnumber = '';
-                                            let de = '';
-                                            var itemformat = null;
-                                            for (
-                                                let i1 = 0;
-                                                i1 < shi5.length;
-                                                i1++
-                                            ) {
-                                                if (shi5[i1].id == i2) {
-                                                    xnumber = shi5[i1].xsnumber;
-                                                    de = shi5[i1].defauldisplay;
-                                                    break;
-                                                } else {
-                                                    xnumber = '';
-                                                    de = '';
-                                                }
-                                            }
-                                            for (
-                                                let i1 = 0;
-                                                i1 < shi6.length;
-                                                i1++
-                                            ) {
-                                                if (
-                                                    shi6[i1].id ==
-                                                    parseInt(
-                                                        $(
-                                                            $(
-                                                                $(b).find('tr')[
-                                                                    ii
-                                                                ]
-                                                            ).find('input')[i2]
-                                                        )
-                                                            .parent()
-                                                            .attr('id')
-                                                            .split('-')[0]
-                                                    ) -
-                                                        parseInt(
-                                                            this.cavantable[dc]
-                                                                .ParameterReportItemtList
-                                                                .dd.startpox
-                                                        )
-                                                ) {
-                                                    itemformat =
-                                                        shi6[i1].itemformat;
-                                                    break;
-                                                } else {
-                                                    itemformat = null;
-                                                }
-                                            }
-                                            let aaa = '';
-                                            if (xnumber !== '') {
-                                                if (
-                                                    this.getPointNum(
-                                                        this.cavantable[dc]
-                                                            .data[an].value,
-                                                        xnumber
-                                                    ) == null ||
-                                                    this.getPointNum(
-                                                        this.cavantable[dc]
-                                                            .data[an].value,
-                                                        xnumber
-                                                    ) == 'null' ||
-                                                    this.getPointNum(
-                                                        this.cavantable[dc]
-                                                            .data[an].value,
-                                                        xnumber
-                                                    ) == ''
-                                                ) {
-                                                    aaa = '';
-                                                } else {
-                                                    aaa = this.getPointNum(
-                                                        this.cavantable[dc]
-                                                            .data[an].value,
-                                                        xnumber
-                                                    );
-                                                }
-                                                if (aaa == null || aaa == '') {
-                                                    if (de !== '') {
-                                                        if (
-                                                            de == 'null' ||
-                                                            de == 'undefine' ||
-                                                            de == null ||
-                                                            de == undefined
-                                                        ) {
-                                                            de = '';
-                                                        }
-
-                                                        if (xzdata >= ii) {
-                                                            $(
-                                                                $(b).find('tr')[
-                                                                    ii
-                                                                ]
-                                                            ).find('input')[
-                                                                i2
-                                                            ].value = de;
-                                                            $(
-                                                                $(b).find('tr')[
-                                                                    ii
-                                                                ]
-                                                            )
-                                                                .find('input')
-                                                                [
-                                                                    i2
-                                                                ].setAttribute(
-                                                                    'value',
-                                                                    de
-                                                                );
-                                                        }
-                                                    } else {
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('input')[
-                                                            i2
-                                                        ].value = aaa;
-                                                        $($(b).find('tr')[ii])
-                                                            .find('input')
-                                                            [i2].setAttribute(
-                                                                'value',
-                                                                aaa
-                                                            );
-                                                    }
-                                                } else {
-                                                    $($(b).find('tr')[ii]).find(
-                                                        'input'
-                                                    )[i2].value = aaa;
-                                                    $($(b).find('tr')[ii])
-                                                        .find('input')
-                                                        [i2].setAttribute(
-                                                            'value',
-                                                            aaa
-                                                        );
-                                                }
-                                            } else {
-                                                if (
-                                                    this.cavantable[dc].data[an]
-                                                        .value == null ||
-                                                    this.cavantable[dc].data[an]
-                                                        .value == 'null' ||
-                                                    this.cavantable[dc].data[an]
-                                                        .value == ''
-                                                ) {
-                                                    aaa = '';
-                                                } else {
-                                                    aaa =
-                                                        this.cavantable[dc]
-                                                            .data[an].value;
-                                                }
-                                                if (aaa == null) {
-                                                    if (de !== '') {
-                                                        if (
-                                                            de == 'null' ||
-                                                            de == 'undefine' ||
-                                                            de == null ||
-                                                            de == undefined
-                                                        ) {
-                                                            de = '';
-                                                        }
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('input')[
-                                                            i2
-                                                        ].value = de;
-                                                        $($(b).find('tr')[ii])
-                                                            .find('input')
-                                                            [i2].setAttribute(
-                                                                'value',
-                                                                de
-                                                            );
-                                                    } else {
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('input')[
-                                                            i2
-                                                        ].value = aaa;
-                                                        $($(b).find('tr')[ii])
-                                                            .find('input')
-                                                            [i2].setAttribute(
-                                                                'value',
-                                                                aaa
-                                                            );
-                                                    }
-                                                } else {
-                                                    $($(b).find('tr')[ii]).find(
-                                                        'input'
-                                                    )[i2].value = aaa;
-                                                    $($(b).find('tr')[ii])
-                                                        .find('input')
-                                                        [i2].setAttribute(
-                                                            'value',
-                                                            aaa
-                                                        );
-                                                }
-                                            }
-                                        } else {
-                                            let aaa;
-                                            this.cavantable[dc].data.splice(
-                                                an,
-                                                0,
-                                                {
-                                                    value: null,
-                                                }
-                                            );
-                                            $($(b).find('tr')[ii]).find(
-                                                'input'
-                                            )[i2].value =
-                                                this.cavantable[dc].data[
-                                                    an
-                                                ].value;
-                                            if (
-                                                this.cavantable[dc].data[an]
-                                                    .value == null ||
-                                                this.cavantable[dc].data[an]
-                                                    .value == 'null' ||
-                                                this.cavantable[dc].data[an]
-                                                    .value == ''
-                                            ) {
-                                                aaa = '';
-                                            } else {
-                                                aaa =
-                                                    this.cavantable[dc].data[an]
-                                                        .value;
-                                            }
-                                            $($(b).find('tr')[ii])
-                                                .find('input')
-                                                [i2].setAttribute('value', aaa);
-                                        }
-
-                                        if (
-                                            $($(b).find('tr')[ii]).find(
-                                                'input'
-                                            )[i2].value
-                                        ) {
-                                            if (
-                                                !isNaN(
-                                                    $($(b).find('tr')[ii]).find(
-                                                        'input'
-                                                    )[i2].value
-                                                )
-                                            ) {
-                                                let arr = [];
-                                                arr.push(
-                                                    $($(b).find('tr')[ii]).find(
-                                                        'input'
-                                                    )[i2].value
-                                                );
-                                                arr.push(i2);
-                                                this.footarr.push(arr);
-                                            }
-
-                                            if (itemformat) {
-                                                let aaa1 = this.dateFormat(
-                                                    itemformat,
-                                                    $($(b).find('tr')[ii]).find(
-                                                        'input'
-                                                    )[i2].value
-                                                );
-                                                $($(b).find('tr')[ii])
-                                                    .find('input')
-                                                    [i2].setAttribute(
-                                                        'value',
-                                                        aaa1
-                                                    );
-                                                $($(b).find('tr')[ii]).find(
-                                                    'input'
-                                                )[i2].value = aaa1;
-                                            }
-                                        }
-                                        nowi2++;
-                                        this.$emit(
-                                            'percentage1',
-                                            parseInt(
-                                                20 *
-                                                    ((ii * length1 + i2) /
-                                                        (length5 * length1))
-                                            ) + 80
-                                        );
-
-                                        await this.delay(i2, 0.5);
-                                    }
-
-                                    nowii++;
-                                }
-
-                                let wantdao = [];
-
-                                for (
-                                    let a2 = 0;
-                                    a2 <
-                                    $(
-                                        $(b).find('.datareadyfoot').parent()[0]
-                                    ).find('.datareadyfoot').length;
-                                    a2++
-                                ) {
-                                    if (
-                                        $(
-                                            $(b)
-                                                .find('.datareadyfoot')
-                                                .parent()[0]
-                                        ).find('.datareadyfoot')[a2]
-                                            .innerHTML !== '\\' &&
-                                        $(
-                                            $(b)
-                                                .find('.datareadyfoot')
-                                                .parent()[0]
-                                        ).find('.datareadyfoot')[a2]
-                                            .innerHTML !== ''
-                                    ) {
-                                        wantdao.push(a2);
-                                    }
-                                }
-                                if (sumdata1.length !== 0) {
-                                    let newarry = [];
-                                    console.log(this.footarr);
-                                    // for (
-                                    //     let j = 0;
-                                    //     j < this.cavantable[dc].data.length;
-                                    //     j++
-                                    // ) {
-                                    //     for (
-                                    //         let j1 = 0;
-                                    //         j1 < wantdao.length;
-                                    //         j1++
-                                    //     ) {
-                                    //         if (j % length1 == wantdao[j1]) {
-                                    //             let newarry1 = [];
-                                    //             newarry1.push(
-                                    //                 this.cavantable[dc].data[j]
-                                    //                     .value,
-                                    //                 wantdao[j1]
-                                    //             );
-                                    //             newarry.push(newarry1);
-                                    //         }
-                                    //     }
-                                    // }
-                                    for (
-                                        let ii = 0;
-                                        ii < wantdao.length;
-                                        ii++
-                                    ) {
-                                        for (
-                                            let i = 0;
-                                            i < sumdata1.length;
-                                            i++
-                                        ) {
-                                            if (sumdata1[i] == 'sum') {
-                                                console.log('分割线');
-                                                let sumdao = 0;
-
-                                                for (
-                                                    let i2 = 0;
-                                                    i2 < this.footarr.length;
-                                                    i2++
-                                                ) {
-                                                    // console.log(wantdao[ii])
-                                                    if (
-                                                        this.footarr[i2][1] ==
-                                                        wantdao[ii]
-                                                    ) {
-                                                        // if (
-                                                        //     !isNaN(
-                                                        //         parseFloat(
-                                                        //             this.footarr[
-                                                        //                 i2
-                                                        //             ][0]
-                                                        //         )
-                                                        //     )
-                                                        // ) {
-                                                        // console.log(this.footarr[i2][0])
-                                                        let cd = 0;
-                                                        //  for(let iia=0;iia<$(b).find('.dataready').length;iia++){
-                                                        //        if($($(b).find('.dataready')[iia]).attr('id').split('-')[0] ==  $($(b).find('.datareadyfoot')[wantdao[ii]]).attr('id').split('-')[0]){
-
-                                                        //             cd = $($(b).find('.dataready')[iia]).find('input').val()
-                                                        //        }
-                                                        //  }
-                                                        for (
-                                                            let iia = 0;
-                                                            iia <
-                                                            this.cavantable[dc]
-                                                                .shi5.length;
-                                                            iia++
-                                                        ) {
-                                                            if (
-                                                                this.cavantable[
-                                                                    dc
-                                                                ].shi5[iia]
-                                                                    .id ==
-                                                                wantdao[ii]
-                                                            ) {
-                                                                cd =
-                                                                    this
-                                                                        .footarr[
-                                                                        i2
-                                                                    ][0];
-                                                            }
-                                                        }
-                                                        console.log(
-                                                            parseFloat(cd)
-                                                        );
-                                                        sumdao =
-                                                            sumdao +
-                                                            parseFloat(cd);
-
-                                                        // }
-                                                    }
-                                                }
-                                                // for (
-                                                //     let ii2 = 0;
-                                                //     ii2 < shi5.length;
-                                                //     ii2++
-                                                // ) {
-                                                //     if (
-                                                //      shi5[ii2].id ==
-                                                //        ((wantdao[ii]))
-                                                //     ) {
-                                                //         sumdao = this.getPointNum(
-                                                //             sumdao,
-                                                //             shi5[ii2].xsnumber
-                                                //         );
-                                                //         break;
-                                                //     }
-                                                // }
-                                                if (!sumdao) {
-                                                    sumdao = 0;
-                                                }
-                                                if (
-                                                    Number(
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[wantdao[ii]].innerHTML
-                                                    ) +
-                                                        '' !==
-                                                    NaN + ''
-                                                ) {
-                                                    $(
-                                                        $(b)
-                                                            .find(
-                                                                '.datareadyfoot'
-                                                            )
-                                                            .parent()[i]
-                                                    ).find('.datareadyfoot')[
-                                                        wantdao[ii]
-                                                    ].innerHTML = sumdao;
-                                                }
-                                            }
-                                            if (sumdata1[i] == 'mean') {
-                                                let sumdao = 0;
-                                                let meandao = 0;
-                                                for (
-                                                    let i2 = 0;
-                                                    i2 < this.footarr.length;
-                                                    i2++
-                                                ) {
-                                                    if (
-                                                        this.footarr[i2][1] ==
-                                                        wantdao[ii]
-                                                    ) {
-                                                        let cd = 0;
-                                                        for (
-                                                            let iia = 0;
-                                                            iia <
-                                                            this.cavantable[dc]
-                                                                .shi5.length;
-                                                            iia++
-                                                        ) {
-                                                            if (
-                                                                this.cavantable[
-                                                                    dc
-                                                                ].shi5[iia]
-                                                                    .id ==
-                                                                wantdao[ii]
-                                                            ) {
-                                                                cd =
-                                                                    this
-                                                                        .footarr[
-                                                                        i2
-                                                                    ][0];
-                                                                sumdao =
-                                                                    sumdao +
-                                                                    parseFloat(
-                                                                        cd
-                                                                    );
-                                                                meandao++;
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                console.log('sumdao', sumdao);
-                                                console.log(meandao);
-                                                let mean = sumdao / meandao;
-                                                console.log('mean', mean);
-                                                for (
-                                                    let ii2 = 0;
-                                                    ii2 < shi5.length;
-                                                    ii2++
-                                                ) {
-                                                    if (
-                                                        shi5[ii2].id ==
-                                                        wantdao[ii]
-                                                    ) {
-                                                        mean = this.getPointNum(
-                                                            mean,
-                                                            shi5[ii2].xsnumber
-                                                        );
-                                                        break;
-                                                    }
-                                                }
-                                                if (
-                                                    isNaN(mean) ||
-                                                    mean == null
-                                                ) {
-                                                    mean = 0;
-                                                }
-                                                if (
-                                                    Number(
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[wantdao[ii]].innerHTML
-                                                    ) +
-                                                        '' !==
-                                                    NaN + ''
-                                                ) {
-                                                    $(
-                                                        $(b)
-                                                            .find(
-                                                                '.datareadyfoot'
-                                                            )
-                                                            .parent()[i]
-                                                    ).find('.datareadyfoot')[
-                                                        wantdao[ii]
-                                                    ].innerHTML = mean;
-                                                }
-                                            }
-                                            if (sumdata1[i] == 'min') {
-                                                let min = [];
-                                                for (
-                                                    let i2 = 0;
-                                                    i2 < this.footarr.length;
-                                                    i2++
-                                                ) {
-                                                    if (
-                                                        this.footarr[i2][1] ==
-                                                        wantdao[ii]
-                                                    ) {
-                                                        if (
-                                                            !isNaN(
-                                                                parseFloat(
-                                                                    this
-                                                                        .footarr[
-                                                                        i2
-                                                                    ][0]
-                                                                )
-                                                            )
-                                                        ) {
-                                                            min.push(
-                                                                parseFloat(
-                                                                    this
-                                                                        .footarr[
-                                                                        i2
-                                                                    ][0]
-                                                                )
-                                                            );
-                                                        }
-                                                    }
-                                                }
-                                                min.sort(function (a, b) {
-                                                    return a - b;
-                                                });
-                                                if (
-                                                    Number(
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[wantdao[ii]].innerHTML
-                                                    ) +
-                                                        '' !==
-                                                    NaN + ''
-                                                ) {
-                                                    if (min[0] == 'undefined') {
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[
-                                                            wantdao[ii]
-                                                        ].innerHTML = 0;
-                                                    } else {
-                                                        for (
-                                                            let ii2 = 0;
-                                                            ii2 < shi5.length;
-                                                            ii2++
-                                                        ) {
-                                                            if (
-                                                                shi5[ii2].id ==
-                                                                wantdao[ii]
-                                                            ) {
-                                                                min[0] =
-                                                                    this.getPointNum(
-                                                                        min[0],
-                                                                        shi5[
-                                                                            ii2
-                                                                        ]
-                                                                            .xsnumber
-                                                                    );
-                                                                break;
-                                                            }
-                                                        }
-                                                        if (!min[0]) {
-                                                            min[0] = 0;
-                                                        }
-
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[
-                                                            wantdao[ii]
-                                                        ].innerHTML = min[0];
-                                                    }
-                                                }
-                                            }
-                                            if (sumdata1[i] == 'max') {
-                                                let max = [];
-                                                for (
-                                                    let i2 = 0;
-                                                    i2 < this.footarr.length;
-                                                    i2++
-                                                ) {
-                                                    if (
-                                                        this.footarr[i2][1] ==
-                                                        wantdao[ii]
-                                                    ) {
-                                                        if (
-                                                            !isNaN(
-                                                                parseFloat(
-                                                                    this
-                                                                        .footarr[
-                                                                        i2
-                                                                    ][0]
-                                                                )
-                                                            )
-                                                        ) {
-                                                            max.push(
-                                                                parseFloat(
-                                                                    this
-                                                                        .footarr[
-                                                                        i2
-                                                                    ][0]
-                                                                )
-                                                            );
-                                                        }
-                                                    }
-                                                }
-                                                max.sort(function (a, b) {
-                                                    return a - b;
-                                                });
-                                                if (!max[max.length - 1]) {
-                                                    max[max.length - 1] = 0;
-                                                }
-                                                if (
-                                                    Number(
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[wantdao[ii]].innerHTML
-                                                    ) +
-                                                        '' !==
-                                                    NaN + ''
-                                                ) {
-                                                    if (
-                                                        max[max.length - 1] ==
-                                                        'undefined'
-                                                    ) {
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[
-                                                            wantdao[ii]
-                                                        ].innerHTML = 0;
-                                                    } else {
-                                                        for (
-                                                            let ii2 = 0;
-                                                            ii2 < shi5.length;
-                                                            ii2++
-                                                        ) {
-                                                            if (
-                                                                shi5[ii2].id ==
-                                                                wantdao[ii]
-                                                            ) {
-                                                                max[
-                                                                    max.length -
-                                                                        1
-                                                                ] = this.getPointNum(
-                                                                    max[
-                                                                        max.length -
-                                                                            1
-                                                                    ],
-                                                                    shi5[ii2]
-                                                                        .xsnumber
-                                                                );
-                                                                break;
-                                                            }
-                                                        }
-
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[
-                                                            wantdao[ii]
-                                                        ].innerHTML =
-                                                            max[max.length - 1];
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            this.cavantable[dc] = JSON.parse(nowdai);
-                            this.cavantable[dc].daochutable = adiv;
-                        } else {
-                            this.$emit('percentage1', 100);
-
-                            await this.delay(10);
-                        }
-                        console.log('data5', new Date());
-                        //    let cc1  = $(b).find('td').length
-                        //   for(let cc =0;cc<cc1;cc++){
-                        //      if(($(b).find('td')[cc])){
-                        //      if($($(b).find('td')[cc])[0].style.display == 'none'||$($(b).find('td')[cc]).attr('showtd')){
-                        //          $($(b).find('td')[cc]).addClass('delclass')
-                        //         //   cc--
-                        //       }
-
-                        //       if($($(b).find('td')[cc]).hasClass('item')){
-                        //            if(!$(b).find('td')[cc].style.backgroundColor){
-                        //                   $($(b).find('td')[cc]).css('background','#F9DEE0')
-                        //                }
-                        //        if(!$(b).find('td')[cc].style.color){
-                        //                  $($(b).find('td')[cc]).css('color','#EF3460')
-                        //                }
-                        //       }
-                        //    if($($(b).find('td')[cc]).attr('colspan')==1){
-                        //         $($(b).find('td')[cc]).removeAttr("colspan")
-                        //       }
-                        //         if($($(b).find('td')[cc]).attr('rowspan')==1){
-                        //         $($(b).find('td')[cc]).removeAttr("rowspan")
-                        //       }
-                        //      }
-
-                        //   }
-                        // for(let cc =0;cc<$(b).find('.heibin').length;cc++){
-                        // for(let cc1 =0;cc1<$($(b).find('.heibin')[cc]).attr('name').split(',').length;cc1++){
-                        // 	if($($(b).find('.heibin')[cc]).attr('name').split(',')[cc1]){
-                        // 		$($(b).find('#'+$($(b).find('.heibin')[cc]).attr('name').split(',')[cc1])[0]).remove()
-
-                        // 	}
-                        // }
-                        // }
-                        let name = [];
-                        for (
-                            let cc = 0;
-                            cc < $(b).find('.heibin').length;
-                            cc++
-                        ) {
-                            for (
-                                let cc1 = 0;
-                                cc1 <
-                                $($(b).find('.heibin')[cc])
-                                    .attr('name')
-                                    .split(',').length;
-                                cc1++
-                            ) {
-                                if (
-                                    $($(b).find('.heibin')[cc])
-                                        .attr('name')
-                                        .split(',')[cc1]
-                                ) {
-                                    let bb = $(b).find(
-                                        '#' +
-                                            $($(b).find('.heibin')[cc])
-                                                .attr('name')
-                                                .split(',')[cc1]
-                                    ).length;
-                                    for (let cc2 = 0; cc2 < bb; cc2++) {
-                                        if (
-                                            !name.includes(
-                                                $($(b).find('.heibin')[cc])
-                                                    .attr('name')
-                                                    .split(',')[cc1]
-                                            )
-                                        ) {
-                                            name.push(
-                                                $($(b).find('.heibin')[cc])
-                                                    .attr('name')
-                                                    .split(',')[cc1]
-                                            );
-                                            $(
-                                                $(b).find(
-                                                    '#' +
-                                                        $(
-                                                            $(b).find(
-                                                                '.heibin'
-                                                            )[cc]
-                                                        )
-                                                            .attr('name')
-                                                            .split(',')[cc1]
-                                                )[0]
-                                            ).remove();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        let width = [];
-                        for (let c1 = 0; c1 < $(b).find('col').length; c1++) {
-                            let a = {
-                                wpx: parseFloat(
-                                    $($(b).find('col')[c1]).attr('width')
-                                ),
-                            };
-                            width.push(a);
-                        }
-                        let height = [];
-                        for (let c1 = 0; c1 < $(b).find('tr').length; c1++) {
-                            let a = {
-                                hpx: parseFloat(
-                                    $($(b).find('tr')[c1]).height()
-                                ),
-                            };
-                            height.push(a);
-                        }
-
-                        await this.delay(10);
-                        this.$emit('percentage1', 100);
-                        await this.delay(10);
-                        //   $('.report').append(b)
-                        //   $('#ParameterReport4').hide()
-                        this.$store.state.isShow = false;
-                        console.log('data1', new Date());
-                        // for(let i23 = 1;i23<10;i23++){
-                        //     await this.delay(i23)
-                        //      this.$emit('percentage1',80+parseFloat(i23*2))
-                        // }
-
-                        $(b)
-                            .find('tbody tr td')
-                            .css({ 'background-color': '#fff', color: '#000' });
-
-                        import('@/vendor/Export3Excel').then((excel) => {
-                            excel.export_table_to_excel(b, width, height);
-                            if (dc == dcnum - 1 || dcnum == 1) {
-                                this.$store.state.isShow = false;
-                                $('.btablecover').hide();
-                                console.log(
-                                    'data3',
-                                    Date.parse(new Date()),
-                                    new Date()
-                                );
-                            }
-                        });
-                    } else if (daiti.kzdirection == '横向扩展') {
-                        let adiv = this.cavantable[dc].daochutable;
-                        xzdata = Math.floor(
-                            this.cavantable[dc].data.length /
-                                this.cavantable[dc].ParameterReportItemtList.dd
-                                    .kzresourcedataitemarray.length -
-                                parseFloat(
-                                    this.cavantable[dc].ParameterReportItemtList
-                                        .dd.kzresourcedataitemarray.startx
-                                )
-                        );
-                        let a = $(this.cavantable[dc].daochutable)[0].cloneNode(
-                            true
-                        );
-                        console.log(
-                            'clone',
-                            $('#' + this.cavantable[dc].Name).find('table')[0]
-                        );
-                        let b = $(this.cavantable[dc].daochutable)[0].cloneNode(
-                            true
-                        );
-                        for (
-                            let a1 = 0;
-                            a1 < $(b).find('.heibin').length;
-                            a1++
-                        ) {
-                            if (
-                                parseFloat(
-                                    $(b).find('.heibin')[a1].id.split('-')[1]
-                                ) <
-                                    parseFloat(
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
-                                    ) &&
-                                parseFloat(
-                                    $(b).find('.heibin')[a1].id.split('-')[0]
-                                ) >
-                                    parseFloat(
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
-                                    )
-                            ) {
-                                if (
-                                    parseFloat(
-                                        $(b)
-                                            .find('.heibin')
-                                            [a1].id.split('-')[1]
-                                    ) +
-                                        parseFloat(
-                                            $($('.heibin')[a1]).attr('rowspan')
-                                        ) >
-                                    parseFloat(
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
-                                    )
-                                ) {
-                                    let c = parseFloat(
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
-                                    );
-                                    $($(b).find('.heibin')[a1]).attr(
-                                        'rowspan',
-                                        c
-                                    );
-                                    for (
-                                        let a2 = 0;
-                                        a2 <
-                                        $($(b).find('.heibin')[a1])
-                                            .attr('name')
-                                            .split(',').length;
-                                        a2++
-                                    ) {
-                                        let c1 = $($(b).find('.heibin')[a1])
-                                            .attr('name')
-                                            .split(',')[a2];
-                                        if (c1) {
-                                            if (
-                                                this.cavantable[
-                                                    dc
-                                                ].shi5.includes(
-                                                    $('#' + c1)[0].id.split(
-                                                        '-'
-                                                    )[1]
-                                                )
-                                            ) {
-                                                $($(b).find('.heibin')[a1])
-                                                    .find('#' + c1)
-                                                    .show();
-                                            }
-                                        }
-                                    }
-                                    console.log(
-                                        'sadsadsad',
-                                        $($(b).find('.heibin')[a1])
-                                    );
-                                }
-                            }
-                        }
-                        console.log(this.cavantable[dc]);
-                        for (let cc = 0; cc < $(a).find('td').length; cc++) {
-                            if (
-                                !$($($(a).find('td')[cc])[0]).hasClass(
-                                    'datareadyhead'
-                                ) &&
-                                !$($($(a).find('td')[cc])[0]).hasClass(
-                                    'dataready'
-                                ) &&
-                                !$($($(a).find('td')[cc])[0]).hasClass(
-                                    'datareadyfoot'
-                                )
-                            ) {
-                                if (
-                                    $($(a).find('td')[cc])[0].style.display ==
-                                        'none' ||
-                                    $($(a).find('td')[cc]).attr('showtd')
-                                ) {
-                                    $($(a).find('td')[cc]).remove();
-                                    cc--;
-                                }
-                            }
-                            if ($($(a).find('td')[cc]).hasClass('item')) {
-                                if (
-                                    !$(a).find('td')[cc].style.backgroundColor
-                                ) {
-                                    $($(a).find('td')[cc]).css(
-                                        'background',
-                                        '#F9DEE0'
-                                    );
-                                }
-                                if (!$(a).find('td')[cc].style.color) {
-                                    $($(a).find('td')[cc]).css(
-                                        'color',
-                                        '#EF3460'
-                                    );
-                                }
-                            }
-                            if ($($(a).find('td')[cc]).attr('colspan') == 1) {
-                                $($(a).find('td')[cc]).removeAttr('colspan');
-                            }
-
-                            if ($($(a).find('td')[cc]).attr('rowspan') == 1) {
-                                $($(a).find('td')[cc]).removeAttr('rowspan');
-                            }
-                        }
-                        for (let cc = 0; cc < $(b).find('td').length; cc++) {
-                            if (
-                                !$($($(b).find('td')[cc])[0]).hasClass(
-                                    'datareadyhead'
-                                ) &&
-                                !$($($(b).find('td')[cc])[0]).hasClass(
-                                    'dataready'
-                                ) &&
-                                !$($($(b).find('td')[cc])[0]).hasClass(
-                                    'datareadyfoot'
-                                )
-                            ) {
-                                if (
-                                    $($(b).find('td')[cc])[0].style.display ==
-                                        'none' ||
-                                    $($(b).find('td')[cc]).attr('showtd')
-                                ) {
-                                    $($(b).find('td')[cc]).remove();
-                                    cc--;
-                                }
-                            }
-                            if ($($(b).find('td')[cc]).hasClass('item')) {
-                                if (
-                                    !$(b).find('td')[cc].style.backgroundColor
-                                ) {
-                                    //   $($(b).find('td')[cc]).css('background','#F9DEE0')
-                                }
-                                if (!$(b).find('td')[cc].style.color) {
-                                    //  $($(b).find('td')[cc]).css('color','#EF3460')
-                                }
-                            }
-                            if ($($(b).find('td')[cc]).attr('colspan') == 1) {
-                                $($(b).find('td')[cc]).removeAttr('colspan');
-                            }
-
-                            if ($($(b).find('td')[cc]).attr('rowspan') == 1) {
-                                $($(b).find('td')[cc]).removeAttr('rowspan');
-                            }
-                        }
-                        if (
-                            this.cavantable[dc].numpage !== 1 &&
-                            $('#' + this.cavantable[dc].Name + 'page')[0]
-                        ) {
-                            // console.log("sadasddsadsaasd")
-                            for (
-                                let ai = 0;
-                                ai <
-                                this.cavantable[dc].ParameterReportItemtList.dd
-                                    .cellparaarray.length;
-                                ai++
-                            ) {
-                                $(b).find(
-                                    '#' +
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .cellparaarray[ai].id
-                                )[0].innerHTML = $(
-                                    '#' + this.cavantable[dc].Name
-                                ).find(
-                                    '#' +
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .cellparaarray[ai].id
-                                )[0].innerHTML;
-                            }
-
-                            let div = document.createElement('table');
-                            let length = $(a).find('.daochu').length;
-                            for (let i1 = 0; i1 < length; i1++) {
-                                let a1 = 0;
-                                div.append($(a).find('.daochu')[a1]);
-                            }
-                            this.deltable(div);
-                            let div1 = $(div)[0].cloneNode(true);
-                            let sumdata1 = daiti.kzsummotype.split(',');
-                            let length1 = $($(div).find('tr')[0]).find(
-                                'input'
-                            ).length;
-                            let shi5 = this.cavantable[dc].shi5;
-                            let shi6 = this.cavantable[dc].shi6;
-                            for (
-                                let num = 0;
-                                num < this.cavantable[dc].numpage - 1;
-                                num++
-                            ) {
-                                for (
-                                    let i1 = 0;
-                                    i1 <
-                                    $($(div1).find('tr')[0]).find('td').length;
-                                    i1++
-                                ) {
-                                    for (
-                                        let i2 = 0;
-                                        i2 < $(div1).find('tr').length;
-                                        i2++
-                                    ) {
-                                        let c = $(div1)[0].cloneNode(true);
-                                        $($(b).find('.daochu')[i2])
-                                            .find('.dataready')
-                                            [
-                                                $(
-                                                    $(b).find('.daochu')[i2]
-                                                ).find('.dataready').length - 1
-                                            ].after(
-                                                $($(c).find('tr')[i2]).find(
-                                                    'td'
-                                                )[i1]
-                                            );
-                                    }
-                                }
-
-                                this.$emit(
-                                    'percentage1',
-                                    parseInt(
-                                        70 /
-                                            (this.cavantable[dc].numpage -
-                                                1 -
-                                                num)
-                                    )
-                                );
-
-                                await this.delay(num);
-                            }
-                            let y1 = $(div).find('input').length;
-                            let shengxiadata =
-                                y1 * this.cavantable[dc].numpage -
-                                this.cavantable[dc].data.length;
-                            for (let i = 0; i < shengxiadata; i++) {
-                                this.cavantable[dc].data.push({
-                                    value: null,
-                                });
-                            }
-                            let nowi2 = 0;
-                            for (
-                                let col = 0;
-                                col <
-                                $($(b).find('.daochu')[0]).find('.dataready')
-                                    .length;
-                                col++
-                            ) {
-                                let row = 0;
-                                for (row = 0; row < length; row++) {
-                                    let an = nowi2;
-                                    if (
-                                        $($(b).find('.daochu')[row]).find(
-                                            'input'
-                                        )[col].id !== 'undefined'
-                                    ) {
-                                        let xnumber = '';
-                                        var de = '';
-                                        itemformat = null;
-
-                                        for (
-                                            let i1 = 0;
-                                            i1 < shi5.length;
-                                            i1++
-                                        ) {
-                                            if (
-                                                shi5[i1].id ==
-                                                row +
-                                                    parseInt(
-                                                        this.cavantable[dc]
-                                                            .ParameterReportItemtList
-                                                            .dd.startpoy
-                                                    )
-                                            ) {
-                                                //     console.log(   $(
-                                                //     $(b).find('.daochu')[row]
-                                                // ).find('input')[
-                                                //     col
-                                                // ])
-                                                xnumber = shi5[i1].xsnumber;
-                                                de = shi5[i1].defauldisplay;
-                                                break;
-                                            }
-                                        }
-                                        console.log(shi6);
-                                        for (
-                                            let i1 = 0;
-                                            i1 < shi6.length;
-                                            i1++
-                                        ) {
-                                            if (
-                                                shi6[i1].id ==
-                                                row +
-                                                    parseInt(
-                                                        this.cavantable[dc]
-                                                            .ParameterReportItemtList
-                                                            .dd.startpoy
-                                                    )
-                                            ) {
-                                                itemformat =
-                                                    shi6[i1].itemformat;
-                                                break;
-                                            }
-                                        }
-
-                                        if (xnumber !== '') {
-                                            var aaa;
-                                            if (
-                                                !this.getPointNum(
-                                                    this.cavantable[dc].data[an]
-                                                        .value,
-                                                    xnumber
-                                                ) ||
-                                                this.getPointNum(
-                                                    this.cavantable[dc].data[an]
-                                                        .value,
-                                                    xnumber
-                                                ) == 'null'
-                                            ) {
-                                                aaa = '';
-                                            } else {
-                                                console.log(
-                                                    'asddassaddsaasddsa',
-                                                    xnumber
-                                                );
-                                                console.log(shi5);
-
-                                                aaa = this.getPointNum(
-                                                    this.cavantable[dc].data[an]
-                                                        .value,
-                                                    xnumber
-                                                );
-                                            }
-
-                                            if (!aaa) {
-                                                if (de !== '') {
-                                                    if (
-                                                        de == 'null' ||
-                                                        de == 'undefine' ||
-                                                        de == null ||
-                                                        de == undefined
-                                                    ) {
-                                                        de = '';
-                                                    }
-                                                    if (col <= xzdata) {
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[row]
-                                                        ).find('input')[
-                                                            col
-                                                        ].value = de;
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[row]
-                                                        )
-                                                            .find('input')
-                                                            [col].setAttribute(
-                                                                'value',
-                                                                de
-                                                            );
-                                                    }
-                                                } else {
-                                                    $(
-                                                        $(b).find('.daochu')[
-                                                            row
-                                                        ]
-                                                    ).find('input')[
-                                                        col
-                                                    ].value = 1;
-                                                    $($(b).find('.daochu')[row])
-                                                        .find('input')
-                                                        [col].setAttribute(
-                                                            'value',
-                                                            1
-                                                        );
-                                                }
-                                            } else {
-                                                $(
-                                                    $(b).find('.daochu')[row]
-                                                ).find('input')[col].value =
-                                                    aaa;
-
-                                                $($(b).find('.daochu')[row])
-                                                    .find('input')
-                                                    [col].setAttribute(
-                                                        'value',
-                                                        aaa
-                                                    );
-                                            }
-                                        } else {
-                                            $($(b).find('.daochu')[row]).find(
-                                                'input'
-                                            )[col].value =
-                                                this.cavantable[dc].data[
-                                                    an
-                                                ].value;
-                                            $($(b).find('.daochu')[row])
-                                                .find('input')
-                                                [col].setAttribute(
-                                                    'value',
-                                                    this.cavantable[dc].data[an]
-                                                        .value
-                                                );
-                                        }
-                                    } else {
-                                        let aaa;
-                                        this.cavantable[dc].data.splice(an, 0, {
-                                            value: null,
-                                        });
-                                        if (
-                                            this.cavantable[dc].data[an]
-                                                .value == null ||
-                                            this.cavantable[dc].data[an]
-                                                .value == 'null' ||
-                                            this.cavantable[dc].data[an]
-                                                .value == ''
-                                        ) {
-                                            aaa = '';
-                                        } else {
-                                            aaa =
-                                                this.cavantable[dc].data[an]
-                                                    .value;
-                                        }
-                                        let de = '';
-                                        for (
-                                            let i1 = 0;
-                                            i1 < shi5.length;
-                                            i1++
-                                        ) {
-                                            if (
-                                                shi5[i1].id ==
-                                                row + shi5[0].id
-                                            ) {
-                                                de = shi5[i1].defauldisplay;
-                                                break;
-                                            } else {
-                                                de = '';
-                                            }
-                                        }
-                                        if (aaa == '') {
-                                            if (de !== '') {
-                                                if (
-                                                    de == 'null' ||
-                                                    de == 'undefine' ||
-                                                    de == null ||
-                                                    de == undefined
-                                                ) {
-                                                    de = '';
-                                                }
-                                                $(
-                                                    $(b).find('.daochu')[row]
-                                                ).find('input')[col].value = de;
-                                                $($(b).find('.daochu')[row])
-                                                    .find('input')
-                                                    [col].setAttribute(
-                                                        'value',
-                                                        de
-                                                    );
-                                            } else {
-                                                $(
-                                                    $(b).find('.daochu')[row]
-                                                ).find('input')[col].value =
-                                                    aaa;
-                                                $($(b).find('.daochu')[row])
-                                                    .find('input')
-                                                    [col].setAttribute(
-                                                        'value',
-                                                        aaa
-                                                    );
-                                            }
-                                        } else {
-                                            $($(b).find('.daochu')[row]).find(
-                                                'input'
-                                            )[col].value = aaa;
-                                            $($(b).find('.daochu')[row])
-                                                .find('input')
-                                                [col].setAttribute(
-                                                    'value',
-                                                    aaa
-                                                );
-                                        }
-                                    }
-                                    if (
-                                        $($(b).find('.daochu')[row]).find(
-                                            'input'
-                                        )[col].value
-                                    ) {
-                                        if (itemformat) {
-                                            let aaa1 = this.dateFormat(
-                                                itemformat,
-                                                $(
-                                                    $(b).find('.daochu')[row]
-                                                ).find('input')[col].value
-                                            );
-                                            if (aaa1) {
-                                                $(
-                                                    $(b).find('.daochu')[row]
-                                                ).find('input')[col].value =
-                                                    aaa1;
-                                                $($(b).find('.daochu')[row])
-                                                    .find('input')
-                                                    [col].setAttribute(
-                                                        'value',
-                                                        aaa1
-                                                    );
-                                            }
-                                        }
-                                    }
-                                    length;
-                                    nowi2++;
-                                    this.$emit(
-                                        'percentage1',
-                                        parseInt(
-                                            30 *
-                                                ((col * length + row) /
-                                                    ($(
-                                                        $(b).find('.daochu')[0]
-                                                    ).find('.dataready')
-                                                        .length *
-                                                        length))
-                                        ) + 70
-                                    );
-                                    await this.delay(col, 0.1);
-                                }
-
-                                //  this.$emit('percentage1',(parseInt((25/( $($(b).find('.daochu')[0]).find( '.dataready').length-col))+70)))
-                            }
-
-                            if (sumdata1.length !== 0) {
-                                for (let i1 = 0; i1 < sumdata1.length; i1++) {
-                                    if (sumdata1[i1] == 'sum') {
-                                        for (
-                                            let i = 0;
-                                            i < $(b).find('.daochu').length;
-                                            i++
-                                        ) {
-                                            let sumdao = 0;
-                                            for (
-                                                let j = 0;
-                                                j <
-                                                $($(b).find('.daochu')[i]).find(
-                                                    'input'
-                                                ).length;
-                                                j++
-                                            ) {
-                                                if (
-                                                    !isNaN(
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        )
-                                                    ) &&
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('input')[j].value !==
-                                                        null
-                                                ) {
-                                                    sumdao =
-                                                        sumdao +
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        );
-                                                }
-                                            }
-                                            if (!sumdao) {
-                                                sumdao = 0;
-                                            }
-                                            if (
-                                                $($(b).find('.daochu')[i]).find(
-                                                    '.datareadyfoot'
-                                                )[i1].innerHTML !== '' &&
-                                                $($(b).find('.daochu')[i]).find(
-                                                    '.datareadyfoot'
-                                                )[i1].innerHTML !== '\\'
-                                            ) {
-                                                for (
-                                                    let ii2 = 0;
-                                                    ii2 < shi5.length;
-                                                    ii2++
-                                                ) {
-                                                    if (
-                                                        shi5[ii2].id ==
-                                                        i +
-                                                            parseInt(
-                                                                this.cavantable[
-                                                                    dc
-                                                                ]
-                                                                    .ParameterReportItemtList
-                                                                    .dd.startpoy
-                                                            )
-                                                    ) {
-                                                        sumdao =
-                                                            this.getPointNum(
-                                                                sumdao,
-                                                                shi5[ii2]
-                                                                    .xsnumber
-                                                            );
-                                                        break;
-                                                    }
-                                                }
-                                                if (
-                                                    Number(
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[i1].innerHTML
-                                                    ) +
-                                                        '' !==
-                                                    NaN + ''
-                                                ) {
-                                                    if (!sumdao) {
-                                                        sumdao = 0;
-                                                    }
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('.datareadyfoot')[
-                                                        i1
-                                                    ].innerHTML = sumdao;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (sumdata1[i1] == 'mean') {
-                                        for (
-                                            let i = 0;
-                                            i < $(b).find('.daochu').length;
-                                            i++
-                                        ) {
-                                            let sumdao = 0;
-                                            let mean = 0;
-                                            for (
-                                                let j = 0;
-                                                j <
-                                                $($(b).find('.daochu')[i]).find(
-                                                    'input'
-                                                ).length;
-                                                j++
-                                            ) {
-                                                if (
-                                                    !isNaN(
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        )
-                                                    ) &&
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('input')[j].value !==
-                                                        null
-                                                ) {
-                                                    sumdao =
-                                                        sumdao +
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        );
-                                                    mean++;
-                                                }
-                                            }
-                                            let meandata = sumdao / mean;
-                                            for (
-                                                let ii2 = 0;
-                                                ii2 < shi5.length;
-                                                ii2++
-                                            ) {
-                                                if (
-                                                    shi5[ii2].id ==
-                                                    i +
-                                                        parseInt(
-                                                            this.cavantable[dc]
-                                                                .ParameterReportItemtList
-                                                                .dd.startpoy
-                                                        )
-                                                ) {
-                                                    meandata = this.getPointNum(
-                                                        meandata,
-                                                        shi5[ii2].xsnumber
-                                                    );
-                                                    break;
-                                                }
-                                            }
-                                            if (
-                                                $($(b).find('.daochu')[i]).find(
-                                                    '.datareadyfoot'
-                                                )[i1].innerHTML !== '' &&
-                                                $($(b).find('.daochu')[i]).find(
-                                                    '.datareadyfoot'
-                                                )[i1].innerHTML !== '\\'
-                                            ) {
-                                                if (
-                                                    isNaN(meandata) ||
-                                                    meandata == undefined
-                                                ) {
-                                                    meandata = 0;
-                                                }
-                                                if (
-                                                    Number(
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[i1].innerHTML
-                                                    ) +
-                                                        '' !==
-                                                    NaN + ''
-                                                ) {
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('.datareadyfoot')[
-                                                        i1
-                                                    ].innerHTML = meandata;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (sumdata1[i1] == 'max') {
-                                        for (
-                                            let i = 0;
-                                            i < $(b).find('.daochu').length;
-                                            i++
-                                        ) {
-                                            let max = [];
-                                            for (
-                                                let j = 0;
-                                                j <
-                                                $($(b).find('.daochu')[i]).find(
-                                                    'input'
-                                                ).length;
-                                                j++
-                                            ) {
-                                                if (
-                                                    !isNaN(
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        )
-                                                    ) &&
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('input')[j].value !==
-                                                        null
-                                                ) {
-                                                    max.push(
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        )
-                                                    );
-                                                }
-                                                max.sort(function (a, b) {
-                                                    return a - b;
-                                                });
-                                            }
-                                            if (
-                                                $($(b).find('.daochu')[i]).find(
-                                                    '.datareadyfoot'
-                                                )[i1].innerHTML !== '' &&
-                                                $($(b).find('.daochu')[i]).find(
-                                                    '.datareadyfoot'
-                                                )[i1].innerHTML !== '\\'
-                                            ) {
-                                                if (
-                                                    Number(
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[i1].innerHTML
-                                                    ) +
-                                                        '' !==
-                                                    NaN + ''
-                                                ) {
-                                                    if (
-                                                        max[max.length - 1] ==
-                                                            'undefined' ||
-                                                        max[max.length - 1] ==
-                                                            undefined ||
-                                                        isNaN(
-                                                            max[max.length - 1]
-                                                        )
-                                                    ) {
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[i1].innerHTML = 0;
-                                                    } else {
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[i1].innerHTML =
-                                                            max[max.length - 1];
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (sumdata1[i1] == 'min') {
-                                        for (
-                                            let i = 0;
-                                            i < $(b).find('.daochu').length;
-                                            i++
-                                        ) {
-                                            let max = [];
-                                            for (
-                                                let j = 0;
-                                                j <
-                                                $($(b).find('.daochu')[i]).find(
-                                                    'input'
-                                                ).length;
-                                                j++
-                                            ) {
-                                                if (
-                                                    !isNaN(
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        )
-                                                    ) &&
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('input')[j].value !==
-                                                        null
-                                                ) {
-                                                    max.push(
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        )
-                                                    );
-                                                }
-                                                max.sort(function (a, b) {
-                                                    return a - b;
-                                                });
-                                            }
-                                            if (
-                                                Number(
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('.datareadyfoot')[i1]
-                                                        .innerHTML
-                                                ) +
-                                                    '' !==
-                                                NaN + ''
-                                            ) {
-                                                if (
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('.datareadyfoot')[i1]
-                                                        .innerHTML !== '' &&
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('.datareadyfoot')[i1]
-                                                        .innerHTML !== '\\'
-                                                ) {
-                                                    if (
-                                                        max[0] == 'undefined' ||
-                                                        max[0] == undefined ||
-                                                        isNaN(max[0])
-                                                    ) {
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[i1].innerHTML = 0;
-                                                    } else {
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[i1].innerHTML =
-                                                            max[0];
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        this.cavantable[dc] = JSON.parse(nowdai);
-                        this.cavantable[dc].daochutable = adiv;
-                        // for(let cc =0;cc<$(b).find('.heibin').length;cc++){
-                        // 		for(let cc1 =0;cc1<$($(b).find('.heibin')[cc]).attr('name').split(',').length;cc1++){
-                        // 			if($($(b).find('.heibin')[cc]).attr('name').split(',')[cc1]){
-                        // 				let bb = $(b).find('#'+$($(b).find('.heibin')[cc]).attr('name').split(',')[cc1]).length
-                        // 				for(let cc2 = 0;cc2<bb;cc2++){
-                        // 					$($(b).find('#'+$($(b).find('.heibin')[cc]).attr('name').split(',')[cc1])[0]).remove()
-                        // 				}
-                        // 			}
-                        //             }
-                        // 		}
-
-                        await this.delay(10);
-                        this.$emit('percentage1', 100);
-                        await this.delay(10);
-                        console.log('结束2');
-                        //    $('.report').append(b);
-
-                        //    $("#"+this.cavantable[dc].Name).hide();
-                        //  $("#ParameterReport22").hide();
-
-                        // for(let i23 = 1;i23<10;i23++){
-                        //             await this.delay(i23)
-                        //              this.$emit('percentage1',80+parseFloat(i23*2))
-                        //         }
-                        let width1 = [];
-                        for (
-                            let a = parseFloat(
-                                this.cavantable[dc].ParameterReportItemtList.dd
-                                    .startpox
-                            );
-                            a <= this.cavantable[dc].endpox;
-                            a++
-                        ) {
-                            let a1 = {
-                                wpx: parseFloat(
-                                    $($(b).find('col')[a]).attr('width')
-                                ),
-                            };
-                            width1.push(a1);
-                        }
-                        let width = [];
-                        for (let c1 = 0; c1 < $(b).find('col').length; c1++) {
-                            let a = {
-                                wpx: parseFloat(
-                                    $($(b).find('col')[c1]).attr('width')
-                                ),
-                            };
-                            width.push(a);
-                        }
-                        //   console.log("width1",width1)
-                        //   console.log( this.cavantable[dc])
-                        for (
-                            let ai = 0;
-                            ai < this.cavantable[dc].numpage;
-                            ai++
-                        ) {
-                            width = this.insert(
-                                width,
-                                width1,
-                                parseFloat(
-                                    this.cavantable[dc].ParameterReportItemtList
-                                        .dd.startpox
-                                )
-                            );
-                        }
-
-                        let height = [];
-                        for (let c1 = 0; c1 < $(b).find('tr').length; c1++) {
-                            let a = {
-                                hpx: parseFloat(
-                                    $($(b).find('tr')[c1]).height()
-                                ),
-                            };
-                            height.push(a);
-                        }
-                        //   console.log("width",width)
-                        //   console.log( this.cavantable[dc].numpage)
-                        $(b)
-                            .find('tbody tr td')
-                            .css({ 'background-color': '#fff', color: '#000' });
-                        import('@/vendor/Export3Excel.js').then((excel) => {
-                            excel.export_table_to_excel(b, width, height);
-                            if (dc == dcnum - 1 || dcnum == 1) {
-                                this.$store.state.isShow = false;
-                                $('.btablecover').hide();
-                            }
-                            console.log('data', new Date());
-                        });
-                    }
-
-                    // }, 1000);
-                }
-            }
         },
         //搜索
         async search(a, Numbervalue, i1) {
@@ -4079,8 +1438,8 @@ export default {
                                         $(
                                             $(
                                                 '.' +
-                                                    end.argwaibuparalist[j]
-                                                        .kjtext
+                                                end.argwaibuparalist[j]
+                                                    .kjtext
                                             )[0]
                                         ).find('input')[0]
                                     ).attr('cx') == '精确匹配'
@@ -4092,8 +1451,8 @@ export default {
                                         $(
                                             $(
                                                 '.' +
-                                                    end.argwaibuparalist[j]
-                                                        .kjtext
+                                                end.argwaibuparalist[j]
+                                                    .kjtext
                                             )[0]
                                         ).find('input')[0]
                                     ).attr('cx') == '模糊匹配'
@@ -4217,18 +1576,18 @@ export default {
                                     for (let a1 = 0; a1 < a.length; a1++) {
                                         if (
                                             one.cellparalist[a2].itemdata ==
-                                                a[a1].name &&
+                                            a[a1].name &&
                                             one.cellparalist[a2].sumtype ==
-                                                a[a1].sumtype &&
+                                            a[a1].sumtype &&
                                             one.cellparalist[a2].itemdata
                                         ) {
                                             if (a[a1].value == null) {
                                                 $(
                                                     '#' +
-                                                        this.cavantable[ic].Name
+                                                    this.cavantable[ic].Name
                                                 ).find(
                                                     '#' +
-                                                        one.cellparalist[a2].id
+                                                    one.cellparalist[a2].id
                                                 )[0].innerHTML = this.getPointNum(
                                                     one.cellparalist[a2]
                                                         .defauldisplay,
@@ -4240,10 +1599,10 @@ export default {
                                             } else {
                                                 $(
                                                     '#' +
-                                                        this.cavantable[ic].Name
+                                                    this.cavantable[ic].Name
                                                 ).find(
                                                     '#' +
-                                                        one.cellparalist[a2].id
+                                                    one.cellparalist[a2].id
                                                 )[0].innerHTML = this.getPointNum(
                                                     a[a1].value,
                                                     parseInt(
@@ -4330,20 +1689,20 @@ export default {
                                         for (let a1 = 0; a1 < a.length; a1++) {
                                             if (
                                                 one.cellparalist[a2].itemdata ==
-                                                    a[a1].name &&
+                                                a[a1].name &&
                                                 one.cellparalist[a2].sumtype ==
-                                                    a[a1].sumtype &&
+                                                a[a1].sumtype &&
                                                 one.cellparalist[a2].itemdata
                                             ) {
                                                 if (a[a1].value == null) {
                                                     $(
                                                         '#' +
-                                                            this.cavantable[ic]
-                                                                .Name
+                                                        this.cavantable[ic]
+                                                            .Name
                                                     ).find(
                                                         '#' +
-                                                            one.cellparalist[a2]
-                                                                .id
+                                                        one.cellparalist[a2]
+                                                            .id
                                                     )[0].innerHTML = this.getPointNum(
                                                         one.cellparalist[a2]
                                                             .defauldisplay,
@@ -4355,12 +1714,12 @@ export default {
                                                 } else {
                                                     $(
                                                         '#' +
-                                                            this.cavantable[ic]
-                                                                .Name
+                                                        this.cavantable[ic]
+                                                            .Name
                                                     ).find(
                                                         '#' +
-                                                            one.cellparalist[a2]
-                                                                .id
+                                                        one.cellparalist[a2]
+                                                            .id
                                                     )[0].innerHTML = this.getPointNum(
                                                         a[a1].value,
                                                         parseInt(
@@ -4450,19 +1809,19 @@ export default {
                                         for (let a1 = 0; a1 < a.length; a1++) {
                                             if (
                                                 one.cellparalist[a2].itemdata ==
-                                                    a[a1].name &&
+                                                a[a1].name &&
                                                 one.cellparalist[a2].sumtype ==
-                                                    a[a1].sumtype
+                                                a[a1].sumtype
                                             ) {
                                                 if (a[a1].value == null) {
                                                     $(
                                                         '#' +
-                                                            this.cavantable[ic]
-                                                                .Name
+                                                        this.cavantable[ic]
+                                                            .Name
                                                     ).find(
                                                         '#' +
-                                                            one.cellparalist[a2]
-                                                                .id
+                                                        one.cellparalist[a2]
+                                                            .id
                                                     )[0].innerHTML = this.getPointNum(
                                                         one.cellparalist[a2]
                                                             .defauldisplay,
@@ -4474,12 +1833,12 @@ export default {
                                                 } else {
                                                     $(
                                                         '#' +
-                                                            this.cavantable[ic]
-                                                                .Name
+                                                        this.cavantable[ic]
+                                                            .Name
                                                     ).find(
                                                         '#' +
-                                                            one.cellparalist[a2]
-                                                                .id
+                                                        one.cellparalist[a2]
+                                                            .id
                                                     )[0].innerHTML = this.getPointNum(
                                                         a[a1].value,
                                                         parseInt(
@@ -4536,8 +1895,8 @@ export default {
                                     if (
                                         $(
                                             '#' +
-                                                this.cavantable[ic].Name +
-                                                'page'
+                                            this.cavantable[ic].Name +
+                                            'page'
                                         ).length == 0
                                     ) {
                                         console.log('sadsasaddsa1');
@@ -4594,13 +1953,13 @@ export default {
                                         //  console.log("sadsasaddsa1555555fff")
                                         $(
                                             '#' +
-                                                this.cavantable[ic].Name +
-                                                'page'
+                                            this.cavantable[ic].Name +
+                                            'page'
                                         ).find('.numinp')[0].value = 1;
                                         $(
                                             '#' +
-                                                this.cavantable[ic].Name +
-                                                'page'
+                                            this.cavantable[ic].Name +
+                                            'page'
                                         ).find('.end')[0].innerHTML = Math.ceil(
                                             JSON.parse(wantdata).length / numd
                                         );
@@ -4617,9 +1976,9 @@ export default {
                                             if (
                                                 $(
                                                     '#' +
-                                                        this.cavantable[ic]
-                                                            .Name +
-                                                        'page'
+                                                    this.cavantable[ic]
+                                                        .Name +
+                                                    'page'
                                                 ).length == 0
                                             ) {
                                                 //    console.log("sadsasaddsa1555555fff122233333333333")
@@ -4639,13 +1998,13 @@ export default {
         </div>`;
                                                 $(
                                                     '#' +
-                                                        this.cavantable[ic].Name
+                                                    this.cavantable[ic].Name
                                                 )
                                                     .parent()
                                                     .append(a1);
                                                 $(
                                                     '#' +
-                                                        this.cavantable[ic].Name
+                                                    this.cavantable[ic].Name
                                                 )
                                                     .parent()
                                                     .append(
@@ -4662,13 +2021,13 @@ export default {
                                                 );
                                             $(
                                                 '#' +
-                                                    this.cavantable[ic].Name +
-                                                    'page'
+                                                this.cavantable[ic].Name +
+                                                'page'
                                             ).find('.numinp')[0].value = 1;
                                             $(
                                                 '#' +
-                                                    this.cavantable[ic].Name +
-                                                    'page'
+                                                this.cavantable[ic].Name +
+                                                'page'
                                             ).find('.end')[0].innerHTML =
                                                 Math.ceil(
                                                     JSON.parse(wantdata)
@@ -4678,14 +2037,14 @@ export default {
                                             if (
                                                 $(
                                                     '#' +
-                                                        this.cavantable[ic]
-                                                            .Name +
-                                                        'page'
+                                                    this.cavantable[ic]
+                                                        .Name +
+                                                    'page'
                                                 ).length == 0
                                             ) {
                                                 $(
                                                     '#' +
-                                                        this.cavantable[ic].Name
+                                                    this.cavantable[ic].Name
                                                 )
                                                     .parent()
                                                     .append(
@@ -4702,8 +2061,8 @@ export default {
                                                 );
                                             $(
                                                 '#' +
-                                                    this.cavantable[ic].Name +
-                                                    'page'
+                                                this.cavantable[ic].Name +
+                                                'page'
                                             ).find('.end')[0].innerHTML =
                                                 Math.ceil(
                                                     JSON.parse(wantdata)
@@ -4804,8 +2163,8 @@ export default {
                                                 '#' + this.cavantable[ic].Name
                                             ).find(
                                                 '#' +
-                                                    this.cavantable[ic].sju[ac]
-                                                        .id
+                                                this.cavantable[ic].sju[ac]
+                                                    .id
                                             )[0].innerHTML = JSON.parse(
                                                 sessionStorage.getItem(
                                                     'sightseerInfo1'
@@ -4816,8 +2175,8 @@ export default {
                                                 '#' + this.cavantable[ic].Name
                                             ).find(
                                                 '#' +
-                                                    this.cavantable[ic].sju[ac]
-                                                        .id
+                                                this.cavantable[ic].sju[ac]
+                                                    .id
                                             )[0].innerHTML = JSON.parse(
                                                 sessionStorage.getItem(
                                                     'userInfo1'
@@ -4859,15 +2218,15 @@ export default {
                                         !parseFloat(
                                             $(
                                                 '#' +
-                                                    this.cavantable[is].Name +
-                                                    'page'
+                                                this.cavantable[is].Name +
+                                                'page'
                                             )[0].style.top
                                         )
                                     ) {
                                         $(
                                             '#' +
-                                                this.cavantable[is].Name +
-                                                'page'
+                                            this.cavantable[is].Name +
+                                            'page'
                                         ).hide();
                                     }
                                 }
@@ -4975,7 +2334,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                         ).attr('valign') == 'bottom'
@@ -4985,8 +2344,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         `#row-` + this.enum
                                                     )[0]
@@ -4998,9 +2357,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` + this.enum
                                                         )[0]
@@ -5014,7 +2373,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                         ).attr('valign') == 'top'
@@ -5024,8 +2383,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         `#row-` + this.enum
                                                     )[0]
@@ -5252,7 +2611,7 @@ export default {
                                             ).find(`#row-` + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].appendChild(inp);
+                                        [this.ead].appendChild(inp);
                                     } else {
                                         //     if($(
                                         //     $('#' + this.cavantable[is].Name).find(
@@ -5271,7 +2630,7 @@ export default {
                                             ).find(`#row-` + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].appendChild(inp);
+                                        [this.ead].appendChild(inp);
 
                                         // }
                                     }
@@ -5281,7 +2640,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                                 .className
@@ -5293,9 +2652,9 @@ export default {
                                             ).find(`#row-` + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].classList.remove(
-                                                'after'
-                                            );
+                                        [this.ead].classList.remove(
+                                            'after'
+                                        );
                                     }
                                 } else {
                                     let inp = document.createElement('input');
@@ -5304,7 +2663,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                         ).attr('valign') == 'bottom'
@@ -5314,8 +2673,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         `#row-` + this.enum
                                                     )[0]
@@ -5327,9 +2686,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` + this.enum
                                                         )[0]
@@ -5343,7 +2702,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                         ).attr('valign') == 'top'
@@ -5353,8 +2712,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         `#row-` + this.enum
                                                     )[0]
@@ -5578,7 +2937,7 @@ export default {
                                             ).find(`#row-` + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].appendChild(inp);
+                                        [this.ead].appendChild(inp);
                                     } else {
                                         //     if($(
                                         //     $('#' + this.cavantable[is].Name).find(
@@ -5597,7 +2956,7 @@ export default {
                                             ).find(`#row-` + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].appendChild(inp);
+                                        [this.ead].appendChild(inp);
 
                                         // }
                                     }
@@ -5689,7 +3048,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                         ).attr('valign') == 'bottom'
@@ -5699,8 +3058,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         `#row-` + this.enum
                                                     )[0]
@@ -5712,9 +3071,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` + this.enum
                                                         )[0]
@@ -5728,7 +3087,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                         ).attr('valign') == 'top'
@@ -5738,8 +3097,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         `#row-` + this.enum
                                                     )[0]
@@ -5969,30 +3328,30 @@ export default {
                                             ).find(`#row-` + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].appendChild(inp);
+                                        [this.ead].appendChild(inp);
                                     } else {
                                         if (
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('input')[0].id == 'null' &&
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('input')[0]
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             )
                                                 .find('.dataready')
-                                                [this.ead].appendChild(inp);
+                                            [this.ead].appendChild(inp);
                                         }
                                     }
 
@@ -6002,7 +3361,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                                 .className
@@ -6014,9 +3373,9 @@ export default {
                                             ).find(`#row-` + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].classList.remove(
-                                                'after'
-                                            );
+                                        [this.ead].classList.remove(
+                                            'after'
+                                        );
                                     }
                                     $(
                                         $('#' + this.cavantable[is].Name).find(
@@ -6024,7 +3383,7 @@ export default {
                                         )[0]
                                     )
                                         .find('.dataready')
-                                        [this.ead].appendChild(inp);
+                                    [this.ead].appendChild(inp);
                                 } else {
                                     // console.log("ssssssssssssssssssssssssss11111")
                                     let inp = document.createElement('input');
@@ -6034,7 +3393,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                         ).attr('valign') == 'bottom'
@@ -6044,8 +3403,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         `#row-` + this.enum
                                                     )[0]
@@ -6057,14 +3416,14 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` + this.enum
                                                         )[0]
                                                     ).find('.dataready')[
-                                                        this.ead
+                                                    this.ead
                                                     ]
                                                 )
                                             );
@@ -6073,14 +3432,14 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` + this.enum
                                                         )[0]
                                                     ).find('.dataready')[
-                                                        this.ead
+                                                    this.ead
                                                     ]
                                                 ).attr('valign')
                                             );
@@ -6089,9 +3448,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` + this.enum
                                                         )[0]
@@ -6105,7 +3464,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                         ).attr('valign') == 'top'
@@ -6115,8 +3474,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         `#row-` + this.enum
                                                     )[0]
@@ -6378,7 +3737,7 @@ export default {
                                         )[0]
                                     )
                                         .find('.dataready')
-                                        [this.ead].appendChild(inp);
+                                    [this.ead].appendChild(inp);
                                     // }else{
                                     //     if($(
                                     //     $('#' + this.cavantable[is].Name).find(
@@ -6470,22 +3829,22 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 ) &&
                                                 this.cavantable[is].shi5[aindex]
                                                     .defauldisplay !==
+                                                $(
                                                     $(
-                                                        $(
-                                                            '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
-                                                        ).find(`#row-` + i)[0]
-                                                    ).find('.inp')[j].value
+                                                        '#' +
+                                                        this.cavantable[
+                                                            is
+                                                        ].Name
+                                                    ).find(`#row-` + i)[0]
+                                                ).find('.inp')[j].value
                                             ) {
                                                 pdz = true;
                                             }
@@ -6495,18 +3854,18 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + i)[0]
                                             ).find('.inp')[j].id ==
-                                                'undefind' ||
+                                            'undefind' ||
                                             isNaN(
                                                 parseFloat(
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 )
@@ -6520,9 +3879,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 );
@@ -6539,19 +3898,19 @@ export default {
                                             parseFloat(
                                                 this.cavantable[is].startpox
                                             ) !==
-                                                parseFloat(
-                                                    this.cavantable[is].endpox
-                                                )
+                                            parseFloat(
+                                                this.cavantable[is].endpox
+                                            )
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     `#row-` +
-                                                        parseInt(
-                                                            k + endh + nowsum
-                                                        )
+                                                    parseInt(
+                                                        k + endh + nowsum
+                                                    )
                                                 )[0]
                                             ).find('.datareadyfoot')[
                                                 j
@@ -6566,24 +3925,24 @@ export default {
                                                         this.cavantable[is]
                                                             .startpox
                                                     ) !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .endpox
-                                                        )
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .endpox
+                                                    )
                                                 ) {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` +
-                                                                parseInt(
-                                                                    k +
-                                                                        endh +
-                                                                        nowsum
-                                                                )
+                                                            parseInt(
+                                                                k +
+                                                                endh +
+                                                                nowsum
+                                                            )
                                                         )[0]
                                                     ).find('.datareadyfoot')[
                                                         j
@@ -6597,26 +3956,26 @@ export default {
                                                             this.cavantable[is]
                                                                 .startpox
                                                         ) !==
-                                                            parseFloat(
-                                                                this.cavantable[
-                                                                    is
-                                                                ].endpox
-                                                            )
+                                                        parseFloat(
+                                                            this.cavantable[
+                                                                is
+                                                            ].endpox
+                                                        )
                                                     ) {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            endh +
-                                                                            nowsum
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    endh +
+                                                                    nowsum
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -6653,17 +4012,17 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            endh +
-                                                                            nowsum
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    endh +
+                                                                    nowsum
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -6682,17 +4041,17 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            endh +
-                                                                            nowsum
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    endh +
+                                                                    nowsum
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -6712,7 +4071,7 @@ export default {
                                                 '#' + this.cavantable[is].Name
                                             ).find(
                                                 `#row-` +
-                                                    parseInt(k + endh + nowsum)
+                                                parseInt(k + endh + nowsum)
                                             )[0]
                                         ).find('.datareadyfoot')[j].innerHTML =
                                             null;
@@ -6743,22 +4102,22 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 ) &&
                                                 this.cavantable[is].shi5[aindex]
                                                     .defauldisplay !==
+                                                $(
                                                     $(
-                                                        $(
-                                                            '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
-                                                        ).find(`#row-` + i)[0]
-                                                    ).find('.inp')[j].value
+                                                        '#' +
+                                                        this.cavantable[
+                                                            is
+                                                        ].Name
+                                                    ).find(`#row-` + i)[0]
+                                                ).find('.inp')[j].value
                                             ) {
                                                 pdz = true;
                                             }
@@ -6768,18 +4127,18 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + i)[0]
                                             ).find('.inp')[j].id ==
-                                                'undefind' ||
+                                            'undefind' ||
                                             isNaN(
                                                 parseFloat(
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 )
@@ -6792,9 +4151,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 )
@@ -6813,19 +4172,19 @@ export default {
                                             parseFloat(
                                                 this.cavantable[is].startpox
                                             ) !==
-                                                parseFloat(
-                                                    this.cavantable[is].endpox
-                                                )
+                                            parseFloat(
+                                                this.cavantable[is].endpox
+                                            )
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     `#row-` +
-                                                        parseInt(
-                                                            k + endh + nowsum
-                                                        )
+                                                    parseInt(
+                                                        k + endh + nowsum
+                                                    )
                                                 )[0]
                                             ).find('.datareadyfoot')[
                                                 j
@@ -6840,24 +4199,24 @@ export default {
                                                         this.cavantable[is]
                                                             .startpox
                                                     ) !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .endpox
-                                                        )
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .endpox
+                                                    )
                                                 ) {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` +
-                                                                parseInt(
-                                                                    k +
-                                                                        endh +
-                                                                        nowsum
-                                                                )
+                                                            parseInt(
+                                                                k +
+                                                                endh +
+                                                                nowsum
+                                                            )
                                                         )[0]
                                                     ).find('.datareadyfoot')[
                                                         j
@@ -6871,26 +4230,26 @@ export default {
                                                             this.cavantable[is]
                                                                 .startpox
                                                         ) !==
-                                                            parseFloat(
-                                                                this.cavantable[
-                                                                    is
-                                                                ].endpox
-                                                            )
+                                                        parseFloat(
+                                                            this.cavantable[
+                                                                is
+                                                            ].endpox
+                                                        )
                                                     ) {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            endh +
-                                                                            nowsum
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    endh +
+                                                                    nowsum
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -6901,17 +4260,17 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            endh +
-                                                                            nowsum
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    endh +
+                                                                    nowsum
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -6930,17 +4289,17 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            endh +
-                                                                            nowsum
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    endh +
+                                                                    nowsum
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -6960,15 +4319,15 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         `#row-` +
-                                                            parseInt(
-                                                                k +
-                                                                    endh +
-                                                                    nowsum
-                                                            )
+                                                        parseInt(
+                                                            k +
+                                                            endh +
+                                                            nowsum
+                                                        )
                                                     )[0]
                                                 ).find('.datareadyfoot')[j]
                                                     .innerHTML
@@ -6977,12 +4336,12 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     `#row-` +
-                                                        parseInt(
-                                                            k + endh + nowsum
-                                                        )
+                                                    parseInt(
+                                                        k + endh + nowsum
+                                                    )
                                                 )[0]
                                             ).find('.datareadyfoot')[
                                                 j
@@ -7015,22 +4374,22 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 ) &&
                                                 this.cavantable[is].shi5[aindex]
                                                     .defauldisplay !==
+                                                $(
                                                     $(
-                                                        $(
-                                                            '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
-                                                        ).find(`#row-` + i)[0]
-                                                    ).find('.inp')[j].value
+                                                        '#' +
+                                                        this.cavantable[
+                                                            is
+                                                        ].Name
+                                                    ).find(`#row-` + i)[0]
+                                                ).find('.inp')[j].value
                                             ) {
                                                 pdz = true;
                                             }
@@ -7039,18 +4398,18 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + i)[0]
                                             ).find('.inp')[j].id ==
-                                                'undefind' ||
+                                            'undefind' ||
                                             isNaN(
                                                 parseFloat(
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 )
@@ -7065,9 +4424,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 );
@@ -7082,19 +4441,19 @@ export default {
                                             parseFloat(
                                                 this.cavantable[is].startpox
                                             ) !==
-                                                parseFloat(
-                                                    this.cavantable[is].endpox
-                                                )
+                                            parseFloat(
+                                                this.cavantable[is].endpox
+                                            )
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     `#row-` +
-                                                        parseInt(
-                                                            k + endh + nowsum
-                                                        )
+                                                    parseInt(
+                                                        k + endh + nowsum
+                                                    )
                                                 )[0]
                                             ).find('.datareadyfoot')[
                                                 j
@@ -7109,24 +4468,24 @@ export default {
                                                         this.cavantable[is]
                                                             .startpox
                                                     ) !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .endpox
-                                                        )
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .endpox
+                                                    )
                                                 ) {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` +
-                                                                parseInt(
-                                                                    k +
-                                                                        endh +
-                                                                        nowsum
-                                                                )
+                                                            parseInt(
+                                                                k +
+                                                                endh +
+                                                                nowsum
+                                                            )
                                                         )[0]
                                                     ).find('.datareadyfoot')[
                                                         j
@@ -7140,26 +4499,26 @@ export default {
                                                             this.cavantable[is]
                                                                 .startpox
                                                         ) !==
-                                                            parseFloat(
-                                                                this.cavantable[
-                                                                    is
-                                                                ].endpox
-                                                            )
+                                                        parseFloat(
+                                                            this.cavantable[
+                                                                is
+                                                            ].endpox
+                                                        )
                                                     ) {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            endh +
-                                                                            nowsum
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    endh +
+                                                                    nowsum
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -7200,17 +4559,17 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            endh +
-                                                                            nowsum
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    endh +
+                                                                    nowsum
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -7220,28 +4579,28 @@ export default {
                                                         parseFloat(
                                                             this.cavantable[is]
                                                                 .startpox ==
-                                                                parseFloat(
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].endpox
-                                                                )
+                                                            parseFloat(
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].endpox
+                                                            )
                                                         )
                                                     ) {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            endh +
-                                                                            nowsum
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    endh +
+                                                                    nowsum
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -7261,15 +4620,15 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         `#row-` +
-                                                            parseInt(
-                                                                k +
-                                                                    endh +
-                                                                    nowsum
-                                                            )
+                                                        parseInt(
+                                                            k +
+                                                            endh +
+                                                            nowsum
+                                                        )
                                                     )[0]
                                                 ).find('.datareadyfoot')[j]
                                                     .innerHTML
@@ -7278,12 +4637,12 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     `#row-` +
-                                                        parseInt(
-                                                            k + endh + nowsum
-                                                        )
+                                                    parseInt(
+                                                        k + endh + nowsum
+                                                    )
                                                 )[0]
                                             ).find('.datareadyfoot')[
                                                 j
@@ -7316,22 +4675,22 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 ) &&
                                                 this.cavantable[is].shi5[aindex]
                                                     .defauldisplay !==
+                                                $(
                                                     $(
-                                                        $(
-                                                            '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
-                                                        ).find(`#row-` + i)[0]
-                                                    ).find('.inp')[j].value
+                                                        '#' +
+                                                        this.cavantable[
+                                                            is
+                                                        ].Name
+                                                    ).find(`#row-` + i)[0]
+                                                ).find('.inp')[j].value
                                             ) {
                                                 pdz = true;
                                             }
@@ -7340,18 +4699,18 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + i)[0]
                                             ).find('.inp')[j].id ==
-                                                'undefind' ||
+                                            'undefind' ||
                                             isNaN(
                                                 parseFloat(
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 )
@@ -7364,9 +4723,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 )
@@ -7384,19 +4743,19 @@ export default {
                                             parseFloat(
                                                 this.cavantable[is].startpox
                                             ) !==
-                                                parseFloat(
-                                                    this.cavantable[is].endpox
-                                                )
+                                            parseFloat(
+                                                this.cavantable[is].endpox
+                                            )
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     `#row-` +
-                                                        parseInt(
-                                                            k + endh + nowsum
-                                                        )
+                                                    parseInt(
+                                                        k + endh + nowsum
+                                                    )
                                                 )[0]
                                             ).find('.datareadyfoot')[
                                                 j
@@ -7411,24 +4770,24 @@ export default {
                                                         this.cavantable[is]
                                                             .startpox
                                                     ) !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .endpox
-                                                        )
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .endpox
+                                                    )
                                                 ) {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` +
-                                                                parseInt(
-                                                                    k +
-                                                                        endh +
-                                                                        nowsum
-                                                                )
+                                                            parseInt(
+                                                                k +
+                                                                endh +
+                                                                nowsum
+                                                            )
                                                         )[0]
                                                     ).find('.datareadyfoot')[
                                                         j
@@ -7445,26 +4804,26 @@ export default {
                                                             this.cavantable[is]
                                                                 .startpox
                                                         ) !==
-                                                            parseFloat(
-                                                                this.cavantable[
-                                                                    is
-                                                                ].endpox
-                                                            )
+                                                        parseFloat(
+                                                            this.cavantable[
+                                                                is
+                                                            ].endpox
+                                                        )
                                                     ) {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            endh +
-                                                                            nowsum
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    endh +
+                                                                    nowsum
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -7475,17 +4834,17 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            endh +
-                                                                            nowsum
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    endh +
+                                                                    nowsum
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -7505,17 +4864,17 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            endh +
-                                                                            nowsum
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    endh +
+                                                                    nowsum
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -7536,19 +4895,19 @@ export default {
                                             parseFloat(
                                                 this.cavantable[is].startpox
                                             ) !==
-                                                parseFloat(
-                                                    this.cavantable[is].endpox
-                                                )
+                                            parseFloat(
+                                                this.cavantable[is].endpox
+                                            )
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     `#row-` +
-                                                        parseInt(
-                                                            k + endh + nowsum
-                                                        )
+                                                    parseInt(
+                                                        k + endh + nowsum
+                                                    )
                                                 )[0]
                                             ).find('.datareadyfoot')[
                                                 j
@@ -7639,7 +4998,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                         ).attr('valign') == 'bottom'
@@ -7649,8 +5008,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         `#row-` + this.enum
                                                     )[0]
@@ -7662,9 +5021,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` + this.enum
                                                         )[0]
@@ -7678,7 +5037,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                         ).attr('valign') == 'top'
@@ -7688,8 +5047,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         `#row-` + this.enum
                                                     )[0]
@@ -7917,7 +5276,7 @@ export default {
                                             ).find(`#row-` + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].appendChild(inp);
+                                        [this.ead].appendChild(inp);
                                     } else {
                                         //     if($(
                                         //     $('#' + this.cavantable[is].Name).find(
@@ -7937,7 +5296,7 @@ export default {
                                             ).find(`#row-` + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].appendChild(inp);
+                                        [this.ead].appendChild(inp);
 
                                         // }
                                     }
@@ -7948,7 +5307,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                                 .className
@@ -7960,9 +5319,9 @@ export default {
                                             ).find(`#row-` + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].classList.remove(
-                                                'after'
-                                            );
+                                        [this.ead].classList.remove(
+                                            'after'
+                                        );
                                     }
                                 } else {
                                     if (
@@ -7979,7 +5338,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                         ).attr('valign') == 'bottom'
@@ -7989,8 +5348,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         `#row-` + this.enum
                                                     )[0]
@@ -8002,9 +5361,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` + this.enum
                                                         )[0]
@@ -8018,7 +5377,7 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + this.enum)[0]
                                             ).find('.dataready')[this.ead]
                                         ).attr('valign') == 'top'
@@ -8028,8 +5387,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         `#row-` + this.enum
                                                     )[0]
@@ -8255,7 +5614,7 @@ export default {
                                             ).find(`#row-` + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].appendChild(inp);
+                                        [this.ead].appendChild(inp);
                                     } else {
                                         //     if($(
                                         //     $('#' + this.cavantable[is].Name).find(
@@ -8274,7 +5633,7 @@ export default {
                                             ).find(`#row-` + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].appendChild(inp);
+                                        [this.ead].appendChild(inp);
 
                                         // }
                                     }
@@ -8326,22 +5685,22 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 ) &&
                                                 this.cavantable[is].shi5[aindex]
                                                     .defauldisplay !==
+                                                $(
                                                     $(
-                                                        $(
-                                                            '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
-                                                        ).find(`#row-` + i)[0]
-                                                    ).find('.inp')[j].value
+                                                        '#' +
+                                                        this.cavantable[
+                                                            is
+                                                        ].Name
+                                                    ).find(`#row-` + i)[0]
+                                                ).find('.inp')[j].value
                                             ) {
                                                 pdz = true;
                                             }
@@ -8351,18 +5710,18 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + i)[0]
                                             ).find('.inp')[j].id ==
-                                                'undefind' ||
+                                            'undefind' ||
                                             isNaN(
                                                 parseFloat(
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 )
@@ -8376,9 +5735,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 );
@@ -8396,17 +5755,17 @@ export default {
                                             parseFloat(
                                                 this.cavantable[is].startpox
                                             ) !==
-                                                parseFloat(
-                                                    this.cavantable[is].endpox
-                                                )
+                                            parseFloat(
+                                                this.cavantable[is].endpox
+                                            )
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     `#row-` +
-                                                        parseInt(k + alength)
+                                                    parseInt(k + alength)
                                                 )[0]
                                             ).find('.datareadyfoot')[
                                                 j
@@ -8424,22 +5783,22 @@ export default {
                                                         this.cavantable[is]
                                                             .startpox
                                                     ) !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .endpox
-                                                        )
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .endpox
+                                                    )
                                                 ) {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` +
-                                                                parseInt(
-                                                                    k + alength
-                                                                )
+                                                            parseInt(
+                                                                k + alength
+                                                            )
                                                         )[0]
                                                     ).find('.datareadyfoot')[
                                                         j
@@ -8453,25 +5812,25 @@ export default {
                                                             this.cavantable[is]
                                                                 .startpox
                                                         ) !==
-                                                            parseFloat(
-                                                                this.cavantable[
-                                                                    is
-                                                                ].endpox
-                                                            )
+                                                        parseFloat(
+                                                            this.cavantable[
+                                                                is
+                                                            ].endpox
+                                                        )
                                                     ) {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            alength
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    alength
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -8508,16 +5867,16 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            alength
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    alength
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -8536,16 +5895,16 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            alength
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    alength
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -8565,17 +5924,17 @@ export default {
                                             parseFloat(
                                                 this.cavantable[is].startpox
                                             ) !==
-                                                parseFloat(
-                                                    this.cavantable[is].endpox
-                                                )
+                                            parseFloat(
+                                                this.cavantable[is].endpox
+                                            )
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     `#row-` +
-                                                        parseInt(k + alength)
+                                                    parseInt(k + alength)
                                                 )[0]
                                             ).find('.datareadyfoot')[
                                                 j
@@ -8608,22 +5967,22 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 ) &&
                                                 this.cavantable[is].shi5[aindex]
                                                     .defauldisplay !==
+                                                $(
                                                     $(
-                                                        $(
-                                                            '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
-                                                        ).find(`#row-` + i)[0]
-                                                    ).find('.inp')[j].value
+                                                        '#' +
+                                                        this.cavantable[
+                                                            is
+                                                        ].Name
+                                                    ).find(`#row-` + i)[0]
+                                                ).find('.inp')[j].value
                                             ) {
                                                 pdz = true;
                                             }
@@ -8632,18 +5991,18 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + i)[0]
                                             ).find('.inp')[j].id ==
-                                                'undefind' ||
+                                            'undefind' ||
                                             isNaN(
                                                 parseFloat(
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 )
@@ -8656,9 +6015,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 )
@@ -8676,17 +6035,17 @@ export default {
                                             parseFloat(
                                                 this.cavantable[is].startpox
                                             ) !==
-                                                parseFloat(
-                                                    this.cavantable[is].endpox
-                                                )
+                                            parseFloat(
+                                                this.cavantable[is].endpox
+                                            )
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     `#row-` +
-                                                        parseInt(k + alength)
+                                                    parseInt(k + alength)
                                                 )[0]
                                             ).find('.datareadyfoot')[
                                                 j
@@ -8701,22 +6060,22 @@ export default {
                                                         this.cavantable[is]
                                                             .startpox
                                                     ) !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .endpox
-                                                        )
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .endpox
+                                                    )
                                                 ) {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` +
-                                                                parseInt(
-                                                                    k + alength
-                                                                )
+                                                            parseInt(
+                                                                k + alength
+                                                            )
                                                         )[0]
                                                     ).find('.datareadyfoot')[
                                                         j
@@ -8730,25 +6089,25 @@ export default {
                                                             this.cavantable[is]
                                                                 .startpox
                                                         ) !==
-                                                            parseFloat(
-                                                                this.cavantable[
-                                                                    is
-                                                                ].endpox
-                                                            )
+                                                        parseFloat(
+                                                            this.cavantable[
+                                                                is
+                                                            ].endpox
+                                                        )
                                                     ) {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            alength
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    alength
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -8759,16 +6118,16 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            alength
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    alength
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -8787,16 +6146,16 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            alength
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    alength
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -8816,17 +6175,17 @@ export default {
                                             parseFloat(
                                                 this.cavantable[is].startpox
                                             ) !==
-                                                parseFloat(
-                                                    this.cavantable[is].endpox
-                                                )
+                                            parseFloat(
+                                                this.cavantable[is].endpox
+                                            )
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     `#row-` +
-                                                        parseInt(k + alength)
+                                                    parseInt(k + alength)
                                                 )[0]
                                             ).find('.datareadyfoot')[
                                                 j
@@ -8859,22 +6218,22 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 ) &&
                                                 this.cavantable[is].shi5[aindex]
                                                     .defauldisplay !==
+                                                $(
                                                     $(
-                                                        $(
-                                                            '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
-                                                        ).find(`#row-` + i)[0]
-                                                    ).find('.inp')[j].value
+                                                        '#' +
+                                                        this.cavantable[
+                                                            is
+                                                        ].Name
+                                                    ).find(`#row-` + i)[0]
+                                                ).find('.inp')[j].value
                                             ) {
                                                 pdz = true;
                                             }
@@ -8883,18 +6242,18 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + i)[0]
                                             ).find('.inp')[j].id ==
-                                                'undefind' ||
+                                            'undefind' ||
                                             isNaN(
                                                 parseFloat(
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 )
@@ -8909,9 +6268,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 );
@@ -8926,17 +6285,17 @@ export default {
                                             parseFloat(
                                                 this.cavantable[is].startpox
                                             ) !==
-                                                parseFloat(
-                                                    this.cavantable[is].endpox
-                                                )
+                                            parseFloat(
+                                                this.cavantable[is].endpox
+                                            )
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     `#row-` +
-                                                        parseInt(k + alength)
+                                                    parseInt(k + alength)
                                                 )[0]
                                             ).find('.datareadyfoot')[
                                                 j
@@ -8951,22 +6310,22 @@ export default {
                                                         this.cavantable[is]
                                                             .startpox
                                                     ) !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .endpox
-                                                        )
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .endpox
+                                                    )
                                                 ) {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` +
-                                                                parseInt(
-                                                                    k + alength
-                                                                )
+                                                            parseInt(
+                                                                k + alength
+                                                            )
                                                         )[0]
                                                     ).find('.datareadyfoot')[
                                                         j
@@ -8980,25 +6339,25 @@ export default {
                                                             this.cavantable[is]
                                                                 .startpox
                                                         ) !==
-                                                            parseFloat(
-                                                                this.cavantable[
-                                                                    is
-                                                                ].endpox
-                                                            )
+                                                        parseFloat(
+                                                            this.cavantable[
+                                                                is
+                                                            ].endpox
+                                                        )
                                                     ) {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            alength
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    alength
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -9039,16 +6398,16 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            alength
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    alength
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -9067,16 +6426,16 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            alength
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    alength
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -9096,17 +6455,17 @@ export default {
                                             parseFloat(
                                                 this.cavantable[is].startpox
                                             ) !==
-                                                parseFloat(
-                                                    this.cavantable[is].endpox
-                                                )
+                                            parseFloat(
+                                                this.cavantable[is].endpox
+                                            )
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     `#row-` +
-                                                        parseInt(k + alength)
+                                                    parseInt(k + alength)
                                                 )[0]
                                             ).find('.datareadyfoot')[
                                                 j
@@ -9139,22 +6498,22 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 ) &&
                                                 this.cavantable[is].shi5[aindex]
                                                     .defauldisplay !==
+                                                $(
                                                     $(
-                                                        $(
-                                                            '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
-                                                        ).find(`#row-` + i)[0]
-                                                    ).find('.inp')[j].value
+                                                        '#' +
+                                                        this.cavantable[
+                                                            is
+                                                        ].Name
+                                                    ).find(`#row-` + i)[0]
+                                                ).find('.inp')[j].value
                                             ) {
                                                 pdz = true;
                                             }
@@ -9163,18 +6522,18 @@ export default {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(`#row-` + i)[0]
                                             ).find('.inp')[j].id ==
-                                                'undefind' ||
+                                            'undefind' ||
                                             isNaN(
                                                 parseFloat(
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 )
@@ -9187,9 +6546,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(`#row-` + i)[0]
                                                     ).find('.inp')[j].value
                                                 )
@@ -9207,17 +6566,17 @@ export default {
                                             parseFloat(
                                                 this.cavantable[is].startpox
                                             ) !==
-                                                parseFloat(
-                                                    this.cavantable[is].endpox
-                                                )
+                                            parseFloat(
+                                                this.cavantable[is].endpox
+                                            )
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     `#row-` +
-                                                        parseInt(k + alength)
+                                                    parseInt(k + alength)
                                                 )[0]
                                             ).find('.datareadyfoot')[
                                                 j
@@ -9232,22 +6591,22 @@ export default {
                                                         this.cavantable[is]
                                                             .startpox
                                                     ) !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .endpox
-                                                        )
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .endpox
+                                                    )
                                                 ) {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` +
-                                                                parseInt(
-                                                                    k + alength
-                                                                )
+                                                            parseInt(
+                                                                k + alength
+                                                            )
                                                         )[0]
                                                     ).find('.datareadyfoot')[
                                                         j
@@ -9264,25 +6623,25 @@ export default {
                                                             this.cavantable[is]
                                                                 .startpox
                                                         ) !==
-                                                            parseFloat(
-                                                                this.cavantable[
-                                                                    is
-                                                                ].endpox
-                                                            )
+                                                        parseFloat(
+                                                            this.cavantable[
+                                                                is
+                                                            ].endpox
+                                                        )
                                                     ) {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            alength
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    alength
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -9293,16 +6652,16 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            alength
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    alength
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -9321,16 +6680,16 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 `#row-` +
-                                                                    parseInt(
-                                                                        k +
-                                                                            alength
-                                                                    )
+                                                                parseInt(
+                                                                    k +
+                                                                    alength
+                                                                )
                                                             )[0]
                                                         ).find(
                                                             '.datareadyfoot'
@@ -9516,17 +6875,17 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` +
-                                                                parseInt(
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].nowy
-                                                                )
+                                                            parseInt(
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].nowy
+                                                            )
                                                         )[0]
                                                     ).find('input')[this.ead]
                                                         .value
@@ -9561,17 +6920,17 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` +
-                                                                parseInt(
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].nowy
-                                                                )
+                                                            parseInt(
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].nowy
+                                                            )
                                                         )[0]
                                                     ).find('input')[this.ead]
                                                         .value
@@ -9613,8 +6972,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         '#row-' + this.enum
                                                     )[0]
@@ -9626,9 +6985,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             '#row-' + this.enum
                                                         )[0]
@@ -9641,8 +7000,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         '#row-' + this.enum
                                                     )[0]
@@ -9654,9 +7013,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             '#row-' + this.enum
                                                         )[0]
@@ -9739,7 +7098,7 @@ export default {
                                             ).find('#row-' + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].appendChild(inp);
+                                        [this.ead].appendChild(inp);
                                     } else {
                                         // if($($('#' + this.cavantable[is].Name).find( '#row-'+parseInt(this.cavantable[is].nowy))[0]).find('input')[this.ead].id == 'null'&&$($('#' + this.cavantable[is].Name).find( '#row-'+parseInt(this.cavantable[is].nowy))[0]).find('input')[this.ead]){
                                         $(
@@ -9748,7 +7107,7 @@ export default {
                                             ).find('#row-' + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].appendChild(inp);
+                                        [this.ead].appendChild(inp);
                                     }
                                     if (
                                         $(
@@ -9763,7 +7122,7 @@ export default {
                                             ).find('#row-' + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].appendChild(inp);
+                                        [this.ead].appendChild(inp);
                                     }
                                     // }
                                 } else {
@@ -9844,17 +7203,17 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` +
-                                                                parseInt(
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].nowy
-                                                                )
+                                                            parseInt(
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].nowy
+                                                            )
                                                         )[0]
                                                     ).find('input')[this.ead]
                                                         .value
@@ -9889,17 +7248,17 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             `#row-` +
-                                                                parseInt(
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].nowy
-                                                                )
+                                                            parseInt(
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].nowy
+                                                            )
                                                         )[0]
                                                     ).find('input')[this.ead]
                                                         .value
@@ -9941,8 +7300,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         '#row-' + this.enum
                                                     )[0]
@@ -9954,9 +7313,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             '#row-' + this.enum
                                                         )[0]
@@ -9969,8 +7328,8 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find(
                                                         '#row-' + this.enum
                                                     )[0]
@@ -9982,9 +7341,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find(
                                                             '#row-' + this.enum
                                                         )[0]
@@ -10068,61 +7427,61 @@ export default {
                                             ).find('#row-' + this.enum)[0]
                                         )
                                             .find('.dataready')
-                                            [this.ead].appendChild(inp);
+                                        [this.ead].appendChild(inp);
                                     } else {
                                         // console.log($($('#' + this.cavantable[is].Name).find( '#row-'+parseInt(this.cavantable[is].nowy))[0]).find('input')[this.ead])
                                         if (
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     '#row-' +
-                                                        parseInt(
-                                                            this.cavantable[is]
-                                                                .nowy
-                                                        )
+                                                    parseInt(
+                                                        this.cavantable[is]
+                                                            .nowy
+                                                    )
                                                 )[0]
                                             ).find('input')[this.ead].id ==
-                                                'null' &&
+                                            'null' &&
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find(
                                                     '#row-' +
-                                                        parseInt(
-                                                            this.cavantable[is]
-                                                                .nowy
-                                                        )
+                                                    parseInt(
+                                                        this.cavantable[is]
+                                                            .nowy
+                                                    )
                                                 )[0]
                                             ).find('input')[this.ead]
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find('#row-' + this.enum)[0]
                                             )
                                                 .find('.dataready')
-                                                [this.ead].appendChild(inp);
+                                            [this.ead].appendChild(inp);
                                         }
                                         if (
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find('#row-' + this.enum)[0]
                                             ).find('input')[0].id == 'null'
                                         ) {
                                             $(
                                                 $(
                                                     '#' +
-                                                        this.cavantable[is].Name
+                                                    this.cavantable[is].Name
                                                 ).find('#row-' + this.enum)[0]
                                             )
                                                 .find('.dataready')
-                                                [this.ead].appendChild(inp);
+                                            [this.ead].appendChild(inp);
                                         }
                                     }
                                 }
@@ -10145,8 +7504,8 @@ export default {
                             this.colw = this.cavantable[is].endpox;
                             let sumnum = $(
                                 $('#' + this.cavantable[is].Name).find('tr')[
-                                    this.cavantable[is].ParameterReportItemtList
-                                        .dd.startpoy
+                                this.cavantable[is].ParameterReportItemtList
+                                    .dd.startpoy
                                 ]
                             ).find('.datareadyfoot').length;
                             console.log('3333333');
@@ -10158,7 +7517,7 @@ export default {
                                         );
                                         vy <
                                         this.colh +
-                                            parseInt(this.cavantable[is].nowy);
+                                        parseInt(this.cavantable[is].nowy);
                                         vy++
                                     ) {
                                         let aindex;
@@ -10180,10 +7539,10 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -10192,17 +7551,17 @@ export default {
                                                     this.cavantable[is].shi5[
                                                         aindex
                                                     ].defauldisplay !==
+                                                    $(
                                                         $(
-                                                            $(
-                                                                '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
-                                                            ).find(
-                                                                '#row-' + vy
-                                                            )[0]
-                                                        ).find('.inp')[vx].value
+                                                            '#' +
+                                                            this
+                                                                .cavantable[
+                                                                is
+                                                            ].Name
+                                                        ).find(
+                                                            '#row-' + vy
+                                                        )[0]
+                                                    ).find('.inp')[vx].value
                                                 ) {
                                                     pdz = true;
                                                 }
@@ -10213,10 +7572,10 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -10226,11 +7585,11 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find('#row-' + vy)[0]
                                                 ).find('.inp')[vx].id !==
-                                                    'undefined'
+                                                'undefined'
                                             ) {
                                                 //    console.log("sum",sum)
                                                 //    console.log(   parseFloat(
@@ -10256,10 +7615,10 @@ export default {
                                                             $(
                                                                 $(
                                                                     '#' +
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].Name
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].Name
                                                                 ).find(
                                                                     '#row-' + vy
                                                                 )[0]
@@ -10276,25 +7635,25 @@ export default {
                                             ) {
                                                 if (
                                                     vy !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .nowy
-                                                        ) &&
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .nowy
+                                                    ) &&
                                                     parseFloat(
                                                         this.cavantable[is]
                                                             .startpoy
                                                     ) !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .endpoy
-                                                        )
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .endpoy
+                                                    )
                                                 ) {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find('#row-' + vy)[0]
                                                     ).find('.datareadyfoot')[
                                                         j
@@ -10306,31 +7665,31 @@ export default {
                                                     if (pdz) {
                                                         if (
                                                             vy !==
-                                                                parseFloat(
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].nowy
-                                                                ) &&
+                                                            parseFloat(
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].nowy
+                                                            ) &&
                                                             parseFloat(
                                                                 this.cavantable[
                                                                     is
                                                                 ].startpoy
                                                             ) !==
-                                                                parseFloat(
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].endpoy
-                                                                )
+                                                            parseFloat(
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].endpoy
+                                                            )
                                                         ) {
                                                             $(
                                                                 $(
                                                                     '#' +
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].Name
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].Name
                                                                 ).find(
                                                                     '#row-' + vy
                                                                 )[0]
@@ -10383,10 +7742,10 @@ export default {
                                                             $(
                                                                 $(
                                                                     '#' +
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].Name
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].Name
                                                                 ).find(
                                                                     '#row-' + vy
                                                                 )[0]
@@ -10410,10 +7769,10 @@ export default {
                                                             $(
                                                                 $(
                                                                     '#' +
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].Name
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].Name
                                                                 ).find(
                                                                     '#row-' + vy
                                                                 )[0]
@@ -10434,28 +7793,28 @@ export default {
                                                 } else {
                                                     if (
                                                         vy !==
-                                                            parseFloat(
-                                                                this.cavantable[
-                                                                    is
-                                                                ].nowy
-                                                            ) &&
+                                                        parseFloat(
+                                                            this.cavantable[
+                                                                is
+                                                            ].nowy
+                                                        ) &&
                                                         parseFloat(
                                                             this.cavantable[is]
                                                                 .startpoy
                                                         ) !==
-                                                            parseFloat(
-                                                                this.cavantable[
-                                                                    is
-                                                                ].endpoy
-                                                            )
+                                                        parseFloat(
+                                                            this.cavantable[
+                                                                is
+                                                            ].endpoy
+                                                        )
                                                     ) {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -10476,7 +7835,7 @@ export default {
                                         );
                                         vy <
                                         this.colh +
-                                            parseInt(this.cavantable[is].nowy);
+                                        parseInt(this.cavantable[is].nowy);
                                         vy++
                                     ) {
                                         let aindex;
@@ -10499,10 +7858,10 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -10511,17 +7870,17 @@ export default {
                                                     this.cavantable[is].shi5[
                                                         aindex
                                                     ].defauldisplay !==
+                                                    $(
                                                         $(
-                                                            $(
-                                                                '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
-                                                            ).find(
-                                                                '#row-' + vy
-                                                            )[0]
-                                                        ).find('.inp')[vx].value
+                                                            '#' +
+                                                            this
+                                                                .cavantable[
+                                                                is
+                                                            ].Name
+                                                        ).find(
+                                                            '#row-' + vy
+                                                        )[0]
+                                                    ).find('.inp')[vx].value
                                                 ) {
                                                     pdz = true;
                                                 }
@@ -10532,10 +7891,10 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -10545,11 +7904,11 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find('#row-' + vy)[0]
                                                 ).find('.inp')[vx].id !==
-                                                    'undefined'
+                                                'undefined'
                                             ) {
                                                 length++;
                                                 sum =
@@ -10558,10 +7917,10 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -10575,25 +7934,25 @@ export default {
                                             ) {
                                                 if (
                                                     vy !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .nowy
-                                                        ) &&
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .nowy
+                                                    ) &&
                                                     parseFloat(
                                                         this.cavantable[is]
                                                             .startpoy
                                                     ) !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .endpoy
-                                                        )
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .endpoy
+                                                    )
                                                 ) {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find('#row-' + vy)[0]
                                                     ).find('.datareadyfoot')[
                                                         j
@@ -10604,31 +7963,31 @@ export default {
                                                     if (pdz) {
                                                         if (
                                                             vy !==
-                                                                parseFloat(
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].nowy
-                                                                ) &&
+                                                            parseFloat(
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].nowy
+                                                            ) &&
                                                             parseFloat(
                                                                 this.cavantable[
                                                                     is
                                                                 ].startpoy
                                                             ) !==
-                                                                parseFloat(
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].endpoy
-                                                                )
+                                                            parseFloat(
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].endpoy
+                                                            )
                                                         ) {
                                                             $(
                                                                 $(
                                                                     '#' +
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].Name
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].Name
                                                                 ).find(
                                                                     '#row-' + vy
                                                                 )[0]
@@ -10684,10 +8043,10 @@ export default {
                                                             $(
                                                                 $(
                                                                     '#' +
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].Name
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].Name
                                                                 ).find(
                                                                     '#row-' + vy
                                                                 )[0]
@@ -10711,10 +8070,10 @@ export default {
                                                             $(
                                                                 $(
                                                                     '#' +
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].Name
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].Name
                                                                 ).find(
                                                                     '#row-' + vy
                                                                 )[0]
@@ -10736,9 +8095,9 @@ export default {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find('#row-' + vy)[0]
                                                     ).find('.datareadyfoot')[
                                                         j
@@ -10755,7 +8114,7 @@ export default {
                                         );
                                         vy <
                                         this.colh +
-                                            parseInt(this.cavantable[is].nowy);
+                                        parseInt(this.cavantable[is].nowy);
                                         vy++
                                     ) {
                                         let aindex;
@@ -10777,10 +8136,10 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -10789,17 +8148,17 @@ export default {
                                                     this.cavantable[is].shi5[
                                                         aindex
                                                     ].defauldisplay !==
+                                                    $(
                                                         $(
-                                                            $(
-                                                                '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
-                                                            ).find(
-                                                                '#row-' + vy
-                                                            )[0]
-                                                        ).find('.inp')[vx].value
+                                                            '#' +
+                                                            this
+                                                                .cavantable[
+                                                                is
+                                                            ].Name
+                                                        ).find(
+                                                            '#row-' + vy
+                                                        )[0]
+                                                    ).find('.inp')[vx].value
                                                 ) {
                                                     pdz = true;
                                                 }
@@ -10810,10 +8169,10 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -10823,21 +8182,21 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find('#row-' + vy)[0]
                                                 ).find('.inp')[vx].id !==
-                                                    'undefined'
+                                                'undefined'
                                             ) {
                                                 min.push(
                                                     parseFloat(
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -10852,25 +8211,25 @@ export default {
                                             ) {
                                                 if (
                                                     vy !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .nowy
-                                                        ) &&
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .nowy
+                                                    ) &&
                                                     parseFloat(
                                                         this.cavantable[is]
                                                             .startpoy
                                                     ) !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .endpoy
-                                                        )
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .endpoy
+                                                    )
                                                 ) {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find('#row-' + vy)[0]
                                                     ).find('.datareadyfoot')[
                                                         j
@@ -10881,31 +8240,31 @@ export default {
                                                     if (pdz) {
                                                         if (
                                                             vy !==
-                                                                parseFloat(
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].nowy
-                                                                ) &&
+                                                            parseFloat(
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].nowy
+                                                            ) &&
                                                             parseFloat(
                                                                 this.cavantable[
                                                                     is
                                                                 ].startpoy
                                                             ) !==
-                                                                parseFloat(
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].endpoy
-                                                                )
+                                                            parseFloat(
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].endpoy
+                                                            )
                                                         ) {
                                                             $(
                                                                 $(
                                                                     '#' +
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].Name
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].Name
                                                                 ).find(
                                                                     '#row-' + vy
                                                                 )[0]
@@ -10927,36 +8286,36 @@ export default {
                                                         ) {
                                                             if (
                                                                 vy !==
-                                                                    parseFloat(
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].nowy
-                                                                    ) &&
+                                                                parseFloat(
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].nowy
+                                                                ) &&
                                                                 parseFloat(
                                                                     this
                                                                         .cavantable[
                                                                         is
                                                                     ].startpoy
                                                                 ) !==
-                                                                    parseFloat(
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].endpoy
-                                                                    )
+                                                                parseFloat(
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].endpoy
+                                                                )
                                                             ) {
                                                                 $(
                                                                     $(
                                                                         '#' +
-                                                                            this
-                                                                                .cavantable[
-                                                                                is
-                                                                            ]
-                                                                                .Name
+                                                                        this
+                                                                            .cavantable[
+                                                                            is
+                                                                        ]
+                                                                            .Name
                                                                     ).find(
                                                                         '#row-' +
-                                                                            vy
+                                                                        vy
                                                                     )[0]
                                                                 ).find(
                                                                     '.datareadyfoot'
@@ -10977,14 +8336,14 @@ export default {
                                                                 $(
                                                                     $(
                                                                         '#' +
-                                                                            this
-                                                                                .cavantable[
-                                                                                is
-                                                                            ]
-                                                                                .Name
+                                                                        this
+                                                                            .cavantable[
+                                                                            is
+                                                                        ]
+                                                                            .Name
                                                                     ).find(
                                                                         '#row-' +
-                                                                            vy
+                                                                        vy
                                                                     )[0]
                                                                 ).find(
                                                                     '.datareadyfoot'
@@ -11008,14 +8367,14 @@ export default {
                                                                 $(
                                                                     $(
                                                                         '#' +
-                                                                            this
-                                                                                .cavantable[
-                                                                                is
-                                                                            ]
-                                                                                .Name
+                                                                        this
+                                                                            .cavantable[
+                                                                            is
+                                                                        ]
+                                                                            .Name
                                                                     ).find(
                                                                         '#row-' +
-                                                                            vy
+                                                                        vy
                                                                     )[0]
                                                                 ).find(
                                                                     '.datareadyfoot'
@@ -11034,28 +8393,28 @@ export default {
                                                 } else {
                                                     if (
                                                         vy !==
-                                                            parseFloat(
-                                                                this.cavantable[
-                                                                    is
-                                                                ].nowy
-                                                            ) &&
+                                                        parseFloat(
+                                                            this.cavantable[
+                                                                is
+                                                            ].nowy
+                                                        ) &&
                                                         parseFloat(
                                                             this.cavantable[is]
                                                                 .startpoy
                                                         ) !==
-                                                            parseFloat(
-                                                                this.cavantable[
-                                                                    is
-                                                                ].endpoy
-                                                            )
+                                                        parseFloat(
+                                                            this.cavantable[
+                                                                is
+                                                            ].endpoy
+                                                        )
                                                     ) {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -11075,7 +8434,7 @@ export default {
                                         );
                                         vy <
                                         this.colh +
-                                            parseInt(this.cavantable[is].nowy);
+                                        parseInt(this.cavantable[is].nowy);
                                         vy++
                                     ) {
                                         let aindex;
@@ -11097,10 +8456,10 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -11109,17 +8468,17 @@ export default {
                                                     this.cavantable[is].shi5[
                                                         aindex
                                                     ].defauldisplay !==
+                                                    $(
                                                         $(
-                                                            $(
-                                                                '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
-                                                            ).find(
-                                                                '#row-' + vy
-                                                            )[0]
-                                                        ).find('.inp')[vx].value
+                                                            '#' +
+                                                            this
+                                                                .cavantable[
+                                                                is
+                                                            ].Name
+                                                        ).find(
+                                                            '#row-' + vy
+                                                        )[0]
+                                                    ).find('.inp')[vx].value
                                                 ) {
                                                     pdz = true;
                                                 }
@@ -11130,10 +8489,10 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -11143,21 +8502,21 @@ export default {
                                                 $(
                                                     $(
                                                         '#' +
-                                                            this.cavantable[is]
-                                                                .Name
+                                                        this.cavantable[is]
+                                                            .Name
                                                     ).find('#row-' + vy)[0]
                                                 ).find('.inp')[vx].id !==
-                                                    'undefined'
+                                                'undefined'
                                             ) {
                                                 min.push(
                                                     parseFloat(
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -11172,25 +8531,25 @@ export default {
                                             ) {
                                                 if (
                                                     vy !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .nowy
-                                                        ) &&
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .nowy
+                                                    ) &&
                                                     parseFloat(
                                                         this.cavantable[is]
                                                             .startpoy
                                                     ) !==
-                                                        parseFloat(
-                                                            this.cavantable[is]
-                                                                .endpoy
-                                                        )
+                                                    parseFloat(
+                                                        this.cavantable[is]
+                                                            .endpoy
+                                                    )
                                                 ) {
                                                     $(
                                                         $(
                                                             '#' +
-                                                                this.cavantable[
-                                                                    is
-                                                                ].Name
+                                                            this.cavantable[
+                                                                is
+                                                            ].Name
                                                         ).find('#row-' + vy)[0]
                                                     ).find('.datareadyfoot')[
                                                         j
@@ -11213,31 +8572,31 @@ export default {
                                                     if (pdz) {
                                                         if (
                                                             vy !==
-                                                                parseFloat(
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].nowy
-                                                                ) &&
+                                                            parseFloat(
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].nowy
+                                                            ) &&
                                                             parseFloat(
                                                                 this.cavantable[
                                                                     is
                                                                 ].startpoy
                                                             ) !==
-                                                                parseFloat(
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].endpoy
-                                                                )
+                                                            parseFloat(
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].endpoy
+                                                            )
                                                         ) {
                                                             $(
                                                                 $(
                                                                     '#' +
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].Name
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].Name
                                                                 ).find(
                                                                     '#row-' + vy
                                                                 )[0]
@@ -11260,36 +8619,36 @@ export default {
                                                         ) {
                                                             if (
                                                                 vy !==
-                                                                    parseFloat(
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].nowy
-                                                                    ) &&
+                                                                parseFloat(
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].nowy
+                                                                ) &&
                                                                 parseFloat(
                                                                     this
                                                                         .cavantable[
                                                                         is
                                                                     ].startpoy
                                                                 ) !==
-                                                                    parseFloat(
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].endpoy
-                                                                    )
+                                                                parseFloat(
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].endpoy
+                                                                )
                                                             ) {
                                                                 $(
                                                                     $(
                                                                         '#' +
-                                                                            this
-                                                                                .cavantable[
-                                                                                is
-                                                                            ]
-                                                                                .Name
+                                                                        this
+                                                                            .cavantable[
+                                                                            is
+                                                                        ]
+                                                                            .Name
                                                                     ).find(
                                                                         '#row-' +
-                                                                            vy
+                                                                        vy
                                                                     )[0]
                                                                 ).find(
                                                                     '.datareadyfoot'
@@ -11310,14 +8669,14 @@ export default {
                                                                 $(
                                                                     $(
                                                                         '#' +
-                                                                            this
-                                                                                .cavantable[
-                                                                                is
-                                                                            ]
-                                                                                .Name
+                                                                        this
+                                                                            .cavantable[
+                                                                            is
+                                                                        ]
+                                                                            .Name
                                                                     ).find(
                                                                         '#row-' +
-                                                                            vy
+                                                                        vy
                                                                     )[0]
                                                                 ).find(
                                                                     '.datareadyfoot'
@@ -11341,14 +8700,14 @@ export default {
                                                                 $(
                                                                     $(
                                                                         '#' +
-                                                                            this
-                                                                                .cavantable[
-                                                                                is
-                                                                            ]
-                                                                                .Name
+                                                                        this
+                                                                            .cavantable[
+                                                                            is
+                                                                        ]
+                                                                            .Name
                                                                     ).find(
                                                                         '#row-' +
-                                                                            vy
+                                                                        vy
                                                                     )[0]
                                                                 ).find(
                                                                     '.datareadyfoot'
@@ -11389,10 +8748,10 @@ export default {
                                                         !$(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -11403,10 +8762,10 @@ export default {
                                                         $(
                                                             $(
                                                                 '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].Name
+                                                                this
+                                                                    .cavantable[
+                                                                    is
+                                                                ].Name
                                                             ).find(
                                                                 '#row-' + vy
                                                             )[0]
@@ -11507,9 +8866,9 @@ export default {
                                         $('#' + this.cavantable[is].Name).find(
                                             'tr'
                                         )[
-                                            this.cavantable[is]
-                                                .ParameterReportItemtList.dd
-                                                .startpoy
+                                        this.cavantable[is]
+                                            .ParameterReportItemtList.dd
+                                            .startpoy
                                         ]
                                     ).find('td')[j1].clientWidth;
                             }
@@ -11529,9 +8888,9 @@ export default {
                                                 '#' + this.cavantable[is].Name
                                             ).find(
                                                 '#row-' +
-                                                    this.cavantable[is]
-                                                        .ParameterReportItemtList
-                                                        .dd.startpoy
+                                                this.cavantable[is]
+                                                    .ParameterReportItemtList
+                                                    .dd.startpoy
                                             )
                                         ).find('.datareadyhead')[jj].clientWidth
                                     );
@@ -11558,38 +8917,40 @@ export default {
 
                                 nownum++;
                             }
-
                             $(
                                 '#' + this.cavantable[is].Name + 'page'
                             )[0].style.top =
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.top.replace('px', '')
+                                endheight +
+                                parseFloat(
+                                    this.cavantable[is].PropertyList.Top
                                 ) +
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.height.replace('px', '')
-                                ) +
-                                2 +
                                 'px';
-
-                            $(
-                                '#' + this.cavantable[is].Name + 'page'
-                            )[0].style.left =
-                                Number(
+                            if (
+                                endwidth -
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].clientWidth +
+                                parseFloat(
+                                    this.cavantable[is].PropertyList.Left
+                                ) <=
+                                0
+                            ) {
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].style.left = 0 + 'px';
+                            } else {
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].style.left =
+                                    endwidth -
                                     $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.left.replace('px', '')
-                                ) +
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.width.replace('px', '')
-                                ) -
-                                200 +
-                                'px';
+                                        '#' + this.cavantable[is].Name + 'page'
+                                    )[0].clientWidth +
+                                    parseFloat(
+                                        this.cavantable[is].PropertyList.Left
+                                    ) +
+                                    'px';
+                            }
                         } else if (
                             this.cavantable[is].ParameterReportItemtList.dd
                                 .kzsummopos == '分布在前'
@@ -11610,9 +8971,9 @@ export default {
                                         $('#' + this.cavantable[is].Name).find(
                                             'tr'
                                         )[
-                                            this.cavantable[is]
-                                                .ParameterReportItemtList.dd
-                                                .startpoy
+                                        this.cavantable[is]
+                                            .ParameterReportItemtList.dd
+                                            .startpoy
                                         ]
                                     ).find('td')[j1].clientWidth;
                             }
@@ -11633,9 +8994,9 @@ export default {
                                                 '#' + this.cavantable[is].Name
                                             ).find(
                                                 '#row-' +
-                                                    this.cavantable[is]
-                                                        .ParameterReportItemtList
-                                                        .dd.startpoy
+                                                this.cavantable[is]
+                                                    .ParameterReportItemtList
+                                                    .dd.startpoy
                                             )
                                         ).find('.datareadyhead')[jj].clientWidth
                                     );
@@ -11663,37 +9024,41 @@ export default {
                             //     endheight += 2*this.cavantable[is].endpoy;
                             //   this.cavantable[is].yh = 2;
                             // }
-                            $(
-                                '#' + this.cavantable[is].Name + 'page'
-                            )[0].style.top =
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.top.replace('px', '')
-                                ) +
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.height.replace('px', '')
-                                ) +
-                                2 +
-                                'px';
 
                             $(
                                 '#' + this.cavantable[is].Name + 'page'
-                            )[0].style.left =
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.left.replace('px', '')
+                            )[0].style.top =
+                                endheight +
+                                parseFloat(
+                                    this.cavantable[is].PropertyList.Top
                                 ) +
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.width.replace('px', '')
-                                ) -
-                                200 +
                                 'px';
+                            if (
+                                endwidth -
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].clientWidth +
+                                parseFloat(
+                                    this.cavantable[is].PropertyList.Left
+                                ) <=
+                                0
+                            ) {
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].style.left = 0 + 'px';
+                            } else {
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].style.left =
+                                    endwidth -
+                                    $(
+                                        '#' + this.cavantable[is].Name + 'page'
+                                    )[0].clientWidth +
+                                    parseFloat(
+                                        this.cavantable[is].PropertyList.Left
+                                    ) +
+                                    'px';
+                            }
                         } else {
                             let nownum = 0;
                             for (
@@ -11733,9 +9098,9 @@ export default {
                                         $('#' + this.cavantable[is].Name).find(
                                             'tr'
                                         )[
-                                            this.cavantable[is]
-                                                .ParameterReportItemtList.dd
-                                                .startpoy
+                                        this.cavantable[is]
+                                            .ParameterReportItemtList.dd
+                                            .startpoy
                                         ]
                                     ).find('td')[j1].clientWidth;
                             }
@@ -11756,9 +9121,9 @@ export default {
                                                 '#' + this.cavantable[is].Name
                                             ).find(
                                                 '#row-' +
-                                                    this.cavantable[is]
-                                                        .ParameterReportItemtList
-                                                        .dd.startpoy
+                                                this.cavantable[is]
+                                                    .ParameterReportItemtList
+                                                    .dd.startpoy
                                             )
                                         ).find('.datareadyhead')[jj].clientWidth
                                     );
@@ -11766,34 +9131,38 @@ export default {
                             $(
                                 '#' + this.cavantable[is].Name + 'page'
                             )[0].style.top =
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.top.replace('px', '')
+                                endheight +
+                                parseFloat(
+                                    this.cavantable[is].PropertyList.Top
                                 ) +
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.height.replace('px', '')
-                                ) +
-                                2 +
+                                1 +
                                 'px';
-
-                            $(
-                                '#' + this.cavantable[is].Name + 'page'
-                            )[0].style.left =
-                                Number(
+                            if (
+                                endwidth -
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].clientWidth +
+                                parseFloat(
+                                    this.cavantable[is].PropertyList.Left
+                                ) <=
+                                0
+                            ) {
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].style.left = 0 + 'px';
+                            } else {
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].style.left =
+                                    endwidth -
                                     $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.left.replace('px', '')
-                                ) +
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.width.replace('px', '')
-                                ) -
-                                200 +
-                                'px';
+                                        '#' + this.cavantable[is].Name + 'page'
+                                    )[0].clientWidth +
+                                    parseFloat(
+                                        this.cavantable[is].PropertyList.Left
+                                    ) +
+                                    'px';
+                            }
                         }
                     } else {
                         for (
@@ -11864,9 +9233,9 @@ export default {
                                     $(
                                         $('#' + this.cavantable[is].Name).find(
                                             '#row-' +
-                                                this.cavantable[is]
-                                                    .ParameterReportItemtList.dd
-                                                    .startpoy
+                                            this.cavantable[is]
+                                                .ParameterReportItemtList.dd
+                                                .startpoy
                                         )
                                     ).find('.datareadyhead')[0].clientWidth
                                 );
@@ -11883,9 +9252,9 @@ export default {
                                                 '#' + this.cavantable[is].Name
                                             ).find(
                                                 '#row-' +
-                                                    this.cavantable[is]
-                                                        .ParameterReportItemtList
-                                                        .dd.startpoy
+                                                this.cavantable[is]
+                                                    .ParameterReportItemtList
+                                                    .dd.startpoy
                                             )
                                         ).find('.dataready')[jj].clientWidth
                                     );
@@ -11898,9 +9267,9 @@ export default {
                                     $('#' + this.cavantable[is].Name).find(
                                         'tr'
                                     )[
-                                        this.cavantable[is]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
+                                    this.cavantable[is]
+                                        .ParameterReportItemtList.dd
+                                        .startpoy
                                     ]
                                 ).find('td').length;
                                 i3++
@@ -11911,110 +9280,9 @@ export default {
                                             $(
                                                 '#' + this.cavantable[is].Name
                                             ).find('tr')[
-                                                this.cavantable[is]
-                                                    .ParameterReportItemtList.dd
-                                                    .startpoy
-                                            ]
-                                        ).find('td')[i3]
-                                    ).hasClass('datareadyfoot')
-                                ) {
-                                    sumnum = sumnum + 1;
-                                }
-                            }
-
-                            $(
-                                '#' + this.cavantable[is].Name + 'page'
-                            )[0].style.left =
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.left.replace('px', '')
-                                ) +
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.width.replace('px', '')
-                                ) -
-                                200 +
-                                'px';
-
-                            $(
-                                '#' + this.cavantable[is].Name + 'page'
-                            )[0].style.top =
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.top.replace('px', '')
-                                ) +
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.height.replace('px', '')
-                                ) +
-                                2 +
-                                'px';
-                        } else if (
-                            this.cavantable[is].ParameterReportItemtList.dd
-                                .kzsummopos == '分布在前'
-                        ) {
-                            endwidth2 = 0;
-
-                            endwidth2 =
-                                endwidth2 +
-                                parseInt(
-                                    $(
-                                        $('#' + this.cavantable[is].Name).find(
-                                            '#row-' +
-                                                this.cavantable[is]
-                                                    .ParameterReportItemtList.dd
-                                                    .startpoy
-                                        )
-                                    ).find('.datareadyhead')[0].clientWidth
-                                );
-                            for (
-                                let jj = 0;
-                                jj < this.cavantable[is].endpox;
-                                jj++
-                            ) {
-                                endwidth2 =
-                                    endwidth2 +
-                                    parseInt(
-                                        $(
-                                            $(
-                                                '#' + this.cavantable[is].Name
-                                            ).find(
-                                                '#row-' +
-                                                    this.cavantable[is]
-                                                        .ParameterReportItemtList
-                                                        .dd.startpoy
-                                            )
-                                        ).find('.dataready')[jj].clientWidth
-                                    );
-                            }
-                            let sumnum = 0;
-                            for (
-                                let i3 = 0;
-                                i3 <
-                                $(
-                                    $('#' + this.cavantable[is].Name).find(
-                                        'tr'
-                                    )[
-                                        this.cavantable[is]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
-                                    ]
-                                ).find('td').length;
-                                i3++
-                            ) {
-                                if (
-                                    $(
-                                        $(
-                                            $(
-                                                '#' + this.cavantable[is].Name
-                                            ).find('tr')[
-                                                this.cavantable[is]
-                                                    .ParameterReportItemtList.dd
-                                                    .startpoy
+                                            this.cavantable[is]
+                                                .ParameterReportItemtList.dd
+                                                .startpoy
                                             ]
                                         ).find('td')[i3]
                                     ).hasClass('datareadyfoot')
@@ -12032,76 +9300,336 @@ export default {
                                                 '#' + this.cavantable[is].Name
                                             ).find(
                                                 '#row-' +
-                                                    this.cavantable[is]
-                                                        .ParameterReportItemtList
-                                                        .dd.startpoy
+                                                this.cavantable[is]
+                                                    .ParameterReportItemtList
+                                                    .dd.startpoy
                                             )
                                         ).find('.datareadyfoot')[jj].clientWidth
                                     );
                             }
+                            if (
+                                endwidth2 -
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].clientWidth +
+                                parseFloat(
+                                    this.cavantable[is].PropertyList.Left
+                                ) <=
+                                0
+                            ) {
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].style.left = 0 + 'px';
+                            } else {
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].style.left =
+                                    endwidth2 -
+                                    $(
+                                        '#' + this.cavantable[is].Name + 'page'
+                                    )[0].clientWidth +
+                                    parseFloat(
+                                        this.cavantable[is].PropertyList.Left
+                                    ) +
+                                    'px';
+                            }
 
-                            $(
-                                '#' + this.cavantable[is].Name + 'page'
-                            )[0].style.left =
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.left.replace('px', '')
-                                ) +
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.width.replace('px', '')
-                                ) -
-                                200 +
-                                'px';
+                            let nownum = parseInt(
+                                this.cavantable[is].ParameterReportItemtList.dd
+                                    .startpoy
+                            );
+                            // if(this.cavantable[is].yh == 1){
+                            //     endheight += 3*this.cavantable[is].endpoy;
+                            //   this.cavantable[is].yh = 2;
+                            // }
+                            for (
+                                let jj = 0;
+                                jj < this.cavantable[is].endpoy;
+                                jj++
+                            ) {
+                                endheight2 =
+                                    endheight2 +
+                                    parseInt(
+                                        $(
+                                            $(
+                                                '#' + this.cavantable[is].Name
+                                            ).find('#row-' + nownum)
+                                        )[0].clientHeight
+                                    );
+
+                                nownum++;
+                            }
 
                             $(
                                 '#' + this.cavantable[is].Name + 'page'
                             )[0].style.top =
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.top.replace('px', '')
+                                endheight2 +
+                                parseFloat(
+                                    this.cavantable[is].PropertyList.Top
                                 ) +
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.height.replace('px', '')
-                                ) +
-                                2 +
                                 'px';
+                        } else if (
+                            this.cavantable[is].ParameterReportItemtList.dd
+                                .kzsummopos == '分布在前'
+                        ) {
+                            endwidth2 = 0;
+
+                            endwidth2 =
+                                endwidth2 +
+                                parseInt(
+                                    $(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            '#row-' +
+                                            this.cavantable[is]
+                                                .ParameterReportItemtList.dd
+                                                .startpoy
+                                        )
+                                    ).find('.datareadyhead')[0].clientWidth
+                                );
+                            for (
+                                let jj = 0;
+                                jj < this.cavantable[is].endpox;
+                                jj++
+                            ) {
+                                endwidth2 =
+                                    endwidth2 +
+                                    parseInt(
+                                        $(
+                                            $(
+                                                '#' + this.cavantable[is].Name
+                                            ).find(
+                                                '#row-' +
+                                                this.cavantable[is]
+                                                    .ParameterReportItemtList
+                                                    .dd.startpoy
+                                            )
+                                        ).find('.dataready')[jj].clientWidth
+                                    );
+                            }
+                            let sumnum = 0;
+                            for (
+                                let i3 = 0;
+                                i3 <
+                                $(
+                                    $('#' + this.cavantable[is].Name).find(
+                                        'tr'
+                                    )[
+                                    this.cavantable[is]
+                                        .ParameterReportItemtList.dd
+                                        .startpoy
+                                    ]
+                                ).find('td').length;
+                                i3++
+                            ) {
+                                if (
+                                    $(
+                                        $(
+                                            $(
+                                                '#' + this.cavantable[is].Name
+                                            ).find('tr')[
+                                            this.cavantable[is]
+                                                .ParameterReportItemtList.dd
+                                                .startpoy
+                                            ]
+                                        ).find('td')[i3]
+                                    ).hasClass('datareadyfoot')
+                                ) {
+                                    sumnum = sumnum + 1;
+                                }
+                            }
+
+                            for (let jj = 0; jj < sumnum; jj++) {
+                                endwidth2 =
+                                    endwidth2 +
+                                    parseInt(
+                                        $(
+                                            $(
+                                                '#' + this.cavantable[is].Name
+                                            ).find(
+                                                '#row-' +
+                                                this.cavantable[is]
+                                                    .ParameterReportItemtList
+                                                    .dd.startpoy
+                                            )
+                                        ).find('.datareadyfoot')[jj].clientWidth
+                                    );
+                            }
+                            if (
+                                endwidth2 -
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].clientWidth +
+                                parseFloat(
+                                    this.cavantable[is].PropertyList.Left
+                                ) <=
+                                0
+                            ) {
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].style.left = 0 + 'px';
+                            } else {
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].style.left =
+                                    endwidth2 -
+                                    $(
+                                        '#' + this.cavantable[is].Name + 'page'
+                                    )[0].clientWidth +
+                                    parseFloat(
+                                        this.cavantable[is].PropertyList.Left
+                                    ) +
+                                    'px';
+                            }
+
+                            let nownum = parseInt(
+                                this.cavantable[is].ParameterReportItemtList.dd
+                                    .startpoy
+                            );
+                            // if(this.cavantable[is].yh == 1){
+                            //     endheight += 3*this.cavantable[is].endpoy;
+                            //   this.cavantable[is].yh = 2;
+                            // }
+                            for (
+                                let jj = 0;
+                                jj < this.cavantable[is].endpoy;
+                                jj++
+                            ) {
+                                endheight2 =
+                                    endheight2 +
+                                    parseInt(
+                                        $(
+                                            $(
+                                                '#' + this.cavantable[is].Name
+                                            ).find('#row-' + nownum)
+                                        )[0].clientHeight
+                                    );
+
+                                nownum++;
+                            }
+                            if ($('#' + this.cavantable[is].Name + 'page')[0]) {
+                                $(
+                                    '#' + this.cavantable[is].Name + 'page'
+                                )[0].style.top =
+                                    endheight2 +
+                                    parseFloat(
+                                        this.cavantable[is].PropertyList.Top
+                                    ) +
+                                    'px';
+                            }
                         } else {
-                            $(
-                                '#' + this.cavantable[is].Name + 'page'
-                            )[0].style.left =
-                                Number(
+                            var endwidth2 = 0;
+                            for (
+                                let j1 = 0;
+                                j1 <
+                                parseInt(
+                                    this.cavantable[is].ParameterReportItemtList
+                                        .dd.startpox
+                                );
+                                j1++
+                            ) {
+                                endwidth2 =
+                                    endwidth2 +
+                                    $('#' + this.cavantable[is].Name).find(
+                                        'td'
+                                    )[j1].clientWidth;
+                            }
+
+                            endwidth2 =
+                                endwidth2 +
+                                parseInt(
                                     $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.left.replace('px', '')
-                                ) +
-                                Number(
+                                        $('#' + this.cavantable[is].Name).find(
+                                            '#row-' +
+                                            this.cavantable[is]
+                                                .ParameterReportItemtList.dd
+                                                .startpoy
+                                        )
+                                    ).find('.datareadyhead')[0].clientWidth
+                                );
+                            for (
+                                let jj = 0;
+                                jj < this.cavantable[is].endpox;
+                                jj++
+                            ) {
+                                endwidth2 =
+                                    endwidth2 +
+                                    parseInt(
+                                        $(
+                                            $(
+                                                '#' + this.cavantable[is].Name
+                                            ).find(
+                                                '#row-' +
+                                                this.cavantable[is]
+                                                    .ParameterReportItemtList
+                                                    .dd.startpoy
+                                            )
+                                        ).find('.dataready')[jj].clientWidth
+                                    );
+                            }
+                            if ($('#' + this.cavantable[is].Name + 'page')[0]) {
+                                if (
+                                    endwidth2 -
                                     $(
-                                        '#' + this.cavantable[is].Name
-                                    )[0].style.width.replace('px', '')
-                                ) -
-                                200 +
-                                'px';
+                                        '#' +
+                                        this.cavantable[is].Name +
+                                        'page'
+                                    )[0].clientWidth +
+                                    parseFloat(
+                                        this.cavantable[is].PropertyList
+                                            .Left
+                                    ) <=
+                                    0
+                                ) {
+                                    $(
+                                        '#' + this.cavantable[is].Name + 'page'
+                                    )[0].style.left = 0 + 'px';
+                                } else {
+                                    $(
+                                        '#' + this.cavantable[is].Name + 'page'
+                                    )[0].style.left =
+                                        endwidth2 -
+                                        $(
+                                            '#' +
+                                            this.cavantable[is].Name +
+                                            'page'
+                                        )[0].clientWidth +
+                                        parseFloat(
+                                            this.cavantable[is].PropertyList
+                                                .Left
+                                        ) +
+                                        'px';
+                                }
+                            }
+
+                            let nownum = parseInt(
+                                this.cavantable[is].ParameterReportItemtList.dd
+                                    .startpoy
+                            );
+                            for (
+                                let jj = 0;
+                                jj < this.cavantable[is].endpoy;
+                                jj++
+                            ) {
+                                endheight2 =
+                                    endheight2 +
+                                    parseInt(
+                                        $(
+                                            $(
+                                                '#' + this.cavantable[is].Name
+                                            ).find('#row-' + nownum)
+                                        )[0].clientHeight
+                                    );
+
+                                nownum++;
+                            }
 
                             $(
-                                '#' + this.cavantable[i].Name + 'page'
+                                '#' + this.cavantable[is].Name + 'page'
                             )[0].style.top =
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[i].Name
-                                    )[0].style.top.replace('px', '')
+                                endheight2 +
+                                parseFloat(
+                                    this.cavantable[is].PropertyList.Top
                                 ) +
-                                Number(
-                                    $(
-                                        '#' + this.cavantable[i].Name
-                                    )[0].style.height.replace('px', '')
-                                ) +
-                                2 +
                                 'px';
                         }
                     }
@@ -12123,7 +9651,7 @@ export default {
                         let endxlength =
                             $(
                                 $('#' + this.cavantable[i].Name).find('tr')[
-                                    z + 1
+                                z + 1
                                 ]
                             ).find('td').length - 1;
                         let endylength =
@@ -12168,18 +9696,18 @@ export default {
                                     $(
                                         '#' + $(this).parent().parent()[0].id
                                     ).find('.numinp')[0].value <
-                                        that.cavantable[i].numpage &&
+                                    that.cavantable[i].numpage &&
                                     !isNaN(
                                         $(
                                             '#' +
-                                                $(this).parent().parent()[0].id
+                                            $(this).parent().parent()[0].id
                                         ).find('.numinp')[0].value
                                     )
                                 ) {
                                     if (
                                         $(
                                             '#' +
-                                                $(this).parent().parent()[0].id
+                                            $(this).parent().parent()[0].id
                                         ).find('.numinp')[0].value >= 1
                                     ) {
                                         let a = JSON.stringify(
@@ -12188,13 +9716,13 @@ export default {
                                         let f = JSON.parse(a);
                                         $(
                                             '#' +
-                                                $(this).parent().parent()[0].id
+                                            $(this).parent().parent()[0].id
                                         ).find('.numinp')[0].value++;
                                         let b =
                                             $(
                                                 '#' +
-                                                    $(this).parent().parent()[0]
-                                                        .id
+                                                $(this).parent().parent()[0]
+                                                    .id
                                             ).find('.numinp')[0].value - 1;
                                         that.cavantable[i].nowdata = f.splice(
                                             b * that.cavantable[is].nowlength,
@@ -12226,14 +9754,14 @@ export default {
                                     !isNaN(
                                         $(
                                             '#' +
-                                                $(this).parent().parent()[0].id
+                                            $(this).parent().parent()[0].id
                                         ).find('.numinp')[0].value
                                     )
                                 ) {
                                     if (
                                         $(
                                             '#' +
-                                                $(this).parent().parent()[0].id
+                                            $(this).parent().parent()[0].id
                                         ).find('.numinp')[0].value >= 1
                                     ) {
                                         let a = JSON.stringify(
@@ -12242,13 +9770,13 @@ export default {
                                         let f = JSON.parse(a);
                                         $(
                                             '#' +
-                                                $(this).parent().parent()[0].id
+                                            $(this).parent().parent()[0].id
                                         ).find('.numinp')[0].value--;
                                         let b =
                                             $(
                                                 '#' +
-                                                    $(this).parent().parent()[0]
-                                                        .id
+                                                $(this).parent().parent()[0]
+                                                    .id
                                             ).find('.numinp')[0].value - 1;
                                         that.cavantable[i].nowdata = f.splice(
                                             b * that.cavantable[is].nowlength,
@@ -12338,8 +9866,8 @@ export default {
                                     parseInt(
                                         $(
                                             '#' +
-                                                that.cavantable[i].Name +
-                                                'page'
+                                            that.cavantable[i].Name +
+                                            'page'
                                         ).find('.numinp')[0].value
                                     ) <=
                                     that.cavantable[i].numpage
@@ -12352,8 +9880,8 @@ export default {
                                     let b =
                                         $(
                                             '#' +
-                                                that.cavantable[i].Name +
-                                                'page'
+                                            that.cavantable[i].Name +
+                                            'page'
                                         ).find('.numinp')[0].value - 1;
 
                                     that.cavantable[i].nowdata = f.splice(
@@ -12387,28 +9915,28 @@ export default {
                                 ) {
                                     if (
                                         1 <=
-                                            parseInt(
-                                                $(
-                                                    '#' +
-                                                        that.cavantable[i]
-                                                            .Name +
-                                                        'page'
-                                                ).find('.numinp')[0].value
-                                            ) &&
                                         parseInt(
                                             $(
                                                 '#' +
-                                                    that.cavantable[i].Name +
-                                                    'page'
+                                                that.cavantable[i]
+                                                    .Name +
+                                                'page'
+                                            ).find('.numinp')[0].value
+                                        ) &&
+                                        parseInt(
+                                            $(
+                                                '#' +
+                                                that.cavantable[i].Name +
+                                                'page'
                                             ).find('.numinp')[0].value
                                         ) <= that.cavantable[i].numpage &&
                                         !isNaN(
                                             parseInt(
                                                 $(
                                                     '#' +
-                                                        that.cavantable[i]
-                                                            .Name +
-                                                        'page'
+                                                    that.cavantable[i]
+                                                        .Name +
+                                                    'page'
                                                 ).find('.numinp')[0].value
                                             )
                                         )
@@ -12421,8 +9949,8 @@ export default {
                                         let b =
                                             $(
                                                 '#' +
-                                                    that.cavantable[i].Name +
-                                                    'page'
+                                                that.cavantable[i].Name +
+                                                'page'
                                             ).find('.numinp')[0].value - 1;
 
                                         that.cavantable[i].nowdata = f.splice(
@@ -12454,13 +9982,13 @@ export default {
                     that.$store.state.report = false;
                     let a = $(
                         '#' +
-                            $(this)
-                                .parent()
-                                .parent()
-                                .parent()
-                                .parent()
-                                .parent()
-                                .parent()[0].id
+                        $(this)
+                            .parent()
+                            .parent()
+                            .parent()
+                            .parent()
+                            .parent()
+                            .parent()[0].id
                     ).find('.nowinput').length;
                     var tablename1 = $(this)
                         .parent()
@@ -12473,13 +10001,13 @@ export default {
                         $(
                             $(
                                 '#' +
-                                    $(this)
-                                        .parent()
-                                        .parent()
-                                        .parent()
-                                        .parent()
-                                        .parent()
-                                        .parent()[0].id
+                                $(this)
+                                    .parent()
+                                    .parent()
+                                    .parent()
+                                    .parent()
+                                    .parent()
+                                    .parent()[0].id
                             ).find('.nowinput')[0]
                         ).removeClass('nowinput');
                     }
@@ -12559,7 +10087,7 @@ export default {
                         if (
                             tablename1 == EventScriptList[i1].ElementName &&
                             EventScriptList[i1].EventType ==
-                                'MouseLeftButtonDown'
+                            'MouseLeftButtonDown'
                         ) {
                             EventType.push(EventScriptList[i1]);
                         }
@@ -12701,14 +10229,14 @@ export default {
                         that.$store.state.report = false;
                         let a = $(
                             '#' +
-                                $(this)
-                                    .parent()
-                                    .parent()
-                                    .parent()
-                                    .parent()
-                                    .parent()
-                                    .parent()
-                                    .parent()[0].id
+                            $(this)
+                                .parent()
+                                .parent()
+                                .parent()
+                                .parent()
+                                .parent()
+                                .parent()
+                                .parent()[0].id
                         ).find('.nowinput').length;
                         var tablename1 = $(this)
                             .parent()
@@ -12722,14 +10250,14 @@ export default {
                             $(
                                 $(
                                     '#' +
-                                        $(this)
-                                            .parent()
-                                            .parent()
-                                            .parent()
-                                            .parent()
-                                            .parent()
-                                            .parent()
-                                            .parent()[0].id
+                                    $(this)
+                                        .parent()
+                                        .parent()
+                                        .parent()
+                                        .parent()
+                                        .parent()
+                                        .parent()
+                                        .parent()[0].id
                                 ).find('.nowinput')[0]
                             ).removeClass('nowinput');
                         }
@@ -12842,7 +10370,7 @@ export default {
                             if (
                                 tablename1 == EventScriptList[i1].ElementName &&
                                 EventScriptList[i1].EventType ==
-                                    'MouseLeftButtonDown'
+                                'MouseLeftButtonDown'
                             ) {
                                 EventType.push(EventScriptList[i1]);
                             }
@@ -13268,18 +10796,18 @@ export default {
                                     for (let a1 = 0; a1 < a.length; a1++) {
                                         if (
                                             one.cellparalist[a2].itemdata ==
-                                                a[a1].name &&
+                                            a[a1].name &&
                                             one.cellparalist[a2].sumtype ==
-                                                a[a1].sumtype &&
+                                            a[a1].sumtype &&
                                             one.cellparalist[a2].itemdata
                                         ) {
                                             if (!a[a1].value) {
                                                 $(
                                                     '#' +
-                                                        this.cavantable[i].Name
+                                                    this.cavantable[i].Name
                                                 ).find(
                                                     '#' +
-                                                        one.cellparalist[a2].id
+                                                    one.cellparalist[a2].id
                                                 )[0].innerHTML = this.getPointNum(
                                                     one.cellparalist[a2]
                                                         .defauldisplay,
@@ -13291,10 +10819,10 @@ export default {
                                             } else {
                                                 $(
                                                     '#' +
-                                                        this.cavantable[i].Name
+                                                    this.cavantable[i].Name
                                                 ).find(
                                                     '#' +
-                                                        one.cellparalist[a2].id
+                                                    one.cellparalist[a2].id
                                                 )[0].innerHTML = this.getPointNum(
                                                     a[a1].value,
                                                     parseInt(
@@ -13381,20 +10909,20 @@ export default {
                                         for (let a1 = 0; a1 < a.length; a1++) {
                                             if (
                                                 one.cellparalist[a2].itemdata ==
-                                                    a[a1].name &&
+                                                a[a1].name &&
                                                 one.cellparalist[a2].sumtype ==
-                                                    a[a1].sumtype &&
+                                                a[a1].sumtype &&
                                                 one.cellparalist[a2].itemdata
                                             ) {
                                                 if (a[a1].value == null) {
                                                     $(
                                                         '#' +
-                                                            this.cavantable[i]
-                                                                .Name
+                                                        this.cavantable[i]
+                                                            .Name
                                                     ).find(
                                                         '#' +
-                                                            one.cellparalist[a2]
-                                                                .id
+                                                        one.cellparalist[a2]
+                                                            .id
                                                     )[0].innerHTML = this.getPointNum(
                                                         one.cellparalist[a2]
                                                             .defauldisplay,
@@ -13406,12 +10934,12 @@ export default {
                                                 } else {
                                                     $(
                                                         '#' +
-                                                            this.cavantable[i]
-                                                                .Name
+                                                        this.cavantable[i]
+                                                            .Name
                                                     ).find(
                                                         '#' +
-                                                            one.cellparalist[a2]
-                                                                .id
+                                                        one.cellparalist[a2]
+                                                            .id
                                                     )[0].innerHTML = this.getPointNum(
                                                         a[a1].value,
                                                         parseInt(
@@ -13490,20 +11018,20 @@ export default {
                                         for (let a1 = 0; a1 < a.length; a1++) {
                                             if (
                                                 one.cellparalist[a2].itemdata ==
-                                                    a[a1].name &&
+                                                a[a1].name &&
                                                 one.cellparalist[a2].sumtype ==
-                                                    a[a1].sumtype &&
+                                                a[a1].sumtype &&
                                                 one.cellparalist[a2].itemdata
                                             ) {
                                                 if (a[a1].value == null) {
                                                     $(
                                                         '#' +
-                                                            this.cavantable[i]
-                                                                .Name
+                                                        this.cavantable[i]
+                                                            .Name
                                                     ).find(
                                                         '#' +
-                                                            one.cellparalist[a2]
-                                                                .id
+                                                        one.cellparalist[a2]
+                                                            .id
                                                     )[0].innerHTML = this.getPointNum(
                                                         one.cellparalist[a2]
                                                             .defauldisplay,
@@ -13515,12 +11043,12 @@ export default {
                                                 } else {
                                                     $(
                                                         '#' +
-                                                            this.cavantable[i]
-                                                                .Name
+                                                        this.cavantable[i]
+                                                            .Name
                                                     ).find(
                                                         '#' +
-                                                            one.cellparalist[a2]
-                                                                .id
+                                                        one.cellparalist[a2]
+                                                            .id
                                                     )[0].innerHTML = this.getPointNum(
                                                         a[a1].value,
                                                         parseInt(
@@ -13551,7 +11079,7 @@ export default {
                         data: end,
                     })
                         .then((res) => {
-                            console.log('是123', JSON.parse(res.data.data));
+                            console.log('是123', res.data.data);
 
                             if (
                                 res.data.data == '无数据' ||
@@ -13663,8 +11191,8 @@ export default {
                                                 '#' + this.cavantable[i].Name
                                             ).find(
                                                 '#' +
-                                                    this.cavantable[i].sju[ac]
-                                                        .id
+                                                this.cavantable[i].sju[ac]
+                                                    .id
                                             )[0] !== undefined
                                         ) {
                                             if (
@@ -13676,12 +11204,12 @@ export default {
                                             ) {
                                                 $(
                                                     '#' +
-                                                        this.cavantable[i].Name
+                                                    this.cavantable[i].Name
                                                 ).find(
                                                     '#' +
-                                                        this.cavantable[i].sju[
-                                                            ac
-                                                        ].id
+                                                    this.cavantable[i].sju[
+                                                        ac
+                                                    ].id
                                                 )[0].innerHTML = JSON.parse(
                                                     sessionStorage.getItem(
                                                         'sightseerInfo1'
@@ -13690,12 +11218,12 @@ export default {
                                             } else {
                                                 $(
                                                     '#' +
-                                                        this.cavantable[i].Name
+                                                    this.cavantable[i].Name
                                                 ).find(
                                                     '#' +
-                                                        this.cavantable[i].sju[
-                                                            ac
-                                                        ].id
+                                                    this.cavantable[i].sju[
+                                                        ac
+                                                    ].id
                                                 )[0].innerHTML = JSON.parse(
                                                     sessionStorage.getItem(
                                                         'userInfo1'
@@ -13789,11 +11317,9 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>
 
 <style lang="scss" scoped>
-
 .DateTimePicker28a {
     display: inline-block;
     user-select: none;
@@ -13801,13 +11327,16 @@ export default {
     box-sizing: border-box;
     position: relative;
 }
+
 .textimportInput {
     // border:none;
     height: 34px;
 }
+
 td {
     position: relative !important;
 }
+
 input {
     font-size: 12px;
     border: none;
@@ -13826,6 +11355,7 @@ input {
     text-overflow: ellipsis;
     text-align: center;
 }
+
 .tip12 {
     position: fixed;
     width: 380px;
@@ -13835,16 +11365,19 @@ input {
     left: 750px;
     box-shadow: 0px 0px 8px black;
     background-color: #f3f3f4;
+
     .tiptop {
         width: 380px;
         height: 40px;
         background-color: #ffbc3d;
+
         img {
             width: 20px;
             height: 20px;
             margin-top: 10px;
             margin-left: 160px;
         }
+
         span {
             color: #ffffff;
             position: relative;
@@ -13852,11 +11385,13 @@ input {
             margin-left: 7px;
         }
     }
+
     .tipword {
         width: 100%;
         text-align: center;
         margin-top: 50px;
     }
+
     .tipdetermine {
         color: #ea9328;
         cursor: pointer;
@@ -13877,6 +11412,7 @@ input {
         margin-top: 40px;
         margin-left: 25px;
         height: 30px;
+
         .one {
             cursor: pointer;
             display: inline-block;
@@ -13886,6 +11422,7 @@ input {
             background-color: #e0e0e0;
             color: #7e7e7e;
         }
+
         .two {
             cursor: pointer;
             display: inline-block;
@@ -13898,6 +11435,7 @@ input {
         }
     }
 }
+
 .yd {
     margin: auto;
     top: 0 !important;
@@ -13907,9 +11445,12 @@ input {
 }
 </style>
 <style lang="scss">
-.table-box{ height:100%;
-    .jexcel-content{
-        height:100%;
+.table-box {
+    height: 100%;
+
+    .jexcel-content {
+        height: 100%;
+        overflow: hidden;
     }
 }
 </style>

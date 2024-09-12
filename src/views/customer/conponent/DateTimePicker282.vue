@@ -35,9 +35,7 @@
                     item.opacity +
                     'overflow:hidden;zIndex:' +
                     (Number(item.ZIndex) + 1) +
-                    ';padding:' +
-                    item.BorderThickness +
-                    'px;border:' +
+                    ';border:' +
                     item.borderColor +
                     ' ' +
                     item.BorderThickness +
@@ -47,6 +45,7 @@
                     item.rotate +
                     'deg);boxShadow:' +
                     item.Shadow
+                     + `;${item.showBorder ? `border: ${item.BorderThickness}px solid ${item.borderStyle}` : `padding: ${item.BorderThickness}px`}`
                 "
             >
                 <el-date-picker
@@ -634,6 +633,8 @@ export default {
                     ')';
             }
             //边框色渐变
+            let showBorder = false
+            let borderStyle = ''
             if (borderbrushArr.ColorType == 'SolidColor') {
                 borderColor =
                     '#' +
@@ -666,16 +667,11 @@ export default {
 
             //背景色渐变
             if (backgroundArr.ColorType == 'SolidColor') {
-                backColor =
-                    '#' +
-                    backgroundArr.Data.Color.slice(3) +
-                    backgroundArr.Data.Color.slice(1, 3);
-                if (
-                    backgroundArr.Data.Color.slice(3) == 'FFFFFF' &&
-                    backgroundArr.Data.Color.slice(1, 3) != 'FF'
-                ) {
-                    borderColor =
-                        '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3);
+                backColor ='#' + backgroundArr.Data.Color.slice(3) +backgroundArr.Data.Color.slice(1, 3);
+                if (backgroundArr.Data.Color.slice(3) == 'FFFFFF' &&backgroundArr.Data.Color.slice(1, 3) != 'FF') {
+                    borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3);
+                    showBorder = true
+                    borderStyle = `#${borderbrushArr.Data.Color.slice(3)}`
                 }
             } else {
                 backColor = '';
@@ -711,6 +707,8 @@ export default {
                 clipText: clipText,
                 borderColor: borderColor,
                 backColor: backColor,
+                showBorder,
+                borderStyle
             };
             return value;
         },
@@ -918,6 +916,8 @@ export default {
                                     ZIndex: this.ZIndex,
                                     family: this.textblockData[i].PropertyList
                                         .FontFamily,
+                                    showBorder: colorData.showBorder,
+                                    borderStyle: colorData.borderStyle
                                 };
                                 this.dataValue.push(value5);
 

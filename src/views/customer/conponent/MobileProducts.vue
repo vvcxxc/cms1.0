@@ -16,7 +16,7 @@
      class="MobileProducts" :style="'width:' + item.width + 'px; height:' 
     + item.height + 'px; position:absolute; top:' + item.top+ 'px; left:' + item.left 
     + 'px; transform:rotate(' + item.rotate +'deg); opacity:' + item.opacity + ';zIndex:'
-    + item.ZIndex + ';boxShadow:' + item.Shadow + ';box-sizing:border-box'">
+    + item.ZIndex + ';boxShadow:' + item.Shadow + ';box-sizing:border-box' + `;border: ${item.showBorder ? `${item.StrokeThickness}px solid ${item.borderStyle}` : ''}` ">
        <div class="box" :style="'position:absolute;zIndex:'+(item.ZIndex+2)+';width:' + item.width + 'px;height:' 
        + item.height+'px;boxSizeng:border-box;-webkit-mask-repeat: repeat-x, repeat-y, repeat-x, repeat-y;'
        + '-webkit-mask-position: 0 0, 0 0, 0 100%, 100% 0;zIndex:'+(item.ZIndex+1)+';-webkit-mask-image: linear-gradient'
@@ -493,6 +493,8 @@ export default {
                     Shadow = InnerShadow
                 }
                   //边框色渐变
+                  let showBorder = false
+                  let borderStyle = ''
                   if(StrokeArr.ColorType == 'SolidColor'){
                       strokeColor = '#' + StrokeArr.Data.Color.slice(3) + StrokeArr.Data.Color.slice(1, 3)
                   }else{
@@ -509,6 +511,8 @@ export default {
                     fillColor = '#' + FilldArr.Data.Color.slice(3) + FilldArr.Data.Color.slice(1, 3)
                      if(FilldArr.Data.Color.slice(3) == 'FFFFFF' && FilldArr.Data.Color.slice(1, 3) != "FF"){
                         strokeColor = '#FFFFFF' + FilldArr.Data.Color.slice(1, 3)
+                        showBorder = true
+                        borderStyle = `#${StrokeArr.Data.Color.slice(3)}`
                     }
                 }else{
                         fillColor = ''
@@ -607,7 +611,9 @@ export default {
                                 ProductFlowList:ProductIdArr5,
                                 StartPointY:dataProductFlowList[k].StartPoint.Y.Value,
                                 StartPointX:dataProductFlowList[k].StartPoint.X.Value,
-                                suspensionShow:false
+                                suspensionShow:false,
+                                showBorder,
+                                borderStyle
                             }
                             this.dataValue.push(value)
                           }

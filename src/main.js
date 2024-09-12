@@ -154,13 +154,10 @@ axios.interceptors.request.use(function(config){
                                     if(config.url != '/api/Base/PostIOServiceTest'){
                                         if(config.url.slice(0,26)!='/api/control/GetDataColumn'){
                                             if(config.url.slice(0,46)!='/api/ProcessParameterConfigure/GstVariableList'){
-                                                if(config.url.slice(0,43)!=`/api/ProcessParameterConfigure/GstCondition`){
-                                                    if(config.url!=`/api/Polling/GetRoadwayAllocateNotify`){
-                                                        if(config.url.slice(0,41)!=`/api/UserManage/UserManage_CheckAuthority`){
-                                                            store.state.isShow=true; //在请求发出之前进行一些操作
-                                                        }
-                                                    }
-                                                }
+  // console.log('ee88',config.url)          
+                                           if(config.url.slice(0,43)!=`/api/ProcessParameterConfigure/GstCondition`){
+                                             store.state.isShow=true; //在请求发出之前进行一些操作
+                                            }
                                             }
                                           
                                         }

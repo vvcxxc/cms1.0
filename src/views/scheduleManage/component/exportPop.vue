@@ -7,7 +7,7 @@
 -->
 <template>
     <div class="export_box">
-        <div  v-drager class="head">{{lang.AlarmRecord_HT_AlarmPointManageUC_Export}}
+        <div  v-drag class="head">{{lang.AlarmRecord_HT_AlarmPointManageUC_Export}}
            <div @click="can()" class="headImg"></div>
         </div>
         <div class="export_middle">

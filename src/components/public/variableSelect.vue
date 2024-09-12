@@ -8,108 +8,47 @@
             <div class="popContent">
                 <div class="mySearch">
                     <span class="text">设备：</span>
-                    <el-select
-                        v-model="oneselect"
-                        placeholder=""
-                        style="width: 130px; height: 30px"
-                        class="space"
-                        @change="handleSelect"
-                    >
-                        <el-option
-                            v-for="(item, index) in projectlist"
-                            :key="index"
-                            :value="item.DeviceName"
-                        >
+                    <el-select v-model="oneselect" placeholder="" style="width: 130px; height: 30px" class="space"
+                        @change="handleSelect">
+                        <el-option v-for="(item, index) in projectlist" :key="index" :value="item.DeviceName">
                             {{ item.DisplayDeviceName }}
                         </el-option>
                     </el-select>
                     <span class="text">组名：</span>
-                    <el-select
-                        v-model="twoselect"
-                        placeholder=""
-                        style="width: 130px; height: 30px"
-                        class="space"
-                        @change="handleSelect"
-                    >
-                        <el-option
-                            v-for="(item, index) in projectlist2"
-                            :key="index"
-                            :value="item.GroupName"
-                        >
+                    <el-select v-model="twoselect" placeholder="" style="width: 130px; height: 30px" class="space"
+                        @change="handleSelect">
+                        <el-option v-for="(item, index) in projectlist2" :key="index" :value="item.GroupName">
                             {{ item.GroupName }}
                         </el-option>
                     </el-select>
                     <span class="text">数据类型：</span>
-                    <el-select
-                        v-model="threeselect"
-                        placeholder=""
-                        style="width: 130px; height: 30px"
-                        class="space"
-                        @change="handleSelect"
-                    >
-                        <el-option
-                            v-for="(item, index) in projectlist3"
-                            :key="index"
-                            :value="item.Value"
-                        >
+                    <el-select v-model="threeselect" placeholder="" style="width: 130px; height: 30px" class="space"
+                        @change="handleSelect">
+                        <el-option v-for="(item, index) in projectlist3" :key="index" :value="item.Value">
                             {{ item.Text }}
                         </el-option>
                     </el-select>
-                    <el-input
-                        v-model="projectkeyword"
-                        style="width: 130px; height: 30px"
-                        placeholder="关键字"
-                        class="space"
-                        @keyup.enter.native="handleSelect"
-                    ></el-input>
+                    <el-input v-model="projectkeyword" style="width: 130px; height: 30px" placeholder="关键字" class="space"
+                        @keyup.enter.native="handleSelect"></el-input>
                     <el-button class="btn btn2" @click="handleSelect">
                         查询
                     </el-button>
                 </div>
                 <div class="myTable">
-                    <el-table
-                        :data="tableData"
-                        height="100%"
-                        border
-                        ref="multipleTable"
-                        highlight-current-row
-                        stripe
-                        tooltip-effect="dark"
-                        style="width: 100%"
-                        :header-cell-style="{
+                    <el-table :data="tableData" height="100%" border ref="multipleTable" highlight-current-row stripe
+                        tooltip-effect="dark" style="width: 100%" :header-cell-style="{
                             background: '#E1EDFA',
                             color: '#769DE7',
                             'border-left': '1px solid #cccccc',
                             height: '50px',
                             padding: '0',
-                        }"
-                        @current-change="handleCurrentChange"
-                    >
-                        <el-table-column
-                            prop="Device"
-                            label="设备名称"
-                            :show-overflow-tooltip="true"
-                        ></el-table-column>
-                        <el-table-column
-                            prop="DateType"
-                            label="数据类型"
-                            :show-overflow-tooltip="true"
-                        ></el-table-column>
-                        <el-table-column
-                            prop="Name"
-                            label="变量名"
-                            :show-overflow-tooltip="true"
-                        ></el-table-column>
-                        <el-table-column
-                            prop="Descript"
-                            label="描述"
-                            :show-overflow-tooltip="true"
-                        ></el-table-column>
-                        <el-table-column
-                            prop="Address"
-                            label="变量地址"
-                            :show-overflow-tooltip="true"
-                        ></el-table-column>
+                        }" @current-change="handleCurrentChange" @select="selectFn" @select-all="selectFn">
+                        <el-table-column v-if="multiple" type="selection" width="80px"></el-table-column>
+                        <el-table-column prop="Device" label="设备名称" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="DateType" label="数据类型" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="Name" label="变量名" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="Descript" label="描述" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="Address" label="变量地址" :show-overflow-tooltip="true"></el-table-column>
                     </el-table>
                 </div>
                 <div class="pages-container">
@@ -120,26 +59,17 @@
                 <el-button class="btn" @click="handleClick('no')">
                     取消
                 </el-button>
-                <el-button
-                    class="btn"
-                    @click="handleClick('yes')"
-                    style="
+                <el-button class="btn" @click="handleClick('yes')" style="
                         margin-right: 40px;
                         background: rgba(56, 109, 240);
                         border: 1px solid #386df0;
-                    "
-                >
+                    ">
                     确定
                 </el-button>
             </div>
         </div>
 
-        <tip-pop
-            v-if="isTipShow"
-            tipText="请选择变量"
-            :noCancel="true"
-            @tipCallBack="tipCallBack"
-        ></tip-pop>
+        <tip-pop v-if="isTipShow" tipText="请选择变量" :noCancel="true" @tipCallBack="tipCallBack"></tip-pop>
     </div>
 </template>
 
@@ -151,7 +81,7 @@ export default {
         MyPage,
         TipPop,
     },
-    props: ['data'],
+    props: ['data', 'multiple'],
     data() {
         return {
             no: require('@/assets/images/no3.png'),
@@ -179,6 +109,7 @@ export default {
             projectlist2: [],
             projectlist3: [],
             projectkeyword: '',
+            selectList: [],
         };
     },
     created() {
@@ -209,6 +140,9 @@ export default {
             });
     },
     methods: {
+        selectFn(arr) {
+            this.selectList = arr;
+        },
         initData() {
             let arr = [];
             if (this.threeselect == '不限') {
@@ -219,6 +153,9 @@ export default {
                     });
             } else {
                 arr.push(this.threeselect);
+            }
+            if (!arr.length) {
+                arr = null
             }
             this.$axios({
                 method: 'post',
@@ -258,33 +195,37 @@ export default {
                 this.isTipShow = true;
                 return;
             }
-            this.$emit('variableSelectCallBack', str, this.selectData);
+            if (this.multiple) {
+                this.$emit('variableSelectCallBack', str, this.selectList);
+            } else {
+                this.$emit('variableSelectCallBack', str, this.selectData);
+            }
         },
         tipCallBack() {
             this.isTipShow = false;
         },
-    },directives: {
-            drag: function(el) {
-                let dragBox = el; //获取当前元素
-                dragBox.onmousedown = e => {
-                    //算出鼠标相对元素的位置
-                    let disX = e.clientX - dragBox.offsetLeft;
-                    let disY = e.clientY - dragBox.offsetTop;
-                    document.onmousemove = e => {
-                        //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
-                        let left = e.clientX - disX;
-                        let top = e.clientY - disY;
-                        //移动当前元素
-                        dragBox.style.left = left + "px";
-                        dragBox.style.top = top + "px";
-                    };
-                    document.onmouseup = e => {
-                          document.onmousemove = null;
-                        document.onmouseup = null;
-                    };
+    }, directives: {
+        drag: function (el) {
+            let dragBox = el; //获取当前元素
+            dragBox.onmousedown = e => {
+                //算出鼠标相对元素的位置
+                let disX = e.clientX - dragBox.offsetLeft;
+                let disY = e.clientY - dragBox.offsetTop;
+                document.onmousemove = e => {
+                    //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
+                    let left = e.clientX - disX;
+                    let top = e.clientY - disY;
+                    //移动当前元素
+                    dragBox.style.left = left + "px";
+                    dragBox.style.top = top + "px";
                 };
-            }
-        },
+                document.onmouseup = e => {
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                };
+            };
+        }
+    },
 };
 </script>
 
@@ -316,6 +257,7 @@ export default {
             color: #ffffff;
             font-size: 20px;
             position: relative;
+
             img {
                 width: 60px;
                 height: 60px;

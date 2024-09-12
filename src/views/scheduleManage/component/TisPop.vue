@@ -7,7 +7,7 @@
 -->
 <template>
     <div class="deletePop" :style="{zoom: zoomValue}" >
-        <div v-drager class="title">
+        <div v-drag class="title">
             <span class="title_i el-icon-warning"></span>
             <span class="text">{{lang.HT_MessageBoxCaption_Tips}}</span>
         </div>

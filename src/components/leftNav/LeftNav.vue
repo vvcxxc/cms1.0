@@ -143,16 +143,32 @@ export default {
                         name: '推送日志'
                     }
                 ],
-                BaseData: [
+                OrderManagement:[
                     {
-                        name: '产品管理'
+                        name: '订单管理'
                     },
                     {
-                        name: '库区管理'
+                        name: '订单记录'
+                    },
+                ],
+                InspectionRecords:[
+                    {
+                        name: '巡检管理'
                     },
                     {
-                        name: '站点管理'
-                    }
+                        name: '巡检记录'
+                    },
+                    {
+                        name: '不良码管理'
+                    },
+                ],
+                PrintManagement:[
+                    {
+                        name: '打印机管理'
+                    },
+                    {
+                        name: '打印记录'
+                    },
                 ],
             },
             nav: [],

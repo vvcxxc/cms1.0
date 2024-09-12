@@ -278,8 +278,15 @@ export default {
                     }
                     var userid = this.$moment().valueOf()
 
+                    // 清除滑块功能的缓存
                     sessionStorage.setItem('userInfo1', JSON.stringify(user));
                     localStorage.setItem('isUser',userid)
+
+                    Object.keys(window.sessionStorage).forEach(item => {
+                        if(item.includes('LineChart')) {
+                            sessionStorage.removeItem(item)
+                        }
+                    })
                     this.$store.state.userId = userid 
                     this.$router.push('/onePath')
                     //登录记录

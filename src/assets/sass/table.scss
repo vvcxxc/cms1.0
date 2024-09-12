@@ -496,3 +496,6 @@
 .public-table{
     position: relative;
 }
+.el-table__body tr.current-row>td{
+    background-color: #CADEF5 !important;
+ }

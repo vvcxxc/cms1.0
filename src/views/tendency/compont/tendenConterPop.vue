@@ -8,7 +8,7 @@
 <template>
     <div class="tenPop_box" :style="{zoom:zoom11}">
         <div class="CurveArrPopcover" v-if="addCurveArrName"></div>
-        <div v-drager class="tenPop_fool" :style="{zoom1}">
+        <div v-drag class="tenPop_fool" :style="{zoom1}">
             <div class="tenPop_title">{{TitleText}}</div>
             <span @click="off" class="tenPop_i el-icon-close"></span>
         </div>

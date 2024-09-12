@@ -340,6 +340,17 @@ export default {
               this.LabelformatterShow = true
           }
           if(this.optionData.Label.PercentageShow == true){  //百分比
+            if (this.optionData.showCustom) {
+            this.Lableformatter = (e) =>{
+              //debugger
+              let newStr = this.PiechartFun(e)
+              if(this.ShowOutter){
+                  return '' + /* e.percent */ e.data.value + '%' + ' ' + this.Unit
+                }else{
+                  return  + /* e.percent */ e.data.value + '% ' + this.Unit
+                }
+            }
+          } else {
               this.Lableformatter = (e)=>{
                 var newStr = this.PiechartFun(e)
                 if(this.ShowOutter){
@@ -347,6 +358,7 @@ export default {
                 }else{
                   return  + e.percent + '% ' + this.Unit
                 }
+              }
               }  
               this.LabelformatterShow = true
           }
@@ -362,7 +374,18 @@ export default {
               this.LabelformatterShow = true
           }
           if(this.optionData.Label.ValueShow == true && this.optionData.Label.PercentageShow == true){  //数值+百分比
-                this.Lableformatter = (e)=>{
+            if (this.optionData.showCustom) {
+              this.Lableformatter = (e) =>{
+                //debugger
+                var newStr = this.PiechartFun(e)
+                if(this.ShowOutter){
+                  return  /* e.value */  e.data.originValue  + '\n'+ '' + /* e.percent */  e.data.value + '%' + ' ' + this.Unit
+                }else{
+                    return  /* e.value */ e.data.originValue  + '\n' + /* e.percent */ e.data.value + '%' + ' ' + this.Unit
+                }
+              }
+            } else {
+              this.Lableformatter = (e)=>{
                 var newStr = this.PiechartFun(e)
                 if(this.ShowOutter){
                   return  e.value + '\n'+ '' + e.percent + '%' + ' ' + this.Unit
@@ -370,10 +393,22 @@ export default {
                   return  e.value + '\n' + e.percent + '%' + ' ' + this.Unit
                 }
               }  
+            }
               this.LabelformatterShow = true
           }
            if(this.optionData.Label.DimensionShow == true && this.optionData.Label.PercentageShow == true){ //维度+百分比
-              this.Lableformatter = (e)=>{
+            if (this.optionData.showCustom) {
+            this.Lableformatter = (e) =>{
+              //debugger
+              var newStr = this.PiechartFun(e)
+              if(this.ShowOutter){
+                return newStr +'\n'+ '' +  /* e.percent */ e.data.value + '%' + ' ' + this.Unit
+              }else{
+                return   /* e.percent */ e.data.value + '%' + ' ' + this.Unit
+              }
+            }
+          } else {
+            this.Lableformatter = (e)=>{
                 var newStr = this.PiechartFun(e)
                 if(this.ShowOutter){
                   return newStr +'\n'+ '' +  e.percent + '%' + ' ' + this.Unit
@@ -381,10 +416,23 @@ export default {
                   return   e.percent + '%' + ' ' + this.Unit
                 }
               }  
+            }
               this.LabelformatterShow = true
           }
            if(this.optionData.Label.DimensionShow == true && this.optionData.Label.PercentageShow == true && this.optionData.Label.ValueShow == true){
-               this.Lableformatter = (e)=>{
+               
+            if (this.optionData.showCustom) {
+              this.Lableformatter = (e) =>{
+                //debugger
+                var newStr = this.PiechartFun(e)
+                if(this.ShowOutter == true){
+                  return newStr +'\n' + /* e.value */ e.data.originValue + '\n' + '' + /* e.percent */ e.data.value + '%' + ' ' + this.Unit
+                }else{
+                  return /* e.value */ e.data.originValue + '\n' + '' + /* e.percent */ e.data.value + '%' + ' ' + this.Unit
+                }
+              }
+            } else {
+              this.Lableformatter = (e)=>{
                   var newStr = this.PiechartFun(e)
                   if(this.ShowOutter){
                     return newStr +'\n' + e.value + '\n' + '' + e.percent + '%' + ' ' + this.Unit
@@ -392,6 +440,7 @@ export default {
                     return e.value + '\n' + '' + e.percent + '%' + ' ' + this.Unit
                   }
               }  
+            }
               this.LabelformatterShow = true
           }
          if(this.optionData.Label.DimensionShow == false && this.optionData.Label.PercentageShow == false && this.optionData.Label.ValueShow == false){
@@ -424,7 +473,18 @@ export default {
               this.TooltipformatterShow = true
           }
           if(this.optionData.Label.PercentageShow == true){  //百分比
+            if (this.optionData.showCustom) {
+              this.Tooltipformatter = (e) =>{
+                  let newStr = this.PieLabelConter(e)
+                  if(this.ShowOutter){
+                        return '' + /* e.percent */ e.data.value + '%' + ' ' + this.Unit
+                    }else{
+                        return  + /* e.percent */ e.data.value + '% ' + this.Unit
+                    }
+              }
+            } else {
               this.Tooltipformatter = '{d}%'
+            }
               this.TooltipformatterShow = true
           }
           if(this.optionData.Label.ValueShow == true && this.optionData.Label.DimensionShow == true){  //数值+维度
@@ -445,11 +505,32 @@ export default {
               this.TooltipformatterShow = true
           }
           if(this.optionData.Label.ValueShow == true && this.optionData.Label.PercentageShow == true){  //数值+百分比
-              this.Tooltipformatter = '{c} \n ({d}%)'
+            if (this.optionData.showCustom) {
+              this.Tooltipformatter = (e) =>{
+                  var newStr = this.PieLabelConter(e)
+                  if(this.ShowOutter){
+                      return  /* e.value */  e.data.originValue  + '\n'+ '' + /* e.percent */  e.data.value + '%' + ' ' + this.Unit
+                  }else{
+                          return  /* e.value */ e.data.originValue  + '\n' + /* e.percent */ e.data.value + '%' + ' ' + this.Unit
+                  }
+              }
+          } else {
+            this.Tooltipformatter = '{c} \n ({d}%)'
+          }
               this.TooltipformatterShow = true
           }
            if(this.optionData.Label.DimensionShow == true && this.optionData.Label.PercentageShow == true){  //维度+ 百分比
-            if(this.ShowOutter){
+            if (this.optionData.showCustom) {
+                            this.Tooltipformatter = (e) =>{
+                                var newStr = this.PieLabelConter(e)
+                                if(this.ShowOutter){
+                                    return newStr +'\n'+ '' +  /* e.percent */ e.data.value + '%' + ' ' + this.Unit
+                                }else{
+                                    return   /* e.percent */ e.data.value + '%' + ' ' + this.Unit
+                                }
+                            }
+                        } else {
+                           if(this.ShowOutter){
               this.Tooltipformatter =  function (params) {
                        if(params.name){
                            return params.name+':'+"("+params.percent+'%)'
@@ -463,10 +544,21 @@ export default {
                        }
               this.Tooltipformatter = '({d}%)'
             }
+          }
               this.TooltipformatterShow = true
           }
            if(this.optionData.Label.DimensionShow == true && this.optionData.Label.PercentageShow == true && this.optionData.Label.ValueShow == true){
-              if(this.ShowOutter==true){
+            if (this.optionData.showCustom) {
+                        this.Tooltipformatter = (e) =>{
+                            var newStr = this.PieLabelConter(e)
+                            if(this.ShowOutter == true){
+                                return newStr +'\n' + /* e.value */ e.data.originValue + '\n' + '' + /* e.percent */ e.data.value + '%' + ' ' + this.Unit
+                            }else{
+                                return /* e.value */ e.data.originValue + '\n' + '' + /* e.percent */ e.data.value + '%' + ' ' + this.Unit
+                            }
+                        }
+                    } else {
+                      if(this.ShowOutter==true){
                 this.Tooltipformatter = function (params) {
                         if(params.name){
                             return params.name+':'+params.value+"("+params.percent+'%)'
@@ -480,6 +572,7 @@ export default {
                         }
                 this.Tooltipformatter2 = '{c} ({d}%)'
               }
+            }
               this.TooltipformatterShow = true
           }
             if(this.optionData.Label.DimensionShow == false){  //在外显示没维度隐藏线
@@ -613,6 +706,7 @@ export default {
                  "value": this.VariablesData[v].Value ? this.VariablesData[v].Value: 0,
                 // value:90,
                  "name":this.VariablesData[v].DimensionName,
+                 "originValue": '',
                  "label": {
                    "normal": {
                      "fontSize": this.LabelFontSize,
@@ -627,6 +721,7 @@ export default {
                var value1 = {
                  "value": $this.VariablesData[v].Value ? $this.VariablesData[v].Value : 0,
                  "name":this.VariablesData[v].DimensionName,
+                 "originValue": '',
                  "label": {
                    "normal": {
                      show:false,
@@ -695,6 +790,7 @@ export default {
         },
         //刷数
         dynamicNumber(){
+          let $this = this
           setTimeout(()=>{
             if(this.myChart){
               var Ddata = this.myChart.getOption()
@@ -723,12 +819,13 @@ export default {
                for(let a=0;a<this.valueData.YDataCollection.length;a++){
                  var index = namearr.indexOf(this.valueData.YDataCollection[a].name)
                  Ddata.series[0].data[index].label.formatter = this.valueData.YDataCollection[a].YData[0]==='???'?'???':this.Lableformatter
-                    // this.valueData.YDataCollection[a].YData[0] =  
+                 this.valueData.YDataCollection[a].YData[0] =  this.valueData.YDataCollection[a].YData[0]==='???'?0:this.valueData.YDataCollection[a].YData[0] 
                  if(index != -1){
                    Ddata.series[0].label = this.isInner
                   console.log(this.valueData.YDataCollection[a].YData[0])
-                   Ddata.series[0].data[index].value = this.valueData.YDataCollection[a].YData[0]==='???'?0:this.valueData.YDataCollection[a].YData[0]
-                   if(Ddata2.length != 0){
+                  Ddata.series[0].data[index].value = this.valueData.YDataCollection[a].YData[0]==='???'?0:this.valueData.YDataCollection[a].YData[0]
+                  Ddata.series[0].data[index].originValue = $this.valueData.YDataCollection[a].originValue
+                  if(Ddata2.length != 0){
                     //  console.log("adsdasdasdas",Number(this.valueData.YDataCollection[a].YData[0]))
                       Ddata2.series[0].data[index].value =this.valueData.YDataCollection[a].YData[0]==='???'?0:this.valueData.YDataCollection[a].YData[0]//向内饼图数据
                    }
@@ -751,7 +848,6 @@ export default {
             }
 						
 					}
-     
               //历史
               if(this.drawLineShow){
                   this.$nextTick(()=>{

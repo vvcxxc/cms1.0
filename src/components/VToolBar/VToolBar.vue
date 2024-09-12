@@ -6,7 +6,7 @@
  * @LastEditTime: 2021-04-07 13:47:49
  -->
 <template>
-  <header class="v-toolbar" @click="yifu = false; showscreen = false"
+  <header v-show="!$store.state.fullScreen" class="v-toolbar" @click="yifu = false; showscreen = false"
     :class="{ colordiv: $store.state.color == 'grey' }">
     <div @click="warnIfon1" class="v-toolbar__content">
       <div class="header-top">
@@ -84,16 +84,16 @@
       </div>
       <div class="header-nav">
         <div v-if="header_login" @click.stop="headerFun()" class="header_login">...</div>
-        <div class="nav-item" v-for="(item, index) in Menus" :key="index">
+        <div class="nav-item" v-for="(item, index) in Menus" :key="index + 'key1'">
           <router-link class="link-to" @click.native="sad1(item)"
-            :to="{ path: item.to, query: { id: item.id, title: item.title } }"
+            :to="{ path: item.to, query: { id: item.id/* , title: item.title  */ } }"
             :class="{ 'now': now === item.title ? true : false }">{{ item.title }}</router-link>
           <div v-if="item.children && item.children.length > 0" class="nav-newItem"
             :class="{ colortip: $store.state.color == 'grey' }">
-            <div v-for="(newItem, newIndex) in item.children" :key="newIndex" class="newItem"
+            <div v-for="(newItem, newIndex) in item.children" :key="newIndex + 'key2'" class="newItem"
               :class="{ colortip: $store.state.color == 'grey' }">
               <router-link class="link-to" @click="fff(newItem.id)"
-                :to="{ path: newItem.to, query: { id: newItem.id, title: newItem.title } }" v-if="item.children"
+                :to="{ path: newItem.to, query: { id: newItem.id/* , title: newItem.title  */ } }" v-if="item.children"
                 :class="{ 'nowchildren': nowchildrem === newItem.title ? true : false }"
                 @click.native="sad2(newItem, item)">{{ newItem.title }}</router-link>
             </div>
@@ -102,17 +102,17 @@
       </div>
 
       <div v-if="headerNav2Show" class="header-nav header-nav2">
-        <div class="nav-item nav-item1" v-for="(item, index) in Menus2" :key="index">
-          <router-link class="link-to" :to="{ path: item.to, query: { id: item.id, title: item.title } }"
-            :class="{ 'now': now === item.title ? true : false }" @click.native.stop="sad1(item)">{{
-              item.title
+        <div class="nav-item nav-item1" v-for="(item, index) in Menus2" :key="index + 'key3'">
+          <router-link class="link-to" :to="{ path: item.to, query: { id: item.id/* , title: item.title  */ } }"
+            :class="{ 'now': now === item.title ? true : false }" @click.native.stop="sad1(item)">{{ item.title
             }}</router-link>
           <div v-if="item.children && item.children.length > 0" class="nav-newItem"
             :class="{ colortip: $store.state.color == 'grey' }">
-            <div v-for="(newItem, newIndex) in item.children" :key="newIndex" class="newItem"
+            <div v-for="(newItem, newIndex) in item.children" :key="newIndex + 'key4'" class="newItem"
               :class="{ colortip: $store.state.color == 'grey' }">
-              <router-link class="link-to" :to="{ path: newItem.to, query: { id: newItem.id, title: newItem.title } }"
-                v-if="item.children" :class="{ 'nowchildren': nowchildrem === newItem.title ? true : false }"
+              <router-link class="link-to"
+                :to="{ path: newItem.to, query: { id: newItem.id/* , title: newItem.title */ } }" v-if="item.children"
+                :class="{ 'nowchildren': nowchildrem === newItem.title ? true : false }"
                 @click.native.stop="sad2(newItem, item)">{{ newItem.title }}</router-link>
             </div>
           </div>
@@ -127,23 +127,11 @@
     </div>
 
     <div v-show="wranShow" class="warn_pop" :class="{ colordiv: $store.state.color == 'grey' }">
-      <div @click="warnFun('易损件寿命管理')" class="warn_row1">
-        <span class="text">{{ lang.ToDoWearingParts }}</span>
-        <span class="num">{{ vulnerablePartNum }}</span>
-      </div>
-      <div @click="warnFun('点巡检管理')" class="warn_row1">
-        <span class="text">{{ lang.PointInspectionManage_ToDoInspection }}</span>
-        <span class="num">{{ pointInspectionNum }}</span>
-      </div>
-      <div @click="warnFun('保养管理')" class="warn_row1">
-        <span class="text">{{ lang.MaintenanceManage_ToDoMaintenance }}</span>
-        <span class="num">{{ maintainNum }}</span>
+      <div v-for="item in warnList" :key="item.Title" @click="warnFun(item)" class="warn_row1">
+        <span class="text">{{ item.Title }}</span>
+        <span class="num">{{ item.Message }}</span>
       </div>
 
-      <div @click="warnFun('维修管理')" class="warn_row1">
-        <span class="text">{{ lang.RepairManage_ToDoRepair }}</span>
-        <span class="num">{{ repairNum }}</span>
-      </div>
     </div>
 
     <div v-show="loginShow" class="login_pop" :class="{ colordiv: $store.state.color == 'grey' }">
@@ -191,8 +179,7 @@
       <div class="software_head" :class="{ colordiv: $store.state.color == 'grey' }">
         <!-- <span>{{lang.AboutUsView_AboutSoftWare}}</span> -->
         <span :class="{ colordiv1: $store.state.color == 'grey' }">{{ appTitle }}</span>
-        <i @click="softwareCloseFun" class="close el-icon-close"
-          :class="{ colordiv1: $store.state.color == 'grey' }"></i>
+        <i @click="softwareCloseFun" class="close el-icon-close" :class="{ colordiv1: $store.state.color == 'grey' }"></i>
       </div>
       <div class="app-conter">
         <div v-show="appTitle == lang.AppDownload">
@@ -289,8 +276,8 @@
         <span class="text">{{ lang.HT_MessageBoxCaption_Tips }}</span>
       </div>
       <div class="login_conter">
-        <div>{{ `${lang.Main_MessageBox_IfLoginOut} &lt;${userName1 == lang.SuperAdmin ? 'SuperAdmin' : userName1}&gt;
-        ?` }}</div>
+        <div>{{ `${lang.Main_MessageBox_IfLoginOut} &lt;${userName1 == lang.SuperAdmin ? 'SuperAdmin' : userName1}&gt; ?`
+        }}</div>
       </div>
       <div class="login_btn">
         <div @click="login_no" class="login_no">{{ lang.MessageBox_NO }}</div>
@@ -360,8 +347,7 @@
         <div class="confirm_password">
           <div class="text3">{{ lang.AboutUsView_ConfirmPassword }}</div>
           <div class="ipt3">
-            <el-input show-password v-model="confirm_password"
-              :placeholder="lang.AboutUsView_PEPasswordAgain"></el-input>
+            <el-input show-password v-model="confirm_password" :placeholder="lang.AboutUsView_PEPasswordAgain"></el-input>
           </div>
         </div>
         <div class="modify_fool">
@@ -370,7 +356,6 @@
         </div>
       </div>
     </div>
-    <tip-pop v-if="isTipShow" :tipText="tipText" :noCancel="noCancel" @tipCallBack="tipCallBack"></tip-pop>
   </header>
 </template>
 
@@ -378,14 +363,9 @@
 import Nav from './Nav.js';
 import '../../../public/jquery.signalR-2.4.1.js'
 import Utils from '../../assets/js/util.js'
-import TipPop from '../public/tipPop.vue';
-
 export default {
   data() {
     return {
-      isTipShow: false,
-      tipText: '',
-      noCancel: true,
       now: '全厂管网图',
       activeli: 'two',
       Nav,
@@ -446,11 +426,8 @@ export default {
       appVersion: '',
       engineeringImgUrl: '',
       engineeringName: '',
-      roadwayAllocateNotifyTimer: 1
+      warnList: [],
     };
-  },
-  components: {
-        TipPop
   },
   watch: {
     $route(a) {
@@ -463,8 +440,8 @@ export default {
   destroyed() {
     clearInterval(this.userTime)
     clearInterval(this.touristTime)
-    clearInterval(this.roadwayAllocateNotifyTimer);
   },
+
   mounted() {
     // this.$nextTick(() => {
     //     this.lang = JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
@@ -582,8 +559,8 @@ export default {
     }
     //配置页面logo
     this.initTextLogo()
-    clearInterval(this.roadwayAllocateNotifyTimer);
-    this.roadwayAllocateNotifyTimer = setInterval(()=>this.getRoadwayAllocateNotify() , 1000 );
+
+
   },
   created() {
     var $this = this
@@ -615,25 +592,6 @@ export default {
     }
   },
   methods: {
-    tipCallBack(str) {
-      this.noCancel = true;
-      this.isTipShow = false;
-      this.$axios({
-        method: 'get',
-        url: `/api/Polling/ConfirmRoadwayAllocateNotify`,
-      })
-    },
-    getRoadwayAllocateNotify() {
-       this.$axios({
-        method: 'get',
-        url: `/api/Polling/GetRoadwayAllocateNotify`,
-      }).then((res) => {
-        if(res.data.code == 0 && res.data.data) {
-            this.tipText = res.data.data;
-            this.isTipShow = true;
-        }
-      });
-    },
     functionA(arr) {
       Utils.$emit('demo', arr)
     },
@@ -783,12 +741,53 @@ export default {
       this.msgHub.client.ReceivedError = function (content) {
       };
       var self = this
+      /* 趋势曲线 清除曲线*/
+      try {
+        window.$.connection.redisMonitor.client.ReceivedClearCurveGroupId = (content) => {
+          setTimeout(() => {    //同时调用多次会直接替换延迟50毫秒保证每次替换的值都有被监听到
+            console.clear()
+            console.log('UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU', content)
+            if (content === self.$store.state.curveGroupId) {
+              self.$store.state.curveGroupId = '';//重置一下再改变
+            }
+            self.$store.state.curveGroupId = content
+          }, 50)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+      /* 趋势曲线 缓存时间 */
+      try {
+        window.$.connection.redisMonitor.client.ReceivedCurveCacheTime = (content) => {
+          setTimeout(() => {    //同时调用多次会直接替换延迟50毫秒保证每次替换的值都有被监听到
+            self.$store.state.cacheTime = content
+          }, 50)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+      try {
+        //二次开发图表实时刷新调用客户端方法 接收值
+        window.$.connection.subchart.client.ReceivedClearCurveGroupId = function (content) {
+          setTimeout(() => {    //同时调用多次会直接替换延迟50毫秒保证每次替换的值都有被监听到
+            console.log('CCCCCCCCCCC', content)
+            if (content === self.$store.state.curveGroupId) {
+              self.$store.state.curveGroupId = ''//重置一下再改变
+            }
+            self.$store.state.curveGroupId = content
+          }, 50)
+        };
+      } catch (err) {
+        console.log(err)
+      }
       try {
         //二次开发图表实时刷新调用客户端方法 接收值
         window.$.connection.subchart.client.ReceivedRealyData = function (content) {
+          console.log('画面制作-接收数据', content.Data);
           setTimeout(() => {    //同时调用多次会直接替换延迟50毫秒保证每次替换的值都有被监听到
             self.$store.state.typeNum = '2'                      //图表类型监听
             self.$store.state.contentData = content.Data   //图表监听动态数值 弹窗使用
+
             self.$store.state.contentName = content.ViewName
           }, 50)
         };
@@ -798,9 +797,11 @@ export default {
       try {
         //二次开发图表历史查询调用客户端方法  接收值
         window.$.connection.subchart.client.ReceivedQueryData = function (content) {
+          console.log('画面制作-初始化数据', content.Data);
           setTimeout(() => {
             self.$store.state.typeNum = '1'                       //图表类型监听
             self.$store.state.contentData = content.Data   //图表监听动态数值 弹窗使用
+
             self.$store.state.contentName = content.ViewName
           }, 50)
         };
@@ -843,27 +844,8 @@ export default {
       try {
         //主页面报警提醒消息实时值调用方法 接收值
         window.$.connection.redisMonitor.client.ReceivedDeviceMessageRemind = (content) => {
-          this.vulnerablePartNum = content.vulnerablePartNum > 99 ? '99+' : content.vulnerablePartNum
-          this.pointInspectionNum = content.pointInspectionNum > 99 ? '99+' : content.pointInspectionNum
-          this.maintainNum = content.vulnerablePartNum > 99 ? '99+' : content.maintainNum
-          this.repairNum = content.repairNum > 99 ? '99+' : content.repairNum
-          var TotalNum = content.vulnerablePartNum + content.pointInspectionNum + content.maintainNum + content.repairNum
-          this.TotalNum = TotalNum > 99 ? '99+' : TotalNum
-          if (this.TotalNum == 0) {
-            this.TotalNum = this.TotalNum
-            if (document.querySelector('.warn_infoImg') != undefined) {
-              document.querySelector('.warn_infoImg').src = require('../../assets/images/6d9a1ee3e274d5e414e1475c0bae615.png')
-              document.querySelector('.warn_text').style.background = '#999'
-              document.querySelector('.warn_text').innerHTML = this.TotalNum
-            }
-          } else {
-            this.TotalNum = this.TotalNum
-            if (document.querySelector('.warn_infoImg') != undefined) {
-              document.querySelector('.warn_text').style.background = '#4270E4'
-              document.querySelector('.warn_text').innerHTML = this.TotalNum
-              document.querySelector('.warn_infoImg').src = require('../../assets/images/warn.png')
-            }
-          }
+          this.warnList = content.Menus
+          this.TotalNum = content.Sum
         }
       } catch (err) {
         console.log(err)
@@ -913,14 +895,35 @@ export default {
           }, 50)
         };
         console.log("触发1", this.$route)
-        console.time();
+      } catch (err) {
+        console.log(err)
+      }
+      try {
+        //不良条码prodCode
+        window.$.connection.redisMonitor.client.ReceivedRFIDValue = function (data) {
+          console.log("ReceivedRFIDValue", data)
+          self.$store.state._prodCode = null
+          setTimeout(() => {
+            self.$store.state._prodCode = data
+          }, 50)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+      try {
+        //不良条码prodCode
+        window.$.connection.redisMonitor.client.ReceivedSubmitAction = function (data) {
+          self.$store.state.submitIP = '';
+          setTimeout(() => {
+            self.$store.state.submitIP = data.IP
+          }, 50)
+        }
       } catch (err) {
         console.log(err)
       }
       try {
         //websockets建立连接在Vuex监听
         window.$.connection.hub.start().done(() => {
-          console.timeEnd();
           console.log("触发", this.$route)
 
           setTimeout(() => {
@@ -1136,53 +1139,9 @@ export default {
     },
 
     //提醒跳转
-    warnFun(text) {
-      var textShow = false;
-      for (var i = 0; i < this.routeData.length; i++) {
-        if (text == this.routeData[i].title) {
-          textShow = false;
-          this.wranShow = false;
-          if (text == '易损件寿命管理') {
-            this.$router.push('/VulnerablePartManage');
-          } else if (text == '点巡检管理') {
-            this.$router.push('/PointInspectionManage');
-          } else if (text == '保养管理') {
-            this.$router.push('/MaintenanceManage');
-          } else if (text == '维修管理') {
-            this.$router.push('/RepairManage');
-          }
-          return;
-        } else {
-          if (this.routeData[i].children != null) {
-            var data = this.routeData[i].children;
-            for (var j = 0; j < data.length; j++) {
-              if (text == data[j].title) {
-                textShow = false;
-                this.wranShow = false;
-                if (text == '易损件寿命管理') {
-                  this.$router.push('/VulnerablePartManage');
-                } else if (text == '点巡检管理') {
-                  this.$router.push('/PointInspectionManage');
-                } else if (text == '保养管理') {
-                  this.$router.push('/MaintenanceManage');
-                } else if (text == '维修管理') {
-                  this.$router.push('/RepairManage');
-                }
-                return;
-              } else {
-                textShow = true;
-                this.wranShow = false;
-              }
-            }
-          } else {
-            textShow = true;
-            this.wranShow = false;
-          }
-        }
-      }
-      if (textShow) {
-        this.warnPopShow = true;
-      }
+    warnFun(item) {
+      this.wranShow = false;
+      this.$router.push(`/${item.ToDoPlanMenuBehavior.ModuleName}`);
     },
     //页面监听路由是同页面发生改变
     sad1(item) {
@@ -1192,7 +1151,7 @@ export default {
       if (item.children.length === 0) {
         this.$router.push('/');
         this.$router.push({
-          path: item.to,
+          path: encodeURIComponent(item.to.replace('/', '')),
           query: {
             id: item.id
           }
@@ -1231,7 +1190,7 @@ export default {
 
         this.$router.push('/');
         this.$router.push({
-          path: newItem.to,
+          path: encodeURIComponent(newItem.to.replace('/', '')),
           query: {
             id: newItem.id
           }
@@ -1240,6 +1199,13 @@ export default {
       this.title = newItem.to;
       this.nowchildrem = newItem.title;
       this.now = item.title;
+      this.$router.push({
+        path: encodeURIComponent(newItem.to.replace('/', '')),
+        query: {
+          id: newItem.id,
+          // title: newItem.title,
+        }
+      });
     },
 
     //请求路由信息
@@ -1315,7 +1281,7 @@ export default {
                 onePath = ress.data.data[0].children[0].to;
                 oneId = ress.data.data[0].children[0].id;
               }
-              this.$router.push({ path: onePath, query: { id: oneId } });
+              this.$router.push({ path: encodeURIComponent(onePath.replace('/', '')), query: { id: oneId } });
             }
             let i = 0;
             console.log(this.Menus)
@@ -1995,7 +1961,7 @@ export default {
   top: 50px;
   right: 60px;
   width: 180px;
-  height: 180px;
+  height: fit-content;
   background: #fff;
   box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.6);
   padding-top: 10px;

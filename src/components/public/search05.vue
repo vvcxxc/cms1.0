@@ -70,8 +70,7 @@
                     {width: 100*1+'px'},
                     {marginLeft: 10*1+'px'},
                     {marginTop: 10*1+'px'},
-                    {right: 230*1+'px'}
-                ]"
+                 ]"
             >{{lang.AlarmRecord_Time_Select}}</div>
             <div class="btn pointer export" @click="confirm" :id="qrid" 
                 :style="[
@@ -80,19 +79,16 @@
                     {width: 100*1+'px'},
                     {marginLeft: 10*1+'px'},
                     {marginTop: 10*1+'px'},
-                    {right: 120*1+'px'}
-                ]"
+                 ]"
             >{{lang.AlarmRecord_Time_Sure}}</div>
             <div class="allconfim" @click="allconfirm" :id="allqrid" 
                 :style="[
                     {fontSize:16*1+'px'},
                     {height: 40*1+'px'},
                     {width: 100*1+'px'},
-                    {right: 10*1+'px'},
-                    {marginLeft: 10*1+'px'},
+                     {marginLeft: 10*1+'px'},
                     {marginTop: 10*1+'px'},
-                    {lineHeight: 40*1+'px'}
-                ]"
+                 ]"
             >{{lang.AlarmRecord_Time_AllSure}}</div>
         </div>
         
@@ -186,8 +182,7 @@ export default {
             $(".el-input__icon").css({lineHeight: 40* this.zoom+'px'})
             $(".search-select").css({width: 120 * this.zoom, height: 40* this.zoom})
             $(".el-date-editor").css({width: 210 * this.zoom, height: 40* this.zoom})
-            $(".search-container>.search-container").css({paddingRight: 330 * this.zoom})
-            $(".el-input--suffix").css({fontSize: 16 * this.zoom, height: 40* this.zoom})
+             $(".el-input--suffix").css({fontSize: 16 * this.zoom, height: 40* this.zoom})
             $(".el-select-dropdown__item").css({fontSize: 14 * this.zoom, height: 40* this.zoom})
             // if(window.screen.width <= 1280 &&  localStorage.getItem('currentLang') === 'Main_Language_EN'){
             //     $(".search-container .title").css({maxWidth:'75px', lineHeight: 1})
@@ -344,18 +339,13 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     justify-content: space-between;
     background-color: #ddd;
     // width: 1690px;
-    padding-right:330px ;
     position: relative;
 }
 span {
     position: absolute;
     left: 315px;
 }
-.importtant {
-    right: 230px;
-    position: absolute;
-    // bottom: 10px;
-}
+ 
 .search-left {
     @extend %flex;
     flex-wrap: wrap;
@@ -400,8 +390,6 @@ span {
     color: #fda100;
 }
 .export {
-    position: absolute;
-    right: 120px;
     // bottom: 10px;
     background-color:#79d088 !important;
 }
@@ -424,9 +412,6 @@ span {
      font-weight: 600;
       border-radius: 4px;
       color: #fff;
-      position: absolute;
-    //   bottom: 10px;
-      right: 10px;;
           cursor: pointer;
 }
 .el-input__icon{

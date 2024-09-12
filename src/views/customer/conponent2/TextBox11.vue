@@ -41,12 +41,13 @@
                         item.FontSize +
                         'px; background:' +
                         item.BorderBrush +
-                        ';boxSizing:border-box; padding:' +
-                        item.BorderThickness +
-                        'px;overflow:hidden;white-space:nowrap;boxShadow:' +
+                        ';boxSizing:border-box;' +
+                        'overflow:hidden;white-space:nowrap;boxShadow:' +
                         item.Shadow +
                         ';zIndex:' +
                         item.ZIndex
+                        + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
+                        + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`
                 "
             >
                 <div
@@ -1092,13 +1093,16 @@ export default {
                                 Shadow = InnerShadow;
                             }
                             //边框色渐变
+                            let showLinear = false
+                            let linearStyle = ''
                             if (borderbrushArr.ColorType == 'SolidColor') {
                                 borderColor =
                                     '#' +
                                     borderbrushArr.Data.Color.slice(3) +
                                     borderbrushArr.Data.Color.slice(1, 3);
                             } else {
-                                borderColor = '';
+                                // 此处为渐变色
+                                let linearColor = ''
                                 lagel1 = borderbrushArr.Data.Angel.toFixed(0);
                                 for (
                                     var f1 = 0;
@@ -1108,35 +1112,23 @@ export default {
                                 ) {
                                     gradient1 =
                                         borderbrushArr.Data.GradientStops[f1];
-                                    borderColor =
-                                        borderColor +
+                                        linearColor =
+                                        linearColor +
                                         ',' +
                                         gradient1.Color +
                                         ' ' +
                                         (gradient1.Offset * 100).toFixed(0) +
                                         '%';
                                 }
-                                borderColor =
-                                    '-webkit-linear-gradient(' +
-                                    lagel1 +
-                                    'deg' +
-                                    borderColor +
-                                    ')';
+                                showLinear = true
+                                borderColor = 'transparent'
+                                linearStyle = `linear-gradient(-${Number(lagel1) - 90}deg ${linearColor}) 1`;
                             }
                             //背景色渐变
                             if (backgroundArr.ColorType == 'SolidColor') {
-                                backColor =
-                                    '#' +
-                                    backgroundArr.Data.Color.slice(3) +
-                                    backgroundArr.Data.Color.slice(1, 3);
-                                if (
-                                    backgroundArr.Data.Color.slice(3) ==
-                                        'FFFFFF' &&
-                                    backgroundArr.Data.Color.slice(1, 3) != 'FF'
-                                ) {
-                                    backColor =
-                                        '#FFFFFF' +
-                                        backgroundArr.Data.Color.slice(1, 3);
+                                backColor ='#' +backgroundArr.Data.Color.slice(3) +backgroundArr.Data.Color.slice(1, 3);
+                                if (backgroundArr.Data.Color.slice(3) == 'FFFFFF' &&backgroundArr.Data.Color.slice(1, 3) != 'FF') {
+                                    // backColor ='#FFFFFF' +backgroundArr.Data.Color.slice(1, 3);
                                 }
                             } else {
                                 backColor = '';
@@ -1240,7 +1232,9 @@ export default {
                                         .TextDecorations == 'False'
                                         ? 'none'
                                         : 'underline',
-                                ZIndex: this.ZIndex
+                                ZIndex: this.ZIndex,
+                                showLinear,
+                                linearStyle
                             };
                             this.dataValue.push(value);
                             break;
@@ -1286,13 +1280,16 @@ export default {
                                     Shadow = InnerShadow;
                                 }
                                 //边框色渐变
+                                let showLinear = false
+                                let linearStyle = ''
                                 if (borderbrushArr.ColorType == 'SolidColor') {
                                     borderColor =
                                         '#' +
                                         borderbrushArr.Data.Color.slice(3) +
                                         borderbrushArr.Data.Color.slice(1, 3);
                                 } else {
-                                    borderColor = '';
+                                    // 此处为渐变色
+                                    let linearColor = ''
                                     lagel1 = borderbrushArr.Data.Angel.toFixed(
                                         0
                                     );
@@ -1307,8 +1304,8 @@ export default {
                                             borderbrushArr.Data.GradientStops[
                                                 f2
                                             ];
-                                        borderColor =
-                                            borderColor +
+                                            linearColor =
+                                            linearColor +
                                             ',' +
                                             gradient1.Color +
                                             ' ' +
@@ -1317,12 +1314,9 @@ export default {
                                             ) +
                                             '%';
                                     }
-                                    borderColor =
-                                        '-webkit-linear-gradient(' +
-                                        lagel1 +
-                                        'deg' +
-                                        borderColor +
-                                        ')';
+                                    showLinear = true
+                                    borderColor = 'transparent'
+                                    linearStyle = `linear-gradient(-${Number(lagel1) - 90}deg ${linearColor}) 1`;
                                 }
                                 //背景色渐变
                                 if (backgroundArr.ColorType == 'SolidColor') {
@@ -1330,19 +1324,19 @@ export default {
                                         '#' +
                                         backgroundArr.Data.Color.slice(3) +
                                         backgroundArr.Data.Color.slice(1, 3);
-                                    if (
-                                        backgroundArr.Data.Color.slice(3) ==
-                                            'FFFFFF' &&
-                                        backgroundArr.Data.Color.slice(1, 3) !=
-                                            'FF'
-                                    ) {
-                                        backColor =
-                                            '#FFFFFF' +
-                                            backgroundArr.Data.Color.slice(
-                                                1,
-                                                3
-                                            );
-                                    }
+                                    // if (
+                                    //     backgroundArr.Data.Color.slice(3) ==
+                                    //         'FFFFFF' &&
+                                    //     backgroundArr.Data.Color.slice(1, 3) !=
+                                    //         'FF'
+                                    // ) {
+                                    //     backColor =
+                                    //         '#FFFFFF' +
+                                    //         backgroundArr.Data.Color.slice(
+                                    //             1,
+                                    //             3
+                                    //         );
+                                    // }
                                 } else {
                                     backColor = '';
                                     lagel = backgroundArr.Data.Angel.toFixed(0);
@@ -1450,7 +1444,9 @@ export default {
                                             .TextDecorations == 'False'
                                             ? 'none'
                                             : 'underline',
-                                    ZIndex: this.ZIndex
+                                    ZIndex: this.ZIndex,
+                                    showLinear,
+                                    linearStyle
                                 };
                                 this.dataValue.push(value5);
                             }
@@ -1493,13 +1489,16 @@ export default {
                         Shadow = InnerShadow;
                     }
                     //边框色渐变
+                    let showLinear = false
+                    let linearStyle = ''
                     if (borderbrushArr.ColorType == 'SolidColor') {
                         borderColor =
                             '#' +
                             borderbrushArr.Data.Color.slice(3) +
                             borderbrushArr.Data.Color.slice(1, 3);
                     } else {
-                        borderColor = '';
+                        // 此处为渐变色
+                        let linearColor = ''
                         lagel1 = borderbrushArr.Data.Angel.toFixed(0);
                         for (
                             var f3 = 0;
@@ -1507,20 +1506,23 @@ export default {
                             f3++
                         ) {
                             gradient1 = borderbrushArr.Data.GradientStops[f3];
-                            borderColor =
-                                borderColor +
+                            linearColor =
+                            linearColor +
                                 ',' +
                                 gradient1.Color +
                                 ' ' +
                                 (gradient1.Offset * 100).toFixed(0) +
                                 '%';
                         }
-                        borderColor =
-                            '-webkit-linear-gradient(' +
-                            lagel1 +
-                            'deg' +
-                            borderColor +
-                            ')';
+                        // borderColor =
+                        //     '-webkit-linear-gradient(' +
+                        //     lagel1 +
+                        //     'deg' +
+                        //     borderColor +
+                        //     ')';
+                        showLinear = true
+                        borderColor = 'transparent'
+                        linearStyle = `linear-gradient(-${Number(lagel1) - 90}deg ${linearColor}) 1`;
                     }
                     //背景色渐变
                     if (backgroundArr.ColorType == 'SolidColor') {
@@ -1528,14 +1530,14 @@ export default {
                             '#' +
                             backgroundArr.Data.Color.slice(3) +
                             backgroundArr.Data.Color.slice(1, 3);
-                        if (
-                            backgroundArr.Data.Color.slice(3) == 'FFFFFF' &&
-                            backgroundArr.Data.Color.slice(1, 3) != 'FF'
-                        ) {
-                            backColor =
-                                '#FFFFFF' +
-                                backgroundArr.Data.Color.slice(1, 3);
-                        }
+                        // if (
+                        //     backgroundArr.Data.Color.slice(3) == 'FFFFFF' &&
+                        //     backgroundArr.Data.Color.slice(1, 3) != 'FF'
+                        // ) {
+                        //     backColor =
+                        //         '#FFFFFF' +
+                        //         backgroundArr.Data.Color.slice(1, 3);
+                        // }
                     } else {
                         backColor = '';
                         lagel = backgroundArr.Data.Angel.toFixed(0);
@@ -1628,7 +1630,9 @@ export default {
                                 .TextDecorations == 'False'
                                 ? 'none'
                                 : 'underline',
-                        ZIndex: this.ZIndex
+                        ZIndex: this.ZIndex,
+                        showLinear,
+                        linearStyle
                     };
                     this.dataValue.push(value9);
                 }
@@ -1643,10 +1647,10 @@ export default {
     display: inline-block;
 }
 
-.TextBox11aa:hover {
-    background-color: #bee6fd !important;
-    background: #bee6fd !important;
-}
+// .TextBox11aa:hover {
+//     background-color: #bee6fd !important;
+//     background: #bee6fd !important;
+// }
 
 .TextBoxPop_outPop {
     width: 380px;

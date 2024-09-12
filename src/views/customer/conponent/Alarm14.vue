@@ -8,7 +8,7 @@
  
       
                   
-<template>
+ <template>
     <div class="alarmBox qw">
         <div v-for="(item, index) in dataValue" :key="index">
             <div
@@ -31,39 +31,24 @@
                     item.width +
                     'px;height:' +
                     item.height +
-                    'px;borderRadius:' +
-                    item.radiusTop +
-                    'px ' +
-                    item.radiusRight +
-                    'px ' +
-                    item.radiusButton +
-                    'px ' +
-                    item.radiusLeft +
                     'px;' +
                     'opacity:' +
                     item.opacity +
                     ';transform:rotate(' +
                     item.rotate +
-                    'deg);padding:' +
+                    'deg);' +
+                    ';overflow:hidden;white-space:nowrap;border:' +
                     item.WraperBorderThickness +
-                    'px;overflow:hidden;white-space:nowrap;background:' +
-                    item.Background
+                    'px solid;border-image:' +
+                    item.BorderBrush+
+                    ' 1;clip-path: inset(0 round ' +
+                    item.radiusTop +
+                    'px);'
                 "
             >
                 <div
                     class="alarm_box2"
-                    :style="
-                        'width:100%;height:100%;borderRadius:' +
-                        item.radiusTop +
-                        'px ' +
-                        item.radiusRight +
-                        'px ' +
-                        item.radiusButton +
-                        'px ' +
-                        item.radiusLeft +
-                        'px;padding:14px;box-sizing:border-box;background:' +
-                        item.Background
-                    "
+                    :style="`width:100%;height:100%;;padding:14px;box-sizing:border-box;background: ${item.Background}`"
                 >
                     <div
                         class="alarm_title clearfix"
@@ -884,6 +869,7 @@ export default {
         },
         //格式数据
         datafun(resData, index, className, item) {
+            // debugger
             this.dataValue[index].resdata = [];
             this.timeArr = [];
             this.dataArr = [];
@@ -963,28 +949,33 @@ export default {
             }
 
             //排序字段dom宽度变为一致
-            var noDom = document.querySelectorAll(
-                `.${this.routerName}${className}alarm_conter_no`
-            );
-            var noDomLength = 0;
-            for (let k = 0; k < noDom.length; k++) {
-                noDom[k].style.width = 'auto';
-                var kLength = noDom[k].offsetWidth;
-                if (kLength > noDomLength) {
-                    noDomLength = kLength;
+            // debugger
+            try {
+                var noDom = document.querySelectorAll(
+                    `.${this.routerName}${className}alarm_conter_no`
+                );
+                var noDomLength = 0;
+                for (let k = 0; k < noDom.length; k++) {
+                    noDom[k].style.width = 'auto';
+                    var kLength = noDom[k].offsetWidth;
+                    if (kLength > noDomLength) {
+                        noDomLength = kLength;
+                    }
                 }
-            }
-            var titleDom = document.querySelector(
-                `.${this.routerName}${className}alarm_title_no`
-            );
+                var titleDom = document.querySelector(
+                    `.${this.routerName}${className}alarm_title_no`
+                );
 
-            if (titleDom.offsetWidth > noDomLength) {
-                noDomLength = titleDom.offsetWidth - 8;
-            } else {
-                titleDom.style.width = noDomLength + 8 + 'px';
-            }
-            for (let f = 0; f < noDom.length; f++) {
-                noDom[f].style.width = noDomLength + 'px';
+                if (titleDom.offsetWidth > noDomLength) {
+                    noDomLength = titleDom.offsetWidth - 8;
+                } else {
+                    titleDom.style.width = noDomLength + 8 + 'px';
+                }
+                for (let f = 0; f < noDom.length; f++) {
+                    noDom[f].style.width = noDomLength + 'px';
+                }
+            } catch (err) {
+                console.log(err)
             }
 
             var headH = document.querySelector(
@@ -1102,6 +1093,8 @@ export default {
             }
 
             //边框色渐变
+            let showBorder = false;
+            let borderStyle = '';
             if (borderbrushArr.ColorType == 'SolidColor') {
                 borderColor =
                     '#' +
@@ -1162,13 +1155,21 @@ export default {
                     itembackColor +
                     ')';
             }
-
             //背景色渐变
             if (backgroundArr.ColorType == 'SolidColor') {
                 backColor =
                     '#' +
                     backgroundArr.Data.Color.slice(3) +
                     backgroundArr.Data.Color.slice(1, 3);
+                if (
+                    backgroundArr.Data.Color.slice(3) == 'FFFFFF' &&
+                    backgroundArr.Data.Color.slice(1, 3) != 'FF'
+                ) {
+                    borderColor =
+                        '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3);
+                    showBorder = true;
+                    borderStyle = `#${borderbrushArr.Data.Color.slice(3)}`;
+                }
             } else {
                 backColor = '';
                 lagel2 = backgroundArr.Data.Angel.toFixed(0);
@@ -1203,6 +1204,8 @@ export default {
                 borderColor: borderColor,
                 backColor: backColor,
                 itembackColor: itembackColor,
+                showBorder,
+                borderStyle,
             };
             return value;
         },
@@ -1320,6 +1323,8 @@ export default {
                     resdata: [],
                     num: '',
                     IsAlarmAmountVisibility: '',
+                    showBorder: colorData.showBorder,
+                    borderStyle: colorData.borderStyle,
                 };
                 this.dataValue.push(value);
             }
@@ -1330,6 +1335,7 @@ export default {
 <style lang="scss" scoped>
 .alarmBox {
     .alarm {
+        box-sizing: border-box;
         /*修改滚动条样式*/
         div::-webkit-scrollbar {
             width: 6px;
@@ -1368,8 +1374,8 @@ export default {
         }
         .alarm_conter_row {
             padding-right: 20px;
-            padding-top:11px;
-            padding-bottom:12px;
+            // padding-top: 11px;
+            // padding-bottom: 12px;
             // border-bottom: 1px;
 
             width: 100%;

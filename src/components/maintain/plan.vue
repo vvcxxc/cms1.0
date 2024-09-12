@@ -186,7 +186,7 @@
                 <el-table-column prop="PeriodValue" :label="lang.MaintenanceManage_MaintenanceCycle"  :width="200*zoom" :show-overflow-tooltip="true"></el-table-column>
                 <el-table-column
                     prop="CurrentStartTime"
-                    :label="213123123"
+                    :label="lang.MaintenanceManage_ThisTimeStartTime"
                      :width="200*zoom"
                     :show-overflow-tooltip="true"
                 ></el-table-column>

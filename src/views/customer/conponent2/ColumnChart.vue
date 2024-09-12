@@ -5,7 +5,7 @@
  * @LastEditors: Tao
  * @LastEditTime: 2021-02-25 20:10:19
  -->
-<template>
+ <template>
     <div>
         <div ref="ColumnChart23" @dblclick="opendb(item)" @contextmenu.prevent 
         @mousedown="downClick(item,$event)" @mouseup="seupClick(item,$event)"
@@ -43,7 +43,8 @@ export default {
             commerPopShow1:false,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
             IsOrigin:'',
-            IsDuidie:''
+            IsDuidie:'',
+            rightYAxis: {},
         }
     },
     props:["data",'valueData1','drawLineShow','AllData','item','dataId'],
@@ -417,6 +418,26 @@ if(type=='min'){
             this.SplitLineColor = this.colorRgba(this.optionData.AxisChartYAxis.SplitLineColor.HtmlColor)
             this.YFontFamily =  this.optionData.AxisChartYAxis.FontFamily
             this.ShowSeparator = this.optionData.AxisChartYAxis.ShowSeparator
+            /* 右侧y轴 */
+            if (!!this.optionData.rightYAxis && this.optionData.rightYAxis.Show) {
+                this.rightYAxis.Yname = this.optionData.rightYAxis.Name
+                this.rightYAxis.Adaptive = this.optionData.rightYAxis.Adaptive
+                this.rightYAxis.YAxisMax = this.optionData.rightYAxis.Max
+                this.rightYAxis.YAxisMin = this.optionData.rightYAxis.Min
+                this.rightYAxis.YAxisMax1 = this.optionData.rightYAxis.Max
+                this.rightYAxis.YAxisMin1 = this.optionData.rightYAxis.Min
+                this.rightYAxis.YsplitLine = this.optionData.rightYAxis.SplitLineShow
+                this.rightYAxis.YfontSize = this.optionData.rightYAxis.FontSize
+                this.rightYAxis.IsCustomSegmentation = this.optionData.rightYAxis.IsCustomSegmentation
+                this.rightYAxis.CustomSegmentation = this.optionData.rightYAxis.CustomSegmentation
+                this.rightYAxis.Ycolor = this.colorRgba(this.optionData.rightYAxis.Color.HtmlColor)
+                this.rightYAxis.Unit = this.optionData.rightYAxis.Unit == null ? '' : this.optionData.rightYAxis.Unit
+                this.rightYAxis.SplitLineFontWeight = this.optionData.rightYAxis.SplitLineFontWeight
+                this.rightYAxis.SplitLineWidth = this.optionData.rightYAxis.SplitLineWidth
+                this.rightYAxis.SplitLineColor = this.colorRgba(this.optionData.rightYAxis.SplitLineColor.HtmlColor)
+                this.rightYAxis.YFontFamily =  this.optionData.rightYAxis.FontFamily
+                this.rightYAxis.ShowSeparator = this.optionData.rightYAxis.ShowSeparator
+            }
             this.IsOrigin =this.optionData.IsOrigin
             this.IsDuidie = this.optionData.IsDuidie
             let chartstack = !this.IsTime?this.IsOrigin?1:1:this.IsDuidie?1:''
@@ -480,23 +501,26 @@ if(type=='min'){
                      var data11 = []
                 } 
                var value = {
-                   name:this.VariablesData[v].DimensionName,
-                   data:data11,
-                   barMaxWidth: 25.0,
-                   showBackground:this.optionData.ShowBackground,
-                   stack:chartstack,
-                   type: this.VariablesData[v].DataType.toLowerCase(),
+                    name:this.VariablesData[v].DimensionName,
+                    // 添加组内柱子间的间距
+                    barGap: this.VariablesData[v].BarGap + '%',
+                    // barCategoryGap:'20%', // 添加柱子间距 注: 设置barWidth后barCategoryGap不生效
+                    data:data11,
+                    barMaxWidth: 25.0,
+                    showBackground:this.optionData.ShowBackground,
+                    stack:chartstack,
+                    type: this.VariablesData[v].DataType.toLowerCase(),
                     itemStyle: itemcolortry,
                     lineStyle: {
                         color: this.VariablesData[v].Color.HtmlColor,
                         width: 4
                     },
-                     label: {
+                        label: {
                         color: this.labelColor,
                         fontSize: this.labelFontSize,
                         show: this.labelShow
                     },
-                     markLine:''
+                    markLine:''
                }
                this.seriesArr.push(value)
             }
@@ -701,38 +725,30 @@ if(type=='min'){
 
                     }
                      //动态辅助线
-                      if (this.valueData.hasOwnProperty("MarkLine")) {
-                        for (var s = 0; s < this.valueData.MarkLine.length; s++) {
-                            if (Ddata.series[0].markLine.length != 0 && this.valueData.MarkLine[s].yAxis != undefined) {
-
-                                Ddata.series[0].markLine.data[s].yAxis = this.valueData.MarkLine[s].yAxis
+                    if(this.valueData.YDataCollection != undefined){
+                        var variableData = Ddata.series[0].markLine.data
+                        if(variableData){
+                            for(let q=0;q<variableData.length;q++){
+                                if(variableData[q].Type == "FromVariable"){
+                                    var index11 = this.variableArr.indexOf(variableData[q].TargetVariableName)
+                                    var vbArr = Ddata.series[index11].data
+                                    var vBvalue = ''
+                                    if(variableData[q].ValueMethod == 'Max'){
+                                        vBvalue = Math.max.apply(Math,vbArr);
+                                    }else if(variableData[q].ValueMethod == 'Min'){
+                                         vBvalue = Math.min.apply(Math,vbArr);
+                                    }else if(variableData[q].ValueMethod == 'Avg'){
+                                        var sum=0;
+                                        for(var i = 0; i < vbArr.length; i++){
+                                            sum += Number(vbArr[i]);
+                                        }
+                                        vBvalue  = sum / vbArr.length;
+                                    }
+                                    Ddata.series[0].markLine.data[q].yAxis = vBvalue
+                                }
                             }
                         }
                     }
-                    // if(this.valueData.YDataCollection != undefined){
-                    //     var variableData = Ddata.series[0].markLine.data
-                    //     if(variableData){
-                    //         for(let q=0;q<variableData.length;q++){
-                    //             if(variableData[q].Type == "FromVariable"){
-                    //                 var index11 = this.variableArr.indexOf(variableData[q].TargetVariableName)
-                    //                 var vbArr = Ddata.series[index11].data
-                    //                 var vBvalue = ''
-                    //                 if(variableData[q].ValueMethod == 'Max'){
-                    //                     vBvalue = Math.max.apply(Math,vbArr);
-                    //                 }else if(variableData[q].ValueMethod == 'Min'){
-                    //                      vBvalue = Math.min.apply(Math,vbArr);
-                    //                 }else if(variableData[q].ValueMethod == 'Avg'){
-                    //                     var sum=0;
-                    //                     for(var i = 0; i < vbArr.length; i++){
-                    //                         sum += Number(vbArr[i]);
-                    //                     }
-                    //                     vBvalue  = sum / vbArr.length;
-                    //                 }
-                    //                 Ddata.series[0].markLine.data[q].yAxis = vBvalue
-                    //             }
-                    //         }
-                    //     }
-                    // }
                      if (Ddata.IsOrigin) {
                         if (Ddata.series[0].data.length == 1) {
                             Ddata.series.forEach(item => {
@@ -953,48 +969,50 @@ if(type=='min'){
                             padding: [this.LPtb,this.LPlr]
                         },
     
-                        yAxis: {
-                        name: this.Yname,
-                        splitNumber:!this.optionData.AxisChartYAxis.IsCustomSegmentation?0:this.optionData.AxisChartYAxis.CustomSegmentation,
-                        axisLabel: {
-                            formatter: "{value} " + this.Unit,
-                            color: this.Ycolor,
-                            fontFamily: this.YFontFamily,
-                            fontWeight: 400,
-                            fontSize: (this.YfontSize-2),
-                            textStyle: {
-                                fontWeight: 400
-                            }
-                        },
-                            label: {
-                                textStyle: {
-                                    color: this.Ycolor
+                        yAxis: [
+                            {
+                                name: this.Yname,
+                                splitNumber:!this.optionData.AxisChartYAxis.IsCustomSegmentation?0:this.optionData.AxisChartYAxis.CustomSegmentation,
+                                axisLabel: {
+                                    formatter: "{value} " + this.Unit,
+                                    color: this.Ycolor,
+                                    fontFamily: this.YFontFamily,
+                                    fontWeight: 400,
+                                    fontSize: (this.YfontSize-2),
+                                    textStyle: {
+                                        fontWeight: 400
+                                    }
+                                },
+                                label: {
+                                    textStyle: {
+                                        color: this.Ycolor
+                                    }
+                                },
+                                min: this.YAxisMin,
+                                max: this.YAxisMax,
+                                Adaptive:this.optionData.AxisChartYAxis.Adaptive,
+                                YAxisMax1:this.optionData.AxisChartYAxis.Max,
+                                YAxisMin1:this.optionData.AxisChartYAxis.Min,
+                                nameTextStyle: {
+                                    fontSize: (this.YfontSize-2),
+                                    color:this.Ycolor
+                                },
+                                axisLine: {
+                                    show:true,
+                                    lineStyle: {
+                                        color: this.Ycolor
+                                    }
+                                },
+                                splitLine: {
+                                    show: this.ShowSeparator,
+                                    "lineStyle": {
+                                            type:'dashed' ,
+                                            "color":this.optionData.ThemeType=="Dark"?"rgba(210,210,210,0.49)":"rgba(210,210,210,0.9)"
+                                            },
+                                    color:this.SplitLineColor
                                 }
-                            },
-                            min: this.YAxisMin,
-                            max: this.YAxisMax,
-                            Adaptive:this.optionData.AxisChartYAxis.Adaptive,
-                            YAxisMax1:this.optionData.AxisChartYAxis.Max,
-                            YAxisMin1:this.optionData.AxisChartYAxis.Min,
-                            nameTextStyle: {
-                                fontSize: (this.YfontSize-2),
-                                color:this.Ycolor
-                            },
-                            axisLine: {
-                                show:true,
-                                lineStyle: {
-                                    color: this.Ycolor
-                                }
-                            },
-                            splitLine: {
-                                show: this.ShowSeparator,
-                                "lineStyle": {
-                                        type:'dashed' ,
-                                         "color":this.optionData.ThemeType=="Dark"?"rgba(210,210,210,0.49)":"rgba(210,210,210,0.9)"
-                                        },
-            color:this.SplitLineColor
                             }
-                        },
+                        ],
                         backgroundColor: this.backgroundColor,
                         title: {
                             textStyle: {
@@ -1013,6 +1031,52 @@ if(type=='min'){
                             bottom: this.gridBottom,
                             top: this.gridTop
                         }
+                    }
+                    if (!!this.optionData.rightYAxis && this.optionData.rightYAxis.Show) {
+                        aa.yAxis.push(
+                            {
+                                name: this.rightYAxis.Yname,
+                                splitNumber:!this.rightYAxis.IsCustomSegmentation?0:this.rightYAxis.CustomSegmentation,
+                                axisLabel: {
+                                    formatter: "{value} " + this.rightYAxis.Unit,
+                                    color: this.rightYAxis.Ycolor,
+                                    fontFamily: this.rightYAxis.YFontFamily,
+                                    fontWeight: 400,
+                                    fontSize: (this.rightYAxis.YfontSize-2),
+                                    textStyle: {
+                                        fontWeight: 400
+                                    }
+                                },
+                                label: {
+                                    textStyle: {
+                                        color: this.rightYAxis.Ycolor
+                                    }
+                                },
+                                min: this.rightYAxis.YAxisMin,
+                                max: this.rightYAxis.YAxisMax,
+                                Adaptive:this.rightYAxis.Adaptive,
+                                YAxisMax1:this.rightYAxis.YAxisMax1,
+                                YAxisMin1:this.rightYAxis.YAxisMin1,
+                                nameTextStyle: {
+                                    fontSize: (this.rightYAxis.YfontSize-2),
+                                    color:this.rightYAxis.Ycolor
+                                },
+                                axisLine: {
+                                    show:true,
+                                    lineStyle: {
+                                        color: this.rightYAxis.Ycolor
+                                    }
+                                },
+                                splitLine: {
+                                    show: this.rightYAxis.howSeparator,
+                                    "lineStyle": {
+                                            type:'dashed' ,
+                                            "color":this.optionData.ThemeType=="Dark"?"rgba(210,210,210,0.49)":"rgba(210,210,210,0.9)"
+                                            },
+                                    color:this.rightYAxis.SplitLineColor
+                                }
+                            }
+                        )
                     }
                 // 绘制图表
                 this.myChart.setOption(aa);

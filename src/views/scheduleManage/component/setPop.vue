@@ -7,7 +7,7 @@
 -->
 <template>
     <div class="set_box" :style="{zoom: zoomValue}" >
-        <div  v-drager class="head">{{lang.ScheduleManage_Style_Settings}}
+        <div  v-drag class="head">{{lang.ScheduleManage_Style_Settings}}
            <div @click.stop="can()" class="headImg"></div>
         </div>
         <div class="set_middle">

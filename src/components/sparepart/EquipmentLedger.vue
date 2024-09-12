@@ -1389,11 +1389,11 @@ export default {
                     ) {
                         this.daorudata.argOperator = JSON.parse(
                             sessionStorage.getItem('sightseerInfo1')
-                        ).SCMSUserAccount;
+                        ).SCMSUserName;
                     } else {
                         this.daorudata.argOperator = JSON.parse(
                             sessionStorage.getItem('userInfo1')
-                        ).SCMSUserAccount;
+                        ).SCMSUserName;
                     }
                     console.log(this.daorudata);
                     this.$axios({
@@ -1442,11 +1442,11 @@ export default {
             ) {
                 this.deldata.argUserName = JSON.parse(
                     sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserAccount;
+                ).SCMSUserName;
             } else {
                 this.deldata.argUserName = JSON.parse(
                     sessionStorage.getItem('userInfo1')
-                ).SCMSUserAccount;
+                ).SCMSUserName;
             }
             let i = 0;
             this.deldata.argSparePartIds = [];
@@ -1466,11 +1466,11 @@ export default {
             ) {
                 this.deldata.argUserName = JSON.parse(
                     sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserAccount;
+                ).SCMSUserName;
             } else {
                 this.deldata.argUserName = JSON.parse(
                     sessionStorage.getItem('userInfo1')
-                ).SCMSUserAccount;
+                ).SCMSUserName;
             }
             let i = 0;
             this.deldata.argSparePartIds = [];
@@ -2572,17 +2572,17 @@ export default {
             ) {
                 this.searchData.OperatorName = JSON.parse(
                     sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserAccount;
+                ).SCMSUserName;
                 this.pen.UserName = JSON.parse(
                     sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserAccount;
+                ).SCMSUserName;
             } else {
                 this.searchData.OperatorName = JSON.parse(
                     sessionStorage.getItem('userInfo1')
-                ).SCMSUserAccount;
+                ).SCMSUserName;
                 this.pen.UserName = this.searchData.OperatorName = JSON.parse(
                     sessionStorage.getItem('userInfo1')
-                ).SCMSUserAccount;
+                ).SCMSUserName;
             }
 
             this.pen.SparePartType = this.pen.DetailType;
@@ -2636,17 +2636,17 @@ export default {
             ) {
                 this.searchData.OperatorName = JSON.parse(
                     sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserAccount;
+                ).SCMSUserName;
                 this.tip.UserName = JSON.parse(
                     sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserAccount;
+                ).SCMSUserName;
             } else {
                 this.searchData.OperatorName = JSON.parse(
                     sessionStorage.getItem('userInfo1')
-                ).SCMSUserAccount;
+                ).SCMSUserName;
                 this.tip.UserName = this.searchData.OperatorName = JSON.parse(
                     sessionStorage.getItem('userInfo1')
-                ).SCMSUserAccount;
+                ).SCMSUserName;
             }
             for (i in this.muchdata) {
                 if (this.muchdata[i].DeviceName == this.tip.DeviceName) {

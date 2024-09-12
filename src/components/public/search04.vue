@@ -8,12 +8,18 @@
 <template>
     <div class="search-container juese">
         <div class="search-left">
-            <div class="search-item" v-for="(item, index) in searchList" :key="index">
+            <div
+                class="search-item"
+                v-for="(item, index) in searchList"
+                :key="index"
+            >
                 <div
                     class="title"
                     :class="{ mr10: item.title == '至' }"
                     v-if="item.type !== 'key'"
-                >{{ item.title }}</div>
+                >
+                    {{ item.title }}
+                </div>
 
                 <el-select
                     v-if="item.type === 'select'"
@@ -52,18 +58,23 @@
                 <el-input
                     v-if="item.type === 'key'"
                     v-model="searchData[item.model]"
-                    :placeholder="item.placeholder || lang.AlarmRecord_Time_Keyword"
-                    :style="{width: '375px'}"
+                    :placeholder="
+                        item.placeholder || lang.AlarmRecord_Time_Keyword
+                    "
+                    :style="{ width: '375px' }"
                     class="role-input"
                     clearable
                 ></el-input>
             </div>
 
-            <div class="btn pointer" @click="search">{{lang.RoleManage_Query}}</div>
+            <div class="btn pointer" @click="search">
+                {{ lang.RoleManage_Query }}
+            </div>
             <div class="btn pointer add" @click="add">
                 <div class="addimg">
                     <img :src="addfile" alt />
-                </div>{{lang.UserManage_AddCMSUser}}
+                </div>
+                {{ lang.UserManage_AddCMSUser }}
             </div>
             <!-- <div class="btn pointer export" @click="exportTable">导出</div> -->
         </div>
@@ -80,200 +91,29 @@ export default {
     data() {
         return {
             addfile: require('../../assets/images/icon_addfile.png'),
-                  jurisdiction:[],
-            buttonarr:[],
-            cxid:'',
-            tjid:'',
-            bjid:'',
-            scid:'',
-            cxshow:true,
-            tjshow:true,
-            bjshow:true,
-            scshow:true,
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
+            jurisdiction: [],
+            buttonarr: [],
+            cxid: '',
+            tjid: '',
+            bjid: '',
+            scid: '',
+            cxshow: true,
+            tjshow: true,
+            bjshow: true,
+            scshow: true,
+            lang: JSON.parse(localStorage.getItem('languages'))[
+                localStorage.getItem('currentLang')
+            ]
         };
     },
-        computed:{
-        VpowerData() {
-                    return this.$store.state.btnPowerData;
-        },
-    },
-      watch:{
-            VpowerData(val){
-                this.jurisdiction = this.$store.state.btnPowerData
-     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
-        console.log("nut",this.buttonarr)
-        if(this.searchList[0].placeholder== this.lang.RoleManage_QueryInfo){
-          this.buttonarr.forEach((item)=>{
-              if(item.RightName == '查询按钮'){
-                 this.cxid = item.RightID
-              }else if(item.RightName == '添加按钮'){
-                this.tjid = item.RightID
-              }else if(item.RightName == "编辑按钮"){
-                this.bjid = item.RightID
-              }else if(item.RightName == "删除按钮"){
-                this.scid = item.RightID
-              }
-          })
-          var userid = ''
-      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
-                userid = JSON.parse(
-                    sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserID;
-            } else {
-                userid = JSON.parse(
-                    sessionStorage.getItem('userInfo1')
-                ).SCMSUserID;
-            }
-             this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`,
-              }).then(res => {
-                  this.cxshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-               this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.tjid}`,
-              }).then(res => {
-                  this.tjshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-               this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.bjid}`,
-              }).then(res => {
-                  this.bjshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-               this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.scid}`,
-              }).then(res => {
-                  this.scshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-        }
-            }
-      },
-      created(){
-          this.jurisdiction = this.$store.state.btnPowerData
-     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
-        console.log("nut",this.buttonarr)
-          this.buttonarr.forEach((item)=>{
-              if(item.RightName == '查询按钮'){
-                 this.cxid = item.RightID
-              }else if(item.RightName == '添加按钮'){
-                this.tjid = item.RightID
-              }else if(item.RightName == "编辑按钮"){
-                this.bjid = item.RightID
-              }else if(item.RightName == "删除按钮"){
-                this.scid = item.RightID
-              }
-          })
-          var userid = ''
-      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
-                userid = JSON.parse(
-                    sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserID;
-            } else {
-                userid = JSON.parse(
-                    sessionStorage.getItem('userInfo1')
-                ).SCMSUserID;
-            }
-             this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`,
-              }).then(res => {
-                  this.cxshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-               this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.tjid}`,
-              }).then(res => {
-                  this.tjshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-               this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.bjid}`,
-              }).then(res => {
-                  this.bjshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-               this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.scid}`,
-              }).then(res => {
-                  this.scshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-        
-      },
+
+    created() {},
     methods: {
-         findPathByLeafId(id,node,path){
-        if(!path){
-             path = []
-         }
-        for(let i=0;i<node.length;i++){
-          var temPath = path.concat();
-        
-          if(id == node[i].RightID){
-                temPath.push(node[i])
-           return temPath
-          }
-          if(node[i].Children){
-           var findResult = this.findPathByLeafId(id,node[i].Children,temPath)
-           if(findResult){
-           return findResult
-           }
-          }
-        }
-        },
-          GetUrlParam(paraName) {
-        let url = document.location.toString();
-        let arrObj = url.split("?");
-        if (arrObj.length > 1) {
-            let arrPara = arrObj[1].split("&");
-            let arr;
-           for(let i=0;i<arrPara.length;i++){
-            arr = arrPara[i].split("=");
-            if(arr&&arr[0] == paraName){
-              
-               return arr[1]
-            }
-           }
-           return ''
-        }else {
-            return ''
-        }
-          },
         search() {
-            this.$emit('setParams', this.searchData,this.cxshow);
-            if(this.cxshow){
-          this.$parent.req(1);
-            }
-          
+            this.$emit('setParams', this.searchData, this.cxshow);
         },
-        add(){
-            this.$emit('add',this.tjshow);
+        add() {
+            this.$emit('add', this.tjshow);
         },
         exportTable() {
             this.$emit('exportTable');
@@ -291,11 +131,11 @@ export default {
 </script>
 
 <style lang="scss">
-    .role-input {
-        .el-input__inner {
-            height: 40px;
-        }
+.role-input {
+    .el-input__inner {
+        height: 40px;
     }
+}
 </style>
 <style lang="scss" scoped>
 %flex {

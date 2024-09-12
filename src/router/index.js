@@ -47,20 +47,6 @@ const maintain = () =>
     import('@/views/maintain/maintain.vue');
 const Repair = () =>
     import('@/views/Repair/Repair.vue');
-const BaseData = () =>
-import('@/views/BaseData/BaseData.vue');
-const warehousingManagement = () =>
-    import('@/views/warehousingManagement/warehousingManagement.vue');
-const productLoading = () =>
-    import('@/views/productLoading/productLoading.vue');
-const productDelivery = () =>
-    import('@/views/productDelivery/productDelivery.vue');
-const taskManagement = () =>
-    import('@/views/taskManagement/taskManagement.vue');
-const ReceiptOrIssueRecord = () =>
-    import('@/views/ReceiptOrIssueRecord/ReceiptOrIssueRecord.vue');
-const InventoryRecords = () =>
-    import('@/views/InventoryRecords/InventoryRecords.vue');
 const quality = () =>
     import('@/views/quality/quality.vue');
 const cpk = () =>
@@ -75,6 +61,8 @@ const Vulnerableparts = () =>
     import('@/views/Vulnerableparts/Vulnerableparts.vue');
 const AlarmAnalysis = () =>
     import('@/views/alarmAnalysis/alarmAnalysis.vue');
+const DailyProductionReport = () =>
+    import('@/views/DailyProductionReport/DailyProductionReport.vue');
 const Equipment = () =>
     import('@/views/equipment/equipment.vue');
 const Log = () =>
@@ -110,9 +98,15 @@ const FormManage = () =>
 // const Customreport = () =>
 //     import(`@/views/Customreport/Customreport.vue`);
 const pushMessage = () => import('@/views/push-message/index.vue')
-
-
-
+const MaterialManagement = () => import('@/views/material-management/index.vue')
+const BOMManagement = () => import('@/views/BOM-management/index.vue')
+const StationBoard = () => import('@/views/StationBoard/index.vue')
+const FormManageNew = () => import('@/views/FormManageNew/index.vue')
+const ProductionStatistics = () => import('@/views/ProductionStatistics/index.vue')
+const ProductRepair = () => import('@/views/ProductRepair/index.vue')
+const OrderManagement = () => import('@/views/OrderManagement/index.vue')
+const PrinterManagement = () => import('@/views/PrinterManagement/index.vue')
+const InspectionRecords = () => import('@/views/InspectionRecords/index.vue')
 
 Vue.use(VueRouter);
 const routes = [{
@@ -178,6 +172,10 @@ const routes = [{
         component: AlarmAnalysis
     },
     {
+        path: '/WuXiYiFanReport',
+        component: DailyProductionReport
+    },
+    {
         path: '/AlarmRecord',
         component: Alarm1
     },
@@ -196,34 +194,6 @@ const routes = [{
     {
         path: '/RepairManage',
         component: Repair
-    },
-    {
-        path: '/BaseData',
-        component: BaseData
-    },
-    {
-        path: '/warehousingManagement',
-        component: warehousingManagement
-    },
-    {
-        path: '/productLoading',
-        component: productLoading
-    },
-    {
-        path: '/productDelivery',
-        component: productDelivery
-    },
-    {
-        path: '/taskManagement',
-        component: taskManagement
-    },
-    {
-        path: '/ReceiptOrIssueRecord',
-        component: ReceiptOrIssueRecord
-    },
-    {
-        path: '/InventoryRecords',
-        component: InventoryRecords
     },
     {
         path: '/QualityMain',
@@ -257,10 +227,33 @@ const routes = [{
         component: Reportform1
     },
     {
-        path: '/Formula',
+        path: '/Formula0',
         component: formula
     },
-
+    {
+        path: '/Formula',
+        component: FormManageNew
+    },
+    {
+        path: '/ProductStatisticDataCollect',
+        component: ProductionStatistics
+    },
+    {
+        path: '/ProductRepair',
+        component: ProductRepair
+    },
+    {
+        path: '/OrderManagement',
+        component: OrderManagement
+    },
+    {
+        path: '/InspectionRecords',
+        component: InspectionRecords
+    },
+    {
+        path: '/PrintManagement',
+        component: PrinterManagement
+    },
     {
         path: '/Journal',
         component: Log
@@ -339,6 +332,18 @@ const routes = [{
     //     path: '/cuAll',
     //     component: cuAll
     // },
+    {
+        path: '/MaterialManagement',
+        component: MaterialManagement
+    },
+    {
+        path: '/MaterialBOMManagement',
+        component: BOMManagement
+    },
+    {
+        path: '/ManualPosition',
+        component: StationBoard
+    },
     {
         path: '/*',
         component: CustomerVue

@@ -5,7 +5,7 @@
  * @LastEditors: Tao
  * @LastEditTime: 2021-01-26 18:46:22
  -->
- <template>
+<template>
     <div class="public-table" >
         <div class="search-container" :style="{zoom:zoom}">
             <my-search
@@ -55,11 +55,10 @@
                             node-key="id"
                             :indent="0"
                             default-expand-all
+                            @check-change="handleNodeClic"
                             @node-click="handleNodeClick"
-                            @check="onCheck"
                             :default-checked-keys="argRightIDList"
-                            ></el-tree>
-                            <!-- @check-change="handleNodeClic" -->
+                        ></el-tree>
                     </div>
                 </div>
                    <div class="powerBtn_box">
@@ -545,12 +544,6 @@ export default {
                 }
             }
         },
-        onCheck (data, { checkedNodes }) {
-            this.argRightIDList = checkedNodes.reduce((t, c) => {
-                if (c.children.length == 0) t.push(c.SCMSChildMenuID);
-                return t;
-            }, []);
-        },
         over() {
           
             
@@ -1024,7 +1017,6 @@ input {
             float: left;
         }
     }
-    
     .setdatathree {
         padding: 20px 30px 0px 40px;
         overflow: hidden;

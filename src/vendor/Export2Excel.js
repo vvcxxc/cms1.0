@@ -367,7 +367,7 @@ export function export_json_to_excel({
   autoWidth = true,
   bookType = "xlsx"
 } = {}) {
-  
+  console.log('llllll',data, header)
   /* original data */
   filename = filename || "excel-list"
   data = [...data]

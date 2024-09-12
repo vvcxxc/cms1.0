@@ -11,7 +11,7 @@
   <div v-if="show" name="staticimage" @dblclick="opendb(item)" @contextmenu.prevent @mousedown="downClick(item,$event)" @mouseup="seupClick(item,$event)"
       :class="item.class" class="imgVue" :style="'width:'+ item.width + 'px; height:' + item.height + 'px; opacity:' + item.opacity 
       + '; position:absolute; left:' + item.left  + 'px; top:' + item.top + 'px; transform:rotate(' + item.rotate + ');zIndex:'+item.ZIndex" >
-        <img class="boximg" :src="encodeURIComponent(item.source)">
+        <img class="boximg" :src="item.source">
       </div>
 
 

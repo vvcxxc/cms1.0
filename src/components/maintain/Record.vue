@@ -956,15 +956,19 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     // }
                     for (i in this.tableData1) {
                         console.log(this.tableData1.length);
-                        this.tableData1[i].FinishTime =  
+                        this.tableData1[i].FinishTime = this.gettime(
                             this.tableData1[i].FinishTime
-                         this.tableData1[i].StartTime = 
+                        );
+                        this.tableData1[i].StartTime = this.gettime(
                             this.tableData1[i].StartTime
-                         this.tableData1[i].EndTime =  
+                        );
+                        this.tableData1[i].EndTime = this.gettime(
                             this.tableData1[i].EndTime
-                         this.tableData1[i].MaturityTime =  
+                        );
+                        this.tableData1[i].MaturityTime = this.gettime(
                             this.tableData1[i].MaturityTime
-                         let a = i;
+                        );
+                        let a = i;
                         this.tableData1[i].Number = ++a;
                         if (this.tableData1[i].Status == 4) {
                             this.tableData1[i].Status = this.lang.MaintenanceManage_Closed

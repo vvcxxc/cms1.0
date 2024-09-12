@@ -2172,17 +2172,22 @@ this.$store.commit('move')
                         this.PageData = res.data.data.ParameterList;
                     let i = 0;
                     for (i in this.tableData1) {
-                        this.tableData1[i].CurrentStartTime =  
+                        this.tableData1[i].CurrentStartTime = this.gettime(
                             this.tableData1[i].CurrentStartTime
-                         this.tableData1[i].CurrentEndTime =  
+                        );
+                        this.tableData1[i].CurrentEndTime = this.gettime(
                             this.tableData1[i].CurrentEndTime
-                         this.tableData1[i].NextStartTime =  
+                        );
+                        this.tableData1[i].NextStartTime = this.gettime(
                             this.tableData1[i].NextStartTime
-                         this.tableData1[i].NextEndTime = 
+                        );
+                        this.tableData1[i].NextEndTime = this.gettime(
                             this.tableData1[i].NextEndTime
-                         this.tableData1[i].MaturityTime =  
+                        );
+                        this.tableData1[i].MaturityTime = this.gettime(
                             this.tableData1[i].MaturityTime
-                         if (this.tableData1[i].IsEnabled == true) {
+                        );
+                        if (this.tableData1[i].IsEnabled == true) {
                             this.tableData1[i].IsEnabled = this.lang.MaintenanceManage_Enable;
                         } else if (this.tableData1[i].IsEnabled == false) {
                             this.tableData1[i].IsEnabled = this.lang.MaintenanceManage_Stop;

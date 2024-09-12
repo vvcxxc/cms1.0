@@ -892,13 +892,16 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         this.PageData = res.data.data.ParameterList;
                         let i = 0;
                         for (i in this.tableData1) {
-                            this.tableData1[i].EndTime = 
+                            this.tableData1[i].EndTime = this.gettime(
                                 this.tableData1[i].EndTime
-                             this.tableData1[i].FinishTime = 
+                            );
+                            this.tableData1[i].FinishTime = this.gettime(
                                 this.tableData1[i].FinishTime
-                             this.tableData1[i].StartTime = 
+                            );
+                            this.tableData1[i].StartTime = this.gettime(
                                 this.tableData1[i].StartTime
-                             let a = i;
+                            );
+                            let a = i;
                             this.tableData1[i].Number = ++a;
                             if (this.tableData1[i].Status == 4) {
                                 this.tableData1[i].Status = this.lang.MaintenanceManage_Closed;

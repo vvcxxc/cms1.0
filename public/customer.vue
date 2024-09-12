@@ -1056,7 +1056,7 @@ export default {
       //  本地服务器读取方法
           this.$axios({
                     method: 'post',
-                    url: `/api/Main/Main_GetViewJson?argViewName=${encodeURIComponent(name)}`,
+                    url: `/api/Main/Main_GetViewJson?argViewName=${name}`,
                 }).then(res => {
                     var data =res.data
                     this.JsonData = data.data

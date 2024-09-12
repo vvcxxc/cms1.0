@@ -7,54 +7,71 @@
  -->
 <template>
     <div class="table-container table-container1">
-        <el-table :data="data" highlight-current-row border header-row-class-name="light-blue" row-class-name="high-light"
-            height="100%" width="100%" :style="{ 'font-size': 14 * zoom + 'px' }" :header-cell-style="{
-                background: ($store.state.color == 'grey') ? '#D9DBDE' : '#5a6c98',
-                color: ($store.state.color == 'grey') ? '#000' : '#fff',
-                'border-left': '1px solid #cccccc',
-                height: 50 * zoom + 'px',
-                'font-size': 14 * zoom + 'px',
-                padding: '0'
-            }" @select="selectFn" @select-all="selectFn">
+        <el-table
+            :data="data"
+             highlight-current-row
+            border
+            header-row-class-name="light-blue"
+            row-class-name="high-light"
+            height="100%"
+            width="100%"
+            :style="{'font-size': 14*zoom + 'px'}"
+             :header-cell-style="{
+                 background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',
+                 color:($store.state.color=='grey')?'#000':'#fff',
+                 'border-left':'1px solid #cccccc',
+                 height:50*zoom +'px',
+                'font-size': 14*zoom + 'px',
+                 padding:'0'
+                }"
+        >
             <template slot="empty">
                 <!-- <no-data :tip="tip" v-if="!tip"></no-data>
-                        <span v-else-if="tip === 'nodata'">暂无数据</span>-->
-                <span>{{ lang.SCMSConsoleWebApiMySql_NoData }}</span>
+                <span v-else-if="tip === 'nodata'">暂无数据</span>-->
+                <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
             </template>
-            <el-table-column type="selection" :width="80 * zoom"></el-table-column>
-            <el-table-column prop="name" :label="lang.AlarmRecord_History_Search" :width="200 * zoom">
+            <el-table-column prop="name" :label="lang.AlarmRecord_History_Search" :width="200*zoom">
                 <template slot-scope="scope">
                     <!-- <i class="el-icon-share"></i> -->
-                    <div class="img look" @click="handleEdit(scope.$index, scope.row)" :style="{ zoom }">
+                    <div class="img look" @click="handleEdit(scope.$index, scope.row)" :style="{zoom}">
                         <img :src="look" alt />
-                        {{ scope.row.phone }}
+                        {{scope.row.phone}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="name" :label="lang.AlarmRecord_History_Entry" :width="200 * zoom">
+            <el-table-column prop="name" :label="lang.AlarmRecord_History_Entry" :width="200*zoom">
                 <template slot-scope="scope">
                     <!-- <i class="el-icon-share"></i> -->
-                    <div class="img pensoil" @click="handleEdit1(scope.$index, scope.row)" :style="{ zoom }">
+                    <div class="img pensoil" @click="handleEdit1(scope.$index, scope.row)" :style="{zoom}">
                         <img :src="pensoil" alt />
-                        {{ scope.row.phone }}
+                        {{scope.row.phone}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column v-for="(value, key) in tableHead" :key="key" :label="value" align="left" :width="180 * zoom">
+            <el-table-column
+                v-for="(value, key) in tableHead"
+                :key="key"
+                :label="value"
+                align="left"
+                 :width="180 * zoom"
+            >
                 <template slot-scope="scope">
                     <div class="item">
-                        <span class="sad" v-if="scope.row.AlarmState == 3">{{ computedData(scope.row[key], key) }}</span>
-                    <span v-else>{{ computedData(scope.row[key], key) }}</span>
-                </div>
-            </template>
-        </el-table-column>
+                        <span
+                            class="sad"
+                            v-if="scope.row.AlarmState == 3"
+                        >{{ computedData(scope.row[key], key) }}</span>
+                        <span v-else>{{ computedData(scope.row[key], key) }}</span>
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" v-for="(item, index) in operation" :key="index">
                 <!-- <div>safa</div> -->
                 <!-- <template slot-scope="scope">
-        					<div class="btn-container">
-        						<div v-if="(item.title = 'edit')">修改</div>
-        					</div>
-                        </template>-->
+					<div class="btn-container">
+						<div v-if="(item.title = 'edit')">修改</div>
+					</div>
+                </template>-->
             </el-table-column>
         </el-table>
     </div>
@@ -67,34 +84,34 @@ export default {
         return {
             look: require('../../assets/images/icon_look.png'),
             pensoil: require('../../assets/images/icon_pensoil.png'),
-            jurisdiction: [],
-            buttonarr: [],
-            ckid: "",
-            ckshow: true,
-            bjid: "",
-            bjshow: '',
+            jurisdiction:[],
+            buttonarr:[],
+            ckid:"",
+            ckshow:true,
+            bjid:"",
+            bjshow:'',
             zoom: 1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
-    computed: {
+      computed:{
         VpowerData() {
-            return this.$store.state.btnPowerData;
+                    return this.$store.state.btnPowerData;
         },
     },
-    watch: {
-        VpowerData(val) {
-            this.jurisdiction = this.$store.state.btnPowerData
-            this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'), this.jurisdiction)[0].Children
-            this.buttonarr.forEach((item) => {
-                if (item.RightName == '历史报警-故障快速检索') {
-                    this.ckid = item.RightID
-                } else if (item.RightName == '历史报警-故障处理流程录入') {
-                    this.bjid = item.RightID
-                }
-            })
-            var userid = ''
-            if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+    watch:{
+           VpowerData(val){
+          this.jurisdiction = this.$store.state.btnPowerData
+     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
+     this.buttonarr.forEach((item)=>{
+         if(item.RightName == '历史报警-故障快速检索'){
+          this.ckid = item.RightID
+         }else if(item.RightName == '历史报警-故障处理流程录入'){
+              this.bjid = item.RightID
+         }
+     })
+     var userid = ''
+      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
                 userid = JSON.parse(
                     sessionStorage.getItem('sightseerInfo1')
                 ).SCMSUserID;
@@ -103,108 +120,105 @@ export default {
                     sessionStorage.getItem('userInfo1')
                 ).SCMSUserID;
             }
-            this.$axios({
-                method: 'post',
-                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ckid}`,
-            }).then(res => {
-                this.ckshow = res.data.data
-            }).catch((err) => {
-                console.log('err', err)
-            })
-            this.$axios({
-                method: 'post',
-                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.bjid}`,
-            }).then(res => {
-                this.bjshow = res.data.data
-            }).catch((err) => {
-                console.log('err', err)
-            })
+             this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ckid}`,
+              }).then(res => {
+                  this.ckshow = res.data.data
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
+                 this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.bjid}`,
+              }).then(res => {
+                  this.bjshow = res.data.data
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
         }
     },
-    mounted() {
+    mounted(){
         this.zoom = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
         this.jurisdiction = this.$store.state.btnPowerData
-        this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'), this.jurisdiction)[0].Children
-        this.buttonarr.forEach((item) => {
-            if (item.RightName == '历史报警-故障快速检索') {
-                this.ckid = item.RightID
-            } else if (item.RightName == '历史报警-故障处理流程录入') {
-                this.bjid = item.RightID
+     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
+     this.buttonarr.forEach((item)=>{
+         if(item.RightName == '历史报警-故障快速检索'){
+          this.ckid = item.RightID
+         }else if(item.RightName == '历史报警-故障处理流程录入'){
+              this.bjid = item.RightID
+         }
+     })
+     var userid = ''
+      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+                userid = JSON.parse(
+                    sessionStorage.getItem('sightseerInfo1')
+                ).SCMSUserID;
+            } else {
+                userid = JSON.parse(
+                    sessionStorage.getItem('userInfo1')
+                ).SCMSUserID;
             }
-        })
-        var userid = ''
-        if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
-            userid = JSON.parse(
-                sessionStorage.getItem('sightseerInfo1')
-            ).SCMSUserID;
-        } else {
-            userid = JSON.parse(
-                sessionStorage.getItem('userInfo1')
-            ).SCMSUserID;
-        }
-        this.$axios({
-            method: 'post',
-            url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ckid}`,
-        }).then(res => {
-            this.ckshow = res.data.data
-        }).catch((err) => {
-            console.log('err', err)
-        })
-        this.$axios({
-            method: 'post',
-            url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.bjid}`,
-        }).then(res => {
-            this.bjshow = res.data.data
-        }).catch((err) => {
-            console.log('err', err)
-        })
+             this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ckid}`,
+              }).then(res => {
+                  this.ckshow = res.data.data
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
+                 this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.bjid}`,
+              }).then(res => {
+                  this.bjshow = res.data.data
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
     },
     methods: {
-        selectFn(arr) {
-            this.$emit('selectFn', arr);
+          findPathByLeafId(id,node,path){
+        if(!path){
+             path = []
+         }
+        for(let i=0;i<node.length;i++){
+          var temPath = path.concat();
+        
+          if(id == node[i].RightID){
+                temPath.push(node[i])
+           return temPath
+          }
+          if(node[i].Children){
+           var findResult = this.findPathByLeafId(id,node[i].Children,temPath)
+           if(findResult){
+           return findResult
+           }
+          }
+        }
         },
-        findPathByLeafId(id, node, path) {
-            if (!path) {
-                path = []
+          GetUrlParam(paraName) {
+        let url = document.location.toString();
+        let arrObj = url.split("?");
+        if (arrObj.length > 1) {
+            let arrPara = arrObj[1].split("&");
+            let arr;
+           for(let i=0;i<arrPara.length;i++){
+            arr = arrPara[i].split("=");
+            if(arr&&arr[0] == paraName){
+              
+               return arr[1]
             }
-            for (let i = 0; i < node.length; i++) {
-                var temPath = path.concat();
-
-                if (id == node[i].RightID) {
-                    temPath.push(node[i])
-                    return temPath
-                }
-                if (node[i].Children) {
-                    var findResult = this.findPathByLeafId(id, node[i].Children, temPath)
-                    if (findResult) {
-                        return findResult
-                    }
-                }
-            }
-        },
-        GetUrlParam(paraName) {
-            let url = document.location.toString();
-            let arrObj = url.split("?");
-            if (arrObj.length > 1) {
-                let arrPara = arrObj[1].split("&");
-                let arr;
-                for (let i = 0; i < arrPara.length; i++) {
-                    arr = arrPara[i].split("=");
-                    if (arr && arr[0] == paraName) {
-
-                        return arr[1]
-                    }
-                }
-                return ''
-            } else {
-                return ''
-            }
-        },
+           }
+           return ''
+        }else {
+            return ''
+        }
+          },
         handleEdit(a, b) {
-            this.$emit('handleEdit', a, b, this.ckshow);
+            this.$emit('handleEdit', a, b,this.ckshow);
         },
         handleEdit1(a, b) {
-            this.$emit('handleEdit1', a, b, this.bjshow);
+            this.$emit('handleEdit1', a, b,this.bjshow);
         },
         computedData(value, key) {
             // if (key === 'AlarmTime' || key === 'RecoverTime') {
@@ -244,7 +258,6 @@ export default {
     height: 100%;
     width: 100%;
 }
-
 .table-container .img {
     width: 60px;
     height: 30px;
@@ -253,7 +266,6 @@ export default {
     display: inline-block;
     margin-left: 35px;
     background-color: #ffffff;
-
     img {
         width: 24px;
         height: 24px;
@@ -265,22 +277,19 @@ export default {
         margin: auto;
     }
 }
-
 .look {
     border: 1px solid #4572e4;
 }
-
 .pensoil {
     border: 1px solid #47b6c3;
 }
-
 // .sad{
 //     color: red;
 // }
 // .sad:hover{
 //     color: black;
 // }
-img {
+img{
     cursor: pointer;
 }
 </style>

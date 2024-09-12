@@ -68,7 +68,7 @@
                                 v-model="value1"
                                 type="datetime"
                                 :style="{width:'220px'}"
-                                placeholder="选择日期时间"
+                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                                 value-format="yyyy-MM-dd HH:mm:ss"
                             ></el-date-picker>
                         </div>
@@ -78,7 +78,7 @@
                             <el-date-picker
                                 v-model="value2"
                                 type="datetime"
-                                placeholder="选择日期时间"
+                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                                 :style="{width:'220px'}"
                                 value-format="yyyy-MM-dd HH:mm:ss"
                             ></el-date-picker>
@@ -163,6 +163,9 @@
                     :cell-style="{border:'1px solid #cccccc'}"
                     :header-cell-style="{background:'#5a6c98',color:'#ffffff', border:'1px solid #cccccc',height:'50px',padding:'0'}"
                 >
+                    <template slot="empty">
+                        <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
+                    </template>
                     <el-table-column prop="Number" label="序号" width="180"></el-table-column>
                     <el-table-column prop="Time" label="时间" width="272"></el-table-column>
                     <el-table-column prop="Room" label="配电室" width="272"></el-table-column>
@@ -373,7 +376,8 @@ export default {
             endtime: '',
             change: 2,
             tableData: [],
-            hasnum: 1
+            hasnum: 1,
+            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
  
@@ -760,7 +764,7 @@ export default {
 }
 .tabledata {
     padding: 10px;
-    width: calc(100%-20px);
+    width: calc(100% - 20px);
     table {
         width: 100%;
         background-color: #ffffff;

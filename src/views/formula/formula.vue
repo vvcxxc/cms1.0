@@ -55,17 +55,6 @@
                             <!-- <img :src="hao" alt /> -->
                             {{lang.FormulaManage_Template}}
                         </div>
-
-                        <el-button size="small" class="table_btn" type="primary" @click="exportExcel">导出</el-button>
-                        <el-upload
-                            style="float: right"
-                            action="#"
-                            :show-file-list="false"
-                            :http-request="uploadFile"
-                        >
-                            <el-button size="small" class="table_btn" type="primary">导入</el-button>
-                        </el-upload>
-
                     </div>
                     <el-table
                         ref="multipleTable3"
@@ -948,37 +937,6 @@ export default {
          next();
     },
     methods: {
-        uploadFile(file) {
-            let $this = this
-            let formData = new FormData()
-            formData.append('file', file.file)
-            this.$axios({
-                method: 'post',
-                url: `/api/FormulaManage/ImportFormulas`,
-                data: formData
-            }).then(res => {
-                if (res.data.code === 0) {
-                    $this.getonedata();
-                    $this.confirm_Pop2($this, '导入成功')
-                } else {
-                    $this.confirm_Pop2($this, res.data.msg)
-                }
-            })
-        },
-        exportExcel() {
-            let $this = this
-            this.$axios({
-                method: 'post',
-                url: `/api/FormulaManage/ExportAllFormulas`,
-                responseType: 'blob',
-            }).then(res => {
-                if (res.status === 200) {
-                    $this.downloadFile(res.data, '配方.xlsx')
-                } else {
-                    $this.confirm_Pop2($this, res.data.msg)
-                }
-            })
-        },
        move(name, namehead) {
           //  $(`.${name}`).addClass('center')
            let left = ($(`.${name}`).width())/2+'px'
@@ -5211,21 +5169,5 @@ input{
 .processMess{
  width: 590px;
  height: 260px;
-}
-
-.table_btn.el-button {
-    width: 80px;
-    float: right;
-    height: 38px;
-    background-color: #fff;
-    border: 2px solid #386df0;
-    text-align: center;
-    color: #386df0;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    line-height: 22px;
-    margin: 10px 10px 0 10px;
 }
 </style>

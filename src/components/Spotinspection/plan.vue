@@ -2971,15 +2971,19 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         this.PageData = res.data.data.ParameterList;
                         let i = 0;
                         for (i in this.tableData1) {
-                            this.tableData1[i].CurrentStartTime = 
+                            this.tableData1[i].CurrentStartTime = this.gettime(
                                 this.tableData1[i].CurrentStartTime
-                             this.tableData1[i].CurrentEndTime =  
+                            );
+                            this.tableData1[i].CurrentEndTime = this.gettime(
                                 this.tableData1[i].CurrentEndTime
-                             this.tableData1[i].NextStartTime =  
+                            );
+                            this.tableData1[i].NextStartTime = this.gettime(
                                 this.tableData1[i].NextStartTime
-                             this.tableData1[i].NextEndTime =  
+                            );
+                            this.tableData1[i].NextEndTime = this.gettime(
                                 this.tableData1[i].NextEndTime
-                             let a = i;
+                            );
+                            let a = i;
                             this.tableData1[i].Number = ++a;
                             if (this.tableData1[i].LifeCycleUnit == 1) {
                                 this.tableData1[i].LifeCycleValue =

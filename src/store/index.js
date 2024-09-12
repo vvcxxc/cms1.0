@@ -53,10 +53,7 @@ export default new Vuex.Store({
     staticImagearr:null,//静态图片数据
     scriptData:'',//脚本事件
     userId:null,//用户登录
-    user:{},
     screentype:1,//自适应类型
-    cacheTime: 30, // 趋势曲线 缓存时间
-    curveGroupId: '', // 趋势曲线 清除曲线
     div:'',
     dittop:'',
     zoom:1

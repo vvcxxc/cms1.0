@@ -553,11 +553,11 @@ export default{
                 var iptCheck1 = document.querySelector(`.${item.class}ipt`).checked
                 if(iptCheck1 == true){
                     document.querySelector(`.${item.class}ipt`).checked = false
-                    document.querySelector(`.${item.class}ipt`).nextElementSibling.nextElementSibling.innerHTML = item.OffText
+                    document.querySelector(`.${item.class}ipt`).nextElementSibling.nextElementSibling.innerHTML = 'Off'
                     $(`.${item.class}`).find('#switch-area')[0].style.background= "rgb(221, 221, 221)"
                 }else{
                     document.querySelector(`.${item.class}ipt`).checked = true
-                    document.querySelector(`.${item.class}ipt`).nextElementSibling.nextElementSibling.innerHTML = item.OnText
+                    document.querySelector(`.${item.class}ipt`).nextElementSibling.nextElementSibling.innerHTML = 'On'
                     $(`.${item.class}`).find('#switch-area')[0].style.background= "rgb(221, 221, 221)"
                 }
          }
@@ -766,8 +766,8 @@ export default{
                                     class:this.textblockData[i].Name,
                                     OnColor:'#DDDDDD',
                                     OffColor:'#DDDDDD',
-                                    OnText:this.textblockData[i].PropertyList.OnText,
-                                    OffText:this.textblockData[i].PropertyList.OffText,
+                                    OnText:'On',
+                                    OffText:'Off',
                                     CornerRadius:0,
                                     ModeType:2,
                                     FormType:0,
@@ -849,8 +849,8 @@ export default{
                             class:this.textblockData[i].Name,
                             OnColor:'#DDDDDD',
                             OffColor:'#DDDDDD',
-                            OnText:this.textblockData[i].PropertyList.OnText,
-                            OffText:this.textblockData[i].PropertyList.OffText,
+                            OnText:'On',
+                            OffText:'Off',
                             CornerRadius:0,
                             ModeType:2,
                             FormType:0,

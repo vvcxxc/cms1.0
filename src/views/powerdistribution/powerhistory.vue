@@ -58,7 +58,7 @@
                             <el-date-picker
                                 v-model="value1"
                                 type="datetime"
-                                placeholder="选择日期时间"
+                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                                 value-format="yyyy-MM-dd HH:mm:ss"
                                 :style="{width:'220px'}"
                             ></el-date-picker>
@@ -69,7 +69,7 @@
                             <el-date-picker
                                 v-model="value2"
                                 type="datetime"
-                                placeholder="选择日期时间"
+                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                                 value-format="yyyy-MM-dd HH:mm:ss"
                                 :style="{width:'220px'}"
                             ></el-date-picker>
@@ -162,23 +162,23 @@
                 </div>
                 <div class="page">
                     <div class="pageword">
-                        共
-                        <span>{{pageDate.togesize}}</span>条记录 当前第
-                        <span>{{pageDate.pageIndex}}</span>页 共
-                        <span>{{pageDate.togeIndex}}</span>页 每页
-                        <span>{{pageDate.pagesize}}</span>条记录
+                        {{lang.DataGrid_Reaction_HT_ATotalOf}}
+                        <span>{{pageDate.togesize}}</span>{{lang.DataGrid_Reaction_HT_RecordsAndTheCurrent}}
+                        <span>{{pageDate.pageIndex}}</span>{{lang.DataGrid_Reaction_HT_Page}}
+                        <span>{{pageDate.togeIndex}}</span>{{lang.DataGrid_Reaction_HT_RecordsAnd}}
+                        <span>{{pageDate.pagesize}}</span>{{lang.DataGrid_Reaction_HT_PerPage}}
                     </div>
                     <div class="pageoperation">
-                        <span class="btn" @click="start">首页</span>
-                        <span class="btn " :class="{nopage:aaa}" @click="abck">上一页</span>
-                        <span class="btn" :class="{nopage:bbb}" @click="next">下一页</span>
-                        <span class="btn" @click="end">末页</span>
+                        <span class="btn" @click="start">{{lang.DataGrid_Reaction_FirstPage}}</span>
+                        <span class="btn " :class="{nopage:aaa}" @click="abck">{{lang.DataGrid_Reaction_LastPage}}</span>
+                        <span class="btn" :class="{nopage:bbb}" @click="next">{{lang.DataGrid_Reaction_NextPage}}</span>
+                        <span class="btn" @click="end">{{lang.DataGrid_Reaction_EndPage}}</span>
                         <div class="inputnumber">
-                            第
-                            <input type="text" v-model="nowpage" /> 页
+                            {{lang.DataGrid_Reaction_The}}
+                            <input type="text" v-model="nowpage" /> {{lang.DataGrid_Reaction_Page}}
                         </div>
 
-                        <span class="btn" @click="jump">跳转</span>
+                        <span class="btn" @click="jump">{{lang.DataGrid_Reaction_TurnPage}}</span>
                     </div>
                 </div>
             </div>
@@ -321,7 +321,8 @@ export default {
                 pagesize: 50,
                 togeIndex: 0,
                 togesize: 0
-            }
+            },
+            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
 
@@ -722,7 +723,7 @@ export default {
 }
 .tabledata {
     padding: 10px;
-    width: calc(100%-20px);
+    width: calc(100% - 20px);
     // height: 50%;
 
     .number {

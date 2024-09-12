@@ -46,7 +46,7 @@
             >
                 <div
                     class="alarm_box2"
-                    :style="`width:100%;height:100%;;padding:14px;box-sizing:border-box;background: ${item.Background}`"
+                    :style="'width:100%;height:100%;;padding:14px;box-sizing:border-box;'"
                 >
                     <div
                         class="alarm_title clearfix"

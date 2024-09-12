@@ -15,7 +15,7 @@
    @mouseup="seupClick(item,$event)"
       :class="item.class" class="imgVue" :style="'width:'+ item.width + 'px; height:' + item.height + 'px; opacity:' + item.opacity 
       + '; position:absolute; left:' + item.left  + 'px; top:' + item.top + 'px; transform:rotate(' + item.rotate + 'deg);zIndex:'+item.ZIndex" >
-        <img class="boximg" :src="encodeURIComponent(item.source)" :class="{cimg:bl==1}">
+        <img class="boximg" :src="item.source" :class="{cimg:bl==1}">
       </div>
 
     <!-- 权限弹窗 -->

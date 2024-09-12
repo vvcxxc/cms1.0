@@ -186,7 +186,7 @@
                 <el-table-column prop="PeriodValue" :label="lang.MaintenanceManage_MaintenanceCycle"  :width="200*zoom" :show-overflow-tooltip="true"></el-table-column>
                 <el-table-column
                     prop="CurrentStartTime"
-                    :label="lang.MaintenanceManage_ThisTimeStartTime"
+                    :label="213123123"
                      :width="200*zoom"
                     :show-overflow-tooltip="true"
                 ></el-table-column>
@@ -2194,17 +2194,22 @@ this.$store.commit('move')
                         if (!this.tableData1[i].DeviceName) {
                             this.tableData1[i].DeviceName = '';
                         }
-                        this.tableData1[i].CurrentStartTime = 
+                        this.tableData1[i].CurrentStartTime = this.gettime(
                             this.tableData1[i].CurrentStartTime
-                         this.tableData1[i].CurrentEndTime = 
+                        );
+                        this.tableData1[i].CurrentEndTime = this.gettime(
                             this.tableData1[i].CurrentEndTime
-                         this.tableData1[i].NextStartTime =  
+                        );
+                        this.tableData1[i].NextStartTime = this.gettime(
                             this.tableData1[i].NextStartTime
-                         this.tableData1[i].NextEndTime = 
+                        );
+                        this.tableData1[i].NextEndTime = this.gettime(
                             this.tableData1[i].NextEndTime
-                         this.tableData1[i].MaturityTime =  
+                        );
+                        this.tableData1[i].MaturityTime = this.gettime(
                             this.tableData1[i].MaturityTime
-                         if (this.tableData1[i].IsEnabled == true) {
+                        );
+                        if (this.tableData1[i].IsEnabled == true) {
                             this.tableData1[i].IsEnabled = this.lang.MaintenanceManage_Enable;
                         } else if (this.tableData1[i].IsEnabled == false) {
                             this.tableData1[i].IsEnabled = this.lang.MaintenanceManage_Stop;

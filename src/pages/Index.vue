@@ -9,7 +9,7 @@
         <v-tool-bar class="v-tool-bar" ></v-tool-bar>
         <main class="v-content">
             <div class="v-content__wrap">
-                <router-view :key="$route.fullPath"></router-view>
+                <router-view></router-view>
             </div>
         </main>
         <v-footer></v-footer>

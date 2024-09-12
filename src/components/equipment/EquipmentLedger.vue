@@ -6,153 +6,345 @@
  * @LastEditTime: 2021-02-25 12:17:29
  -->
 <template>
-    <div class="public-table  sbtz" @click="changeselect = false">
-        <div class="loadcover" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.4)"
-            v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
+    <div
+        class="public-table  sbtz"
+        @click="changeselect = false"
+    >
+      			<div class="loadcover" element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;"></div>
-        <div class="search-container" :class="{ colordiv: $store.state.color == 'grey' }" :style="{
-            zoom: a11
-        }">
-            <span class="sblx">{{ lang.EquipmentAccount_EquipmentType1 }}</span>
-            <div class="seleword" @click.stop="selectword1('seleword')">
+        <div
+            class="search-container"
+            :class="{ colordiv: $store.state.color == 'grey' }"
+            :style="{
+                zoom:a11
+            }"
+        >
+            <span class="sblx" 
+                >{{lang.EquipmentAccount_EquipmentType1}}</span
+            >
+            <div
+                class="seleword"
+                @click.stop="selectword1('seleword')"
+
+            >
                 <div class="seleword1">
                     {{ Meter }}
                     <img :src="xiala" alt />
                 </div>
             </div>
             <div class="selectword" v-show="changeselect">
-                <el-tree :data="data6" @node-click="handleNodeClic6" node-key="node.id" default-expand-all
-                    icon-class="el-icon-arrow-up">
+                <el-tree
+                    :data="data6"
+                    @node-click="handleNodeClic6"
+                    node-key="node.id"
+                    default-expand-all
+                    icon-class="el-icon-arrow-up"
+                >
                     <span class="custom-tree-node" slot-scope="{ node, data }">
                         <span>
-                            <img v-show="data.file" :src="data.file" alt class="img11" />
+                            <img
+                                v-show="data.file"
+                                :src="data.file"
+                                alt
+                                class="img11"
+                            />
                             <i :class="data.icon"></i>
                             {{ node.label }}
                         </span>
                     </span>
                 </el-tree>
             </div>
-            <input type="text" class="tinput" :placeholder="lang.AlarmRecord_Time_Keyword" v-model="keyword" :style="[
+            <input
+                type="text"
+                class="tinput"
+                :placeholder="lang.AlarmRecord_Time_Keyword"
+                v-model="keyword"
+                :style="[
 
-                { marginLeft: 220 * 1 + 10 + 'px' }
-            ]" />
-            <div class="sad" @click="sad" :id="cxid">
-                {{ lang.UserManage_Query }}
+                    { marginLeft: 220 * 1 + 10 + 'px' }
+                ]"
+            />
+            <div
+                class="sad"
+                @click="sad"
+                :id="cxid"
+             
+            >
+                {{lang.UserManage_Query}}
             </div>
-            <div class="add" @click="add" :id="tjid">
-                {{ lang.UserManage_Add }}
+            <div
+                class="add"
+                @click="add"
+                :id="tjid"
+             
+            >
+                {{lang.UserManage_Add}}
             </div>
-            <div class="move" @click="del" :id="scid">
-                {{ lang.RoleManage_Delete }}
+            <div
+                class="move"
+                @click="del"
+                :id="scid"
+             
+            >
+                 {{lang.RoleManage_Delete}}
             </div>
-            <div class="fr">
-                <div class="typeSet" @click="openEditType">
-                    设备状态配置
-                </div>
-                <a href="javascript:;" class="file">
-                    {{ lang.QualityManage_SampleChoseUserControl_Import }}
-                    <input @click="dr($event)" type="file" ref="upload" accept=".xls, .xlsx" class="outputlist_upload" />
+            <div class="fr" :id="drid">
+                <a
+                    href="javascript:;"
+                    class="file"
+                  
+                >
+                    {{lang.QualityManage_SampleChoseUserControl_Import}}
+                    <input
+                        @click="dr($event)"
+                        type="file"
+                        ref="upload"
+                        accept=".xls, .xlsx"
+                        class="outputlist_upload"
+                    />
                 </a>
-                <div class="export" @click="exportTable" :id="dcid">
-                    {{ lang.QualityManage_SampleChoseUserControl_Export }}
+                <div
+                    class="export"
+                    @click="exportTable"
+                    :id="dcid"
+                   
+                >
+                   {{lang.QualityManage_SampleChoseUserControl_Export}}
                 </div>
 
             </div>
         </div>
         <div class="table-container table-container1">
-            <el-table ref="multipleTable" :data="tableData" border highlight-current-row header-row-class-name="light-blue"
-                :style="{ fontSize: a11 * 15 + 'px', width: '100%' }" stripe :row-style="{ height: 50 * a11 + 'px' }"
-                height="100%" tooltip-effect="dark" :header-cell-style="{
+            <el-table
+                ref="multipleTable"
+                :data="tableData"
+                border
+                highlight-current-row
+                header-row-class-name="light-blue"
+                :style="{ fontSize: a11 * 15 + 'px', width: '100%' }"
+                stripe
+                :row-style="{height:50*a11+'px'}"
+                height="100%"
+                tooltip-effect="dark"
+                :header-cell-style="{
                     background:
                         $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
                     color: $store.state.color == 'grey' ? '#000' : '#fff',
                     'border-left': '1px solid #cccccc',
-                    height: 50 * a11 + 'px',
+                    height: 50*a11+'px',
                     padding: '0'
-                }" @select="select" @select-all="selectall">
+                }"
+                @select="select"
+                @select-all="selectall"
+            >
                 <template slot="empty">
-                    <span>{{ lang.SCMSConsoleWebApiMySql_NoData }}</span>
+                    <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
                 </template>
-                <el-table-column type="selection" :width="60 * a11 < 60 ? 60 : 60 * a11" fixed
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column :label="lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber"
-                    :width="lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber == 'Serial number' ? 130 * a11 : 100 * a11"
-                    prop="number" :show-overflow-tooltip="true" fixed>
+                <el-table-column
+                    type="selection"
+                    :width="60*a11<60?60:60*a11"
+                    fixed
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    :label="lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber"
+                    :width="lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber=='Serial number'?130*a11:100 * a11"
+                    prop="number"
+                    :show-overflow-tooltip="true"
+                    fixed
+                >
                     <template slot-scope="scope">{{
                         scope.row.number
                     }}</template>
                 </el-table-column>
-                <el-table-column prop="name" :label="lang.RoleManage_Operation" :width="210 * a11" fixed>
+                <el-table-column
+                    prop="name"
+                    :label="lang.RoleManage_Operation"
+                     :width="210 * a11"
+                 
+                    fixed
+                >
                     <template slot-scope="scope">
                         <!-- <i class="el-icon-share"></i> -->
-                        <div class="img" :style="{ zoom: a11 }" @click="handleEdit(scope.$index, scope.row)">
+                        <div
+                            class="img"
+                            :style="{zoom:a11}"
+                            @click="handleEdit(scope.$index, scope.row)"
+                        >
                             <img :src="look" alt />
                             {{ scope.row.phone }}
                         </div>
-                        <div class="img" :style="{ zoom: a11 }" @click="handleEdit1(scope.$index, scope.row, scope)">
-                            <img :src="pensoil" alt />
+                        <div
+                            class="img"
+                             :style="{zoom:a11}"
+                            @click="handleEdit1(scope.$index, scope.row, scope)"
+                        >
+                            <img :src="pensoil" alt  />
                             {{ scope.row.phone }}
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="DeviceName" :label="lang.EquipmentAccount_EquipmentName" :width="200 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="DeviceNo" :label="lang.EquipmentAccount_EquipmentNumber" :width="200 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="DetailDeviceType" :label="lang.EquipmentAccount_EquipmentType" :width="200 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="DeviceModel" :label="lang.EquipmentAccount_EquipmentModel" :width="200 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="AssetsNo" :label="lang.EquipmentAccount_AssetNumber" :width="300 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="DetailInstallationLocation" :label="lang.EquipmentAccount_InstallPosition"
-                    :width="300 * a11" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="Department" :label="lang.EquipmentAccount_Department" :width="300 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="PersonInCharge" :label="lang.EquipmentAccount_Person" :width="300 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="Manufactor" :label="lang.EquipmentAccount_Manufacturer" :width="300 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="DepreciationLife" :label="lang.EquipmentAccount_PeriodOfDepreciation"
-                    :width="300 * a11" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="PurchaseTime" :label="lang.EquipmentAccount_PurchaseDate" :width="300 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="PurchaseAmount" :label="lang.EquipmentAccount_PurchaseAmount" :width="300 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="Salesman" :label="lang.EquipmentAccount_Salesman" :width="300 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="Contact" :label="lang.EquipmentAccount_Contact" :width="300 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="CheckTime" :label="lang.EquipmentAccount_AcceptanceDate" :width="300 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="EnableTime" :label="lang.EquipmentAccount_StartDate" :width="300 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="DeviceStatus" :label="lang.EquipmentAccount_EquipmentStatus" :width="300 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="QualityStatus" :label="lang.EquipmentAccount_WarrantyStatus" :width="300 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="Remarks" :label="lang.EquipmentAccount_EquipmentRemark" :width="300 * a11"
-                    :show-overflow-tooltip="true"></el-table-column>
+                <el-table-column
+                    prop="DeviceName"
+                    :label="lang.EquipmentAccount_EquipmentName"
+                    :width="200 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="DeviceNo"
+                    :label="lang.EquipmentAccount_EquipmentNumber"
+                    :width="200 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="DetailDeviceType"
+                    :label="lang.EquipmentAccount_EquipmentType"
+                    :width="200 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="DeviceModel"
+                    :label="lang.EquipmentAccount_EquipmentModel"
+                    :width="200 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="AssetsNo"
+                    :label="lang.EquipmentAccount_AssetNumber"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="DetailInstallationLocation"
+                    :label="lang.EquipmentAccount_InstallPosition"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="Department"
+                    :label="lang.EquipmentAccount_Department"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="PersonInCharge"
+                    :label="lang.EquipmentAccount_Person"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="Manufactor"
+                    :label="lang.EquipmentAccount_Manufacturer"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="DepreciationLife"
+                    :label="lang.EquipmentAccount_PeriodOfDepreciation"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="PurchaseTime"
+                    :label="lang.EquipmentAccount_PurchaseDate"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="PurchaseAmount"
+                    :label="lang.EquipmentAccount_PurchaseAmount"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="Salesman"
+                    :label="lang.EquipmentAccount_Salesman"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="Contact"
+                    :label="lang.EquipmentAccount_Contact"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="CheckTime"
+                    :label="lang.EquipmentAccount_AcceptanceDate"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="EnableTime"
+                    :label="lang.EquipmentAccount_StartDate"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="DeviceStatus"
+                    :label="lang.EquipmentAccount_EquipmentStatus"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="QualityStatus"
+                    :label="lang.EquipmentAccount_WarrantyStatus"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="Remarks"
+                    :label="lang.EquipmentAccount_EquipmentRemark"
+                    :width="300 * a11"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
             </el-table>
         </div>
         <div class="pages-container">
             <my-page :pageData="PageData" @req="req"></my-page>
         </div>
-        <div class="sestion sbtz" v-show="change" ref="kongtiao1" :style="{ zoom: a11 }">
-            <div class="sestionheader" :class="{ colordiv: $store.state.color == 'grey' }">
-                <div class="sestionheader1">
-                </div>
-                <span class="head" v-if="sestion == 1" :class="{ fcolor: $store.state.color == 'grey' }">{{
-                    lang.EquipmentAccount_ViewEquipmentInfo }}</span>
-                <span class="head" v-if="sestion == 2" :class="{ fcolor: $store.state.color == 'grey' }">{{
-                    lang.EquipmentAccount_EditEquipmentInfo }}</span>
-                <span class="head" v-if="sestion == 3" :class="{ fcolor: $store.state.color == 'grey' }">{{
-                    lang.EquipmentAccount_AddEquipmentInfo }}</span>
-
-                <img :src="no2" alt class="no" @click="change = false" v-if="$store.state.color == 'grey'" />
+        <div
+            class="sestion sbtz"
+            v-show="change"
+            ref="kongtiao1"
+            :style="{ zoom: a11 }"
+        >
+            <div class="sestionheader"  :class="{ colordiv: $store.state.color == 'grey' }">
+                <div
+                    class="sestionheader1"
+                   
+                >
+                  </div>
+                    <span
+                        class="head"
+                        v-if="sestion == 1"
+                        :class="{ fcolor: $store.state.color == 'grey' }"
+                        >{{lang.EquipmentAccount_ViewEquipmentInfo}}</span
+                    >
+                    <span
+                        class="head"
+                        v-if="sestion == 2"
+                        :class="{ fcolor: $store.state.color == 'grey' }"
+                        >{{lang.EquipmentAccount_EditEquipmentInfo}}</span
+                    >
+                    <span
+                        class="head"
+                        v-if="sestion == 3"
+                        :class="{ fcolor: $store.state.color == 'grey' }"
+                        >{{lang.EquipmentAccount_AddEquipmentInfo}}</span
+                    >
+              
+                <img
+                    :src="no2"
+                    alt
+                    class="no"
+                    @click="change = false"
+                    v-if="$store.state.color == 'grey'"
+                />
                 <img :src="no" alt class="no" @click="change = false" v-else />
             </div>
 
@@ -160,82 +352,186 @@
                 <div class="homesetion">
                     <div class="hometop">
                         <div class="linetop1 hometop-title">
-                            {{ lang.EquipmentAccount_BasicInformation }}
+                               {{lang.EquipmentAccount_BasicInformation}}
                         </div>
+                        
                         <div class="line linetop4"></div>
                     </div>
                 </div>
                 <div class="overflow xgtooltip">
                     <div class="zl">
-                        <div class="margin">
-                            <span>{{ lang.EquipmentAccount_EquipmentName }}</span>
-                            <input type="text" v-if="sestion == 1" :value="sesstion.DeviceName" :disabled="disabled" />
-                            <input type="text" v-if="sestion == 3" v-model="tip.DeviceName" />
-                            <input type="text" v-if="sestion == 2" v-model="pen.DeviceName" />
+                        <div class="margin" >
+                            <span>{{lang.EquipmentAccount_EquipmentName}}</span>
+                            <input
+                                type="text"
+                                v-if="sestion == 1"
+                                :value="sesstion.DeviceName"
+                                :disabled="disabled"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 3"
+                                v-model="tip.DeviceName"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 2"
+                                v-model="pen.DeviceName"
+                            />
                         </div>
                         <div class="margin ">
-                            <span class="mi">{{ lang.EquipmentAccount_EquipmentType }}</span>
+                            <span class="mi">{{lang.EquipmentAccount_EquipmentType}}</span>
                             <div v-if="sestion == 1" class="input1">
-                                <el-tooltip popper-class="atooltip" class="item" effect="dark"
-                                    :content="sesstion.DetailDeviceType" placement="top-start">
+                                <el-tooltip
+                                 popper-class="atooltip"
+                                    class="item"
+                                    effect="dark"
+                                    :content="sesstion.DetailDeviceType"
+                                    placement="top-start"
+                                >
                                     <span @mouseenter="atooltip">{{ sesstion.DetailDeviceType }}</span>
                                 </el-tooltip>
                                 <div class="inputimg">
                                     <img :src="diji" alt />
                                 </div>
                             </div>
-                            <div v-if="sestion == 2 || sestion == 3" class="input1">
-                                <el-tooltip v-if="sestion == 2" popper-class="atooltip" class="item" effect="dark"
-                                    :content="pen.DetailDeviceType" placement="top-start">
+                            <div
+                                v-if="sestion == 2 || sestion == 3"
+                                class="input1"
+                            >
+                                <el-tooltip
+                                    v-if="sestion == 2"
+                                     popper-class="atooltip"
+                                    class="item"
+                                    effect="dark"
+                                    :content="pen.DetailDeviceType"
+                                    placement="top-start"
+                                >
                                     <span @mouseenter="atooltip">{{ pen.DetailDeviceType }}</span>
                                 </el-tooltip>
-                                <el-tooltip v-if="sestion == 3" popper-class="atooltip" class="item" effect="dark"
-                                    :content="wselectname2" placement="top-start">
+                                <el-tooltip
+                                    v-if="sestion == 3"
+                                     popper-class="atooltip"
+                                    class="item"
+                                    effect="dark"
+                                    :content="wselectname2"
+                                    placement="top-start"
+                                >
                                     <span @mouseenter="atooltip">{{ wselectname2 }}</span>
                                 </el-tooltip>
-                                <div class="inputimg" @click.stop="inputclick1()">
+                                <div
+                                    class="inputimg"
+                                    @click.stop="inputclick1()"
+                                >
                                     <img :src="diji" alt />
                                 </div>
                             </div>
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_AssetNumber }}</span>
-                            <input type="text" v-if="sestion == 1" :value="sesstion.AssetsNo" :disabled="disabled" />
-                            <input type="text" v-if="sestion == 3" v-model="tip.AssetsNo" :disabled="disabled" />
-                            <input type="text" v-if="sestion == 2" v-model="pen.AssetsNo" :disabled="disabled" />
+                            <span>{{lang.EquipmentAccount_AssetNumber}}</span>
+                            <input
+                                type="text"
+                                v-if="sestion == 1"
+                                :value="sesstion.AssetsNo"
+                                :disabled="disabled"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 3"
+                                v-model="tip.AssetsNo"
+                                :disabled="disabled"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 2"
+                                v-model="pen.AssetsNo"
+                                :disabled="disabled"
+                            />
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_Department }}</span>
-                            <input type="text" v-if="sestion == 1" :value="sesstion.Department" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
-                            <input type="text" v-if="sestion == 2" v-model="pen.Department" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
-                            <input type="text" v-if="sestion == 3" v-model="tip.Department" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
+                            <span>{{lang.EquipmentAccount_Department}}</span>
+                            <input
+                                type="text"
+                                v-if="sestion == 1"
+                                :value="sesstion.Department"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 2"
+                                v-model="pen.Department"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 3"
+                                v-model="tip.Department"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
                         </div>
                     </div>
                     <div class="zr">
-                        <div class="margin">
-                            <span>{{ lang.EquipmentAccount_EquipmentNumber }}</span>
-                            <input type="text" v-if="sestion == 1" :value="sesstion.DeviceNo" :disabled="disabled" />
-                            <input type="text" v-if="sestion == 2" v-model="pen.DeviceNo" :disabled="disabled" />
-                            <input type="text" v-if="sestion == 3" v-model="tip.DeviceNo" :disabled="disabled" />
+                        <div class="margin" >
+                            <span>{{lang.EquipmentAccount_EquipmentNumber}}</span>
+                            <input
+                                type="text"
+                                v-if="sestion == 1"
+                                :value="sesstion.DeviceNo"
+                                :disabled="disabled"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 2"
+                                v-model="pen.DeviceNo"
+                                :disabled="disabled"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 3"
+                                v-model="tip.DeviceNo"
+                                :disabled="disabled"
+                            />
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_EquipmentModel }}</span>
-                            <input type="text" v-if="sestion == 1" :value="sesstion.DeviceModel" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
-                            <input type="text" v-if="sestion == 2" v-model="pen.DeviceModel" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
-                            <input type="text" v-if="sestion == 3" v-model="tip.DeviceModel" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
+                            <span>{{lang.EquipmentAccount_EquipmentModel}}</span>
+                            <input
+                                type="text"
+                                v-if="sestion == 1"
+                                :value="sesstion.DeviceModel"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 2"
+                                v-model="pen.DeviceModel"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 3"
+                                v-model="tip.DeviceModel"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_InstallPosition }}</span>
+                            <span>{{lang.EquipmentAccount_InstallPosition}}</span>
 
                             <div class="input1" v-if="sestion == 1">
-                                <el-tooltip class="item" popper-class="atooltip" effect="dark" :content="sesstion.DetailInstallationLocation
-                                    " placement="top-start">
+                                <el-tooltip
+                                    class="item"
+                                     popper-class="atooltip"
+                                    effect="dark"
+                                    :content="
+                                        sesstion.DetailInstallationLocation
+                                    "
+                                    placement="top-start"
+                                >
                                     <span @mouseenter="atooltip">{{
                                         sesstion.DetailInstallationLocation
                                     }}</span>
@@ -244,15 +540,30 @@
                                     <img :src="diji" alt />
                                 </div>
                             </div>
-                            <div class="input1" v-if="sestion == 2 || sestion == 3">
-                                <el-tooltip v-if="sestion == 2" class="item" effect="dark" popper-class="atooltip"
-                                    :content="pen.DetailInstallationLocation" placement="top-start">
+                            <div
+                                class="input1"
+                                v-if="sestion == 2 || sestion == 3"
+                            >
+                                <el-tooltip
+                                    v-if="sestion == 2"
+                                    class="item"
+                                    effect="dark"
+                                     popper-class="atooltip"
+                                    :content="pen.DetailInstallationLocation"
+                                    placement="top-start"
+                                >
                                     <span @mouseenter="atooltip">{{
                                         pen.DetailInstallationLocation
                                     }}</span>
                                 </el-tooltip>
-                                <el-tooltip v-if="sestion == 3" class="item" effect="dark" popper-class="atooltip"
-                                    :content="wselectname3" placement="top-start">
+                                <el-tooltip
+                                    v-if="sestion == 3"
+                                    class="item"
+                                    effect="dark"
+                                     popper-class="atooltip"
+                                    :content="wselectname3"
+                                    placement="top-start"
+                                >
                                     <span @mouseenter="atooltip">{{ wselectname3 }}</span>
                                 </el-tooltip>
                                 <div class="inputimg" @click="inputclick2()">
@@ -261,323 +572,444 @@
                             </div>
                         </div>
                         <div class="margin">
-                            <span class="indent">{{ lang.EquipmentAccount_Person }}</span>
+                            <span class="indent">{{lang.EquipmentAccount_Person}}</span>
                             <select v-model="person1" :disabled="disabled">
-                                <option v-for="(item, index) in person" :key="index" :value="item">{{ item }}</option>
+                                <option
+                                    v-for="(item, index) in person"
+                                    :key="index"
+                                    :value="item"
+                                    >{{ item }}</option
+                                >
                             </select>
                         </div>
                     </div>
                 </div>
-
-                <div class="overflow xgtooltip">
-                    <div class="zl">
-                        <div class="margin">
-                            <span>状态信号</span>
-                            <el-radio-group :disabled="disabled" v-model="sesstion.IsSingleAddress" v-if="sestion == 1">
-                                <el-radio :label="true">单地址</el-radio>
-                                <el-radio :label="false">双地址</el-radio>
-                            </el-radio-group>
-                            <el-radio-group :disabled="disabled" v-model="pen.IsSingleAddress" v-if="sestion == 2">
-                                <el-radio :label="true">单地址</el-radio>
-                                <el-radio :label="false">双地址</el-radio>
-                            </el-radio-group>
-                            <el-radio-group :disabled="disabled" v-model="tip.IsSingleAddress" v-if="sestion == 3">
-                                <el-radio :label="true">单地址</el-radio>
-                                <el-radio :label="false">双地址</el-radio>
-                            </el-radio-group>
-                        </div>
-                        <div class="margin"
-                            v-if="(sestion == 1 && sesstion.IsSingleAddress) || (sestion == 2 && pen.IsSingleAddress) || (sestion == 3 && tip.IsSingleAddress)">
-                            <span class="mi">状态地址</span>
-                            <input type="text" v-model="sesstion.DefaultSignal" :disabled="true" v-if="sestion == 1" style="width:235px"/>
-                            <input type="text" v-model="pen.DefaultSignal" :disabled="true" v-if="sestion == 2"  style="width:235px"/>
-                            <input type="text" v-model="tip.DefaultSignal" :disabled="true" v-if="sestion == 3"  style="width:235px"/>
-                            <div class="unit" @click="handleChoose('DefaultSignal')">…</div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="typeList">
-
-
-
-                    <div class="type-li" v-for="(item, idx) in statusList" :key="item.ID">
-                        <div class="li-item">
-                            <div class="item-k">状态{{ Number(idx) + 1 }}</div>
-                            <div class="item-v">
-                                <el-input v-model="item.StatuName" disabled />
-                            </div>
-                        </div>
-                        <div class="li-item"
-                            v-if="(sestion == 1 && !sesstion.IsSingleAddress) || (sestion == 2 && !pen.IsSingleAddress) || (sestion == 3 && !tip.IsSingleAddress)">
-                            <div class="item-k">状态地址{{ Number(idx) + 1 }}</div>
-                            <div class="item-v">
-                                <el-input v-model="item.Variable" disabled />
-                                <div class="unit" @click="handleChoose2(item)">…</div>
-                            </div>
-                        </div>
-                        <div class="li-item">
-                            <div class="item-k">状态值{{ Number(idx) + 1 }}</div>
-                            <div class="item-v">
-                                <el-input v-model="item.StatuValue" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="homesetion">
                     <div class="hometop">
                         <div class="linetop2 hometop-title">
-                            {{ lang.EquipmentAccount_OtherInformation }}
+                               {{lang.EquipmentAccount_OtherInformation}}
                         </div>
-
+                      
                         <div class="line linetop3"></div>
                     </div>
                 </div>
                 <div class="overflow">
                     <div class="zl">
-                        <div class="margin">
-                            <span>{{ lang.EquipmentAccount_Manufacturer }}</span>
-                            <input type="text" v-if="sestion == 1" :value="sesstion.Manufactor" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
-                            <input type="text" v-if="sestion == 2" v-model="pen.Manufactor" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
-                            <input type="text" v-if="sestion == 3" v-model="tip.Manufactor" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
+                        <div class="margin" >
+                            <span>{{lang.EquipmentAccount_Manufacturer}}</span>
+                            <input
+                                type="text"
+                                v-if="sestion == 1"
+                                :value="sesstion.Manufactor"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 2"
+                                v-model="pen.Manufactor"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 3"
+                                v-model="tip.Manufactor"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_PurchaseDate }}</span>
+                            <span>{{lang.EquipmentAccount_PurchaseDate}}</span>
                             <template>
                                 <div class="block">
-                                    <el-date-picker v-model="sesstion.PurchaseTime" type="datetime"
+                                    <el-date-picker
+                                        v-model="sesstion.PurchaseTime"
+                                        type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                        value-format="yyyy-MM-dd HH:mm:ss" :disabled="disabled"
-                                        v-if="sestion == 1"></el-date-picker>
-                                    <el-date-picker v-model="pen.PurchaseTime" type="datetime"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        :disabled="disabled"
+                                        v-if="sestion == 1"
+                                    ></el-date-picker>
+                                    <el-date-picker
+                                        v-model="pen.PurchaseTime"
+                                        type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                        value-format="yyyy-MM-dd HH:mm:ss" :disabled="disabled"
-                                        v-if="sestion == 2"></el-date-picker>
-                                    <el-date-picker v-model="time1" type="datetime"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        :disabled="disabled"
+                                        v-if="sestion == 2"
+                                    ></el-date-picker>
+                                    <el-date-picker
+                                        v-model="time1"
+                                        type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                        value-format="yyyy-MM-dd HH:mm:ss" :disabled="disabled"
-                                        v-if="sestion == 3"></el-date-picker>
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        :disabled="disabled"
+                                        v-if="sestion == 3"
+                                    ></el-date-picker>
                                 </div>
                             </template>
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_Salesman }}</span>
-                            <input type="text" v-if="sestion == 1" :value="sesstion.Salesman" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
-                            <input type="text" v-if="sestion == 2" v-model="pen.Salesman" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
-                            <input type="text" v-if="sestion == 3" v-model="tip.Salesman" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
+                            <span>{{lang.EquipmentAccount_Salesman}}</span>
+                            <input
+                                type="text"
+                                v-if="sestion == 1"
+                                :value="sesstion.Salesman"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 2"
+                                v-model="pen.Salesman"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 3"
+                                v-model="tip.Salesman"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_AcceptanceDate }}</span>
+                            <span>{{lang.EquipmentAccount_AcceptanceDate}}</span>
                             <template>
                                 <div class="block">
-                                    <el-date-picker v-model="sesstion.CheckTime" type="datetime"
+                                    <el-date-picker
+                                        v-model="sesstion.CheckTime"
+                                        type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                        value-format="yyyy-MM-dd HH:mm:ss" :disabled="disabled"
-                                        v-if="sestion == 1"></el-date-picker>
-                                    <el-date-picker v-model="pen.CheckTime" type="datetime"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        :disabled="disabled"
+                                        v-if="sestion == 1"
+                                    ></el-date-picker>
+                                    <el-date-picker
+                                        v-model="pen.CheckTime"
+                                        type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                        value-format="yyyy-MM-dd HH:mm:ss" :disabled="disabled"
-                                        v-if="sestion == 2"></el-date-picker>
-                                    <el-date-picker v-model="time2" type="datetime"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        :disabled="disabled"
+                                        v-if="sestion == 2"
+                                    ></el-date-picker>
+                                    <el-date-picker
+                                        v-model="time2"
+                                        type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                        value-format="yyyy-MM-dd HH:mm:ss" :disabled="disabled"
-                                        v-if="sestion == 3"></el-date-picker>
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        :disabled="disabled"
+                                        v-if="sestion == 3"
+                                    ></el-date-picker>
                                 </div>
                             </template>
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_EquipmentStatus }}</span>
+                            <span>{{lang.EquipmentAccount_EquipmentStatus}}</span>
                             <select :disabled="disabled" v-model="device">
-                                <option v-for="(item, index) in devicestatus" :key="index" :value="item">{{ item }}</option>
+                                <option
+                                    v-for="(item, index) in devicestatus"
+                                    :key="index"
+                                    :value="item"
+                                    >{{ item }}</option
+                                >
                             </select>
                         </div>
                     </div>
                     <div class="zr">
-                        <div class="margin">
-                            <span>{{ lang.EquipmentAccount_PeriodOfDepreciation }}</span>
-                            <input type="text" v-if="sestion == 1" :value="sesstion.DepreciationLife" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
-                            <input type="text" v-if="sestion == 2" v-model="pen.DepreciationLife" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
-                            <input type="text" v-if="sestion == 3" v-model="tip.DepreciationLife" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
+                        <div class="margin" >
+                            <span>{{lang.EquipmentAccount_PeriodOfDepreciation}}</span>
+                            <input
+                                type="text"
+                                v-if="sestion == 1"
+                                :value="sesstion.DepreciationLife"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 2"
+                                v-model="pen.DepreciationLife"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 3"
+                                v-model="tip.DepreciationLife"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_PurchaseAmount }}</span>
-                            <input type="text" v-if="sestion == 1" :value="sesstion.PurchaseAmount" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
-                            <input type="text" v-if="sestion == 2" v-model="pen.PurchaseAmount" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
-                            <input type="text" v-if="sestion == 3" v-model="tip.PurchaseAmount" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
+                            <span>{{lang.EquipmentAccount_PurchaseAmount}}</span>
+                            <input
+                                type="text"
+                                v-if="sestion == 1"
+                                :value="sesstion.PurchaseAmount"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 2"
+                                v-model="pen.PurchaseAmount"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 3"
+                                v-model="tip.PurchaseAmount"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_Contact }}</span>
-                            <input type="text" v-if="sestion == 1" :value="sesstion.Contact" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
-                            <input type="text" v-if="sestion == 2" v-model="pen.Contact" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
-                            <input type="text" v-if="sestion == 3" v-model="tip.Contact" :disabled="disabled"
-                                :placeholder="lang.EquipmentAccount_Optional" />
+                            <span>{{lang.EquipmentAccount_Contact}}</span>
+                            <input
+                                type="text"
+                                v-if="sestion == 1"
+                                :value="sesstion.Contact"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 2"
+                                v-model="pen.Contact"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
+                            <input
+                                type="text"
+                                v-if="sestion == 3"
+                                v-model="tip.Contact"
+                                :disabled="disabled"
+                                :placeholder="lang.EquipmentAccount_Optional"
+                            />
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_StartDate }}</span>
+                            <span>{{lang.EquipmentAccount_StartDate}}</span>
                             <template>
                                 <div class="block">
-                                    <el-date-picker v-model="sesstion.EnableTime" type="datetime"
+                                    <el-date-picker
+                                        v-model="sesstion.EnableTime"
+                                        type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                        value-format="yyyy-MM-dd HH:mm:ss" :disabled="disabled"
-                                        v-if="sestion == 1"></el-date-picker>
-                                    <el-date-picker v-model="pen.EnableTime" type="datetime"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        :disabled="disabled"
+                                        v-if="sestion == 1"
+                                    ></el-date-picker>
+                                    <el-date-picker
+                                        v-model="pen.EnableTime"
+                                        type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                        value-format="yyyy-MM-dd HH:mm:ss" :disabled="disabled"
-                                        v-if="sestion == 2"></el-date-picker>
-                                    <el-date-picker v-model="time3" type="datetime"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        :disabled="disabled"
+                                        v-if="sestion == 2"
+                                    ></el-date-picker>
+                                    <el-date-picker
+                                        v-model="time3"
+                                        type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                        value-format="yyyy-MM-dd HH:mm:ss" :disabled="disabled"
-                                        v-if="sestion == 3"></el-date-picker>
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        :disabled="disabled"
+                                        v-if="sestion == 3"
+                                    ></el-date-picker>
                                 </div>
                             </template>
                         </div>
                         <div class="margin">
-                            <span>{{ lang.EquipmentAccount_WarrantyStatus }}</span>
+                            <span>{{lang.EquipmentAccount_WarrantyStatus}}</span>
                             <select v-model="warry" :disabled="disabled">
-                                <option v-for="(item, index) in warrantystatus" :key="index" :value="item">{{ item }}
-                                </option>
+                                <option
+                                    v-for="(item, index) in warrantystatus"
+                                    :key="index"
+                                    :value="item"
+                                    >{{ item }}</option
+                                >
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="overflow overflow1">
-                    <span class="overflow-remarks">{{ lang.EquipmentAccount_EquipmentRemark }}</span>
-                    <textarea name id v-if="sestion == 1" :placeholder="lang.EquipmentAccount_EquipmentRemarkTag"
-                        :value="sesstion.Remarks" :disabled="disabled"></textarea>
-                    <textarea name id v-if="sestion == 2" :placeholder="lang.EquipmentAccount_EquipmentRemarkTag"
-                        v-model="pen.Remarks" :disabled="disabled"></textarea>
-                    <textarea name id v-if="sestion == 3" :placeholder="lang.EquipmentAccount_EquipmentRemarkTag"
-                        v-model="tip.Remarks" :disabled="disabled"></textarea>
+                    <span class="overflow-remarks">{{lang.EquipmentAccount_EquipmentRemark}}</span>
+                    <textarea
+                        name
+                        id
+                        v-if="sestion == 1"
+                        :placeholder="lang.EquipmentAccount_EquipmentRemarkTag"
+                        :value="sesstion.Remarks"
+                        :disabled="disabled"
+                    ></textarea>
+                    <textarea
+                        name
+                        id
+                        v-if="sestion == 2"
+                        :placeholder="lang.EquipmentAccount_EquipmentRemarkTag"
+                        v-model="pen.Remarks"
+                        :disabled="disabled"
+                    ></textarea>
+                    <textarea
+                        name
+                        id
+                        v-if="sestion == 3"
+                        :placeholder="lang.EquipmentAccount_EquipmentRemarkTag"
+                        v-model="tip.Remarks"
+                        :disabled="disabled"
+                    ></textarea>
                 </div>
-
+                <div
+                    class="Preservation"
+                    v-if="sestion == 2"
+                    @click="preservation6"
+                >
+                    {{lang.PopupCommon_Save}}
+                </div>
+                <div
+                    class="Preservation"
+                    v-if="sestion == 3"
+                    @click="preservation"
+                >
+                    {{lang.PopupCommon_Save}}
+                </div>
+                <div
+                    class="cancel"
+                    v-if="sestion == 2 || sestion == 3"
+                    @click="cancel"
+                >
+                    {{lang.PopupCommon_Cancel}}
+                </div>
             </div>
-            <div class="Preservation" v-if="sestion == 2" @click="preservation6">
-                {{ lang.PopupCommon_Save }}
-            </div>
-            <div class="Preservation" v-if="sestion == 3" @click="preservation">
-                {{ lang.PopupCommon_Save }}
-            </div>
-            <div class="cancel" v-if="sestion == 2 || sestion == 3" @click="cancel">
-                {{ lang.PopupCommon_Cancel }}
-            </div>
-
-
-
-
         </div>
         <div class="Choice" v-show="cancel1">
-            <div class="choicehead" :class="{ colordiv: $store.state.color == 'grey' }">
+            <div
+                class="choicehead"
+                :class="{ colordiv: $store.state.color == 'grey' }"
+            >
                 <div class="choicehead1"></div>
-                <span v-if="select1 == 1" :class="{ fcolor: $store.state.color == 'grey' }">{{
-                    lang.EquipmentAccount_SelectEquipmentType }}</span>
-                <span v-if="select1 == 2" :class="{ fcolor: $store.state.color == 'grey' }">{{
-                    lang.SCMSConsoleWebApiMySql_SelectInstallPosition }}</span>
+                <span
+                    v-if="select1 == 1"
+                    :class="{ fcolor: $store.state.color == 'grey' }"
+                    >{{lang.EquipmentAccount_SelectEquipmentType}}</span
+                >
+                <span
+                    v-if="select1 == 2"
+                    :class="{ fcolor: $store.state.color == 'grey' }"
+                    >{{lang.SCMSConsoleWebApiMySql_SelectInstallPosition}}</span
+                >
                 <div class="img" @click="cancel2">
-                    <img :src="no2" alt class="no" v-if="$store.state.color == 'grey'" />
+                    <img
+                        :src="no2"
+                        alt
+                        class="no"
+                        v-if="$store.state.color == 'grey'"
+                    />
                     <img :src="no" alt class="no" v-else />
                 </div>
             </div>
             <div class="choicecontant">
-                <el-tree :data="data5" @node-click="handleNodeClick" node-key="node.id" default-expand-all
-                    icon-class="el-icon-arrow-up" v-if="sestion == 3">
+                <el-tree
+                    :data="data5"
+                    @node-click="handleNodeClick"
+                    node-key="node.id"
+                    default-expand-all
+                    icon-class="el-icon-arrow-up"
+                    v-if="sestion == 3"
+                >
                     <span class="custom-tree-node" slot-scope="{ node, data }">
                         <span>
-                            <img v-show="data.file" :src="data.file" alt class="img1" />
+                            <img
+                                v-show="data.file"
+                                :src="data.file"
+                                alt
+                                class="img1"
+                            />
                             <i :class="data.icon"></i>
                             {{ node.label }}
                         </span>
                     </span>
                 </el-tree>
-                <el-tree :data="data5" @node-click="handleNodeClick1" node-key="node.id" default-expand-all
-                    icon-class="el-icon-arrow-up" v-if="sestion == 2">
+                <el-tree
+                    :data="data5"
+                    @node-click="handleNodeClick1"
+                    node-key="node.id"
+                    default-expand-all
+                    icon-class="el-icon-arrow-up"
+                    v-if="sestion == 2"
+                >
                     <span class="custom-tree-node" slot-scope="{ node, data }">
                         <span>
-                            <img v-show="data.file" :src="data.file" alt class="img1" />
+                            <img
+                                v-show="data.file"
+                                :src="data.file"
+                                alt
+                                class="img1"
+                            />
                             <i :class="data.icon"></i>
                             {{ node.label }}
                         </span>
                     </span>
                 </el-tree>
             </div>
-            <div class="Preservation Preservation1" v-if="sestion == 3" @click="Preservation2">
-                {{ lang.PopupCommon_Sure }}
+            <div
+                class="Preservation Preservation1"
+                v-if="sestion == 3"
+                @click="Preservation2"
+            >
+               {{lang.PopupCommon_Sure}}
             </div>
-            <div class="Preservation Preservation1" v-if="sestion == 2" @click="Preservation3">
-                {{ lang.PopupCommon_Sure }}
+            <div
+                class="Preservation Preservation1"
+                v-if="sestion == 2"
+                @click="Preservation3"
+            >
+                {{lang.PopupCommon_Sure}}
             </div>
-            <div class="cancel cancle1" @click="cancel2">{{ lang.PopupCommon_Cancel }}</div>
+            <div class="cancel cancle1" @click="cancel2">{{lang.PopupCommon_Cancel}}</div>
         </div>
         <div class="tip" v-show="tipchange">
             <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
             <div class="tiptop">
                 <img :src="gth" alt />
-                <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
+                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
             </div>
             <div class="tipcontanin">
                 <div class="tipword">{{ tipword }}</div>
                 <div class="tipdetermine" @click="tip1" v-if="deltrue">
-                    {{ lang.MessageBox_Confrim }}
+                   {{lang.MessageBox_Confrim}}
                 </div>
 
                 <div class="delclass" v-if="!deltrue">
-                    <div class="one" @click="no1">{{ lang.MessageBox_NO }}</div>
-                    <div class="two" @click="yes1">{{ lang.MessageBox_YES }}</div>
+                    <div class="one" @click="no1">{{lang.MessageBox_NO}}</div>
+                    <div class="two" @click="yes1">{{lang.MessageBox_YES}}</div>
                 </div>
             </div>
         </div>
         <div class="cover1" v-if="change"></div>
         <div class="cover3" v-if="cancel1"></div>
         <div class="cover2" v-if="tipchange"></div>
-        <TipPop v-if="isPopShow" :tipText="tipText" :noCancel="noCancel" @tipCallBack="tipCallBack" />
-        <variable-select v-if="isVariableShow" :multiple="multipleVariable" :data="chooseArr"
-            @variableSelectCallBack="variableSelectCallBack" />
-        <EditType v-if="EditTypeShow" @callback="openEditTypeCallBack">
-        </EditType>
     </div>
 </template>
 
 <script>
 import MySearch from '../public/search01.vue';
 import MyPage from '../public/Pages.vue';
-import TipPop from '../public/tipPop.vue';
-import VariableSelect from '../public/variableSelect.vue';
 import XLSX from 'xlsx';
-import EditType from './EditType.vue';
-
 export default {
     components: {
         // MySearch,
-        TipPop,
-        VariableSelect,
-        MyPage,
-        EditType
+
+        MyPage
     },
     data() {
         return {
-            isPopShow: false, // 是否显示弹窗
-            tipText: '', // 弹窗提示语
-            noCancel: true, // 弹窗是否带取消按按钮
             a11: 1,
             deltrue: true,
             wselectname3: '',
             changeselect: false,
-            EditTypeShow: false,
             tipword: '',
             tip: {
                 DeviceName: '',
@@ -590,9 +1022,7 @@ export default {
                 DepreciationLife: '',
                 PurchaseAmount: '',
                 Contact: '',
-                Remarks: '',
-                IsSingleAddress: true,
-                DefaultSignal: '',
+                Remarks: ''
             },
             pen: {
                 DeviceName: '',
@@ -605,9 +1035,7 @@ export default {
                 DepreciationLife: '',
                 PurchaseAmount: '',
                 Contact: '',
-                Remarks: '',
-                IsSingleAddress: true,
-                DefaultSignal: '',
+                Remarks: ''
             },
             tipchange: false,
             gth: require('../../assets/images/gth.png'),
@@ -679,33 +1107,26 @@ export default {
             a1: 1,
             a2: 1,
             Meterid: '',
-            jurisdiction: [],
-            buttonarr: [],
-            cxid: '',
-            tjid: '',
-            scid: '',
-            drid: '',
-            dcid: '',
-            ckid: '',
-            bjid: '',
-            xiala: require('../../assets/images/ziyuan4.png'),
-            cxshow: true,
-            tjshow: true,
-            scshow: true,
-            drshow: true,
-            dcshow: true,
-            ckshow: true,
-            bjshow: true,
-            gsb: 1,
-            gaz: 1,
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
-            isVariableShow: false, // 选择变量弹窗
-            multipleVariable: false,
-            chooseArr: [], // 变量类型
-            chooseText: '', // 变量字段
-            chooseValItem: null,
-            chooseValType: 0,
-            statusList: []
+            jurisdiction:[],
+            buttonarr:[],
+            cxid:'',
+            tjid:'',
+            scid:'',
+            drid:'',
+            dcid:'',
+            ckid:'',
+            bjid:'',
+             xiala:require('../../assets/images/ziyuan4.png'),
+            cxshow:true,
+            tjshow:true,
+            scshow:true,
+            drshow:true,
+            dcshow:true,
+            ckshow:true,
+            bjshow:true,
+            gsb:1,
+            gaz:1,
+            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
 
@@ -715,8 +1136,8 @@ export default {
         this.req(1);
         this.time4 = this.getNowTime();
         this.jurisdiction = this.$store.state.btnPowerData;
-        console.log("saddasdas", this.GetUrlParam('id'))
-        console.log("asddaadsads", this.jurisdiction)
+        console.log("saddasdas",this.GetUrlParam('id'))
+        console.log("asddaadsads",this.jurisdiction)
         this.buttonarr = this.findPathByLeafId(
             this.GetUrlParam('id'),
             this.jurisdiction
@@ -948,89 +1369,28 @@ export default {
         }
     },
     methods: {
-        openEditType() {
-            // if (!this.xhszshow) {
-            // 	this.tipText = this.lang.NoOperationAuthority;
-            // 	this.isPopShow = true;
-            // 	return
-            // }
-            this.EditTypeShow = true;
-        },
-        openEditTypeCallBack(str) {
-            this.EditTypeShow = false;
-            if (str) {
-                this.isPopShow = true;
-                this.tipText = str;
-            }
-            this.req(1);
-        },
-        tipCallBack(str) {
-            if (str == 'yes') {
-                this.isPopShow = false;
-            } else {
-                this.isPopShow = false;
-            }
-        },
-        // 选择变量
-        handleChoose(val) {
-            if (this.disabled) {
-                return
-            }
-            this.chooseValType = 1;
-            this.chooseText = val;
-            this.multipleVariable = false;
-            this.isVariableShow = true;
-        },
-        handleChoose2(item) {
-            if (this.disabled) {
-                return
-            }
-            this.chooseValItem = item;
-            this.chooseValType = 2;
-            this.chooseText = item.Variable;
-            this.multipleVariable = false;
-            this.isVariableShow = true;
-        },
-        // 弹窗回调
-        variableSelectCallBack(str, val) {
-            this.isVariableShow = false;
-            if (str == 'yes') {
-                if (this.chooseValType == 1) {
-                    if (this.sestion == 1) {
-                        this.sesstion[this.chooseText] = val.Name;
-                    } else if (this.sestion == 2) {
-                        this.pen[this.chooseText] = val.Name;
-                    } else if (this.sestion == 3) {
-                        this.tip[this.chooseText] = val.Name;
-                    }
-                } else if (this.chooseValType == 2) {
-                    this.chooseValItem.Variable = val.Name;
-                }
-            }
-            this.chooseValType = 0;
-        },
         getLangData() {
             this.warrantystatus = [this.lang.EquipmentAccount_Inside, this.lang.EquipmentAccount_Outside]
             this.devicestatus = [this.lang.EquipmentAccount_Used, this.lang.EquipmentAccount_Stopped, this.lang.EquipmentAccount_Abandoned]
             this.warry = this.lang.EquipmentAccount_Inside
             this.device = this.lang.EquipmentAccount_Used
         },
-        atooltip() {
-            let that = this
-            setTimeout(() => {
-                for (let i = 0; i < $('.atooltip').length; i++) {
-                    $('.atooltip')[i].style.zoom = that.a11
-                }
+           atooltip(){
+           let that = this
+            setTimeout(()=>{
+for(let i=0;i<$('.atooltip').length;i++){
+                $('.atooltip')[i].style.zoom = that.a11
+            }
             })
         },
         move(name, namehead) {
-            //  $(`.${name}`).addClass('center')
-            let left = ($(`.${name}`).width()) / 2 + 'px'
-            let top = ($(`.${name}`).height()) / 2 + 'px'
-            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
-            $(`.${name}`)[0].addEventListener('mousedown', function (e) {
-
+          //  $(`.${name}`).addClass('center')
+           let left = ($(`.${name}`).width())/2+'px'
+           let top = ($(`.${name}`).height())/2+'px'
+             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+            $(`.${name}`)[0].addEventListener('mousedown', function(e) {
+                
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
                     $(`.${name}`).removeClass('center')
@@ -1049,11 +1409,11 @@ export default {
                     isDown = true;
                     var pdmove = false;
 
-
+                     
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
-                    $('body')[0].addEventListener('mousemove', function (e) {
+                    $('body')[0].addEventListener('mousemove', function(e) {
                         pdmove = true;
                         if (isDown == false) {
                             return;
@@ -1071,7 +1431,7 @@ export default {
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
-                    $('body')[0].addEventListener('mouseup', function (e) {
+                    $('body')[0].addEventListener('mouseup', function(e) {
                         //开关关闭
                         isDown = false;
                         $('body')[0].style.cursor = 'default';
@@ -1151,11 +1511,11 @@ export default {
                         ws[a].DetailInstallationLocation = ws[a][this.lang.EquipmentAccount_InstallPosition]
                         ws[a].DeviceNo = ws[a][this.lang.EquipmentAccount_EquipmentNumber]
                         ws[a].DevicePath = ws[a][this.lang.EquipmentAccount_EquipmentType],
-                            ws[a].InstallPath = ws[a][this.lang.EquipmentAccount_InstallPosition],
-                            ws[a].DeviceType = ws[a][this.lang.EquipmentAccount_EquipmentType],
-                            ws[a].InstallationLocation = ws[a][this.lang.EquipmentAccount_InstallPosition],
+                        ws[a].InstallPath = ws[a][this.lang.EquipmentAccount_InstallPosition],
+                        ws[a].DeviceType = ws[a][this.lang.EquipmentAccount_EquipmentType],
+                        ws[a].InstallationLocation = ws[a][this.lang.EquipmentAccount_InstallPosition],
                             // ws[a].DeviceType = (ws[a].设备类型.split('>')[ws[a].设备类型.split('>').length-1]);
-                            ws[a].DeviceModel = ws[a][this.lang.EquipmentAccount_EquipmentModel];
+                        ws[a].DeviceModel = ws[a][this.lang.EquipmentAccount_EquipmentModel];
                         ws[a].AssetsNo = ws[a][this.lang.EquipmentAccount_AssetNumber];
                         // ws[a].InstallationLocation = (ws[a].安装位置.split('>')[ws[a].安装位置.split('>').length-1]);
                         ws[a].Department = ws[a][this.lang.EquipmentAccount_Department];
@@ -1173,16 +1533,6 @@ export default {
                         ws[a].DeviceStatus = ws[a][this.lang.EquipmentAccount_EquipmentStatus];
                         ws[a].QualityStatus = ws[a][this.lang.EquipmentAccount_WarrantyStatus];
                         ws[a].Remarks = ws[a][this.lang.EquipmentAccount_EquipmentRemark];
-
-                        if (typeof (ws[a].CheckTime) == 'number') {
-                            ws[a].CheckTime = this.formatDate(ws[a].CheckTime, '/')
-                        }
-                        if (typeof (ws[a].EnableTime) == 'number') {
-                            ws[a].EnableTime = this.formatDate(ws[a].EnableTime, '/')
-                        }
-                        if (typeof (ws[a].PurchaseTime) == 'number') {
-                            ws[a].PurchaseTime = this.formatDate(ws[a].PurchaseTime, '/')
-                        }
                     }
                     let b = 0;
                     for (b in ws) {
@@ -1338,8 +1688,8 @@ export default {
                     this.getEquipmentType();
                     this.req(1);
                 })
-                .then(() => { })
-                .catch(err => { });
+                .then(() => {})
+                .catch(err => {});
             setTimeout(() => {
                 this.tipword = this.lang.FormulaManage_HT_DeletedSuccessfully
 
@@ -1371,7 +1721,7 @@ export default {
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
                 });
-                this.lang.NoOperationAuthority
+               this.lang.NoOperationAuthority
                 return;
             }
             if (!this.delarray.length == 0) {
@@ -1514,29 +1864,29 @@ export default {
                     this.muchdata = res.data.data.DataList;
                     this.muchdata = !this.muchdata
                         ? [
-                            {
-                                number: '',
-                                DeviceName: '',
-                                DeviceNo: '',
-                                DetailDeviceType: '',
-                                DeviceModel: '',
-                                AssetsNo: '',
-                                DetailInstallationLocation: '',
-                                Department: '',
-                                PersonInCharge: '',
-                                Manufactor: '',
-                                DepreciationLife: '',
-                                PurchaseTime: '',
-                                PurchaseAmount: '',
-                                Salesman: '',
-                                Contact: '',
-                                CheckTime: '',
-                                EnableTime: '',
-                                DeviceStatus: '',
-                                QualityStatus: '',
-                                Remarks: ''
-                            }
-                        ]
+                              {
+                                  number: '',
+                                  DeviceName: '',
+                                  DeviceNo: '',
+                                  DetailDeviceType: '',
+                                  DeviceModel: '',
+                                  AssetsNo: '',
+                                  DetailInstallationLocation: '',
+                                  Department: '',
+                                  PersonInCharge: '',
+                                  Manufactor: '',
+                                  DepreciationLife: '',
+                                  PurchaseTime: '',
+                                  PurchaseAmount: '',
+                                  Salesman: '',
+                                  Contact: '',
+                                  CheckTime: '',
+                                  EnableTime: '',
+                                  DeviceStatus: '',
+                                  QualityStatus: '',
+                                  Remarks: ''
+                              }
+                          ]
                         : this.muchdata;
                 })
                 .then(() => {
@@ -2417,14 +2767,14 @@ export default {
                         );
                     });
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     console.log(error);
                 });
         },
         json2excel(tableJson, filenames, autowidth, bookTypes) {
             var that = this;
             //这个是引用插件
-
+            
             import('@/vendor/Export2Excel').then(excel => {
                 var tHeader = [];
                 var dataArr = [];
@@ -2537,41 +2887,35 @@ export default {
                     sessionStorage.getItem('userInfo1')
                 ).SCMSUserName;
             }
-
-            this.$axios({
-                method: 'post',
-                url: `/api/EquipmentAccount/EquipmentAccount_SetEquipmentAccount?argOldName=${this.oldName}&argLoginUserName=${this.longinnum}`,
-                data: {
-                    AID: this.pen.AID,
-                    DeviceName: this.pen.DeviceName,
-                    DeviceNo: this.pen.DeviceNo,
-                    DeviceType: this.pen.DetailDeviceType,
-                    DetailDeviceType: this.pen.DetailDeviceType === this.lang.EquipmentAccount_ClickSelect ? '' : this.pen.DetailDeviceType,
-                    DeviceModel: this.pen.DeviceModel,
-                    AssetsNo: this.pen.AssetsNo,
-                    InstallationLocation: this.pen.InstallationLocation === this.lang.EquipmentAccount_ClickSelect ? '' : this.pen.InstallationLocation,
-                    DetailInstallationLocation: this.pen.DetailInstallationLocation === this.lang.EquipmentAccount_ClickSelect ? '' : this.pen.DetailInstallationLocation,
-                    Department: this.pen.Department,
-                    PersonInCharge: this.person1,
-                    DisplaySingleAddress: this.pen.IsSingleAddress ? '是' : '否',
-                    IsSingleAddress: this.pen.IsSingleAddress,
-                    DefaultSignal: this.pen.DefaultSignal,
-                    MultAddressSignalList: this.statusList,
-                    Manufactor: this.pen.Manufactor,
-                    DepreciationLife: this.pen.DepreciationLife,
-                    PurchaseTime: this.pen.PurchaseTime,
-                    PurchaseAmount: this.pen.PurchaseAmount,
-                    Salesman: this.pen.Salesman,
-                    Contact: this.pen.Contact,
-                    CheckTime: this.pen.CheckTime,
-                    EnableTime: this.pen.EnableTime,
-                    DeviceStatus: this.sbnum,
-                    QualityStatus: this.warrynum,
-                    Remarks: this.pen.Remarks,
-                    AddTime: this.time4,
-
-                }
-            })
+            this.$axios
+                .post(
+                    `/api/EquipmentAccount/EquipmentAccount_SetEquipmentAccount?argClass={
+                        "DeviceName":"${this.pen.DeviceName}",
+                        "DevicePath":"${this.pen.DetailDeviceType}",
+                        "InstallPath":"${this.pen.DetailInstallationLocation === this.lang.EquipmentAccount_ClickSelect ? '' : this.pen.DetailInstallationLocation}",
+                        "DeviceNo":"${this.pen.DeviceNo}",
+                        "DeviceType":"${this.pen.DeviceType === this.lang.EquipmentAccount_ClickSelect ? '' : this.pen.DeviceType}",
+                        "DeviceModel":"${this.pen.DeviceModel}",
+                        "AssetsNo":"${this.pen.AssetsNo}",
+                        "InstallationLocation":"${this.pen.InstallationLocation === this.lang.EquipmentAccount_ClickSelect ? '' : this.pen.InstallationLocation}",
+                        "Department":"${this.pen.Department}",
+                        "PersonInCharge":"${this.person1}",
+                        "Manufactor":"${this.pen.Manufactor}",
+                        "DepreciationLife":"${this.pen.DepreciationLife}",
+                        "PurchaseTime":"${this.pen.PurchaseTime}",
+                        "PurchaseAmount":"${this.pen.PurchaseAmount}",
+                        "Salesman":"${this.pen.Salesman}",
+                        "Contact":"${this.pen.Contact}",
+                        "CheckTime":"${this.pen.CheckTime}",
+                        "EnableTime":"${this.pen.EnableTime}",
+                        "DeviceStatus":${this.sbnum},
+                        "QualityStatus":${this.warrynum},
+                        "DetailDeviceType":"${this.pen.DetailDeviceType === this.lang.EquipmentAccount_ClickSelect ? '' : this.pen.DetailDeviceType}",
+                        "DetailInstallationLocation":"${this.pen.DetailInstallationLocation === this.lang.EquipmentAccount_ClickSelect ? '' : this.pen.DetailInstallationLocation}",
+                        "Remarks":"${this.pen.Remarks}",
+                        "AddTime":"${this.time4}",
+                        "AID":"${this.pen.AID}",}&argOperateType=2&argOldName=${this.oldName}&argLoginUserName=${this.longinnum}&argPageSize=50&argPageIndex=1`
+                )
                 .then(res => {
                     if (res.data.code == 0) {
                         this.tipword = this.lang.FormulaManage_HT_FormulaSetting_ModifiedSuccessfully;
@@ -2609,11 +2953,10 @@ export default {
 
                     console.log(res);
                 })
-                .then(() => { })
-                .catch(err => { });
+                .then(() => {})
+                .catch(err => {});
         },
         preservation() {
-            console.log("this.tip", this.tip)
             let i = 0;
             if (
                 !JSON.parse(sessionStorage.getItem('userInfo1')) ||
@@ -2629,46 +2972,48 @@ export default {
             }
 
             //   &DetailInstallationLocation:${this.DetailInstallationLocation}
-            this.$axios({
-                method: 'post',
-                url: `/api/EquipmentAccount/EquipmentAccount_SetEquipmentAccount?argOldName=${this.oldName}&argLoginUserName=${this.longinnum}`,
-                data: {
-                    AID: "00000000-0000-0000-0000-000000000000",
-                    DeviceName: this.tip.DeviceName,
-                    DeviceNo: this.tip.DeviceNo,
-                    DeviceType: this.wselectname2 === this.lang.EquipmentAccount_ClickSelect ? '' :
+            this.$axios
+                .post(
+                    `/api/EquipmentAccount/EquipmentAccount_SetEquipmentAccount?argClass={"AID":"11111111-1111-1111-1111-111111111111","DeviceName":"${
+                        this.tip.DeviceName
+                    }","DeviceNo":"${this.tip.DeviceNo}","DeviceType":"${
+                        this.wselectname2 === this.lang.EquipmentAccount_ClickSelect ? '' :
                         this.wselectname2.split('>')[
-                        this.wselectname2.split('>').length - 1
-                        ],
-                    DetailDeviceType: this.wselectname2 === this.lang.EquipmentAccount_ClickSelect ? '' : this.wselectname2,
-                    DeviceModel: this.tip.DeviceModel,
-                    AssetsNo: this.tip.AssetsNo,
-                    InstallationLocation: this.wselectname3 === this.lang.EquipmentAccount_ClickSelect ? '' :
+                            this.wselectname2.split('>').length - 1
+                        ]
+                    }","DeviceModel":"${this.tip.DeviceModel}","AssetsNo":"${
+                        this.tip.AssetsNo
+                    }","InstallationLocation":"${
+                        this.wselectname3 === this.lang.EquipmentAccount_ClickSelect ? '' :
                         this.wselectname3.split('>')[
-                        this.wselectname3.split('>').length - 1
-                        ],
-                    DetailInstallationLocation: this.wselectname3 === this.lang.EquipmentAccount_ClickSelect ? '' : this.wselectname3,
-                    Department: this.tip.Department,
-                    PersonInCharge: this.person1,
-                    DisplaySingleAddress: this.tip.IsSingleAddress ? '是' : '否',
-                    IsSingleAddress: this.tip.IsSingleAddress,
-                    DefaultSignal: this.tip.DefaultSignal,
-                    MultAddressSignalList: this.statusList,
-                    Manufactor: this.tip.Manufactor,
-                    DepreciationLife: this.tip.DepreciationLife,
-                    PurchaseTime: this.time1,
-                    PurchaseAmount: this.tip.PurchaseAmount,
-                    Salesman: this.tip.Salesman,
-                    Contact: this.tip.Contact,
-                    CheckTime: this.time2,
-                    EnableTime: this.time3,
-                    DeviceStatus: this.sbnum,
-                    QualityStatus: this.warrynum,
-                    Remarks: this.tip.Remarks,
-                    AddTime: this.time4,
-
-                }
-            })
+                            this.wselectname3.split('>').length - 1
+                        ]
+                    }","Department":"${
+                        this.tip.Department
+                    }","PersonInCharge":"${this.person1}","Manufactor":"${
+                        this.tip.Manufactor
+                    }","DepreciationLife":"${
+                        this.tip.DepreciationLife
+                    }","PurchaseTime":"${this.time1}","PurchaseAmount":"${
+                        this.tip.PurchaseAmount
+                    }","Salesman":"${this.tip.Salesman}","Contact":"${
+                        this.tip.Contact
+                    }","DevicePath":"${this.wselectname2}","InstallPath":"${
+                        this.wselectname3  === this.lang.EquipmentAccount_ClickSelect ? '' : this.wselectname3
+                    }","CheckTime":"${this.time2}","EnableTime":"${
+                        this.time3
+                    }","DeviceStatus":${this.sbnum},"QualityStatus":${
+                        this.warrynum
+                    },"Remarks":"${this.tip.Remarks}","AddTime":"${
+                        this.time4
+                    }","DetailDeviceType":"${
+                        this.wselectname2 === this.lang.EquipmentAccount_ClickSelect ? '' : this.wselectname2
+                    }","DetailInstallationLocation":"${
+                        this.wselectname3 === this.lang.EquipmentAccount_ClickSelect ? '' : this.wselectname3
+                    }"}&argOperateType=1&argOldName=2019-11-26 11:56:15&argLoginUserName=${
+                        this.longinnum
+                    }&argPageSize=50&argPageIndex=1`
+                )
                 .then(res => {
                     console.log(res);
                     if (res.data.code == 0) {
@@ -2701,9 +3046,6 @@ export default {
                             (this.tip.Salesman = ''),
                             (this.tip.Contact = ''),
                             (this.tip.Remarks = ''),
-                            (this.tip.IsSingleAddress = true),
-                            (this.tip.DefaultSignal = ''),
-
                             (this.person1 = 'SuperAdmin'),
                             (this.sbnum = ''),
                             (this.warrynum = '');
@@ -2727,7 +3069,7 @@ export default {
                     }
                 })
 
-                .catch(err => { });
+                .catch(err => {});
         },
         tip1() {
             this.tipchange = false;
@@ -2942,14 +3284,6 @@ export default {
 
             // }
         },
-        getStatusConfig() {
-            this.$axios({
-                method: 'get',
-                url: `/api/EquipmentStatu/GetList`,
-            }).then(res => {
-                this.statusList = res.data.data;
-            })
-        },
         handleEdit(a, b) {
             console.log(b);
             if (!this.ckshow) {
@@ -2967,7 +3301,6 @@ export default {
                 this.tipword = this.lang.NoOperationAuthority;
                 return;
             }
-
             this.sestion = 1;
             this.disabled = true;
             let c = JSON.stringify(b);
@@ -2992,15 +3325,15 @@ export default {
                         this.a11}px)`
                 });
                 this.change = true;
-                setTimeout(() => {
-                    let w = $('.linetop1').width() + 20 + 'px'
-                    let w1 = $('.linetop2').width() + 20 + 'px'
-                    $('.linetop4').css({
-                        width: `calc(100% - ${w})`
-                    })
-                    $('.linetop3').css({
-                        width: `calc(100% - ${w1})`
-                    })
+                   setTimeout(()=>{
+                       let w =  $('.linetop1').width() + 20 +'px'
+                let w1 =  $('.linetop2').width() + 20 +'px'
+                $('.linetop4').css({
+                    width:`calc(100% - ${w})`
+                })
+                $('.linetop3').css({
+                    width:`calc(100% - ${w1})`
+                })
                 })
                 this.move('sestion', 'sestionheader1');
             });
@@ -3014,7 +3347,6 @@ export default {
                     this.sesstion[i] = null;
                 }
             }
-            this.statusList = JSON.parse(JSON.stringify(b.MultAddressSignalList))
             console.log(this.sesstion);
         },
         handleEdit1(a, b, d) {
@@ -3030,21 +3362,21 @@ export default {
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
                 });
-                this.tipword = this.lang.NoOperationAuthority;
+                  this.tipword = this.lang.NoOperationAuthority;
                 return;
             }
-            Object.keys(b).forEach(function (key) {
+            Object.keys(b).forEach(function(key) {
                 if (b[key] == null) {
                     b[key] = '';
                 }
             });
 
-            // this.add();
+            this.add();
             this.a = a;
             this.sestion = 2;
             this.disabled = false;
             let c = JSON.stringify(b);
-            this.statusList = JSON.parse(JSON.stringify(b.MultAddressSignalList))
+
             this.pen = JSON.parse(c);
             console.log(this.pen);
             this.oldName = JSON.parse(c).DeviceName;
@@ -3058,16 +3390,16 @@ export default {
                         this.a11}px)`
                 });
                 this.change = true;
-
-                setTimeout(() => {
-                    let w = $('.linetop1').width() + 20 + 'px'
-                    let w1 = $('.linetop2').width() + 20 + 'px'
-                    $('.linetop4').css({
-                        width: `calc(100% - ${w})`
-                    })
-                    $('.linetop3').css({
-                        width: `calc(100% - ${w1})`
-                    })
+                
+               setTimeout(()=>{
+                       let w =  $('.linetop1').width() + 20 +'px'
+                let w1 =  $('.linetop2').width() + 20 +'px'
+                $('.linetop4').css({
+                    width:`calc(100% - ${w})`
+                })
+                $('.linetop3').css({
+                    width:`calc(100% - ${w1})`
+                })
                 })
                 this.move('sestion', 'sestionheader1');
             });
@@ -3123,7 +3455,6 @@ export default {
                 this.tipword = this.lang.NoOperationAuthority;
                 return;
             }
-            this.getStatusConfig();
             console.log('ee2', this.wselectname2, this.wselectname3);
             this.wselectname2 = '';
             this.wselectname3 = '';
@@ -3138,9 +3469,7 @@ export default {
                 DepreciationLife: '',
                 PurchaseAmount: '',
                 Contact: '',
-                Remarks: '',
-                IsSingleAddress: true,
-                DefaultSignal: '',
+                Remarks: ''
             }),
                 (this.pen = {
                     DeviceName: '',
@@ -3153,9 +3482,7 @@ export default {
                     DepreciationLife: '',
                     PurchaseAmount: '',
                     Contact: '',
-                    Remarks: '',
-                    IsSingleAddress: true,
-                    DefaultSignal: '',
+                    Remarks: ''
                 }),
                 (this.pdyd1 = true);
             (this.wselectname2 = this.lang.EquipmentAccount_ClickSelect),
@@ -3195,15 +3522,15 @@ export default {
                 });
                 this.move('sestion', 'sestionheader1');
                 this.change = true;
-                setTimeout(() => {
-                    let w = $('.linetop1').width() + 20 + 'px'
-                    let w1 = $('.linetop2').width() + 20 + 'px'
-                    $('.linetop4').css({
-                        width: `calc(100% - ${w})`
-                    })
-                    $('.linetop3').css({
-                        width: `calc(100% - ${w1})`
-                    })
+                 setTimeout(()=>{
+                       let w =  $('.linetop1').width() + 20 +'px'
+                let w1 =  $('.linetop2').width() + 20 +'px'
+                $('.linetop4').css({
+                    width:`calc(100% - ${w})`
+                })
+                $('.linetop3').css({
+                    width:`calc(100% - ${w1})`
+                })
                 })
             });
             let i = 0;
@@ -3318,7 +3645,7 @@ export default {
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
                 });
-                this.tipword = this.lang.NoOperationAuthority;
+                this.tipword =  this.lang.NoOperationAuthority;
                 return;
             }
             this.getEquipmentType();
@@ -3406,7 +3733,7 @@ export default {
                     this.tableData = res.data.data.DataList;
                     console.log('res', res);
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     console.log(error);
                 });
         },
@@ -3445,7 +3772,7 @@ export default {
                     this.muchdata = res.data.data.DataList;
                     console.log(res);
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     console.log(error);
                 });
         },
@@ -3476,7 +3803,7 @@ export default {
                 .then(() => {
                     this.somethingdata();
                 })
-                .catch(err => { });
+                .catch(err => {});
         },
         isPositiveInteger(s) {
             //是否为正整数
@@ -3555,7 +3882,7 @@ export default {
                 .then(() => {
                     this.somethingdata();
                 })
-                .catch(err => { });
+                .catch(err => {});
         }
     },
     mounted() {
@@ -3564,9 +3891,9 @@ export default {
             this.a11 = 0.8;
         }
         let that = this;
-        $('body')[0].addEventListener("mousemove", function () {
-            that.atooltip()
-        })
+         $('body')[0].addEventListener("mousemove",function(){
+         that.atooltip()
+     })
         console.log(this.a11)
         setTimeout(() => {
             let a = this.a11 * 120 + 'px';
@@ -3588,7 +3915,7 @@ export default {
 };
 </script>
 <style>
-.margin .el-input__inner {
+.margin .el-input__inner{
     text-indent: 0.5em;
     width: 230px;
     height: 36px;
@@ -3598,14 +3925,12 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.linetop1 {
+.linetop1{
     display: inline-block;
 }
-
-.linetop2 {
+.linetop2{
     display: inline-block;
 }
-
 .yd3 {
     margin: auto;
     top: 0 !important;
@@ -3613,31 +3938,27 @@ export default {
     bottom: 0 !important;
     left: 0 !important;
 }
-
 .tip {
     position: fixed;
     width: 380px;
     height: 200px;
-    z-index: 39;
+    z-index: 399999900;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     box-shadow: 0px 0px 8px black;
     background-color: #f3f3f4;
-
     .tiptop {
         width: 380px;
         height: 40px;
         background-color: #ffbc3d;
-
         img {
             width: 20px;
             height: 20px;
             margin-top: 10px;
             margin-left: 160px;
         }
-
         span {
             color: #ffffff;
             position: relative;
@@ -3645,11 +3966,9 @@ export default {
             margin-left: 7px;
         }
     }
-
-    .tipcontanin {
+    .tipcontanin{
         height: calc(100% - 40px);
     }
-
     .tipword {
         width: 100%;
         height: 75%;
@@ -3659,7 +3978,6 @@ export default {
         justify-content: center;
         align-items: center;
     }
-
     .tipdetermine {
         cursor: pointer;
         color: #ea9328;
@@ -3672,7 +3990,6 @@ export default {
         height: 30px;
         background-color: #f3e3ad;
     }
-
     .delclass {
         width: 330px;
         line-height: 30px;
@@ -3680,7 +3997,6 @@ export default {
         left: 25px;
         bottom: 10px;
         height: 30px;
-
         .one {
             cursor: pointer;
             display: inline-block;
@@ -3690,7 +4006,6 @@ export default {
             background-color: #e0e0e0;
             color: #7e7e7e;
         }
-
         .two {
             cursor: pointer;
             display: inline-block;
@@ -3703,7 +4018,6 @@ export default {
         }
     }
 }
-
 .file {
     position: relative;
     display: inline-block;
@@ -3721,7 +4035,6 @@ export default {
     float: left;
     text-decoration: none;
 }
-
 .file input {
     position: absolute;
     font-size: 100px;
@@ -3730,12 +4043,10 @@ export default {
     left: 0;
     opacity: 0;
     cursor: pointer;
-
     #upload {
         cursor: pointer;
     }
 }
-
 .search-container {
     position: relative;
     justify-content: space-between;
@@ -3746,13 +4057,11 @@ export default {
     height: 60px;
     line-height: 60px;
     padding: 0px 22px 0px 22px;
-
     select {
         height: 40px;
         text-indent: 0.5em;
         width: 200px;
     }
-
     input {
         width: 200px;
         height: 40px;
@@ -3760,7 +4069,6 @@ export default {
         text-indent: 1em;
         border: none;
     }
-
     .sad {
         position: relative;
         top: 2px;
@@ -3776,7 +4084,6 @@ export default {
         display: inline-block;
         cursor: pointer;
     }
-
     .add {
         position: relative;
         top: 2px;
@@ -3793,7 +4100,6 @@ export default {
         border: 1px solid #46be05;
         cursor: pointer;
     }
-
     .move {
         position: relative;
         top: 2px;
@@ -3810,7 +4116,6 @@ export default {
         cursor: pointer;
     }
 }
-
 .import {
     position: relative;
     top: 2px;
@@ -3827,7 +4132,6 @@ export default {
     color: #fda100;
     overflow: hidden;
 }
-
 .export {
     position: relative;
     border: 1px solid #fda100;
@@ -3844,22 +4148,6 @@ export default {
     margin-left: 10px;
 }
 
-.typeSet {
-    position: relative;
-    background-color: #fda100;
-    color: #fff;
-    width: 120px;
-    height: 38px;
-    display: block;
-    border-radius: 4px;
-    text-align: center;
-    line-height: 38px;
-    cursor: pointer;
-    float: left;
-    margin-right: 10px;
-}
-
-
 .fr {
     // width: 260px;
     height: 100%;
@@ -3867,26 +4155,20 @@ export default {
     align-items: center;
     float: right;
 }
-
 .public-table {
     display: flex;
     flex-direction: column;
     height: 100%;
-
     .search-container {
         height: 60px;
     }
-
     .table-container {
         border: 1px solid #cccccc;
-        flex: auto;
     }
-
     .page-container {
         height: 60px;
     }
 }
-
 .table-container .img {
     width: 60px;
     height: 30px;
@@ -3896,7 +4178,6 @@ export default {
     display: inline-block;
     margin-left: 10px;
     left: 10px;
-
     img {
         width: 24px;
         height: 24px;
@@ -3909,7 +4190,6 @@ export default {
         margin: auto;
     }
 }
-
 .yd1 {
     margin: auto;
     top: 0 !important;
@@ -3917,7 +4197,6 @@ export default {
     bottom: 0 !important;
     left: 0 !important;
 }
-
 .yd2 {
     margin: auto;
     top: 0 !important;
@@ -3925,23 +4204,21 @@ export default {
     bottom: 0 !important;
     left: 0 !important;
 }
-
 .yd3 {
     margin: auto;
 }
 
 .sestion {
     width: 750px;
-    height: 700px;
-    z-index: 19;
+    height: 780px;
+    z-index: 199999900;
     position: fixed;
     top: 60px;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #eeeeee;
-    border: 1px solid #cccccc;
 
+    border: 1px solid #cccccc;
     .sestionheader {
         background-color: #386df0;
         height: 50px;
@@ -3951,17 +4228,15 @@ export default {
         line-height: 50px;
         width: 100%;
         position: relative;
-
         .head {
             color: #ffffff;
             font-weight: 600;
             font-size: 16px;
         }
-
         .no {
             position: absolute;
             top: 0;
-            z-index: 20;
+            z-index: 199999950;
             bottom: 0;
             margin: auto;
             height: 25px;
@@ -3969,15 +4244,12 @@ export default {
             right: 10px;
         }
     }
-
     .sestioncontain {
         width: 100%;
-        height: calc(100% - 100px);
-        overflow-y: auto;
-
+        height: calc(100% - 50px);
+        background-color: #eeeeee;
         padding: 1px 30px 0px 30px;
     }
-
     .homesetion {
         width: 100%;
         height: 20px;
@@ -3989,7 +4261,6 @@ export default {
         position: relative;
         font-size: 16px;
     }
-
     .line {
         position: absolute;
         height: 2px;
@@ -4000,11 +4271,10 @@ export default {
         right: 0;
         background-color: #dddddd;
     }
-
     span {
         color: #363636;
         font-size: 14px;
-        width: 80px;
+        width: 100px;
         text-align: center;
         margin-right: 20px;
     }
@@ -4013,25 +4283,22 @@ export default {
 .overflow1 {
     display: flex;
 }
-
 .overflow {
     overflow: hidden;
     width: 100%;
     margin-top: 15px;
-
     // margin-left: 20px;
     input {
         text-indent: 0.5em;
-        width: 230px;
+        width: 240px;
         height: 40px;
         border: none;
         border: 1px solid #e0e0e0;
         // background-color: #f4f4f4;
     }
-
     .input1 {
         text-indent: 0.5em;
-        width: 230px;
+        width: 240px;
         height: 40px;
         display: inline-block;
         background-color: #f4f4f4;
@@ -4039,154 +4306,65 @@ export default {
         line-height: 40px;
         border: 1px solid #e0e0e0;
         position: relative;
-
         span {
             color: #cecece;
         }
-
-
     }
-
     .inputimg {
-        z-index: 20;
+        z-index: 199999950;
         position: absolute;
         right: 7px;
         top: 0;
         cursor: pointer;
         height: 40px;
         width: 40px;
-
         img {
             width: 100%;
             height: 100%;
         }
     }
-
     select {
         text-indent: 0.5em;
-        width: 230px;
+        width: 240px;
         height: 40px;
         border: none;
         border: 1px solid #e0e0e0;
         // background-color: #f4f4f4;
     }
-
     .remarks {
         position: relative;
         top: -100px;
     }
-
     .fl {
         float: left;
         width: 50%;
     }
-
     .zl {
         float: left;
         width: 50%;
     }
-
     .zr {
         width: 50%;
         float: right;
     }
 }
-
-.typeList {
-    margin-top: 8px;
-    width: 100%;
-    height: auto;
-
-    .type-li {
-        width: 100%;
-        height: auto;
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-
-        .li-item {
-            height: 40px;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            color: #363636;
-            font-size: 14px;
-
-            .item-k {
-                width: 100px;
-                line-height: 1;
-                text-align: right;
-                padding-right: 5px;
-                box-sizing: border-box;
-            }
-
-            .item-v {
-                width: calc(100% - 100px);
-                position: relative;
-
-                .unit {
-                    width: 36px;
-                    height: 24px;
-                    border-radius: 4px;
-                    position: absolute;
-                    right: 5px;
-                    top: 50%;
-                    transform: translate(0, -50%);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: #386df0;
-                    background: #e4eafb;
-                    cursor: pointer;
-                }
-            }
-        }
-    }
-}
-
 .margin {
     margin-top: 8px;
     display: flex;
     align-items: center;
     height: 40px;
-    position: relative;
-
-    span {
-        display: inline-block;
-        width: 80px;
-
-    }
-
-    .unit {
-        width: 36px;
-        height: 24px;
-        border-radius: 4px;
-        position: absolute;
-        right: 5px;
-        top: 50%;
-        transform: translate(0, -50%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #386df0;
-        background: #e4eafb;
-        cursor: pointer;
-    }
 }
-
 .indent {
     text-indent: 1em;
     width: 57px;
     display: inline-block;
     height: auto;
 }
-
 .block {
-    width: 230px;
     display: inline-block;
     position: relative;
+    left: -5px;
 }
-
 textarea {
     text-indent: 0.5em;
     width: calc(100% - 100px);
@@ -4195,11 +4373,9 @@ textarea {
     border: 1px solid #e0e0e0;
     // background-color: #f4f4f4;
 }
-
 .table-container {
     overflow: auto;
 }
-
 .Preservation {
     width: 100px;
     height: 34px;
@@ -4210,15 +4386,12 @@ textarea {
     border-radius: 3px;
     text-align: center;
     margin-top: 10px;
-    margin-right: 40px;
     line-height: 34px;
 }
-
 .Preservation1 {
     margin-right: 33px;
     margin-top: 30px;
 }
-
 .cancel {
     cursor: pointer;
     width: 100px;
@@ -4232,11 +4405,9 @@ textarea {
     text-align: center;
     line-height: 34px;
 }
-
 .cancle1 {
     margin-top: 30px;
 }
-
 .Choice {
     width: 700px;
     height: 500px;
@@ -4247,8 +4418,7 @@ textarea {
     right: 0px;
     background-color: #eeeeee;
     box-shadow: 0px 0px 8px black;
-    z-index: 29;
-
+    z-index: 299999900;
     .choicehead {
         height: 50px;
 
@@ -4257,7 +4427,6 @@ textarea {
         line-height: 50px;
         text-align: center;
         position: relative;
-
         .img {
             position: absolute;
             top: 10px;
@@ -4265,15 +4434,13 @@ textarea {
             height: 25px;
             right: 20px;
             cursor: pointer;
-            z-index: 30;
-
+            z-index: 299999950;
             img {
                 width: 100%;
                 height: 100%;
             }
         }
     }
-
     .choicecontant {
         width: 620px;
         height: 330px;
@@ -4283,23 +4450,19 @@ textarea {
         overflow: auto;
     }
 }
-
 .img1 {
     width: 24px;
     height: 24px;
     vertical-align: bottom;
 }
-
 .sestionheader1 {
     width: 100%;
     position: absolute;
     height: 50px;
-
     span {
         color: #fff;
     }
 }
-
 .choicehead1 {
     width: 100%;
     position: absolute;
@@ -4310,79 +4473,67 @@ textarea {
     position: absolute;
     // top: 0;
     // left: 0;
-    z-index: 3;
+    z-index: 19999991;
     // width: 200px;
     overflow: auto;
     // height: 350px;
     background-color: #ffffff;
     border: 1px solid #ccc;
 }
-
 .img11 {
     width: 25px;
     height: 25px;
     position: relative;
     top: 10px;
 }
-
 .firstselect {
     option {
         display: none;
     }
 }
-
 .cover1 {
     width: 100%;
     height: 100%;
-    z-index: 9;
+    z-index: 99999990;
     position: fixed;
     top: 0;
     left: 0;
 }
-
 .cover2 {
     width: 100%;
     height: 100%;
-    z-index: 2;
+    z-index: 290;
     position: fixed;
     top: 0;
     left: 0;
 }
-
 .cover3 {
     width: 100%;
     height: 100%;
-    z-index: 19;
+    z-index: 199999990;
     position: fixed;
     top: 0;
     left: 0;
 }
-
 select {
     background-color: #fff;
 }
-
 .fcolor {
     color: #000 !important;
 }
-
 .colordiv {
     background-color: #d9dbde !important;
 }
-
 .colortip {
     background-color: #efeff0 !important;
 }
-
 img {
     cursor: pointer;
 }
-
 .outputlist_upload {
     left: -10px !important;
     width: 100% !important;
 }
-
 .seleword {
     display: inline-block;
     width: 13%;
@@ -4394,7 +4545,6 @@ img {
     background: #fff;
     text-indent: 1em;
     line-height: 40px;
-
     .seleword1 {
         width: calc(100%);
         position: relative;
@@ -4404,7 +4554,6 @@ img {
         text-overflow: ellipsis;
         overflow: hidden;
         word-break: break-all;
-
         img {
             position: absolute;
             right: 2px;
@@ -4414,8 +4563,8 @@ img {
         }
     }
 }
-
 .sblx {
     display: inline-block;
 }
+
 </style>

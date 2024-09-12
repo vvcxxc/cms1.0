@@ -317,7 +317,7 @@ export default {
               if(item.commonIDarr.length !=0){
                       if(!this.CanExcuteShow){
                           if(item.HasText == true){
-                             this.$emit('showIssueTip',item.WindowText,`/api/base/CheckTags?tagname=${item.commonIDarr[0].Name}&value=${item.commonIDarr[0].Value}`,item.commonIDarr)
+                             this.$emit('showtip',item.WindowText)
                               this.commonValue = item.commonIDarr
                           }else{
                             
@@ -335,9 +335,6 @@ export default {
                                   data:item.commonIDarr
                               }).then(res => {
                                   console.log('res',res)
-                                  if(res.data.code != 0){
-                                    this.$emit('showtip',res.data.msg)
-                                    }
                               }).catch(function(error) {
                                 console.log('err',error);
                               });

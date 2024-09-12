@@ -6,16 +6,23 @@
  * @LastEditTime: 2019-12-01 18:59:40
  -->
 <template>
-    <div class="public-table">
-        <div class="loadcover" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.4)"
-            v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
+    <div class="public-table" >  
+            			<div class="loadcover" element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
-    left: 0;"></div>
-        <div class="search-container" :style="{ zoom }">
-            <my-search :searchList="searchList" :searchData="searchData" @setParams="setParams" @change="change"
-                @confirm="confirm" @allconfirm="allconfirm" @exportFn="exportFn" ref="time"></my-search>
+    left: 0;"></div>   
+        <div class="search-container" :style="{zoom}">
+            <my-search
+                :searchList="searchList"
+                :searchData="searchData"
+                @setParams="setParams"
+                @change="change"
+                @confirm="confirm"
+                @allconfirm="allconfirm"
+                ref="time"
+            ></my-search>
         </div>
         <div class="table-container">
             <my-table :data="data" :tableHead="tableHead" @func="getdata" @func1="getdata1"></my-table>
@@ -23,23 +30,29 @@
         <div class="pages-container">
             <my-page :pageData="pageData" @req="req"></my-page>
         </div>
-        <div class="tip" v-show="tipchange" :style="{ zoom }">
-            <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
-            <div class="tiptop">
+        <div class="tip"  v-show="tipchange" :style="{zoom}">
+           <div
+                class="tiphead"
+                style="position:absolute;width: 380px;height: 40px;"
+            ></div>
+            <div
+                class="tiptop"
+              
+            >
                 <img :src="gth" alt />
-                <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
+                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
             </div>
             <div class="tipcontanin">
-                <div class="tipword" v-if="!w1">{{ tipword }}</div>
-                <div class="w" v-if="w1">{{ w }}</div>
-                <div class="tipdetermine" @click="tip1" v-if="deltrue">{{ lang.MessageBox_Confrim }}</div>
+                <div class="tipword" v-if="!w1">{{tipword}}</div>
+                <div class="w" v-if="w1">{{w}}</div>
+                <div class="tipdetermine" @click="tip1" v-if="deltrue">{{lang.MessageBox_Confrim}}</div>
                 <div class="delclass" v-if="!deltrue">
-                    <div class="one" @click="no1">{{ lang.MessageBox_NO }}</div>
-                    <div class="two" @click="yes1">{{ lang.MessageBox_YES }}</div>
+                    <div class="one" @click="no1">{{lang.MessageBox_NO}}</div>
+                    <div class="two" @click="yes1">{{lang.MessageBox_YES}}</div>
                 </div>
             </div>
         </div>
-        <div class="cover2" v-if="tipchange" :style="{ zoom }"></div>
+        <div class="cover2" v-if="tipchange" :style="{zoom}"></div>
     </div>
 </template>
 
@@ -57,7 +70,7 @@ export default {
         return {
             deltrue: true,
             tipword: '',
-            w: '',
+            w:'',
             tipchange: false,
             gth: require('../../assets/images/gth.png'),
             searchList: [
@@ -79,11 +92,11 @@ export default {
                             value: '已确认未恢复',
                             label: '已确认未恢复'
                         },
-                        {
+                         {
                             value: '未确认已恢复',
                             label: '未确认已恢复'
                         },
-
+                       
                     ],
                     value: 'value',
                     label: 'label'
@@ -158,12 +171,12 @@ export default {
             enddata: {},
             time4: '',
             w1: false,
-            zoom: 1,
+            zoom:1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
     created() {
-
+        
         this.getLangData()
         this.init();
         this.getAlarmType();
@@ -173,8 +186,8 @@ export default {
         );
         let argEndTime = this.$getDate(
             new Date(new Date().toLocaleDateString()).getTime() +
-            24 * 60 * 60 * 1000 -
-            1
+                24 * 60 * 60 * 1000 -
+                1
         );
         Object.assign(this.searchData, {
             argStartTime,
@@ -182,18 +195,18 @@ export default {
         });
         this.time4 = this.getNowTime();
     },
-    mounted() {
+    mounted(){
         this.zoom = window.screen.width / 1920 < 0.71 ? 0.71 : window.screen.width / 1920
     },
     methods: {
-        move(name, namehead) {
-            //  $(`.${name}`).addClass('center')
-            let left = ($(`.${name}`).width()) / 2 + 'px'
-            let top = ($(`.${name}`).height()) / 2 + 'px'
-            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
-            $(`.${name}`)[0].addEventListener('mousedown', function (e) {
-
+           move(name, namehead) {
+          //  $(`.${name}`).addClass('center')
+           let left = ($(`.${name}`).width())/2+'px'
+           let top = ($(`.${name}`).height())/2+'px'
+             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+            $(`.${name}`)[0].addEventListener('mousedown', function(e) {
+                
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
                     $(`.${name}`).removeClass('center')
@@ -212,11 +225,11 @@ export default {
                     isDown = true;
                     var pdmove = false;
 
-
+                     
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
-                    $('body')[0].addEventListener('mousemove', function (e) {
+                    $('body')[0].addEventListener('mousemove', function(e) {
                         pdmove = true;
                         if (isDown == false) {
                             return;
@@ -234,7 +247,7 @@ export default {
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
-                    $('body')[0].addEventListener('mouseup', function (e) {
+                    $('body')[0].addEventListener('mouseup', function(e) {
                         //开关关闭
                         isDown = false;
                         $('body')[0].style.cursor = 'default';
@@ -243,7 +256,7 @@ export default {
             });
         },
         getLangData() {
-            this.searchList = [
+            this.searchList= [
                 {
                     title: this.lang.AlarmRecord_Time_State,
                     model: 'argStatus',
@@ -261,11 +274,11 @@ export default {
                             value: this.lang.AlarmRecord_HT_ConfirmedNoRecovered,
                             label: this.lang.AlarmRecord_HT_ConfirmedNoRecovered
                         },
-                        {
+                         {
                             value: this.lang.AlarmRecord_HT_UnconfirmedResumption,
                             label: this.lang.AlarmRecord_HT_UnconfirmedResumption
                         },
-
+                       
                     ],
                     value: 'value',
                     label: 'label'
@@ -314,96 +327,55 @@ export default {
                 AlarmStateName: this.lang.AlarmRecord_Time_DataGrid_State,
             }
         },
-        powerBtn() {
-            this.jurisdiction = this.$store.state.btnPowerData
-            console.log('按钮无权限', this.$store.state.btnPowerData)
-        },
+           powerBtn(){
+           this.jurisdiction = this.$store.state.btnPowerData
+           console.log('按钮无权限',this.$store.state.btnPowerData)
+       },
         allconfirm(a) {
             console.log(a)
-            if (!a) {
-                setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-                        left: `calc(50% - ${($('.tip').width() / 2) *
-                            this.a11}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) *
-                            this.a11}px)`
+            if(!a){
+                    setTimeout(() => {
+                        $('.tip').css({
+                            zoom: this.a11,
+                            left: `calc(50% - ${($('.tip').width() / 2) *
+                                this.a11}px)`,
+                            top: `calc(50% - ${($('.tip').height() / 2) *
+                                this.a11}px)`
+                        });
+                        this.tipchange = true;
+                        this.move('tip', 'tiphead');
                     });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
                 this.w1 = true;
                 this.tipword = ''
                 // this.w = this.lang.NoOperationAuthority;
                 this.w = this.lang.NoOperationAuthority
                 return
             }
-            setTimeout(() => {
-                $('.tip').css({
-                    zoom: this.a11,
-                    left: `calc(50% - ${($('.tip').width() / 2) *
-                        this.a11}px)`,
-                    top: `calc(50% - ${($('.tip').height() / 2) *
-                        this.a11}px)`
-                });
-                this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
+                setTimeout(() => {
+                        $('.tip').css({
+                            zoom: this.a11,
+                            left: `calc(50% - ${($('.tip').width() / 2) *
+                                this.a11}px)`,
+                            top: `calc(50% - ${($('.tip').height() / 2) *
+                                this.a11}px)`
+                        });
+                        this.tipchange = true;
+                        this.move('tip', 'tiphead');
+                    });
             this.deltrue = false;
             this.w1 = true;
             this.tipword = ''
             this.w = this.lang.AlarmRecord_HT_IsAllComfirm;
         },
-        exportFn(a) {
-            if (!a) {
-                setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-                        left: `calc(50% - ${($('.tip').width() / 2) *
-                            this.a11}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) *
-                            this.a11}px)`
-                    });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-                this.w1 = true;
-                this.tipword = ''
-                this.w = this.lang.NoOperationAuthority
-                return
-            }
-            let _status = 0
-            if (this.searchData.argStatus == this.lang.AlarmRecord_HT_UnconfirmedUnresumed) {
-                _status = 3;
-            } else if (this.searchData.argStatus == this.lang.AlarmRecord_HT_ConfirmedNoRecovered) {
-                _status = 2;
-            } else if (this.searchData.argStatus == this.lang.AlarmRecord_HT_UnconfirmedResumption) {
-                _status = 1;
-            }
-            this.$axios({
-                method: 'post',
-                url: `/api/AlarmRecord/ExportCurrent`,
-                responseType: 'blob',
-                data: {
-                    StartTime: this.searchData.argStartTime,
-                    EndTime: this.searchData.argEndTime,
-                    Alarmstatus: _status,
-                    Alarmtype: this.searchData.argAlarmType,
-                    Keyword: this.searchData.argKeyword
-                }
-            }).then(res => {
-                 this.downloadFile(res.data, '实时报警.xlsx')
-            })
-        },
         no1() {
             this.tipchange = false;
             this.deltrue = true;
             this.w1 = false;
-
+              
         },
         yes1() {
             this.tipchange = false;
-            if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+             if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
                 this.searchData.OperatorName = JSON.parse(
                     sessionStorage.getItem('sightseerInfo1')
                 ).SCMSUserAccount;
@@ -414,12 +386,12 @@ export default {
             }
             this.$axios({
                 method: 'post',
-                url: `/api/AlarmRecord/AlarmRecord_AllAlarmConfirmation?argAlarmType=${this.searchData.argAlarmType}&argStatus=${this.searchData.argStatus}&argStartTime=${this.searchData.argStartTime}&argEndTime=${this.searchData.argEndTime}&argKeyword&argOperatorName=${this.searchData.OperatorName}`
+                url:`/api/AlarmRecord/AlarmRecord_AllAlarmConfirmation?argAlarmType=${this.searchData.argAlarmType}&argStatus=${this.searchData.argStatus}&argStartTime=${this.searchData.argStartTime}&argEndTime=${this.searchData.argEndTime}&argKeyword&argOperatorName=${this.searchData.OperatorName}`
             }).then(res => {
                 this.req(this.pageData.PageIndex);
                 if (res.data.data) {
                     this.tipword = `${res.data.data}`;
-                    setTimeout(() => {
+                        setTimeout(() => {
                         $('.tip').css({
                             zoom: this.a11,
                             left: `calc(50% - ${($('.tip').width() / 2) *
@@ -432,32 +404,32 @@ export default {
                     });
                     this.deltrue = true;
                     this.w1 = false;
-
+                    
                 }
             })
-
-                .catch(err => { });
+        
+            .catch(err => {});
         },
 
         tip1() {
-            if (this.w == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect || this.tipword == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect || this.w == this.lang.NoOperationAuthority) {
-                this.tipchange = false;
-                this.searchData.argStartTime = this.$getDate(
-                    new Date(new Date().toLocaleDateString()).getTime()
-                );
-                this.searchData.argEndTime = this.$getDate(
-                    new Date(new Date().toLocaleDateString()).getTime() +
-                    24 * 60 * 60 * 1000 -
-                    1
-                );
-                return;
+            if(this.w==this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect||this.tipword==this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect||this.w==this.lang.NoOperationAuthority){
+             this.tipchange = false;
+               this.searchData.argStartTime = this.$getDate(
+            new Date(new Date().toLocaleDateString()).getTime()
+        );
+         this.searchData.argEndTime = this.$getDate(
+            new Date(new Date().toLocaleDateString()).getTime() +
+                24 * 60 * 60 * 1000 -
+                1
+        );
+             return;
             }
-
+            
             this.tipchange = false;
             this.w1 = false;
             this.length = [];
-            this.req(1);
-
+             this.req(1);
+    
             // this.alldata.GuidList = this.confirmdata;
             // this.alldata.OperatorName = JSON.parse(
             //     sessionStorage.getItem('userInfo')
@@ -501,33 +473,33 @@ export default {
             return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
         },
         confirm(a) {
-            if (!a) {
+             if(!a){
                 setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-                        left: `calc(50% - ${($('.tip').width() / 2) *
-                            this.a11}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) *
-                            this.a11}px)`
+                        $('.tip').css({
+                            zoom: this.a11,
+                            left: `calc(50% - ${($('.tip').width() / 2) *
+                                this.a11}px)`,
+                            top: `calc(50% - ${($('.tip').height() / 2) *
+                                this.a11}px)`
+                        });
+                        this.tipchange = true;
+                        this.move('tip', 'tiphead');
                     });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
                 this.w1 = true;
-                this.tipword = ''
+                      this.tipword = ''
                 // this.w = this.lang.NoOperationAuthority;
-                this.w = this.lang.NoOperationAuthority
+                this.w =this.lang.NoOperationAuthority
                 return
             }
             // if(this.length.length !== 0){
-            this.enddata.AlarmList = [];
-            let i = 0;
+                   this.enddata.AlarmList = [];
+                let i = 0;
             // for (i in this.length) {
             //     this.enddata.AlarmConfirmList.push(this.length[i].ID);
             // }
             this.enddata.AlarmList = this.length;
             console.log(this.length)
-            if (!JSON.parse(sessionStorage.getItem('userInfo1')) || (JSON.parse(sessionStorage.getItem('userInfo1')) == null)) {
+             if (!JSON.parse(sessionStorage.getItem('userInfo1'))||(JSON.parse(sessionStorage.getItem('userInfo1')) == null)) {
                 this.enddata.OperatorName = JSON.parse(
                     sessionStorage.getItem('sightseerInfo1')
                 ).SCMSUserName;
@@ -544,18 +516,18 @@ export default {
                 data: this.enddata
             }).then(res => {
                 console.log(res);
-                console.log("ss", this.enddata)
-                setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-                        left: `calc(50% - ${($('.tip').width() / 2) *
-                            this.a11}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) *
-                            this.a11}px)`
+                 console.log("ss",this.enddata)
+                    setTimeout(() => {
+                        $('.tip').css({
+                            zoom: this.a11,
+                            left: `calc(50% - ${($('.tip').width() / 2) *
+                                this.a11}px)`,
+                            top: `calc(50% - ${($('.tip').height() / 2) *
+                                this.a11}px)`
+                        });
+                        this.tipchange = true;
+                        this.move('tip', 'tiphead');
                     });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
                 this.tipword = res.data.data;
                 this.w1 = false
                 this.req(this.pageData.PageIndex);
@@ -574,7 +546,7 @@ export default {
                 this.tipword = ''
                 this.w = this.lang.AlarmRecord_HT_PCAlarmRecord;
             } */
-
+        
         },
         getdata(data, data1) {
             this.confirmdata = data;
@@ -659,7 +631,7 @@ export default {
                     //     }
                     // }
                 })
-                .catch(err => { });
+                .catch(err => {});
         },
         change(e, item) {
             let data = this.deviceList[e];
@@ -673,21 +645,21 @@ export default {
                 });
             }
         },
-        setParams(params, a) {
-            if (!a) {
+        setParams(params,a) {
+            if(!a){
                 setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-                        left: `calc(50% - ${($('.tip').width() / 2) *
-                            this.a11}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) *
-                            this.a11}px)`
+                        $('.tip').css({
+                            zoom: this.a11,
+                            left: `calc(50% - ${($('.tip').width() / 2) *
+                                this.a11}px)`,
+                            top: `calc(50% - ${($('.tip').height() / 2) *
+                                this.a11}px)`
+                        });
+                        this.tipchange = true;
+                        this.move('tip', 'tiphead');
                     });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
                 this.w1 = true;
-                this.tipword = ''
+                      this.tipword = ''
                 this.w = this.lang.NoOperationAuthority;
                 return
             }
@@ -696,19 +668,19 @@ export default {
                 new Date(params.argStartTime).getTime() >
                 new Date(params.argEndTime).getTime()
             ) {
-                setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-                        left: `calc(50% - ${($('.tip').width() / 2) *
-                            this.a11}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) *
-                            this.a11}px)`
+                    setTimeout(() => {
+                        $('.tip').css({
+                            zoom: this.a11,
+                            left: `calc(50% - ${($('.tip').width() / 2) *
+                                this.a11}px)`,
+                            top: `calc(50% - ${($('.tip').height() / 2) *
+                                this.a11}px)`
+                        });
+                        this.tipchange = true;
+                        this.move('tip', 'tiphead');
                     });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
                 this.w1 = true;
-                this.tipword = ''
+                      this.tipword = ''
                 this.w = this.lang.AlarmRecord_HT_TheQueryDate;
             }
         },
@@ -745,16 +717,16 @@ export default {
                         console.log(this.searchList)
                     }
                 })
-                .catch(err => { });
+                .catch(err => {});
         },
-        isPositiveInteger(s) {
+           isPositiveInteger(s) {
             //是否为正整数
             var re = /^[0-9]+$/;
             return re.test(s);
         },
-        req(pageIndex, s) {
-            if (s == 'jump') {
-                if (!this.isPositiveInteger(pageIndex)) {
+        req(pageIndex,s) {
+             if(s=='jump'){
+                   if (!this.isPositiveInteger(pageIndex)) {
                     setTimeout(() => {
                         $('.tip').css({
                             zoom: this.a11,
@@ -766,34 +738,34 @@ export default {
                         this.tipchange = true;
                         this.move('tip', 'tiphead');
                     });
-                    this.w = this.lang.DataGrid_Reaction_HT_PEAPositiveInteger;
-                    this.tipword = ''
-                    this.w1 = true;
-                    return;
-                } else {
-                    if (pageIndex !== 1 && pageIndex !== this.pageData.TotalPage) {
+                this.w = this.lang.DataGrid_Reaction_HT_PEAPositiveInteger;
+                      this.tipword = ''
+                this.w1 = true;
+                return;
+            } else {
+                if(pageIndex!==1&&pageIndex!==this.pageData.TotalPage){
                         if (pageIndex < 1 || pageIndex > this.pageData.TotalPage) {
-                            setTimeout(() => {
-                                $('.tip').css({
-                                    zoom: this.a11,
-                                    left: `calc(50% - ${($('.tip').width() / 2) *
-                                        this.a11}px)`,
-                                    top: `calc(50% - ${($('.tip').height() / 2) *
-                                        this.a11}px)`
-                                });
-                                this.tipchange = true;
-                                this.move('tip', 'tiphead');
-                            });
-                            this.w = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
-                            this.w1 = true;
-                            this.tipword = ''
-                            return;
-                        }
-                    }
-
+                        setTimeout(() => {
+                        $('.tip').css({
+                            zoom: this.a11,
+                            left: `calc(50% - ${($('.tip').width() / 2) *
+                                this.a11}px)`,
+                            top: `calc(50% - ${($('.tip').height() / 2) *
+                                this.a11}px)`
+                        });
+                        this.tipchange = true;
+                        this.move('tip', 'tiphead');
+                    });
+                    this.w = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
+                         this.w1 = true;
+                               this.tipword = ''
+                    return;
                 }
+                }
+             
             }
-
+             }
+        
             let params = Object.assign(this.searchData, {
                 argPageIndex: pageIndex,
                 argPageSize: this.pageData.PageSize
@@ -816,25 +788,25 @@ export default {
                     if (res.data.code == 0) {
                         this.data = res.data.data.DataList;
                         this.pageData = res.data.data.ParameterList;
-                    } else {
+                    }else{
                         this.w = res.data.msg;
                         this.w1 = true;
-                        this.tipword = ''
-                        setTimeout(() => {
-                            $('.tip').css({
-                                zoom: this.a11,
-                                left: `calc(50% - ${($('.tip').width() / 2) *
-                                    this.a11}px)`,
-                                top: `calc(50% - ${($('.tip').height() / 2) *
-                                    this.a11}px)`
-                            });
-                            this.tipchange = true;
-                            this.move('tip', 'tiphead');
+                              this.tipword = ''
+                            setTimeout(() => {
+                        $('.tip').css({
+                            zoom: this.a11,
+                            left: `calc(50% - ${($('.tip').width() / 2) *
+                                this.a11}px)`,
+                            top: `calc(50% - ${($('.tip').height() / 2) *
+                                this.a11}px)`
                         });
+                        this.tipchange = true;
+                        this.move('tip', 'tiphead');
+                    });
                     }
                 })
 
-                .catch(err => { });
+                .catch(err => {});
         }
     }
 };
@@ -845,17 +817,14 @@ export default {
     display: flex;
     flex-direction: column;
     height: 100%;
-
     .table-container {
         flex: 1;
         // overflow: auto;
     }
-
     .page-container {
         height: 60px;
     }
 }
-
 .tip {
     position: fixed;
     width: 380px;
@@ -866,19 +835,16 @@ export default {
     left: 750px;
     box-shadow: 0px 0px 8px black;
     background-color: #f3f3f4;
-
     .tiptop {
         width: 380px;
         height: 40px;
         background-color: #ffbc3d;
-
         img {
             width: 20px;
             height: 20px;
             margin-top: 10px;
             margin-left: 160px;
         }
-
         span {
             color: #ffffff;
             position: relative;
@@ -886,11 +852,9 @@ export default {
             margin-left: 7px;
         }
     }
-
     .tipcontanin {
         height: calc(100% - 40px);
     }
-
     .tipword {
         width: 100%;
         height: 75%;
@@ -900,17 +864,15 @@ export default {
         padding: 12px;
         text-align: center;
     }
-
     .w {
         width: 100%;
         height: 100px;
-        padding: 0 10px;
+        padding:0 10px;
         text-align: center;
         display: flex;
         justify-content: center;
         align-items: center;
     }
-
     .tipdetermine {
         color: #ea9328;
         width: 310px;
@@ -924,7 +886,6 @@ export default {
         height: 30px;
         background-color: #f3e3ad;
     }
-
     .delclass {
         width: 330px;
         margin: 15px auto 18px;
@@ -932,7 +893,6 @@ export default {
         // bottom: 20px;
         // left: 25px;
         height: 30px;
-
         .one {
             display: inline-block;
             height: 30px;
@@ -943,7 +903,6 @@ export default {
             background-color: #e0e0e0;
             color: #7e7e7e;
         }
-
         .two {
             line-height: 30px;
             display: inline-block;
@@ -957,7 +916,6 @@ export default {
         }
     }
 }
-
 .cover2 {
     width: 100%;
     height: 100%;

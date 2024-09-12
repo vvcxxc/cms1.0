@@ -2978,13 +2978,16 @@ this.$store.commit('move')
                         this.PageData = res.data.data.ParameterList;
                         let i = 0;
                         for (i in this.tableData1) {
-                            this.tableData1[i].StartTime = 
+                            this.tableData1[i].StartTime = this.gettime(
                                 this.tableData1[i].StartTime
-                             this.tableData1[i].EndTime =  
+                            );
+                            this.tableData1[i].EndTime = this.gettime(
                                 this.tableData1[i].EndTime
-                             this.tableData1[i].MaturityTime =  
+                            );
+                            this.tableData1[i].MaturityTime = this.gettime(
                                 this.tableData1[i].MaturityTime
-                             if (
+                            );
+                            if (
                                 this.tableData1[i].Status == 0 ||
                                 this.tableData1[i].Status == 1
                             ) {

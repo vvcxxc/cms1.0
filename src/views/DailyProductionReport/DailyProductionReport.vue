@@ -1,35 +1,81 @@
- 
 <template>
     <div class="tapwater" v-loading="this.$store.state.isShow">
-        <div class="linebox" :class="{ colordiv: $store.state.color == 'grey' }">
+        <div
+            class="linebox"
+            :class="{ colordiv: $store.state.color == 'grey' }"
+        >
             <div class="table clearfix">
                 <div class="fll">
-                    <span>{{ lang.AlarmStatistics_AlarmStatisticsUserControl_StartTime }}</span>
+                    <span>{{
+                        lang.AlarmStatistics_AlarmStatisticsUserControl_StartTime
+                    }}</span>
                     <div class="container">
                         <div class="block">
                             <span class="demonstration"></span>
-                            <el-date-picker v-model="value1" type="date"
-                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate" value-format="yyyy-MM-dd"
-                                :style="[{ height: '40px' }, { fontSize: 16 * 1 + 'px' }, { width: 250 * 1 + 'px' }]"></el-date-picker>
+                            <el-date-picker
+                                v-model="value1"
+                                type="date"
+                                :placeholder="
+                                    lang.SCMSConsoleWebApiMySql_PleChooseDate
+                                "
+                                value-format="yyyy-MM-dd"
+                                :style="[
+                                    { height: '40px' },
+                                    { fontSize: 16 * 1 + 'px' },
+                                    { width: 250 * 1 + 'px' }
+                                ]"
+                            ></el-date-picker>
                         </div>
-                        <span>{{ lang.AlarmStatistics_AlarmStatisticsUserControl_EndTime }}</span>
+                        <span>{{
+                            lang.AlarmStatistics_AlarmStatisticsUserControl_EndTime
+                        }}</span>
                         <div class="block">
                             <span class="demonstration"></span>
-                            <el-date-picker v-model="value2" type="date"
-                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate" value-format="yyyy-MM-dd"
-                                :style="[{ height: '40px' }, { fontSize: 16 * 1 + 'px' }, { width: 250 * 1 + 'px' }]"></el-date-picker>
+                            <el-date-picker
+                                v-model="value2"
+                                type="date"
+                                :placeholder="
+                                    lang.SCMSConsoleWebApiMySql_PleChooseDate
+                                "
+                                value-format="yyyy-MM-dd"
+                                :style="[
+                                    { height: '40px' },
+                                    { fontSize: 16 * 1 + 'px' },
+                                    { width: 250 * 1 + 'px' }
+                                ]"
+                            ></el-date-picker>
                         </div>
                     </div>
                 </div>
-                <div class="query W1" :id="cxid" @click="Search"
-                    :style="[{ lineHeight: '36px' }, { height: '40px' }, { fontSize: 16 * 1 + 'px' }, { width: 120 * 1 + 'px' }]">
-                    {{ lang.AlarmStatistics_AlarmStatisticsUserControl_Query }}</div>
+                <div
+                    class="query W1"
+                    :id="cxid"
+                    @click="Search"
+                    :style="[
+                        { lineHeight: '36px' },
+                        { height: '40px' },
+                        { fontSize: 16 * 1 + 'px' },
+                        { width: 120 * 1 + 'px' }
+                    ]"
+                >
+                    {{ lang.AlarmStatistics_AlarmStatisticsUserControl_Query }}
+                </div>
                 <div class="fr">
-                    <div class="export" :id="dcid" @click="exporData"
-                        :style="[{ lineHeight: '40px' }, { height: '40px' }, { fontSize: 16 * 1 + 'px' }, { width: 120 * 1 + 'px' }]">
-                        {{ lang.AlarmStatistics_AlarmStatisticsUserControl_Export }}</div>
-
-
+                    <div
+                        class="export"
+                        :id="dcid"
+                        @click="exporData"
+                        :style="[
+                            { lineHeight: '40px' },
+                            { height: '40px' },
+                            { fontSize: 16 * 1 + 'px' },
+                            { width: 120 * 1 + 'px' }
+                        ]"
+                    >
+                        {{
+                            lang.AlarmStatistics_AlarmStatisticsUserControl_Export
+                        }}
+                    </div>
                 </div>
             </div>
             <div class="tabledata-box">
@@ -42,7 +88,6 @@
                         <div class="title-item">班组</div>
                     </div>
                     <div class="title-item">生产吨</div>
-                    <div class="title-item">合格吨</div>
                     <!-- <div class="title-item">一次合格吨</div> -->
                     <div class="title-item">一次合格率</div>
                     <div class="title-item">生产支</div>
@@ -50,6 +95,7 @@
                     <div class="title-item">二区温度</div>
                     <div class="title-item">三区温度</div>
                     <div class="title-item">四区温度</div>
+                    <div class="title-item">五区温度</div>
                     <div class="title-item">风压</div>
                     <div class="title-item">速度</div>
                     <div class="title-item">风机频率</div>
@@ -63,33 +109,52 @@
                     <div class="title-item">开机时长</div>
                 </div>
                 <div v-for="_ in tabledata">
-                    <div class="table-label" v-for="item in _.ProductionDayShift">
+                    <div
+                        class="table-label"
+                        v-for="item in _.ProductionDayShift"
+                    >
                         <div class="ski">
-                            <div class="label-item">{{ item.ProductionDate }}</div>
+                            <div class="label-item">
+                                {{ item.ProductionDate }}
+                            </div>
                             <div class="label-item">{{ item.DisplayTime }}</div>
-                            <div class="label-item">{{ item.CollectionTimeSpan }}</div>
-                            <div class="label-item">{{ item.FWORKSHOPNAME }}</div>
-                            <div class="label-item">{{ item.FSHIFTGROUPNAME }}</div>
+                            <div class="label-item">
+                                {{ item.CollectionTimeSpan }}
+                            </div>
+                            <div class="label-item">
+                                {{ item.FWORKSHOPNAME }}
+                            </div>
+                            <div class="label-item">
+                                {{ item.FSHIFTGROUPNAME }}
+                            </div>
                         </div>
                         <div class="label-item">{{ item.FRKREALQTY }}</div>
                         <!-- <div class="label-item">{{ item.FRKZT }}</div> -->
-                        <div class="label-item">{{ item.FHGRKQTY }}</div>
                         <div class="label-item">{{ item.PrcentPass }}</div>
                         <div class="label-item">{{ item.FRKZS }}</div>
                         <div class="label-item">{{ item.T1 }}</div>
                         <div class="label-item">{{ item.T2 }}</div>
                         <div class="label-item">{{ item.T3 }}</div>
                         <div class="label-item">{{ item.T4 }}</div>
+                        <div class="label-item">{{ item.T5 }}</div>
                         <div class="label-item">{{ item.WindPressure }}</div>
                         <div class="label-item">{{ item.Velocity }}</div>
                         <div class="label-item">{{ item.FrequencyOfFan }}</div>
-                        <div class="label-item">{{ item.ExhaustGasTemperature }}</div>
+                        <div class="label-item">
+                            {{ item.ExhaustGasTemperature }}
+                        </div>
                         <div class="label-item">{{ item.HostElectric }}</div>
                         <div class="label-item">{{ item.DonkeyElectric }}</div>
-                        <div class="label-item">{{ item.ElectricTotalLine1 }}</div>
-                        <div class="label-item">{{ item.ElectricConsumptionLine1 }}</div>
+                        <div class="label-item">
+                            {{ item.ElectricTotalLine1 }}
+                        </div>
+                        <div class="label-item">
+                            {{ item.ElectricConsumptionLine1 }}
+                        </div>
                         <div class="label-item">{{ item.GasLine1 }}</div>
-                        <div class="label-item">{{ item.GasConsumptionLine1 }}</div>
+                        <div class="label-item">
+                            {{ item.GasConsumptionLine1 }}
+                        </div>
                         <div class="label-item">{{ item.DisplayRunTime }}</div>
                     </div>
                     <div class="table-count">
@@ -100,11 +165,16 @@
                             <div class="count-item"></div>
                             <div class="count-item"></div>
                         </div>
-                        <div class="count-item">{{ _.DayShiftTotalData.ProductionTon }}</div>
+                        <div class="count-item">
+                            {{ _.DayShiftTotalData.ProductionTon }}
+                        </div>
                         <!-- <div class="count-item">{{ _.DayShiftTotalData.Quantity }}</div> -->
-                        <div class="count-item">{{ _.DayShiftTotalData.FHGRKQTY }}</div>
-                        <div class="count-item">{{ _.DayShiftTotalData.PrcentPass }}</div>
-                        <div class="count-item">{{ _.DayShiftTotalData.ProductionCount }}</div>
+                        <div class="count-item">
+                            {{ _.DayShiftTotalData.PrcentPass }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.DayShiftTotalData.ProductionCount }}
+                        </div>
                         <div class="count-item"></div>
                         <div class="count-item"></div>
                         <div class="count-item"></div>
@@ -113,41 +183,75 @@
                         <div class="count-item"></div>
                         <div class="count-item"></div>
                         <div class="count-item"></div>
-                        <div class="count-item">{{ _.DayShiftTotalData.HostElectric }}</div>
-                        <div class="count-item">{{ _.DayShiftTotalData.DonkeyElectric }}</div>
-                        <div class="count-item">{{ _.DayShiftTotalData.ElectricTotalLine1 }}</div>
-                        <div class="count-item">{{ _.DayShiftTotalData.ElectricConsumptionLine1 }}</div>
-                        <div class="count-item">{{ _.DayShiftTotalData.GasLine1 }}</div>
-                        <div class="count-item">{{ _.DayShiftTotalData.GasConsumptionLine1 }}</div>
-                        <div class="count-item">{{ _.DayShiftTotalData.RunTime }}</div>
+                        <div class="count-item"></div>
+                        <div class="count-item">
+                            {{ _.DayShiftTotalData.HostElectric }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.DayShiftTotalData.DonkeyElectric }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.DayShiftTotalData.ElectricTotalLine1 }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.DayShiftTotalData.ElectricConsumptionLine1 }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.DayShiftTotalData.GasLine1 }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.DayShiftTotalData.GasConsumptionLine1 }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.DayShiftTotalData.RunTime }}
+                        </div>
                     </div>
-                    <div class="table-label" v-for="item in _.ProductionNightShift">
+                    <div
+                        class="table-label"
+                        v-for="item in _.ProductionNightShift"
+                    >
                         <div class="ski">
-                            <div class="label-item">{{ item.ProductionDate }}</div>
+                            <div class="label-item">
+                                {{ item.ProductionDate }}
+                            </div>
                             <div class="label-item">{{ item.DisplayTime }}</div>
-                            <div class="label-item">{{ item.CollectionTimeSpan }}</div>
-                            <div class="label-item">{{ item.FWORKSHOPNAME }}</div>
-                            <div class="label-item">{{ item.FSHIFTGROUPNAME }}</div>
+                            <div class="label-item">
+                                {{ item.CollectionTimeSpan }}
+                            </div>
+                            <div class="label-item">
+                                {{ item.FWORKSHOPNAME }}
+                            </div>
+                            <div class="label-item">
+                                {{ item.FSHIFTGROUPNAME }}
+                            </div>
                         </div>
                         <div class="label-item">{{ item.FRKREALQTY }}</div>
                         <!-- <div class="label-item">{{ item.FRKZT }}</div> -->
-                        <div class="label-item">{{ item.FHGRKQTY }}</div>
                         <div class="label-item">{{ item.PrcentPass }}</div>
                         <div class="label-item">{{ item.FRKZS }}</div>
                         <div class="label-item">{{ item.T1 }}</div>
                         <div class="label-item">{{ item.T2 }}</div>
                         <div class="label-item">{{ item.T3 }}</div>
                         <div class="label-item">{{ item.T4 }}</div>
+                        <div class="label-item">{{ item.T5 }}</div>
                         <div class="label-item">{{ item.WindPressure }}</div>
                         <div class="label-item">{{ item.Velocity }}</div>
                         <div class="label-item">{{ item.FrequencyOfFan }}</div>
-                        <div class="label-item">{{ item.ExhaustGasTemperature }}</div>
+                        <div class="label-item">
+                            {{ item.ExhaustGasTemperature }}
+                        </div>
                         <div class="label-item">{{ item.HostElectric }}</div>
                         <div class="label-item">{{ item.DonkeyElectric }}</div>
-                        <div class="label-item">{{ item.ElectricTotalLine1 }}</div>
-                        <div class="label-item">{{ item.ElectricConsumptionLine1 }}</div>
+                        <div class="label-item">
+                            {{ item.ElectricTotalLine1 }}
+                        </div>
+                        <div class="label-item">
+                            {{ item.ElectricConsumptionLine1 }}
+                        </div>
                         <div class="label-item">{{ item.GasLine1 }}</div>
-                        <div class="label-item">{{ item.GasConsumptionLine1 }}</div>
+                        <div class="label-item">
+                            {{ item.GasConsumptionLine1 }}
+                        </div>
                         <div class="label-item">{{ item.DisplayRunTime }}</div>
                     </div>
                     <div class="table-count">
@@ -158,11 +262,16 @@
                             <div class="count-item"></div>
                             <div class="count-item"></div>
                         </div>
-                        <div class="count-item">{{ _.NightShiftTotalData.ProductionTon }}</div>
+                        <div class="count-item">
+                            {{ _.NightShiftTotalData.ProductionTon }}
+                        </div>
                         <!-- <div class="count-item">{{ _.NightShiftTotalData.Quantity }}</div> -->
-                        <div class="count-item">{{ _.NightShiftTotalData.FHGRKQTY }}</div>
-                        <div class="count-item">{{ _.NightShiftTotalData.PrcentPass }}</div>
-                        <div class="count-item">{{ _.NightShiftTotalData.ProductionCount }}</div>
+                        <div class="count-item">
+                            {{ _.NightShiftTotalData.PrcentPass }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.NightShiftTotalData.ProductionCount }}
+                        </div>
                         <div class="count-item"></div>
                         <div class="count-item"></div>
                         <div class="count-item"></div>
@@ -171,29 +280,56 @@
                         <div class="count-item"></div>
                         <div class="count-item"></div>
                         <div class="count-item"></div>
-                        <div class="count-item">{{ _.NightShiftTotalData.HostElectric }}</div>
-                        <div class="count-item">{{ _.NightShiftTotalData.DonkeyElectric }}</div>
-                        <div class="count-item">{{ _.NightShiftTotalData.ElectricTotalLine1 }}</div>
-                        <div class="count-item">{{ _.NightShiftTotalData.ElectricConsumptionLine1 }}</div>
-                        <div class="count-item">{{ _.NightShiftTotalData.GasLine1 }}</div>
-                        <div class="count-item">{{ _.NightShiftTotalData.GasConsumptionLine1 }}</div>
-                        <div class="count-item">{{ _.NightShiftTotalData.RunTime }}</div>
+                        <div class="count-item"></div>
+                        <div class="count-item">
+                            {{ _.NightShiftTotalData.HostElectric }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.NightShiftTotalData.DonkeyElectric }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.NightShiftTotalData.ElectricTotalLine1 }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.NightShiftTotalData.ElectricConsumptionLine1 }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.NightShiftTotalData.GasLine1 }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.NightShiftTotalData.GasConsumptionLine1 }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.NightShiftTotalData.RunTime }}
+                        </div>
                     </div>
                     <div class="table-count">
                         <div class="ski">
-                            <div class="count-item">{{ _.ProductionDayShift.length ? _.ProductionDayShift[0].FWORKSHOPNAME :
-                                _.ProductionNightShift.length ? _.ProductionNightShift[0].FWORKSHOPNAME : '--'
-                            }}合计</div>
+                            <div class="count-item">
+                                {{
+                                    _.ProductionDayShift.length
+                                        ? _.ProductionDayShift[0].FWORKSHOPNAME
+                                        : _.ProductionNightShift.length
+                                        ? _.ProductionNightShift[0]
+                                              .FWORKSHOPNAME
+                                        : '--'
+                                }}合计
+                            </div>
                             <div class="count-item"></div>
                             <div class="count-item"></div>
                             <div class="count-item"></div>
                             <div class="count-item"></div>
                         </div>
-                        <div class="count-item">{{ _.ProdutionLineTotalData.ProductionTon }}</div>
+                        <div class="count-item">
+                            {{ _.ProdutionLineTotalData.ProductionTon }}
+                        </div>
                         <!-- <div class="count-item">{{ _.ProdutionLineTotalData.Quantity }}</div> -->
-                        <div class="count-item">{{ _.ProdutionLineTotalData.FHGRKQTY }}</div>
-                        <div class="count-item">{{ _.ProdutionLineTotalData.PrcentPass }}</div>
-                        <div class="count-item">{{ _.ProdutionLineTotalData.ProductionCount }}</div>
+                        <div class="count-item">
+                            {{ _.ProdutionLineTotalData.PrcentPass }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.ProdutionLineTotalData.ProductionCount }}
+                        </div>
                         <div class="count-item"></div>
                         <div class="count-item"></div>
                         <div class="count-item"></div>
@@ -202,43 +338,85 @@
                         <div class="count-item"></div>
                         <div class="count-item"></div>
                         <div class="count-item"></div>
-                        <div class="count-item">{{ _.ProdutionLineTotalData.HostElectric }}</div>
-                        <div class="count-item">{{ _.ProdutionLineTotalData.DonkeyElectric }}</div>
-                        <div class="count-item">{{ _.ProdutionLineTotalData.ElectricTotalLine1 }}</div>
-                        <div class="count-item">{{ _.ProdutionLineTotalData.ElectricConsumptionLine1 }}</div>
-                        <div class="count-item">{{ _.ProdutionLineTotalData.GasLine1 }}</div>
-                        <div class="count-item">{{ _.ProdutionLineTotalData.GasConsumptionLine1 }}</div>
-                        <div class="count-item">{{ _.ProdutionLineTotalData.RunTime }}</div>
+                        <div class="count-item"></div>
+                        <div class="count-item">
+                            {{ _.ProdutionLineTotalData.HostElectric }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.ProdutionLineTotalData.DonkeyElectric }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.ProdutionLineTotalData.ElectricTotalLine1 }}
+                        </div>
+                        <div class="count-item">
+                            {{
+                                _.ProdutionLineTotalData
+                                    .ElectricConsumptionLine1
+                            }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.ProdutionLineTotalData.GasLine1 }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.ProdutionLineTotalData.GasConsumptionLine1 }}
+                        </div>
+                        <div class="count-item">
+                            {{ _.ProdutionLineTotalData.RunTime }}
+                        </div>
                     </div>
                 </div>
                 <div class="table-label">
                     <div class="ski">
-                        <div class="label-item">{{ allCountObj.ProductionDate }}</div>
-                        <div class="label-item">{{ allCountObj.DisplayTime }}</div>
-                        <div class="label-item">{{ allCountObj.CollectionTimeSpan }}</div>
-                        <div class="label-item">{{ allCountObj.FWORKSHOPNAME }}</div>
-                        <div class="label-item">{{ allCountObj.FSHIFTGROUPNAME }}</div>
+                        <div class="label-item">
+                            {{ allCountObj.ProductionDate }}
+                        </div>
+                        <div class="label-item">
+                            {{ allCountObj.DisplayTime }}
+                        </div>
+                        <div class="label-item">
+                            {{ allCountObj.CollectionTimeSpan }}
+                        </div>
+                        <div class="label-item">
+                            {{ allCountObj.FWORKSHOPNAME }}
+                        </div>
+                        <div class="label-item">
+                            {{ allCountObj.FSHIFTGROUPNAME }}
+                        </div>
                     </div>
                     <div class="label-item">{{ allCountObj.FRKREALQTY }}</div>
                     <!-- <div class="label-item">{{ allCountObj.FRKZT }}</div> -->
-                    <div class="label-item">{{ allCountObj.FHGRKQTY }}</div>
                     <div class="label-item">{{ allCountObj.PrcentPass }}</div>
                     <div class="label-item">{{ allCountObj.FRKZS }}</div>
                     <div class="label-item">{{ allCountObj.T1 }}</div>
                     <div class="label-item">{{ allCountObj.T2 }}</div>
                     <div class="label-item">{{ allCountObj.T3 }}</div>
                     <div class="label-item">{{ allCountObj.T4 }}</div>
+                    <div class="label-item">{{ allCountObj.T5 }}</div>
                     <div class="label-item">{{ allCountObj.WindPressure }}</div>
                     <div class="label-item">{{ allCountObj.Velocity }}</div>
-                    <div class="label-item">{{ allCountObj.FrequencyOfFan }}</div>
-                    <div class="label-item">{{ allCountObj.ExhaustGasTemperature }}</div>
+                    <div class="label-item">
+                        {{ allCountObj.FrequencyOfFan }}
+                    </div>
+                    <div class="label-item">
+                        {{ allCountObj.ExhaustGasTemperature }}
+                    </div>
                     <div class="label-item">{{ allCountObj.HostElectric }}</div>
-                    <div class="label-item">{{ allCountObj.DonkeyElectric }}</div>
-                    <div class="label-item">{{ allCountObj.ElectricTotalLine1 }}</div>
-                    <div class="label-item">{{ allCountObj.ElectricConsumptionLine1 }}</div>
+                    <div class="label-item">
+                        {{ allCountObj.DonkeyElectric }}
+                    </div>
+                    <div class="label-item">
+                        {{ allCountObj.ElectricTotalLine1 }}
+                    </div>
+                    <div class="label-item">
+                        {{ allCountObj.ElectricConsumptionLine1 }}
+                    </div>
                     <div class="label-item">{{ allCountObj.GasLine1 }}</div>
-                    <div class="label-item">{{ allCountObj.GasConsumptionLine1 }}</div>
-                    <div class="label-item">{{ allCountObj.DisplayRunTime }}</div>
+                    <div class="label-item">
+                        {{ allCountObj.GasConsumptionLine1 }}
+                    </div>
+                    <div class="label-item">
+                        {{ allCountObj.DisplayRunTime }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -249,7 +427,9 @@
             </div>
             <div class="tipcontanin">
                 <div class="w">{{ w }}</div>
-                <div class="tipdetermine" @click="tip2">{{ lang.MessageBox_Confrim }}</div>
+                <div class="tipdetermine" @click="tip2">
+                    {{ lang.MessageBox_Confrim }}
+                </div>
             </div>
         </div>
         <div class="cover3" v-if="tipchange1"></div>
@@ -257,14 +437,13 @@
 </template>
 
 <script>
-
 export default {
     name: 'DailyProductionReport',
     data() {
         return {
             jurisdiction: [],
             buttonarr: [],
-            cxid: "",
+            cxid: '',
             dcid: '',
             cxshow: true,
             dcshow: true,
@@ -275,7 +454,9 @@ export default {
             gth: require('../../assets/images/gth.png'),
             value1: '',
             value2: '',
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
+            lang: JSON.parse(localStorage.getItem('languages'))[
+                localStorage.getItem('currentLang')
+            ],
             tabledata: [],
             exportDataList: [],
             allCountObj: {}
@@ -283,132 +464,186 @@ export default {
     },
 
     mounted() {
-        let yesterday = new Date((new Date().getTime() - 24 * 60 * 60 * 1000));
+        let yesterday = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
         let today = new Date();
-        this.value1 = yesterday.getFullYear() +
+        this.value1 =
+            yesterday.getFullYear() +
             '-' +
             (yesterday.getMonth() + 1) +
             '-' +
             (yesterday.getDate() > 10
                 ? yesterday.getDate()
                 : '0' + yesterday.getDate());
-        this.value2 = today.getFullYear() +
+        this.value2 =
+            today.getFullYear() +
             '-' +
             (today.getMonth() + 1) +
             '-' +
-            (today.getDate() > 10
-                ? today.getDate()
-                : '0' + today.getDate());
+            (today.getDate() > 10 ? today.getDate() : '0' + today.getDate());
         this.Search();
-
     },
-    watch: {
-
-    },
+    watch: {},
     methods: {
         countFn(arr, key) {
-            return arr.reduce((sum, w) => { return w[key] + sum }, 0)
+            return arr.reduce((sum, w) => {
+                return w[key] + sum;
+            }, 0);
         },
         Search() {
             this.$axios({
                 url: `/api/ProductionDayReport/Query?st=${this.value1}&et=${this.value2}`,
-                method: 'get',
-            })
-                .then((res) => {
-
-                    let list = res.data.data;
-                    this.tabledata = list;
-                    let alltime = this.tabledata.reduce((sum, w) => { return Number(w.ProdutionLineTotalData.RunTimeSecord) + sum }, 0)
-                    let FRKREALQTY = this.tabledata.reduce((sum, w) => { return (w.ProdutionLineTotalData.ProductionTon) + sum }, 0).toFixed(2)
-                    let FHGRKQTY = this.tabledata.reduce((sum, w) => { return (w.ProdutionLineTotalData.FHGRKQTY) + sum }, 0).toFixed(2)
-                    // let FHGRKZS = this.tabledata.reduce((sum, w) => { return (w.ProdutionLineTotalData.FHGRKZS) + sum }, 0)
-                    let ProductionCount = this.tabledata.reduce((sum, w) => { return (w.ProdutionLineTotalData.ProductionCount) + sum }, 0)
-                    console.log(
-                        FHGRKQTY,
-                        FRKREALQTY,
-                        (FHGRKQTY / FRKREALQTY * 100).toFixed(2) + '%'
-
-                    )
-                    this.allCountObj = {
-                        ProductionDate: '全产线合计',
-                        DisplayTime: '',
-                        CollectionTimeSpan: '',
-                        FWORKSHOPNAME: '',
-                        FSHIFTGROUPNAME: '',
-                        FRKREALQTY: FRKREALQTY,
-                        FHGRKQTY:FHGRKQTY,
-                        FRKZT: '',
-                        PrcentPass: ProductionCount > 0 ? (FHGRKQTY / FRKREALQTY * 100).toFixed(2) + '%' : '0.00%',
-                        FRKZS: this.tabledata.reduce((sum, w) => { return w.ProdutionLineTotalData.ProductionCount + sum }, 0).toFixed(2),
-                        T1: '',
-                        T2: '',
-                        T3: '',
-                        T4: '',
-                        WindPressure: '',
-                        Velocity: '',
-                        FrequencyOfFan: '',
-                        ExhaustGasTemperature: '',
-                        HostElectric: this.tabledata.reduce((sum, w) => { return w.ProdutionLineTotalData.HostElectric + sum }, 0).toFixed(2),
-                        DonkeyElectric: this.tabledata.reduce((sum, w) => { return w.ProdutionLineTotalData.DonkeyElectric + sum }, 0).toFixed(2),
-                        ElectricTotalLine1: this.tabledata.reduce((sum, w) => { return w.ProdutionLineTotalData.ElectricTotalLine1 + sum }, 0).toFixed(2),
-                        ElectricConsumptionLine1: Math.floor((this.tabledata.reduce((sum, w) => { return w.ProdutionLineTotalData.ElectricTotalLine1 + sum }, 0) / FRKREALQTY) * 100) / 100,
-                        GasLine1: this.tabledata.reduce((sum, w) => { return w.ProdutionLineTotalData.GasLine1 + sum }, 0).toFixed(2),
-                        GasConsumptionLine1: Math.floor((this.tabledata.reduce((sum, w) => { return w.ProdutionLineTotalData.GasLine1 + sum }, 0) / FRKREALQTY) * 100) / 100,
-                        DisplayRunTime: this.formatSeconds(alltime)
-                    }
-                });
-
+                method: 'get'
+            }).then(res => {
+                console.log(res.data);
+                let list = res.data.data;
+                this.tabledata = list;
+                let alltime = this.tabledata.reduce((sum, w) => {
+                    return Number(w.ProdutionLineTotalData.RunTimeSecord) + sum;
+                }, 0);
+                let FRKREALQTY = this.tabledata
+                    .reduce((sum, w) => {
+                        return w.ProdutionLineTotalData.ProductionTon + sum;
+                    }, 0)
+                    .toFixed(2);
+                let FHGRKZS = this.tabledata.reduce((sum, w) => {
+                    return w.ProdutionLineTotalData.FHGRKZS + sum;
+                }, 0);
+                let ProductionCount = this.tabledata.reduce((sum, w) => {
+                    return w.ProdutionLineTotalData.ProductionCount + sum;
+                }, 0);
+                this.allCountObj = {
+                    ProductionDate: '全产线合计',
+                    DisplayTime: '',
+                    CollectionTimeSpan: '',
+                    FWORKSHOPNAME: '',
+                    FSHIFTGROUPNAME: '',
+                    FRKREALQTY: FRKREALQTY,
+                    FRKZT: '',
+                    PrcentPass:
+                        ProductionCount >= 0
+                            ? ((FHGRKZS / ProductionCount) * 100).toFixed(2) +
+                              '%'
+                            : '0.00',
+                    FRKZS: this.tabledata
+                        .reduce((sum, w) => {
+                            return (
+                                w.ProdutionLineTotalData.ProductionCount + sum
+                            );
+                        }, 0)
+                        .toFixed(2),
+                    T1: '',
+                    T2: '',
+                    T3: '',
+                    T4: '',
+                    T5: '',
+                    WindPressure: '',
+                    Velocity: '',
+                    FrequencyOfFan: '',
+                    ExhaustGasTemperature: '',
+                    HostElectric: this.tabledata
+                        .reduce((sum, w) => {
+                            return w.ProdutionLineTotalData.HostElectric + sum;
+                        }, 0)
+                        .toFixed(2),
+                    DonkeyElectric: this.tabledata
+                        .reduce((sum, w) => {
+                            return (
+                                w.ProdutionLineTotalData.DonkeyElectric + sum
+                            );
+                        }, 0)
+                        .toFixed(2),
+                    ElectricTotalLine1: this.tabledata
+                        .reduce((sum, w) => {
+                            return (
+                                w.ProdutionLineTotalData.ElectricTotalLine1 +
+                                sum
+                            );
+                        }, 0)
+                        .toFixed(2),
+                    ElectricConsumptionLine1:
+                        Math.floor(
+                            (this.tabledata.reduce((sum, w) => {
+                                return (
+                                    w.ProdutionLineTotalData
+                                        .ElectricTotalLine1 + sum
+                                );
+                            }, 0) /
+                                FRKREALQTY) *
+                                100
+                        ) / 100,
+                    GasLine1: this.tabledata
+                        .reduce((sum, w) => {
+                            return w.ProdutionLineTotalData.GasLine1 + sum;
+                        }, 0)
+                        .toFixed(2),
+                    GasConsumptionLine1:
+                        Math.floor(
+                            (this.tabledata.reduce((sum, w) => {
+                                return w.ProdutionLineTotalData.GasLine1 + sum;
+                            }, 0) /
+                                FRKREALQTY) *
+                                100
+                        ) / 100,
+                    DisplayRunTime: this.formatSeconds(alltime)
+                };
+            });
         },
         formatSeconds(value) {
-            var secondTime = parseInt(value) // 秒
-            var minuteTime = 0 // 分
-            var hourTime = 0 // 小时
-            var dayTime = 0 // 天
-            var result = ''
+            var secondTime = parseInt(value); // 秒
+            var minuteTime = 0; // 分
+            var hourTime = 0; // 小时
+            var dayTime = 0; // 天
+            var result = '';
             if (value < 60) {
-                result = secondTime + '秒'
+                result = secondTime + '秒';
             } else {
-                if (secondTime >= 60) { // 如果秒数大于60，将秒数转换成整数
+                if (secondTime >= 60) {
+                    // 如果秒数大于60，将秒数转换成整数
                     // 获取分钟，除以60取整数，得到整数分钟
-                    minuteTime = parseInt(secondTime / 60)
+                    minuteTime = parseInt(secondTime / 60);
                     // 获取秒数，秒数取佘，得到整数秒数
-                    secondTime = parseInt(secondTime % 60)
+                    secondTime = parseInt(secondTime % 60);
                     // 如果分钟大于60，将分钟转换成小时
                     if (minuteTime >= 60) {
                         // 获取小时，获取分钟除以60，得到整数小时
-                        hourTime = parseInt(minuteTime / 60)
+                        hourTime = parseInt(minuteTime / 60);
                         // 获取小时后取佘的分，获取分钟除以60取佘的分
-                        minuteTime = parseInt(minuteTime % 60)
+                        minuteTime = parseInt(minuteTime % 60);
                         if (hourTime >= 24) {
                             // 获取天数， 获取小时除以24，得到整数天
-                            dayTime = parseInt(hourTime / 24)
+                            dayTime = parseInt(hourTime / 24);
                             // 获取小时后取余小时，获取分钟除以24取余的分；
-                            hourTime = parseInt(hourTime % 24)
+                            hourTime = parseInt(hourTime % 24);
                         }
                     }
                 }
                 if (secondTime > 0) {
-                    secondTime = parseInt(secondTime) >= 10 ? secondTime : '0' + secondTime
-                    result = '' + secondTime + '秒'
+                    secondTime =
+                        parseInt(secondTime) >= 10
+                            ? secondTime
+                            : '0' + secondTime;
+                    result = '' + secondTime + '秒';
                 }
                 if (minuteTime > 0) {
-                    minuteTime = parseInt(minuteTime) >= 10 ? minuteTime : '0' + minuteTime
-                    result = '' + minuteTime + '分' + result
+                    minuteTime =
+                        parseInt(minuteTime) >= 10
+                            ? minuteTime
+                            : '0' + minuteTime;
+                    result = '' + minuteTime + '分' + result;
                 }
                 if (hourTime > 0) {
-                    result = '' + parseInt(hourTime) + '小时' + result
+                    result = '' + parseInt(hourTime) + '小时' + result;
                 }
                 if (dayTime > 0) {
-                    result = '' + parseInt(dayTime) + '天' + result
+                    result = '' + parseInt(dayTime) + '天' + result;
                 }
             }
-            return result
-
+            return result;
         },
         beforeExporData() {
             let temp = [];
             this.tabledata.map(item => {
-                temp = temp.concat(item.ProductionDayShift)
+                temp = temp.concat(item.ProductionDayShift);
                 temp.push({
                     ProductionDate: '日班合计',
                     DisplayTime: '',
@@ -416,7 +651,6 @@ export default {
                     FWORKSHOPNAME: '',
                     FSHIFTGROUPNAME: '',
                     FRKREALQTY: item.DayShiftTotalData.ProductionTon,
-                    FHGRKQTY: item.DayShiftTotalData.FHGRKQTY,
                     FRKZT: '',
                     PrcentPass: '',
                     FRKZS: item.DayShiftTotalData.ProductionCount,
@@ -424,19 +658,23 @@ export default {
                     T2: '',
                     T3: '',
                     T4: '',
+                    T5: '',
                     WindPressure: '',
                     Velocity: '',
                     FrequencyOfFan: '',
                     ExhaustGasTemperature: '',
                     HostElectric: item.DayShiftTotalData.HostElectric,
                     DonkeyElectric: item.DayShiftTotalData.DonkeyElectric,
-                    ElectricTotalLine1: item.DayShiftTotalData.ElectricTotalLine1,
-                    ElectricConsumptionLine1: item.DayShiftTotalData.ElectricConsumptionLine1,
+                    ElectricTotalLine1:
+                        item.DayShiftTotalData.ElectricTotalLine1,
+                    ElectricConsumptionLine1:
+                        item.DayShiftTotalData.ElectricConsumptionLine1,
                     GasLine1: item.DayShiftTotalData.GasLine1,
-                    GasConsumptionLine1: item.DayShiftTotalData.GasConsumptionLine1,
+                    GasConsumptionLine1:
+                        item.DayShiftTotalData.GasConsumptionLine1,
                     DisplayRunTime: item.DayShiftTotalData.RunTime
-                })
-                temp = temp.concat(item.ProductionNightShift)
+                });
+                temp = temp.concat(item.ProductionNightShift);
                 temp.push({
                     ProductionDate: '夜班合计',
                     DisplayTime: '',
@@ -444,7 +682,6 @@ export default {
                     FWORKSHOPNAME: '',
                     FSHIFTGROUPNAME: '',
                     FRKREALQTY: item.NightShiftTotalData.ProductionTon,
-                    FHGRKQTY: item.NightShiftTotalData.FHGRKQTY,
                     FRKZT: '',
                     PrcentPass: '',
                     FRKZS: item.NightShiftTotalData.ProductionCount,
@@ -452,28 +689,33 @@ export default {
                     T2: '',
                     T3: '',
                     T4: '',
+                    T5: '',
                     WindPressure: '',
                     Velocity: '',
                     FrequencyOfFan: '',
                     ExhaustGasTemperature: '',
                     HostElectric: item.NightShiftTotalData.HostElectric,
                     DonkeyElectric: item.NightShiftTotalData.DonkeyElectric,
-                    ElectricTotalLine1: item.NightShiftTotalData.ElectricTotalLine1,
-                    ElectricConsumptionLine1: item.NightShiftTotalData.ElectricConsumptionLine1,
+                    ElectricTotalLine1:
+                        item.NightShiftTotalData.ElectricTotalLine1,
+                    ElectricConsumptionLine1:
+                        item.NightShiftTotalData.ElectricConsumptionLine1,
                     GasLine1: item.NightShiftTotalData.GasLine1,
-                    GasConsumptionLine1: item.NightShiftTotalData.GasConsumptionLine1,
+                    GasConsumptionLine1:
+                        item.NightShiftTotalData.GasConsumptionLine1,
                     DisplayRunTime: item.NightShiftTotalData.RunTime
-                })
+                });
                 temp.push({
-                    ProductionDate: item.ProductionDayShift.length ? item.ProductionDayShift[0].FWORKSHOPNAME + '合计' :
-                        item.ProductionNightShift.length ? item.ProductionNightShift[0].FWORKSHOPNAME + '合计' : '--合计'
-                    ,
+                    ProductionDate: item.ProductionDayShift.length
+                        ? item.ProductionDayShift[0].FWORKSHOPNAME + '合计'
+                        : item.ProductionNightShift.length
+                        ? item.ProductionNightShift[0].FWORKSHOPNAME + '合计'
+                        : '--合计',
                     DisplayTime: '',
                     CollectionTimeSpan: '',
                     FWORKSHOPNAME: '',
                     FSHIFTGROUPNAME: '',
                     FRKREALQTY: item.ProdutionLineTotalData.ProductionTon,
-                    FHGRKQTY: item.ProdutionLineTotalData.FHGRKQTY,
                     FRKZT: '',
                     PrcentPass: '',
                     FRKZS: item.ProdutionLineTotalData.ProductionCount,
@@ -481,20 +723,24 @@ export default {
                     T2: '',
                     T3: '',
                     T4: '',
+                    T5: '',
                     WindPressure: '',
                     Velocity: '',
                     FrequencyOfFan: '',
                     ExhaustGasTemperature: '',
                     HostElectric: item.ProdutionLineTotalData.HostElectric,
                     DonkeyElectric: item.ProdutionLineTotalData.DonkeyElectric,
-                    ElectricTotalLine1: item.ProdutionLineTotalData.ElectricTotalLine1,
-                    ElectricConsumptionLine1: item.ProdutionLineTotalData.ElectricConsumptionLine1,
+                    ElectricTotalLine1:
+                        item.ProdutionLineTotalData.ElectricTotalLine1,
+                    ElectricConsumptionLine1:
+                        item.ProdutionLineTotalData.ElectricConsumptionLine1,
                     GasLine1: item.ProdutionLineTotalData.GasLine1,
-                    GasConsumptionLine1: item.ProdutionLineTotalData.GasConsumptionLine1,
+                    GasConsumptionLine1:
+                        item.ProdutionLineTotalData.GasConsumptionLine1,
                     DisplayRunTime: item.ProdutionLineTotalData.RunTime
-                })
-            })
-            temp.push(this.allCountObj)
+                });
+            });
+            temp.push(this.allCountObj);
             this.exportDataList = temp;
         },
         exporData() {
@@ -507,13 +753,13 @@ export default {
                 '班组',
                 '生产吨',
                 // '一次合格吨',
-                '合格吨',
                 '一次合格率',
                 '生产支',
                 '一区温度',
                 '二区温度',
                 '三区温度',
                 '四区温度',
+                '五区温度',
                 '风压',
                 '速度',
                 '风机频率',
@@ -524,7 +770,7 @@ export default {
                 '1线耗电等工耗',
                 '1线耗气量',
                 '1线耗气等工耗',
-                '开机时长',
+                '开机时长'
             ];
             const filterVal = [
                 'ProductionDate',
@@ -534,13 +780,13 @@ export default {
                 'FSHIFTGROUPNAME',
                 'FRKREALQTY',
                 // 'FRKZT',
-                'FHGRKQTY',
                 'PrcentPass',
                 'FRKZS',
                 'T1',
                 'T2',
                 'T3',
                 'T4',
+                'T5',
                 'WindPressure',
                 'Velocity',
                 'FrequencyOfFan',
@@ -551,32 +797,30 @@ export default {
                 'ElectricConsumptionLine1',
                 'GasLine1',
                 'GasConsumptionLine1',
-                'DisplayRunTime',
+                'DisplayRunTime'
             ];
             const excelDatas = [
                 {
                     tHeader: tHeader,
                     filterVal: filterVal,
                     tableDatas: this.exportDataList,
-                    sheetName: 'sheet1',
+                    sheetName: 'sheet1'
                 },
                 {
                     tHeader: tHeader,
                     filterVal: filterVal,
                     tableDatas: this.exportDataList,
-                    sheetName: 'sheet1',
-                },
+                    sheetName: 'sheet1'
+                }
             ];
 
             this.json2excel(excelDatas, '生产日报表', true, 'xlsx');
-
         },
-
 
         json2excel(tableJson, filenames, autowidth, bookTypes) {
             var that = this;
             //这个是引用插件
-            import('@/vendor/Export2Excel').then((excel) => {
+            import('@/vendor/Export2Excel').then(excel => {
                 var tHeader = [];
                 var dataArr = [];
                 var sheetnames = [];
@@ -596,12 +840,12 @@ export default {
                     sheetname: sheetnames,
                     filename: filenames,
                     autoWidth: autowidth,
-                    bookType: bookTypes,
+                    bookType: bookTypes
                 });
             });
         },
         formatJson(filterVal, jsonData) {
-            return jsonData.map((v) => filterVal.map((j) => v[j]));
+            return jsonData.map(v => filterVal.map(j => v[j]));
         },
         GMTToStr(time) {
             let date = new Date(time);
@@ -618,12 +862,8 @@ export default {
             return (
                 date.getFullYear() + mm + dd + ' ' + hh + ':' + ii + ':' + ss
             );
-        },
-
-
-    },
-
-
+        }
+    }
 };
 </script>
 <style lang="scss" scoped>
@@ -651,9 +891,7 @@ export default {
             display: flex;
             align-items: center;
             justify-content: center;
-
         }
-
     }
 
     .table-label {
@@ -662,7 +900,6 @@ export default {
         display: flex;
         flex-wrap: nowrap;
         background-color: #fff;
-
 
         .label-item {
             height: 40px;
@@ -673,7 +910,6 @@ export default {
             align-items: center;
             justify-content: center;
             background-color: #fff;
-            ;
         }
     }
 
@@ -688,7 +924,6 @@ export default {
         flex-wrap: nowrap;
         position: sticky;
         left: 0;
-
     }
 
     .table-count {
@@ -731,8 +966,6 @@ export default {
     clear: both;
     visibility: hidden;
 }
-
-
 
 .tapwater {
     position: fixed;
@@ -814,7 +1047,6 @@ export default {
         background-color: #ffffff;
         border: 2px solid #fd9e00;
         margin-right: 10px;
-
     }
 
     .container {
@@ -1143,7 +1375,8 @@ a:focus {
     background-color: #d9dbde;
 }
 
-table {}
+table {
+}
 
 td {
     white-space: nowrap !important;

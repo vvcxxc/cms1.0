@@ -65,7 +65,7 @@ export default {
       },
        chartdata:{
         handler(val){
-        console.log("chartdata",val)
+        
           this.init();
         }
       },
@@ -126,10 +126,7 @@ export default {
                    //实时渲染相对应的仪表盘图表数据
                    if(this.LineChartItemList[j].name == this.textblockData[i].Name){
                       var drawLineShow = false
-                 console.log('788',this.contentName ,'--',this.ViewName);
                       if(this.contentName == this.ViewName){
-                                
-                     
                         if(this.chartdata.Line != undefined){
                             this.BarArr22 = []
                             this.valueData = []

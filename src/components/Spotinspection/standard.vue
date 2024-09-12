@@ -6,7 +6,7 @@
  * @LastEditTime: 2020-12-21 11:30:49
  -->
 <template>
-    <div class="public-table" @click="changeselect = false">
+    <div class="public-table" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" @click="changeselect = false">
           			<div class="loadcover" element-loading-spinner="el-icon-loading"
             element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
     width: 100%;
@@ -59,9 +59,10 @@
                 @select-all="select2"
                  border
                 highlight-current-row
-              :header-cell-style="{background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',
+              :header-cell-style="{
+                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
                     color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left':'1px solid #cccccc',
+                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
                     height:50*zoom+'px',
                     fontSize: 14*zoom+'px',
                     padding:'0'}"
@@ -328,7 +329,7 @@
                                     <input v-model="item.name" type="text" />
                                 </div>
                                 <div class="type" :style="{height: 40*zoom+'px',lineHeight:40*zoom+'px',fontSize:16*zoom+'px'}">
-                                    <el-select @change="ProjectTypeFun(item,3)" v-model="item.value" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
+                                    <el-select @change="ProjectTypeFun(item,3)" :popper-append-to-body="false" v-model="item.value" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                                         :style="{height:32*zoom+'px',lineHeight: 32*zoom+'px', fontSize:16*zoom+'px'}"
                                     >
                                         <el-option
@@ -373,7 +374,7 @@
                                     <input v-model="item.ProjectName" type="text" />
                                 </div>
                                 <div class="type" :style="{height: 40*zoom+'px',lineHeight:40*zoom+'px',fontSize:16*zoom+'px'}">
-                                    <el-select @change="ProjectTypeFun(item,2)" v-model="item.Type" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
+                                    <el-select @change="ProjectTypeFun(item,2)" :popper-append-to-body="false" v-model="item.Type" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                                         :style="{height:32*zoom+'px',lineHeight: 32*zoom+'px', fontSize:16*zoom+'px'}">
                                         <el-option
                                             v-for="item in type1"
@@ -417,7 +418,7 @@
                                     <input v-model="item.ProjectName" type="text" disabled />
                                 </div>
                                 <div class="type" :style="{height: 40*zoom+'px',lineHeight:40*zoom+'px',fontSize:16*zoom+'px'}">
-                                    <el-select @change="ProjectTypeFun(item,1)" v-model="item.Type" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose" disabled
+                                    <el-select @change="ProjectTypeFun(item,1)" :popper-append-to-body="false" v-model="item.Type" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose" disabled
                                         :style="{height:32*zoom+'px',lineHeight: 32*zoom+'px', fontSize:16*zoom+'px'}">
                                         <el-option
                                             v-for="item in item.type"
@@ -1074,10 +1075,6 @@ export default {
                         this.SpotcheckArr[j].Type = 4;
                     }
                 }
-                 let SpotcheckArr = JSON.parse(JSON.stringify(this.SpotcheckArr))
-                SpotcheckArr.forEach((item)=>{
-                 delete item.type
-                })
 
                 console.log(this.SpotcheckArr);
                 this.$axios({
@@ -1089,7 +1086,7 @@ export default {
                         StandardName: this.sesstion.Name,
                         Requriement: this.sesstion.Requirement,
                         DevicesID: a,
-                        PointProjects: SpotcheckArr
+                        PointProjects: this.SpotcheckArr
                     }
                 }).then(res => {
                     if (res.data.code == 0) {
@@ -2294,6 +2291,144 @@ export default {
         height:30px;
         line-height:30px;
         width:96%;
+    }
+
+    &.blackBlueBg{
+        .el-tree{
+            background: #1D2846;
+            color: #C6CAD8;
+        }
+
+        .seleword,.seleword2{
+            background: #1D2846;
+            border: 1px solid #445992;
+            color: #C6CAD8;
+        }
+        .search-container{
+            background: #0B1530;
+            border-color: #38415A;
+            color: #E4E4E4;
+            .selectword{
+                background: #1D2846;
+                border: 1px solid #445992;
+            }
+            .addBtn{
+                background-color: transparent;
+                border: 1px solid #46BE05;
+                color: #46BE05;
+            }
+            .deleteBtn{
+                background-color: #4F5871;
+                border: 1px solid #4F5871;
+                color: #fff;
+            }
+        }
+        .table-container{
+            border-color: transparent;
+        }
+        .img{
+            border-color: #5C6A95;
+            background-color: transparent;
+        }
+
+        .boxsad{
+            background: #233056;
+            color: #fff;
+        }
+
+        .addPop{
+            background: #233056;
+            color: #fff;
+
+            .addPop_list{
+                background-color: #1A2544;
+                border: 1px solid #2A3058;
+            }
+            
+            .addPop_table .inspection_btn .deleteBtn{
+                background-color: #4F5871;
+                border: 1px solid #4F5871;
+                color: #fff;
+            }
+        }
+        .addEquipment{
+            background: #233056;
+            color: #fff;
+
+            .conter{
+                background: #28355B;
+                border-color: #445992;
+            }
+        }
+            
+        .equipmentBtn_delete, .spotcheckBtn_delete{
+            background-color: #4F5871!important;
+            color: #fff!important;
+        }
+
+        .look{
+            background: #233056;
+
+            .lookselect{
+                background: #28355B;
+                border-color: #445992;
+                color: #fff;
+
+                .table{
+                    border-color: #2A3058;
+                }
+                .el-table--border th.gutter:last-of-type{
+                    background-color: #344c8f;
+                }
+            }
+        }
+
+        select{
+            background: #1D2846!important;
+            border-color: #445992;
+
+            &:disabled{
+                background: #35446D!important;
+                border-color: #445992;
+            }
+
+            &:focus{
+                border-color: #B2C0E4
+            }
+        }
+        .showtext{
+            color: #fff;
+        }
+        .el-checkbok{
+            color: #fff;
+
+            &:disabled{
+                color: #6D789A;
+            }
+        }
+
+        .sestion{
+            border-color: transparent;
+
+            .sestioncontain{
+                background: #233056;
+            }
+            span{
+                color:#fff;
+            }
+            .input1{
+                color: #C6CAD8;
+                background: #35446D;
+                border-color: #445992;
+            }
+            .hometop-title{
+                background-color: transparent;
+            }
+
+            .line{
+                background-color: #445992;
+            }
+        }
     }
  }
 .box {
@@ -3838,7 +3973,6 @@ img{
         text-overflow: ellipsis;
         overflow: hidden;
         word-break: break-all;
-        border: 1px solid rgb(244,244,244);
         img{
             position: absolute;
             right: 2px;

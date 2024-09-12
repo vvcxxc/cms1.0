@@ -91,8 +91,7 @@ export default {
         //数据筛选
         this.textblockData = []
         var dataAll = this.data.Controls.ControlList
-
-       //根据控件名筛选
+         //根据控件名筛选
         for(var i=0;i<dataAll.length;i++){
           if(dataAll[i].ControlType == this.Name){
             this.textblockData.push(dataAll[i])

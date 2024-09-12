@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-29 16:34:35
  -->
 <template>
-    <div class="search-container" :class="{colordiv:$store.state.color=='grey'}" :style="{lineHeight: 40*1+'px',height: 60*1+'px'}">
+    <div class="search-container" :class="{colordiv:$store.state.color=='grey', blackBlueBg: $store.state.color === 'blackBlue'}" :style="{lineHeight: 40*1+'px',height: 60*1+'px'}">
         <div class="search-left" :style="[{fontSize:16*1+'px'}]">
             <div class="search-item" v-for="(item, index) in searchList" :key="index">
                 <div
@@ -17,6 +17,7 @@
 
                 <el-select
                     v-if="item.type === 'select'"
+                    :popper-append-to-body="false"
                     clearable
                     filterable
                     v-model="searchData[item.model]"
@@ -34,6 +35,8 @@
                     ></el-option>
                 </el-select>
                 <el-date-picker
+                    :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                    :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                     v-if="item.type === 'time'"
                     v-model="searchData[item.model]"
                     type="datetime"
@@ -44,6 +47,9 @@
                 ></el-date-picker>
                 <!-- <span>-</span> -->
                 <el-date-picker
+                    width="110"
+                    :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                    :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                     v-if="item.type === 'datetimerange'"
                     v-model="searchData[item.model]"
                     type="datetimerange"
@@ -70,7 +76,8 @@
                     {width: 100*1+'px'},
                     {marginLeft: 10*1+'px'},
                     {marginTop: 10*1+'px'},
-                 ]"
+                    {right: 340*1+'px'}
+                ]"
             >{{lang.AlarmRecord_Time_Select}}</div>
             <div class="btn pointer export" @click="confirm" :id="qrid" 
                 :style="[
@@ -79,17 +86,30 @@
                     {width: 100*1+'px'},
                     {marginLeft: 10*1+'px'},
                     {marginTop: 10*1+'px'},
-                 ]"
+                    {right: 230*1+'px'}
+                ]"
             >{{lang.AlarmRecord_Time_Sure}}</div>
             <div class="allconfim" @click="allconfirm" :id="allqrid" 
                 :style="[
                     {fontSize:16*1+'px'},
                     {height: 40*1+'px'},
                     {width: 100*1+'px'},
-                     {marginLeft: 10*1+'px'},
+                    {marginLeft: 10*1+'px'},
                     {marginTop: 10*1+'px'},
-                 ]"
+                    {lineHeight: 40*1+'px'},
+                    {right: 120*1+'px'}
+                ]"
             >{{lang.AlarmRecord_Time_AllSure}}</div>
+            <div class="btn pointer export" @click="exportFn"  
+                :style="[
+                    {fontSize:16*1+'px'},
+                    {height: 40*1+'px'},
+                    {width: 100*1+'px'},
+                    {marginLeft: 10*1+'px'},
+                    {marginTop: 10*1+'px'},
+                    {right: 10*1+'px'},
+                ]"
+            >导出</div>
         </div>
         
         <!-- <div class="fr">
@@ -182,7 +202,8 @@ export default {
             $(".el-input__icon").css({lineHeight: 40* this.zoom+'px'})
             $(".search-select").css({width: 120 * this.zoom, height: 40* this.zoom})
             $(".el-date-editor").css({width: 210 * this.zoom, height: 40* this.zoom})
-             $(".el-input--suffix").css({fontSize: 16 * this.zoom, height: 40* this.zoom})
+            $(".search-container>.search-container").css({paddingRight: 330 * this.zoom})
+            $(".el-input--suffix").css({fontSize: 16 * this.zoom, height: 40* this.zoom})
             $(".el-select-dropdown__item").css({fontSize: 14 * this.zoom, height: 40* this.zoom})
             // if(window.screen.width <= 1280 &&  localStorage.getItem('currentLang') === 'Main_Language_EN'){
             //     $(".search-container .title").css({maxWidth:'75px', lineHeight: 1})
@@ -236,15 +257,15 @@ export default {
               })
     },
     methods: {
-                        sx(){
+        sx(){
             let that = this
             setTimeout(()=>{
-for(let i=0;i<$('.el-picker-panel').length;i++){
-                $('.el-picker-panel')[i].style.zoom = that.zoom1
-            }
-            for(let i=0;i<$('.el-select-dropdown').length;i++){
-                $('.el-select-dropdown')[i].style.zoom = that.zoom1
-            }
+                for(let i=0;i<$('.el-picker-panel').length;i++){
+                    $('.el-picker-panel')[i].style.zoom = that.zoom1
+                }
+                for(let i=0;i<$('.el-select-dropdown').length;i++){
+                    $('.el-select-dropdown')[i].style.zoom = that.zoom1
+                }
             })
               
         },
@@ -310,6 +331,9 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
           allconfirm(){
         this.$emit('allconfirm',this.allqrshow);
         },
+        exportFn(){
+            this.$emit('exportFn');
+        },
          confirm(){
         this.$emit('confirm',this.qrshow);
         },
@@ -323,7 +347,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             ) {
                 this.$emit('change', e,item);
             }
-        }
+        },
     }
 };
 </script>
@@ -339,13 +363,24 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     justify-content: space-between;
     background-color: #ddd;
     // width: 1690px;
+    padding-right:330px ;
     position: relative;
+
+    &.blackBlueBg{
+        .export{
+            background-color: #46BE05!important;
+        }
+    }
 }
 span {
     position: absolute;
     left: 315px;
 }
- 
+.importtant {
+    right: 230px;
+    position: absolute;
+    // bottom: 10px;
+}
 .search-left {
     @extend %flex;
     flex-wrap: wrap;
@@ -390,6 +425,8 @@ span {
     color: #fda100;
 }
 .export {
+    position: absolute;
+    right: 120px;
     // bottom: 10px;
     background-color:#79d088 !important;
 }
@@ -412,6 +449,9 @@ span {
      font-weight: 600;
       border-radius: 4px;
       color: #fff;
+      position: absolute;
+    //   bottom: 10px;
+      right: 10px;;
           cursor: pointer;
 }
 .el-input__icon{

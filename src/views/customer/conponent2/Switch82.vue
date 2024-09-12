@@ -226,7 +226,7 @@ export default{
                                 data[f].Value = true
                             }
                         }
-                    }else if(typeof(data[f].Value) == 'number'&&Number(data[f].Value)){
+                    }else if(typeof(data[f].Value) == 'number'){
                         if(data[f].Value == 0){
                             data[f].Value == false
                         }else{

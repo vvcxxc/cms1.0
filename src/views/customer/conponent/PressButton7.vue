@@ -10,22 +10,18 @@
    <div v-for="(item,index) in dataValue" :key="index">
   <div
       v-if="show" name="pressbutton" :class="item.class" class="PressButton7a"  @dblclick="opendb(item)" 
-      @contextmenu.prevent @mouseup.stop="seupClick(item,$event)" 
+      @contextmenu.prevent @mouseup="seupClick(item,$event)" 
       @mousedown="downFun(item,$event)"  
       :style="'position:absolute;' + 'left:' + item.left + 'px; top:' + item.top 
       + 'px; boxSizing:border-box; text-align:center; line-height:' + (item.height - item.BorderThickness*2) 
       + 'px; width:'+ item.width + 'px; height:'+ item.height + 'px; borderRadius:' 
       + item.radiusLeft + 'px ' + item.radiusTop + 'px ' + item.radiusRight + 'px ' 
       + item.radiusButton + 'px; fontFamily:'+ item.family + '; fontSize:'+ item.fontSize 
-      + 'px; opacity:' + item.opacity +'; transform:rotate(' 
-      + item.rotate + 'deg);' + ';overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow+';zIndex:'+item.ZIndex
-      + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
-      + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`
-      /* + `;${item.showBorder ? `border: ${item.BorderThickness}px solid ${item.borderStyle}` : `padding: ${item.BorderThickness}px`}`
-      + `;${item.showBack ? `border: ${item.BorderThickness}px solid ${item.borderStyle}`: `background: ${item.BorderBrush}`}` */ ">
+      + 'px; opacity:' + item.opacity + '; background:' + item.BorderBrush + '; transform:rotate(' 
+      + item.rotate + 'deg);padding:' + item.BorderThickness + 'px;overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow+';zIndex:'+item.ZIndex"> 
 
-      <span class="contenText" style="display: flex; justify-content:center; align-items: center" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto'
-      +';color:'+item.Foreground + ';fontWeight:'+item.Blod + ';background:'+ item.backgroundColor
+      <span class="contenText" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto;line-height:'
+      +item.height + 'px;color:'+item.Foreground + ';fontWeight:'+item.Blod + ';background:'+ item.backgroundColor
       +';-webkit-background-clip:'+ item.clipText">{{item.text}}</span>
 
       <div class="conten" :style="'width:100%;height:100%;background:' + item.Background + ';borderRadius:' 
@@ -34,11 +30,11 @@
         
       </div>
 
-        <div class="pressButton_box 22"></div>
+        <div class="pressButton_box"></div>
   </div>
 
     <!-- 权限弹窗 -->
-    <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+    <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
         <div v-if="commerPopShow1" class="commerPop_outPop">
         <div class="commerPop_outHead">
             <i class="warning el-icon-warning"></i>
@@ -50,7 +46,7 @@
             <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
         </div>
         </div>
-    </div> -->
+    </div>
 
   </div>
   </div>
@@ -62,8 +58,6 @@ export default {
   data() {
     return {
       show:true,
-      item:'',
-      e1:'',
       textblockData:[],
       dataValue:[],
       commerPopShow1:false,
@@ -113,14 +107,12 @@ export default {
     },
     //确认
     Jurisdiction(){
-      // this.commerPopShow1 = false
-      this.$emit('shownotip')
+      this.commerPopShow1 = false
     },
      //权限配置请求接口
     jurisdictionShow(item){
           return new Promise((resolve, reject) => {
             var userinfoID
-            
               if(JSON.parse(sessionStorage.getItem('userInfo1')) == null){
                   userinfoID = JSON.parse(sessionStorage.getItem('sightseerInfo1')).SCMSUserID;
               }else{
@@ -160,8 +152,7 @@ export default {
            if(EventType.length){
              this.jurisdictionShow(item).then(val => { 
                  if(this.CanExcuteShow){
-                    //  this.commerPopShow1 = true
-                    this.$emit('showtip',this.lang.NoOperationAuthority)
+                     this.commerPopShow1 = true
                      return
                  }else{
                      for(var j=0;j<EventType.length;j++){
@@ -176,9 +167,6 @@ export default {
 
   //鼠标按下事件
   downFun(item,e){
-    console.log("sadsad")
-    this.item = item;
-    this.e1 = e
     //脚本事件
             var self = this
             var EventScriptList = this.data.Data.EventScriptList
@@ -198,8 +186,7 @@ export default {
                   if(EventType.length){
                     self.jurisdictionShow(item).then(val => { 
                         if(self.CanExcuteShow){
-                            // self.commerPopShow1 = true
-                            self.$emit('showtip',self.lang.NoOperationAuthority)
+                            self.commerPopShow1 = true
                             return
                         }else{
                           for(var j=0;j<EventType.length;j++){
@@ -209,7 +196,7 @@ export default {
                     });
                   }
                     //下发事件
-                // e.path[0].style.background='rgba(255,255,255,0.7)'
+                e.path[0].style.background='rgba(255,255,255,0.7)'
                 self.jurisdictionShow(item).then(val => { 
                 self.$parent.scriptData(Typearr,'点动按钮',item,'1','','')
               })
@@ -217,8 +204,7 @@ export default {
                   if(EventType1.length){
                     self.jurisdictionShow(item).then(val => { 
                           if(self.CanExcuteShow){
-                            // self.commerPopShow1 = true
-                            self.$emit('showtip',self.lang.NoOperationAuthority)
+                            self.commerPopShow1 = true
                             return
                           }else{
                             for(var j1=0;j1<EventType1.length;j1++){
@@ -230,12 +216,7 @@ export default {
                   }
               } 
   },
-  upclick(){
-    if(!this.item){
-      return
-    }
-   this.seupClick(this.item,this.e1)
-  },
+  
   //鼠标抬起
     //脚本事件
   seupClick(item,e){
@@ -260,8 +241,7 @@ export default {
               if(EventType.length){
                self.jurisdictionShow(item).then(val => { 
                   if(self.CanExcuteShow){
-                    // self.commerPopShow1 = true
-                    self.$emit('showtip',self.lang.NoOperationAuthority)
+                    self.commerPopShow1 = true
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -272,14 +252,12 @@ export default {
               })
               }else{
                  self.pressFun(item,'2')
-                 console.log("进来吧")
               }
            }else if(e.which == 3){   //鼠标右键松开
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                          // self.commerPopShow1 = true
-                          self.$emit('showtip',self.lang.NoOperationAuthority)
+                          self.commerPopShow1 = true
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -292,16 +270,13 @@ export default {
            }
               //执行下发事件
               setTimeout(function(){
-                // e.path[0].style.background='rgba(255,255,255,0)'
+                e.path[0].style.background='rgba(255,255,255,0)'
               },200)
-              this.item = ''
-              this.e1 = ''
-        },500)
+        },200)
   },
 
   //点动下发事件
   pressFun(item,type){
-    
      if(item.ControlType != ''){
       if(!this.CanExcuteShow){
         //0为false 1为true 
@@ -354,40 +329,19 @@ export default {
         "Name":item.TagName,
         "Value":valueShow
       }
-      
-      console.log('这里很奇怪')
       arr.push(value)
         //请求接口
-                                //请求接口
-                            this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags`,
-                                  data:arr
-                             }).then((res1)=>{
-                               
-                                  if(res1.data.code === 0){
-                               this.$emit('shownotip',res1.data.msg)
-                                
-                        this.$axios({
+            this.$axios({
                   method: 'post',
                   url: '/api/Base/PostIOServiceTest',
                   data:arr
               }).then(res => {
-                console.log("arr",arr)
                 console.log('执行下发按下',res)
-           
               }).catch(function(error) {
-               
                     // console.log(error);
                 });
-                                  }else{
-                     this.$emit('showtip',res1.data.msg)
-                                  }
-                               
-                              })
-
       }else{
-         this.$emit('showtip',this.lang.NoOperationAuthority)
+        this.commerPopShow1 = true
       }
     }
   },
@@ -481,29 +435,23 @@ export default {
                       backgroundColor = '-webkit-linear-gradient('+lagel1+'deg'+backgroundColor+')';
               }
                 //边框色渐变
-                let showLinear = false
-                let linearStyle = ''
                 if(borderbrushArr.ColorType == 'SolidColor'){
                     borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                 }else{
-                      // 此处为渐变色
-                      let linearColor = ''
+                        borderColor = ''
                         lagel3 = borderbrushArr.Data.Angel.toFixed(0)
                     for(var f2=0;f2<borderbrushArr.Data.GradientStops.length;f2++){
                         gradient3 = borderbrushArr.Data.GradientStops[f2]
-                        linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                        borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
                     }
-                        // borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
-                        showLinear = true
-                        borderColor = 'transparent'
-                        linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
+                        borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
                 }
               //背景色渐变
               if(backgroundArr.ColorType == 'SolidColor'){
                   backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                   if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                    // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
-                  }
+                        borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                    }
               }else{
                       backColor = ''
                       lagel2 = backgroundArr.Data.Angel.toFixed(0)
@@ -542,10 +490,7 @@ export default {
                  Shadow:Shadow,
                  Shadow2:Shadow2,
                  Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                 ZIndex:this.ZIndex,
-                 showLinear,
-                 linearStyle
-
+                 ZIndex:this.ZIndex
                }
                   this.dataValue.push(value)
                   break;
@@ -597,28 +542,22 @@ export default {
                           backgroundColor = '-webkit-linear-gradient('+lagel1+'deg'+backgroundColor+')';
                   }
                     //边框色渐变
-                    let showLinear = false
-                    let linearStyle = ''
                     if(borderbrushArr.ColorType == 'SolidColor'){
                         borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                     }else{
-                            // 此处为渐变色
-                        let linearColor = ''
+                            borderColor = ''
                             lagel3 = borderbrushArr.Data.Angel.toFixed(0)
                         for(var f1=0;f1<borderbrushArr.Data.GradientStops.length;f1++){
                             gradient3 = borderbrushArr.Data.GradientStops[f1]
-                            linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                            borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
                         }
-                            // borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
-                          showLinear = true
-                          borderColor = 'transparent'
-                          linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
+                            borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
                     }
                   //背景色渐变
                   if(backgroundArr.ColorType == 'SolidColor'){
                       backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                       if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                        // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                        borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                       }
                   }else{
                           backColor = ''
@@ -658,9 +597,7 @@ export default {
                     Shadow:Shadow,
                     Shadow2:Shadow2,
                     Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                    ZIndex:this.ZIndex,
-                    showLinear,
-                    linearStyle
+                    ZIndex:this.ZIndex
                   }
                       this.dataValue.push(value5)
                }
@@ -698,28 +635,22 @@ export default {
 
 
             //边框色渐变
-            let showLinear = false
-            let linearStyle = ''
            if(borderbrushArr.ColorType == 'SolidColor'){
                borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
            }else{
-                     // 此处为渐变色
-                     let linearColor = ''
+                     borderColor = ''
                      lagel3 = borderbrushArr.Data.Angel.toFixed(0)
                  for(var f=0;f<borderbrushArr.Data.GradientStops.length;f++){
                    gradient3 = borderbrushArr.Data.GradientStops[f]
-                   linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                   borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
                }
-                  //  borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
-                  showLinear = true
-                  borderColor = 'transparent'
-                  linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
+                   borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
            }
           //背景色渐变
           if(backgroundArr.ColorType == 'SolidColor'){
               backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
               if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                  // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                  borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
               }
           }else{
                   backColor = ''
@@ -775,9 +706,7 @@ export default {
                     Shadow:Shadow,
                     Shadow2:Shadow2,
                     Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                    ZIndex:this.ZIndex,
-                    showLinear,
-                    linearStyle
+                    ZIndex:this.ZIndex
                   }
                       this.dataValue.push(value8)
          }
@@ -797,19 +726,10 @@ export default {
   cursor: pointer;
   box-sizing: border-box;
   position:relative;
-  .conten:active {
-    box-shadow: 4px 4px 20px #3c99c9 inset !important;
-  }
-  .contenText:active {
-    box-shadow: 4px 4px 20px #3c99c9 inset !important;
-  }
 }
 .PressButton7a:hover{
-  // background-color: #71A2C7ff !important;
-  // background: #71A2C7ff !important;
   background-color: #71A2C7ff !important;
-  background: #4EBAF3ff !important;
-  border-color: #71A2C7 !important;
+  background: #71A2C7ff !important;
 }
 
 .PressButton7a:hover .conten{
@@ -826,9 +746,6 @@ export default {
   width:calc(100% + 4px);
   height:calc(100% + 4px);
   background:rgba(255,255,255,0);
-  &:active {
-    box-shadow: 4px 4px 20px #3c99c9 inset !important;;
-  }
 }
 
 .commerPop_outPop{

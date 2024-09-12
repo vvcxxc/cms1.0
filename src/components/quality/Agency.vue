@@ -6,7 +6,7 @@
  * @LastEditTime: 2020-08-06 18:09:35
  -->
 <template>
-    <div class="public-table" >
+    <div class="public-table" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
           			<div class="loadcover" element-loading-spinner="el-icon-loading"
             element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
     width: 100%;
@@ -53,7 +53,11 @@
                             @select="select"
                             ref="www"
                             @select-all="selectall"
-                            :header-cell-style="[{background:(($store.state.color=='grey')?'#D9DBDE':'#dcf0f9')},{color:(($store.state.color=='grey')?'#000':'#5883e7')}, {'border-left':'1px solid #cccccc',height:'50px',padding:'0'}]"
+                            :header-cell-style="[{
+                                background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#344C8F' : '#5a6c98'),
+                                color:($store.state.color=='grey')?'#000':'#fff',
+                                'border-left': $store.state.color==='blackBlue' ? '1px solid #8B98B8' : '1px solid #cccccc',
+                                height:'50px',padding:'0'}]"
                         >
                             <template slot="empty">
                                 <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
@@ -105,7 +109,11 @@
                             style="width: 100%"
                             @row-click="handleRowChange1"
                             highlight-current-row
-                            :header-cell-style="[{background:(($store.state.color=='grey')?'#D9DBDE':'#dcf0f9')},{color:(($store.state.color=='grey')?'#000':'#5883e7')}, {'border-left':'1px solid #cccccc',height:'50px',padding:'0'}]"
+                            :header-cell-style="[{
+                                background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#344C8F' : '#5a6c98'),
+                                color:($store.state.color=='grey')?'#000':'#fff',
+                                'border-left': $store.state.color==='blackBlue' ? '1px solid #8B98B8' : '1px solid #cccccc',
+                                height:'50px',padding:'0'}]"
                         >
                             <template slot="empty">
                                 <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
@@ -364,7 +372,11 @@
                 @row-click="handleRowChange11"
                 highlight-current-row
                 :row-style="{ height: 50 * zoomValue + 'px' }"
-                :header-cell-style="{background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',color:($store.state.color=='grey')?'#000':'#fff','border-left':'1px solid #cccccc',height:'50px',padding:'0',height: 50 * zoomValue + 'px'}"
+                :header-cell-style="{
+                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+                    color:($store.state.color=='grey')?'#000':'#fff',
+                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                    height:'50px',padding:'0',height: 50 * zoomValue + 'px'}"
             >
                 <template slot="empty">
                     <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
@@ -1767,6 +1779,47 @@ this.tipchange = true;
     }
     .page-container {
         height: 60px;
+    }
+
+    &.blackBlueBg{
+        .sestion{
+            border-color: transparent;
+            .sestioncontain{
+                background: #222D50;
+            }
+            span{
+                color: #fff;
+            }
+            select{
+                background: #1D2846!important;
+                border-color: #445992;
+            }
+            .input1{
+                background: #35446D;
+                border-color: #445992;
+            }
+        }
+        .look{
+            background: #233056;
+
+            .lookselect{
+                background: #28355B;
+                border-color: #445992;
+                color: #fff;
+
+                .table{
+                    border-color: #2A3058;
+                }
+                .el-table--border th.gutter:last-of-type{
+                    background-color: #344c8f;
+                }
+            }
+        }
+
+        .pychange{
+            background: #233056;
+            color: #fff;
+        }
     }
 }
 .tip {

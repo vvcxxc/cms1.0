@@ -424,7 +424,6 @@ export default {
               document.querySelector(aa).style.borderRadius = '0px'
             }else if(type==4){
               document.querySelector(aa).style.border = '0px solid red'
-               document.querySelector(aa).style.background = 'rgba(0,0,0,0)'
             }
       },
       //条件判断方法
@@ -462,7 +461,7 @@ export default {
                           resValue = 0
                       }else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                             resValue = data[i].Value
-                      }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
+                      }else if(typeof(Number(resValueNumber)) == 'number'){
                         resValue = Number(data[i].Value)
                       }else{
                         resValue = data[i].Value
@@ -474,7 +473,7 @@ export default {
                         }
                         else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                               ArrValue =  TextAnimationListData[i].Compare
-                        }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
+                        }else if(typeof(Number(resValueNumber)) == 'number'){
                           ArrValue = Number( TextAnimationListData[i].Compare)
                         }else{
                           ArrValue =  TextAnimationListData[i].Compare

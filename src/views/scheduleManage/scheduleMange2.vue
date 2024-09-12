@@ -18,7 +18,7 @@
 	</div>
 </template>
 <script>
-import scheduling from './Scheduling.vue'
+import scheduling from './Scheduling'
 import team from './Team'
 export default {
     components:{

@@ -48,7 +48,7 @@
                {{ lang.APPFormManage_Modify }}
             </div>
             <div class="import" @click="del">
-                <!-- <img :src="delimg" alt=""> -->
+                <img :src="delimg" alt="">
                {{ lang.APPFormManage_Delete }}
             </div>
             <div class="export" @click="exportdata">
@@ -92,10 +92,7 @@ export default {
                 }
             ],
             // startime: '2021-10-1 00:00:00',
-            startime: new Date(
-                new Date(new Date().toLocaleDateString()).getTime() -
-                    24 * 60 * 60 * 1000*6
-            ),
+            startime: new Date(new Date().toLocaleDateString()),
             endtime: new Date(
                 new Date(new Date().toLocaleDateString()).getTime() +
                     24 * 60 * 60 * 1000 -

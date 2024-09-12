@@ -6,18 +6,25 @@
  * @LastEditTime: 2020-08-06 16:39:22
  -->
 <template>
-    <div class="base">
+    <div class="base" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
         <div class="header" :style="{ zoom: a11 }">
-            <div class="equipment" :class="{ change: div == 1 }" @click="equipment">
-                {{ lang.EquipmentAccount_EquipmentType }}
+            <div
+                class="equipment"
+                :class="{ change: div == 1 }"
+                @click="equipment"
+            >
+                {{lang.EquipmentAccount_EquipmentType}}
             </div>
             <div class="install" :class="{ change: div == 0 }" @click="install">
-                {{ lang.EquipmentAccount_InstallPosition }}
+                {{lang.EquipmentAccount_InstallPosition}}
             </div>
         </div>
         <div class="container">
             <div class="Dendrogram" :style="{ zoom: a11 }">
-                <div class="imglist" :class="{ colordiv: $store.state.color == 'grey' }">
+                <div
+                    class="imglist"
+                    :class="{ colordiv: $store.state.color == 'grey' }"
+                >
                     <div class="img" @click="addnav">
                         <img :src="addfiles" alt />
                     </div>
@@ -28,14 +35,34 @@
                         <img :src="del" alt />
                     </div>
                 </div>
-                <div class="ys" :class="{ colortip: $store.state.color == 'grey' }">
-                    <el-tree :class="{ colortip: $store.state.color == 'grey' }" :data="data5" ref="treeBox"
-                        @node-click="handleNodeClick" node-key="NID" :highlight-current="true" default-expand-all
-                        :expand-on-click-node="false" icon-class="el-icon-arrow-up" @keyup.down.native="down"
-                        @keyup.up.native="up">
-                        <span class="custom-tree-node" slot-scope="{ node, data }">
+                <div
+                    class="ys"
+                    :class="{ colortip: $store.state.color == 'grey' }"
+                >
+                    <el-tree
+                        :class="{ colortip: $store.state.color == 'grey' }"
+                        :data="data5"
+                        ref="treeBox"
+                        @node-click="handleNodeClick"
+                        node-key="NID"
+                        :highlight-current="true"
+                        default-expand-all
+                        :expand-on-click-node="false"
+                        icon-class="el-icon-arrow-up"
+                        @keyup.down.native="down"
+                        @keyup.up.native="up"
+                    >
+                        <span
+                            class="custom-tree-node"
+                            slot-scope="{ node, data }"
+                        >
                             <span>
-                                <img v-show="data.file" :src="data.file" alt class="img" />
+                                <img
+                                    v-show="data.file"
+                                    :src="data.file"
+                                    alt
+                                    class="img"
+                                />
                                 <i :class="data.icon"></i>
 
                                 {{ node.label }}
@@ -46,30 +73,55 @@
             </div>
 
             <div class="data">
-                <el-table stripe :data="tableData" height="95%" border :style="{ fontSize: a11 * 15 + 'px', width: '100%' }"
-                    highlight-current-row :row-style="{ height: 50 * a11 + 'px' }" :header-cell-style="{
-                        background:
-                            $store.state.color == 'grey'
-                                ? '#D9DBDE'
-                                : '#5a6c98',
-                        color: $store.state.color == 'grey' ? '#000' : '#fff',
-                        'border-left': '1px solid #cccccc',
+                <el-table
+                    stripe
+                    :data="tableData"
+                    height="95%"
+                    border
+                    :style="{ fontSize: a11 * 15 + 'px', width: '100%' }"
+                    highlight-current-row
+                    :row-style="{ height: 50 * a11 + 'px' }"
+                    :header-cell-style="{
+                        background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+                        color:($store.state.color=='grey')?'#000':'#fff',
+                        'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
                         height: 50 * a11 + 'px',
                         padding: '0'
-                    }" tooltip-effect="dark">
+                    }"
+                    tooltip-effect="dark"
+                >
                     <template slot="empty">
-                        <span>{{ lang.SCMSConsoleWebApiMySql_NoData }}</span>
+                        <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
                     </template>
-                    <el-table-column prop="Number" :label="lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber"
-                        :width="100 * a11"></el-table-column>
-                    <el-table-column prop="NodeName" :label="lang.EquipmentAccount_EquipmentTypeName" v-if="div == 0"
-                        :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="NodeDesc" :label="lang.EquipmentAccount_EquipmentTypeDescribe" v-if="div1 == 0"
-                        :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="NodeName" :label="lang.EquipmentAccount_PositionName" v-if="div == 1"
-                        :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="NodeDesc" :label="lang.EquipmentAccount_PositionDescribe" v-if="div1 == 1"
-                        :show-overflow-tooltip="true"></el-table-column>
+                    <el-table-column
+                        prop="Number"
+                        :label="lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber"
+                        :width="100*a11"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="NodeName"
+                        :label="lang.EquipmentAccount_EquipmentTypeName"
+                        v-if="div == 0"
+                        :show-overflow-tooltip="true"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="NodeDesc"
+                        :label="lang.EquipmentAccount_EquipmentTypeDescribe"
+                        v-if="div1 == 0"
+                        :show-overflow-tooltip="true"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="NodeName"
+                        :label="lang.EquipmentAccount_PositionName"
+                        v-if="div == 1"
+                        :show-overflow-tooltip="true"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="NodeDesc"
+                        :label="lang.EquipmentAccount_PositionDescribe"
+                        v-if="div1 == 1"
+                        :show-overflow-tooltip="true"
+                    ></el-table-column>
                 </el-table>
                 <div class="page">
                     <my-page :pageData="PageData" @req="req"></my-page>
@@ -78,46 +130,57 @@
         </div>
         <div class="add" v-show="write" :style="{ zoom: a11 }">
             <div class="add1"></div>
-            <div class="addtop" :class="[
-                { colordiv: $store.state.color == 'grey' },
-                { fcolor: $store.state.color == 'grey' }
-            ]">
-                <span v-if="div == 0">{{ lang.EquipmentAccount_EquipmentTypeEdit }} </span>
-                <span v-if="div == 1">{{ lang.EquipmentAccount_PositionEdit }} </span>
-                <img :src="no2" alt v-if="$store.state.color == 'grey'" @click="cancel" />
+            <div
+                class="addtop"
+                :class="[
+                    { colordiv: $store.state.color == 'grey' },
+                    { fcolor: $store.state.color == 'grey' }
+                ]"
+            >
+                <span v-if="div == 0">{{lang.EquipmentAccount_EquipmentTypeEdit}} </span>
+                <span v-if="div == 1">{{lang.EquipmentAccount_PositionEdit}} </span>
+                <img
+                    :src="no2"
+                    alt
+                    v-if="$store.state.color == 'grey'"
+                    @click="cancel"
+                />
                 <img :src="no" alt @click="cancel" v-else />
             </div>
             <div class="addcontent">
                 <div class="addfather">
-                    <span>{{ lang.EquipmentAccount_SubordinateSuperior }}</span>
+                    <span>{{lang.EquipmentAccount_SubordinateSuperior}}</span>
                     <input type="text" v-model="addfather" disabled />
                 </div>
                 <div class="addname">
-                    <span v-if="div == 0">{{ lang.EquipmentAccount_EquipmentTypeName }}</span>
-                    <span v-if="div == 1">{{ lang.EquipmentAccount_PositionName }}</span>
+                    <span v-if="div == 0">{{lang.EquipmentAccount_EquipmentTypeName}}</span>
+                    <span v-if="div == 1">{{lang.EquipmentAccount_PositionName}}</span>
                     <input type="text" v-model="addname" />
                 </div>
                 <div class="addsomething">
-                    <span v-if="div == 0">{{ lang.EquipmentAccount_EquipmentTypeDescribe }}</span>
-                    <span v-if="div == 1">{{ lang.EquipmentAccount_PositionDescribe }}</span>
+                    <span v-if="div == 0">{{lang.EquipmentAccount_EquipmentTypeDescribe}}</span>
+                    <span v-if="div == 1">{{lang.EquipmentAccount_PositionDescribe}}</span>
                     <textarea name v-model="describe"></textarea>
                 </div>
-                <div class="no" @click="cancel">{{ lang.PopupCommon_Cancel }}</div>
-                <div class="yes" @click="preservation">{{ lang.PopupCommon_Save }}</div>
+                <div class="no" @click="cancel">{{lang.PopupCommon_Cancel}}</div>
+                <div class="yes" @click="preservation">{{lang.PopupCommon_Save}}</div>
             </div>
         </div>
-        <div class="tip" v-show="tipchange" :style="{ zoom: a11 }">
-            <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
+        <div class="tip" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" v-show="tipchange" :style="{ zoom: a11 }">
+            <div
+                class="tiphead"
+                style="position:absolute;width: 380px;height: 40px;"
+            ></div>
             <div class="tiptop">
                 <img :src="gth" alt />
-                <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
+                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
             </div>
             <div class="tipcontanin">
-                <div class="tipword">{{ tipword }}</div>
-                <div class="tipdetermine" @click="tip1" v-if="deltrue">{{ lang.MessageBox_Confrim }}</div>
+                <div class="tipword">{{tipword}}</div>
+                <div class="tipdetermine" @click="tip1" v-if="deltrue">{{lang.MessageBox_Confrim}}</div>
                 <div class="delclass" v-if="!deltrue">
-                    <div class="one" @click="no1">{{ lang.MessageBox_NO }}</div>
-                    <div class="two" @click="yes1">{{ lang.MessageBox_YES }}</div>
+                    <div class="one" @click="no1">{{lang.MessageBox_NO}}</div>
+                    <div class="two" @click="yes1">{{lang.MessageBox_YES}}</div>
                 </div>
             </div>
         </div>
@@ -212,14 +275,14 @@ export default {
         });
     },
     methods: {
-        move(name, namehead) {
-            //  $(`.${name}`).addClass('center')
-            let left = ($(`.${name}`).width()) / 2 + 'px'
-            let top = ($(`.${name}`).height()) / 2 + 'px'
-            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
-            $(`.${name}`)[0].addEventListener('mousedown', function (e) {
-
+   move(name, namehead) {
+          //  $(`.${name}`).addClass('center')
+           let left = ($(`.${name}`).width())/2+'px'
+           let top = ($(`.${name}`).height())/2+'px'
+             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+            $(`.${name}`)[0].addEventListener('mousedown', function(e) {
+                
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
                     $(`.${name}`).removeClass('center')
@@ -238,11 +301,11 @@ export default {
                     isDown = true;
                     var pdmove = false;
 
-
+                     
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
-                    $('body')[0].addEventListener('mousemove', function (e) {
+                    $('body')[0].addEventListener('mousemove', function(e) {
                         pdmove = true;
                         if (isDown == false) {
                             return;
@@ -260,7 +323,7 @@ export default {
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
-                    $('body')[0].addEventListener('mouseup', function (e) {
+                    $('body')[0].addEventListener('mouseup', function(e) {
                         //开关关闭
                         isDown = false;
                         $('body')[0].style.cursor = 'default';
@@ -268,7 +331,7 @@ export default {
                 }
             });
         },
-        up() { },
+        up() {},
         down() {
             if (this.data !== '') {
                 console.log(this.data);
@@ -348,7 +411,7 @@ export default {
                             }
                         });
                 })
-                .catch(err => { });
+                .catch(err => {});
         },
         tip1() {
             this.tipchange = false;
@@ -440,7 +503,7 @@ export default {
                         this.tipchange = true;
                         this.move('tip', 'tiphead');
                     });
-                    this.tipword = this.lang.NoOperationAuthority
+                   this.tipword = this.lang.NoOperationAuthority
                     return;
                 }
             }
@@ -597,7 +660,7 @@ export default {
                         this.tipchange = true;
                         this.move('tip', 'tiphead');
                     });
-                    this.tipword = this.lang.NoOperationAuthority
+                      this.tipword = this.lang.NoOperationAuthority
                     return;
                 }
             } else if (this.data5[0].label == this.lang.EquipmentAccount_InstallPosition) {
@@ -613,7 +676,7 @@ export default {
                         this.tipchange = true;
                         this.move('tip', 'tiphead');
                     });
-                    this.tipword = this.lang.NoOperationAuthority
+                     this.tipword = this.lang.NoOperationAuthority
                     return;
                 }
             }
@@ -696,7 +759,7 @@ export default {
                         this.tipchange = true;
                         this.move('tip', 'tiphead');
                     });
-                    this.tipword = this.lang.NoOperationAuthority
+                   this.tipword = this.lang.NoOperationAuthority
                     return;
                 }
             }
@@ -715,9 +778,9 @@ export default {
                 });
                 this.pdyd1 = true;
                 if (this.div === 0) {
-                    this.tipword = this.lang.EquipmentAccount_SureToDeleteThisType;
+                    this.tipword = this.lang.EquipmentAccount_SureToDeleteThisType;   
                 } else {
-                    this.tipword = this.lang.EquipmentAccount_SureToDeleteThisPosition;
+                    this.tipword = this.lang.EquipmentAccount_SureToDeleteThisPosition; 
                 }
                 // this.tipword = this.lang.EquipmentAccount_SureToDeleteThisType;
             }
@@ -832,7 +895,7 @@ export default {
                         });
                     }
                 })
-                .catch(err => { });
+                .catch(err => {});
         },
         isPositiveInteger(s) {
             //是否为正整数
@@ -855,7 +918,7 @@ export default {
                     });
                     this.pdyd1 = true;
 
-                    this.tipword = this.lang.RoleManage_HT_PEAPositiveInteger;
+                   this.tipword = this.lang.RoleManage_HT_PEAPositiveInteger;
                     setTimeout(() => {
                         $('.tip').css({
                             zoom: this.a11,
@@ -877,7 +940,7 @@ export default {
                             pageIndex < 1 ||
                             pageIndex > this.PageData.TotalPage
                         ) {
-                            this.tipword = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
+                             this.tipword = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
                             setTimeout(() => {
                                 $('.tip').css({
                                     zoom: this.a11,
@@ -949,7 +1012,7 @@ export default {
             }
         },
         preservation() {
-
+           
             // 1为设备信息   2为位置信息。
             let nodeType = this.div === 0 ? 1 : 2
             if (this.or == 1) {
@@ -1030,7 +1093,7 @@ export default {
                             this.describe = '';
                             this.addname = '';
                         })
-                        .catch(err => { });
+                        .catch(err => {});
                 }
             } else {
                 if (!this.describe) {
@@ -1133,7 +1196,7 @@ export default {
                             this.tipword = res.data.msg;
                         }
                     })
-                    .catch(err => { });
+                    .catch(err => {});
             }
         }
     },
@@ -1344,14 +1407,39 @@ export default {
     }
 };
 </script>
+<style lang="scss">
+.blackBlueBg{
+    &.base{
+        .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
+            background-color: #273E7E;
+        }
+        .el-table tr{
+            td{
+                background-color: #121C3A;
+            }
 
+            &:nth-child(odd){
+                td{
+                    background-color: #0E1732;
+                }
+            }
+        }
+        .el-table--striped .el-table__body tr:hover td{
+            background-color: #2A3A65;
+        }
+        .el-table--striped .el-table__body tr.current-row td{
+            background-color: #273E7E!important;
+        }
+    }
+}
+
+</style>
 <style lang="scss" scoped>
 .add1 {
     width: 100%;
     position: absolute;
     height: 50px;
 }
-
 .cover {
     width: 100%;
     height: 100%;
@@ -1360,7 +1448,6 @@ export default {
     top: 0;
     left: 0;
 }
-
 .cover1 {
     width: 100%;
     height: 100%;
@@ -1369,7 +1456,6 @@ export default {
     top: 0;
     left: 0;
 }
-
 .header {
     justify-content: space-between;
     background-color: #ddd;
@@ -1378,36 +1464,30 @@ export default {
     color: #7f6f79;
     height: 50px !important;
     line-height: 50px;
-    padding: 0px 22px 0px 22px;
-
+    padding: 2px 22px 0px 22px;
     .equipment {
         height: 40px;
         cursor: pointer;
         line-height: 40px;
-        background-color: #4270E4;
-        color: #ffffff;
+        background-color: #ffffff;
         text-align: center;
         display: inline-block;
-        padding: 0 20px;
+        padding: 0 10px;
     }
-
     .install {
         height: 40px;
         cursor: pointer;
         line-height: 40px;
-        background-color: #4270E4;
-        color: #ffffff;
+        background-color: #ffffff;
         text-align: center;
         display: inline-block;
-        padding: 0 20px;
+        margin-left: 5px;
+        padding: 0 10px;
     }
-
     .change {
-        color: #555555;
         background-color: #f0f0f0;
     }
 }
-
 .add {
     width: 640px;
     height: 400px;
@@ -1415,7 +1495,6 @@ export default {
     left: 600px;
     position: fixed;
     z-index: 19999992;
-
     .addtop {
         height: 60px;
         width: 640px;
@@ -1425,7 +1504,6 @@ export default {
         line-height: 60px;
         font-size: 20px;
         z-index: 19999991;
-
         img {
             position: absolute;
             width: 24px;
@@ -1436,19 +1514,16 @@ export default {
             z-index: 19999993;
         }
     }
-
     .addcontent {
         padding: 30px 78px 0px 78px;
         width: 640px;
         height: calc(100% - 60px);
         background-color: #eeeeee;
     }
-
     .addfather {
         margin-bottom: 10px;
         display: flex;
         align-items: center;
-
         input {
             width: 400px;
             background-color: #f4f4f4;
@@ -1457,18 +1532,15 @@ export default {
             text-indent: 1em;
             height: 35px;
         }
-
         span {
             width: 120px;
             margin-right: 20px;
         }
     }
-
     .addname {
         margin-bottom: 10px;
         display: flex;
         align-items: center;
-
         input {
             width: 400px;
             border: none;
@@ -1476,31 +1548,26 @@ export default {
             border: 1px solid #cccccc;
             height: 35px;
         }
-
         span {
             margin-right: 20px;
             width: 120px;
         }
     }
-
     .addsomething {
         display: flex;
         align-items: center;
-
         span {
             width: 120px;
             margin-right: 20px;
             // position: relative;
             // top: -42px;
         }
-
         textarea {
             height: 135px;
             width: 400px;
             text-indent: 1em;
         }
     }
-
     .no {
         cursor: pointer;
         display: inline-block;
@@ -1515,7 +1582,6 @@ export default {
         margin-left: 273px;
         margin-right: 10px;
     }
-
     .yes {
         cursor: pointer;
         display: inline-block;
@@ -1528,10 +1594,57 @@ export default {
         color: #ffffff;
     }
 }
-
 .base {
     height: 100%;
     border: 1px solid #cccccc;
+
+    &.blackBlueBg{
+        border-color: #1E244B;
+
+        .addcontent{
+            background-color: #233056;
+            color: #fff;
+        }
+        input,select,textarea{
+            color: #C6CAD8;
+            background: #1D2846;
+            border-color: #445992;
+
+            &:disabled{
+                background: #35446D;
+                border-color: #445992;
+            }
+
+            &::-webkit-input-placeholder{
+                color: #9AA3BE;
+            }
+        }
+        .header{
+            // background: #0B1530;
+            // border-bottom: 1px solid #38415A;
+
+            // .equipment{
+            //     background: #0F1B3E;
+            //     color: #3F81FF;
+            //     border: 1px solid #3F81FF;
+            // }
+        }
+
+        .Dendrogram{
+            background-color: #0E1732;
+            border-color: #2A3058;
+            
+            .imglist{
+                background-color: transparent;
+                border-color: transparent;
+                border-bottom: 1px solid #2A3058;
+            }
+        }
+        .el-tree{
+            background: #0E1732;
+            color: #C6CAD8;
+        }
+    }
 
     .container {
         height: calc(100% - 60px);
@@ -1539,13 +1652,11 @@ export default {
         width: 100%;
         overflow: hidden;
     }
-
     .Dendrogram {
         height: 100%;
         width: 630px;
         border: 1px solid #cccccc;
         float: left;
-
         .imglist {
             width: 628px;
             height: 45px;
@@ -1553,7 +1664,6 @@ export default {
             border: 1px solid #cccccc;
             border-bottom: none;
             overflow: hidden;
-
             .img {
                 height: 41px;
                 margin-top: 2px;
@@ -1563,7 +1673,6 @@ export default {
                 background-color: #ffffff;
                 margin-right: 2px;
                 position: relative;
-
                 img {
                     position: absolute;
                     top: 0;
@@ -1574,14 +1683,12 @@ export default {
                 }
             }
         }
-
         .img {
             width: 24px;
             height: 24px;
             vertical-align: bottom;
         }
     }
-
     .data {
         margin-left: 20px;
         width: calc(100% - 650px);
@@ -1590,7 +1697,6 @@ export default {
         // border: 1px solid #cccccc;
     }
 }
-
 .tip {
     position: fixed;
     width: 380px;
@@ -1600,19 +1706,16 @@ export default {
     left: 750px;
     box-shadow: 0px 0px 8px black;
     background-color: #f3f3f4;
-
     .tiptop {
         width: 380px;
         height: 40px;
         background-color: #ffbc3d;
-
         img {
             width: 20px;
             height: 20px;
             margin-top: 10px;
             margin-left: 160px;
         }
-
         span {
             color: #ffffff;
             position: relative;
@@ -1620,7 +1723,6 @@ export default {
             margin-left: 7px;
         }
     }
-
     .tipword {
         width: 100%;
         height: 75%;
@@ -1630,11 +1732,9 @@ export default {
         text-align: center;
         padding: 12px;
     }
-
     .tipcontanin {
         height: calc(100% - 40px);
     }
-
     .tipdetermine {
         cursor: pointer;
         color: #ea9328;
@@ -1645,13 +1745,11 @@ export default {
         line-height: 30px;
         background-color: #f3e3ad;
     }
-
     .delclass {
         width: 330px;
         line-height: 30px;
         margin-left: 25px;
         height: 30px;
-
         .one {
             cursor: pointer;
             display: inline-block;
@@ -1661,7 +1759,6 @@ export default {
             background-color: #e0e0e0;
             color: #7e7e7e;
         }
-
         .two {
             cursor: pointer;
             display: inline-block;
@@ -1674,28 +1771,22 @@ export default {
         }
     }
 }
-
 .page {
     height: 6%;
     width: 100%;
 }
-
 .img {
     cursor: pointer;
 }
-
 .fcolor {
     color: #000 !important;
 }
-
 .colordiv {
     background-color: #d9dbde !important;
 }
-
 .colortip {
     background-color: #efeff0 !important;
 }
-
 .yd {
     margin: auto;
     top: 0 !important;
@@ -1703,7 +1794,6 @@ export default {
     bottom: 0 !important;
     left: 0 !important;
 }
-
 .yd2 {
     margin: auto;
     top: 0 !important;
@@ -1711,7 +1801,6 @@ export default {
     bottom: 0 !important;
     left: 0 !important;
 }
-
 img {
     cursor: pointer;
 }

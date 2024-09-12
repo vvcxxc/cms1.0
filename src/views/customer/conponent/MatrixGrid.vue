@@ -1,16 +1,8 @@
 <template>
   <div>
-    <!-- 单点矩阵 -->
-    <Keycom
-      :showkey="showkey"
-      :keyclass="keyclass"
-      :keytext="keytext"
-      @getnum="getnum"
-      @closeshow="closeshow"
-    ></Keycom>
+    <Keycom :showkey='showkey' :keyclass='keyclass' :keytext='keytext' @getnum='getnum' @closeshow='closeshow'></Keycom>
     <div v-for="(item, index) in dataValue" :key="index">
-      <div
-        v-if="show"
+      <div v-if="show"
         @dblclick="opendb(item)"
         @mousedown="downClick(item, $event)"
         @mouseup="seupClick(item, $event)"
@@ -23,60 +15,44 @@
       >
         <div class="matrixgrid-table">
           <template v-for="(data, idx) in item.gridList">
-            <div
-              v-if="data.type && data.type === 'spaceRow'"
-              :key="idx"
-              class="matrixgrid-space"
-              :style="`height: ${item.spaceHeight}px`"
+            <div v-if="data.type && data.type === 'spaceRow'" 
+                :key="idx" 
+                class="matrixgrid-space"
+                :style="`height: ${item.spaceHeight}px`"
             ></div>
             <div v-else class="matrixgrid-row" :key="idx">
               <template v-for="(cell, cellIndex) in data">
                 <!-- 空隙 -->
-                <div
-                  class="matrixgrid-space"
-                  :key="cellIndex"
-                  v-if="cell.type && cell.type === 'spaceColumn'"
-                  :style="`width:${item.spaceWidth}px`"
-                ></div>
+                <div class="matrixgrid-space" 
+                    :key="cellIndex" 
+                    v-if="cell.type && cell.type === 'spaceColumn'"
+                    :style="`width:${item.spaceWidth}px`"></div>
                 <!-- 监测 -->
-                <div
-                  class="matrixgrid-cell"
-                  :key="cellIndex"
-                  v-else-if="!cell.IsSetMatrix"
+                <div class="matrixgrid-cell" :key="cellIndex" v-else-if="!cell.IsSetMatrix"
                   :data-change="cell.isChange"
                   :style="`background: ${cell.Background};text-decoration: ${item.TextDecorations};color: ${cell.fontColor};
                     font-weight: ${item.Blod}; font-size: ${item.FontSize}px
-                  `"
-                >
+                  `">
                   <div class="matrixgrid-set" style="margin-right: 0">
-                    <div
-                      class="matrixgrid-val"
-                      :style="`background-image: ${cell.fontColor};-webkit-background-clip: ${cell.backgroundClip}; 
-                      -webkit-text-fill-color: ${cell.textFillColor};`"
-                    >{{ cell.Value }}</div>
+                    <div class="matrixgrid-val"
+                        :style="`background-image: ${cell.fontColor};-webkit-background-clip: ${cell.backgroundClip}; 
+                                -webkit-text-fill-color: ${cell.textFillColor};`"
+                    >{{cell.Value}}</div>
                   </div>
                 </div>
                 <!-- 设定 -->
-                <div
-                  class="matrixgrid-cell"
-                  :key="cellIndex"
-                  v-else
+                <div class="matrixgrid-cell" :key="cellIndex" v-else 
                   :style="`background: ${cell.Background};text-decoration: ${item.TextDecorations};color: ${cell.fontColor};
                     font-weight: ${item.Blod}; font-size: ${item.FontSize}px
-                  `"
-                >
+                  `">
                   <div class="matrixgrid-set">
-                    <input
-                      type="text"
-                      v-model="cell.Value"
-                      :data-content="cell.value"
+                    <input type="text" v-model="cell.Value" 
                       :style="`background-image: ${cell.fontColor};-webkit-background-clip: ${cell.backgroundClip}; 
-                      -webkit-text-fill-color: ${cell.textFillColor};text-decoration: ${item.TextDecorations}`"
-                      @focus="focusFun(item)"
-                      @input="inputFun(item)"
-                      @blur="blurFun(cell, item, $event)"
-                      @keyup.enter="keupFun(cell, item, $event)"
-                    />
+                              -webkit-text-fill-color: ${cell.textFillColor};`"
+                      @focus="focusFun(item)" 
+                      @input="inputFun(item)" 
+                      @blur="blurFun(cell, item, $event)" 
+                      @keyup.enter="keupFun(cell, item, $event)" />
                     <button class="add" @click="add(cell, item, $event)"></button>
                     <button class="subtract" @click="subtract(cell, item, $event)"></button>
                   </div>
@@ -89,7 +65,7 @@
     </div>
 
     <!-- 读写框数值是否符合提示弹窗 -->
-    <!-- <div v-show="TextBoxShow" style="width: 100%; height: 100%; position: fixed; z-index: 997">
+    <div v-show="TextBoxShow" style="width: 100%; height: 100%; position: fixed; z-index: 997">
       <div v-if="TextBoxShow" class="TextBoxPop_outPop">
         <div class="TextBoxPop_outHead">
           <i class="warning el-icon-warning"></i>
@@ -100,10 +76,10 @@
           <div @click="Pop_ConfigFun" class="TextBoxPop_confirm"> {{lang.MessageBox_Confrim}} </div>
         </div>
       </div>
-    </div>-->
+    </div>
 
     <!-- 权限弹窗 -->
-    <!-- <div v-show="commerPopShow1" style="width: 100%;height: 100%;position: fixed;z-index: 2147483647;">
+    <div v-show="commerPopShow1" style="width: 100%;height: 100%;position: fixed;z-index: 2147483647;">
       <div v-if="commerPopShow1" class="commerPop_outPop">
         <div class="commerPop_outHead">
           <i class="warning el-icon-warning"></i>
@@ -116,7 +92,8 @@
           </div>
         </div>
       </div>
-    </div>-->
+    </div>
+
   </div>
 </template>
 <script>
@@ -148,34 +125,34 @@ export default {
       ],
     };
   },
-  props: ['dae', 'dataId'],
-  watch: {
-    dae: {
-      deep: true,
-      handler(n, o) {
+  props:['dae','dataId'],
+  watch:{
+    dae:{
+      deep:true,
+      handler(n,o){
         this.msgHub2 = window.$.connection.redisMonitor
-        if (this.msgHub2) {
+        if(this.msgHub2){
           this.msgHub2.server.removeVariables(this.varArr)
         }
         this.data = n;
-        if (this.data) {
-          setTimeout(() => {
+        if(this.data){
+          setTimeout(()=>{
             this.ValueArr = []
             this.init();
-          }, 200)
+          },200)
         }
       }
     }
   },
-  mounted() {
+  mounted(){
     this.data = this.dae
     this.Name = "matrixgrid"
 
-    if (this.data) {
+    if(this.data){
       this.init()
     }
   },
-  methods: {
+  methods:{
     getnum(value, keyclass) {
       let classarrr = '';
       this.dataValue.forEach((item) => {
@@ -194,10 +171,9 @@ export default {
     },
     //确定
     Pop_ConfigFun() {
-      // document.querySelector('.TextBoxPop_outPop').style.display = 'none';
-      // document.querySelector('.TextBoxPop_conter').style.textAlign = 'none';
-      // this.TextBoxShow = false;
-      this.$emit('shownotip')
+      document.querySelector('.TextBoxPop_outPop').style.display = 'none';
+      document.querySelector('.TextBoxPop_conter').style.textAlign = 'none';
+      this.TextBoxShow = false;
     },
     // 关闭键盘
     closeshow() {
@@ -205,8 +181,7 @@ export default {
     },
     //确认
     Jurisdiction() {
-      // this.commerPopShow1 = false;
-      this.$emit('shownotip')
+      this.commerPopShow1 = false;
     },
     //权限配置请求接口
     jurisdictionShow(item) {
@@ -253,15 +228,13 @@ export default {
       if (this.isOriginal) {
         item.isShow = true;
         //恢复原来值
-        // setTimeout(() => {
-        this.originalFun({ ...item, ...cell });
-        // }, 700);
+        this.originalFun({...item,...cell});
       }
     },
     //恢复原来值
     originalFun(item) {
-      for (let i = 0; i < this.cla.length; i++) {
-        if (item.class === this.cla[i]) {
+      for(let i=0; i<this.cla.length; i++){
+        if(item.class === this.cla[i]){
           let currentNode = this.dataValue[i].gridList[item.Row][item.Column]
           let idx = this.varArr.indexOf(item.TagName)
           let val = this.ValueArr[idx]
@@ -270,26 +243,26 @@ export default {
       }
     },
     //加
-    add(cell, item, e) {
+    add(cell, item, e){
       this.isOriginal = false; //下发禁止离焦触发
       let adjust = /E/.test(item.AdjustmentValue)
       let pointNum = /\./.test(cell.Value)
       let adjustValue = item.AdjustmentValue
       let val = null;
 
-      if (isNaN(Number(cell.Value))) {
+      if(isNaN(Number(cell.Value))){
         val = "0"
-      } else {
+      }else{
         val = this.toFixed(Number(cell.Value)).toString()
       }
 
-      if (adjust) {
+      if(adjust){
         adjustValue = this.toFixed(Number(adjustValue)).toString()
-      } else if (pointNum) {
+      }else if(pointNum){
         //取最大小数位
         let index = cell.Value.indexOf(".")
         let pointNumLen = cell.Value.toString().substr(index + 1).length
-        if (!/E/.test(adjustValue) && /\./.test(adjustValue)) {
+        if(!/E/.test(adjustValue) && /\./.test(adjustValue)){
           let adjusIndex = adjustValue.indexOf(".")
           let adjustPointLen = adjustValue.toString().substr(adjusIndex + 1).length
           pointNumLen = pointNumLen > adjustPointLen ? pointNumLen : adjustPointLen
@@ -297,29 +270,29 @@ export default {
         this.keupFun(cell, item, e, (parseFloat(cell.Value) + Number(adjustValue)).toFixed(pointNumLen).toString())
         return
       }
-      this.keupFun(cell, item, e, (BigInt(val) + BigInt(adjustValue)).toString())
+      this.keupFun(cell, item, e, (BigInt(val) + BigInt(adjustValue)).toString())  
     },
     //减
-    subtract(cell, item, e) {
+    subtract(cell, item, e){
       this.isOriginal = false; //下发禁止离焦触发
       let adjust = /E/.test(item.AdjustmentValue)
       let pointNum = /\./.test(cell.Value)
       let adjustValue = item.AdjustmentValue
       let val = null;
 
-      if (isNaN(Number(cell.Value))) {
+      if(isNaN(Number(cell.Value))){
         val = "0"
-      } else {
+      }else{
         val = this.toFixed(Number(cell.Value)).toString()
       }
 
-      if (adjust) {
+      if(adjust){
         adjustValue = this.toFixed(Number(adjustValue)).toString()
-      } else if (pointNum) {
+      }else if(pointNum){
         //取最大小数位
         let index = cell.Value.indexOf(".")
         let pointNumLen = cell.Value.toString().substr(index + 1).length
-        if (!/E/.test(adjustValue) && /\./.test(adjustValue)) {
+        if(!/E/.test(adjustValue) && /\./.test(adjustValue)){
           let adjusIndex = adjustValue.indexOf(".")
           let adjustPointLen = adjustValue.toString().substr(adjusIndex + 1).length
           pointNumLen = pointNumLen > adjustPointLen ? pointNumLen : adjustPointLen
@@ -350,8 +323,7 @@ export default {
           if (EventType.length) {
             self.jurisdictionShow(item).then((val) => {
               if (self.CanExcuteShow) {
-                self.$emit('showtip', self.lang.NoOperationAuthority)
-                // self.commerPopShow1 = true;
+                self.commerPopShow1 = true;
                 return;
               } else {
                 for (var j = 0; j < EventType.length; j++) {
@@ -366,7 +338,7 @@ export default {
           if (EventType1.length) {
             self.jurisdictionShow(item).then((val) => {
               if (self.CanExcuteShow) {
-                self.$emit('showtip', self.lang.NoOperationAuthority)
+                self.commerPopShow1 = true;
                 return;
               } else {
                 for (var j1 = 0; j1 < EventType1.length; j1++) {
@@ -408,7 +380,7 @@ export default {
         if (EventType.length) {
           self.jurisdictionShow(item).then((val) => {
             if (self.CanExcuteShow) {
-              self.$emit('showtip', self.lang.NoOperationAuthority)
+              self.commerPopShow1 = true;
               return;
             } else {
               for (var j = 0; j < EventType.length; j++) {
@@ -423,7 +395,7 @@ export default {
         if (EventType1.length) {
           self.jurisdictionShow(item).then((val) => {
             if (self.CanExcuteShow) {
-              self.$emit('showtip', self.lang.NoOperationAuthority)
+              self.commerPopShow1 = true;
               return;
             } else {
               for (var j1 = 0; j1 < EventType1.length; j1++) {
@@ -450,7 +422,7 @@ export default {
         if (EventType.length) {
           this.jurisdictionShow(item).then((val) => {
             if (this.CanExcuteShow) {
-              self.$emit('showtip', self.lang.NoOperationAuthority)
+              this.commerPopShow1 = true;
               return;
             } else {
               for (var j = 0; j < EventType.length; j++) {
@@ -463,17 +435,17 @@ export default {
       }, 200);
     },
     //回车事件  下发
-    keupFun(item, parent, e, statist = null) {
+    keupFun(item, parent, e, statist=null) {
       let issVal = e.target.value
-      if (statist !== null) {
-        issVal = statist
+      if(statist !== null){
+        issVal =statist
       }
       var value;
       var arr = [];
       if (item.TagName != '') {
         this.jurisdictionShow(item).then((val) => {
           if (this.CanExcuteShow) {
-            self.$emit('showtip', self.lang.NoOperationAuthority)
+            this.commerPopShow1 = true;
             return;
           } else {
             var ss = JSON.parse(sessionStorage.getItem('variable'));
@@ -492,86 +464,78 @@ export default {
                 };
                 arr.push(value);
                 this.isOriginal = false; //下发禁止离焦触发
-
-
                 //请求接口 //下发数据
                 this.$axios({
                   method: 'post',
-                  url: `/api/base/CheckTags`,
-                  data: new Set(this.arr)
-                }).then((res1) => {
-                  if (res1.data.code === 0) {
-                    this.commerPopShow = false
-                    this.$axios({
-                      method: 'post',
-                      url: '/api/Base/PostIOServiceTest',
-                      data: arr,
-                    }).then((res) => {
-                      if (res.data.data == true) {
-                        item.isShow = true;
-                        this.isOriginal = false;
-                        // setTimeout(() => {
-                        //   e.path[0].blur();
-                        // }, 300);
-                      } else {
-                          this.isOriginal = true;
-                        this.$emit('showtip', this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
-                        //恢复原来值
-                        setTimeout(() => { e.path[0].blur(); }, 300);
-                      }
-                    }).catch((error) => {
-                      this.$emit('showtip', this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
-                      //恢复原来值
-                        this.isOriginal = true;
-                      setTimeout(() => {
-                        e.path[0].blur();
-                      }, 300);
-                    });
-                  } else {
-                    this.$emit('showtip', res1.data.msg)
-                    //恢复原来值
-                      this.isOriginal = true;
+                  url: '/api/Base/PostIOServiceTest',
+                  data: arr,
+                }).then((res) => {
+                  if (res.data.data == true) {
+                    item.isShow = true;
+                    this.isOriginal = true;
                     setTimeout(() => {
                       e.path[0].blur();
                     }, 300);
+                  } else {
+                    this.TextBoxShow = true;
+                    setTimeout(() => {
+                      document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+                      document.querySelector('.TextBoxPop_conter').style.textAlign = 'center';
+                      document.querySelector('.TextBoxPop_conter').innerHTML = this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail;
+                    });
+                    //恢复原来值
+                    setTimeout(() => {e.path[0].blur();}, 300);
                   }
-
-                })
-
+                }).catch((error) => {
+                  this.TextBoxShow = true;
+                  setTimeout(() => {
+                    document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+                    document.querySelector('.TextBoxPop_conter').style.textAlign = 'center';
+                    document.querySelector('.TextBoxPop_conter').innerHTML = this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail;
+                  });
+                  //恢复原来值
+                  setTimeout(() => {
+                    e.path[0].blur();
+                  }, 300);
+                });
               } else {
-                this.$emit('showtip', this.lang.SCMSExplorerData_ProtocolDataType_PECorrect + this.lang['二进制变量'] + this.lang.SCMSExplorerData_ProtocolDataType_Bool)
+                this.TextBoxShow = true;
+                setTimeout(() => {
+                  document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+                  document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${this.lang['二进制变量']}${this.lang.SCMSExplorerData_ProtocolDataType_Bool}`;
+                });
               }
-              // }else if(variableName == this.lang['有符号8位整型']){
-              //   this.judgeFun(issVal,127,-128,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-              //   return
-              // }else if(variableName == this.lang['无符号8位整型']){
-              //   this.judgeFun(issVal,255,0,item.MaxValue,item.MinValue,variableName,{...parent,...item},'整',e)
-              //   return
-              // }else if(variableName == this.lang['有符号16位整型']){
-              //     this.judgeFun(issVal,32767,-32768,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-              //     return
-              // }else if(variableName == this.lang['无符号16位整型']){
-              //     this.judgeFun(issVal,65535,0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-              //     return
-              // }else if(variableName == this.lang['有符号32位整型']){
-              //     this.judgeFun(issVal,2147483647,-2147483648,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-              //     return
-              // }else if(variableName == this.lang['无符号32位整型'] || variableName == this.lang['定时器']){
-              //     this.judgeFun(issVal,4294967295,0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-              //     return
-              // }else if(variableName == this.lang['有符号64位整型']){
-              //   this.judgeFun(issVal,"9223372036854775807","-9223372036854775808",item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-              //   return
-              // }else if(variableName == this.lang['无符号64位整型']){
-              //   this.judgeFun(issVal,"18446744073709551615",0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-              //     return
-              // }else if(variableName == this.lang['F32位浮点数IEEE754']){
-              //   this.judgeFun(issVal,3.40282347E+38,-3.40282347E+38,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'浮',e)
-              //   return
-              // }else if(variableName == this.lang['F64位浮点数IEEE754']){
-              //   this.judgeFun(issVal,1.7976931348623157E+308,-1.7976931348623157E+308,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'浮',e)
-              //   return
-            } else {
+            }else if(variableName == this.lang['有符号8位整型']){
+              this.judgeFun(issVal,127,-128,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+              return
+            }else if(variableName == this.lang['无符号8位整型']){
+              this.judgeFun(issVal,255,0,item.MaxValue,item.MinValue,variableName,{...parent,...item},'整',e)
+              return
+            }else if(variableName == this.lang['有符号16位整型']){
+                this.judgeFun(issVal,32767,-32768,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+                return
+            }else if(variableName == this.lang['无符号16位整型']){
+                this.judgeFun(issVal,65535,0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+                return
+            }else if(variableName == this.lang['有符号32位整型']){
+                this.judgeFun(issVal,2147483647,-2147483648,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+                return
+            }else if(variableName == this.lang['无符号32位整型'] || variableName == this.lang['定时器']){
+                this.judgeFun(issVal,4294967295,0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+                return
+            }else if(variableName == this.lang['有符号64位整型']){
+              this.judgeFun(issVal,"9223372036854775807","-9223372036854775808",item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+              return
+            }else if(variableName == this.lang['无符号64位整型']){
+              this.judgeFun(issVal,"18446744073709551615",0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+                return
+            }else if(variableName == this.lang['F32位浮点数IEEE754']){
+              this.judgeFun(issVal,3.40282347E+38,-3.40282347E+38,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'浮',e)
+              return
+            }else if(variableName == this.lang['F64位浮点数IEEE754']){
+              this.judgeFun(issVal,1.7976931348623157E+308,-1.7976931348623157E+308,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'浮',e)
+              return
+            }else{
               this.filtrateVariable(item, issVal, e)
               return;
             }
@@ -584,15 +548,15 @@ export default {
       if (Math.abs(x) < 1.0) {
         var e = parseInt(x.toString().split('e-')[1]);
         if (e) {
-          x *= Math.pow(10, e - 1);
-          x = '0.' + (new Array(e)).join('0') + x.toString().substring(2);
+            x *= Math.pow(10,e-1);
+            x = '0.' + (new Array(e)).join('0') + x.toString().substring(2);
         }
       } else {
         var e = parseInt(x.toString().split('+')[1]);
         if (e > 20) {
-          e -= 20;
-          x /= Math.pow(10, e);
-          x += (new Array(e + 1)).join('0');
+            e -= 20;
+            x /= Math.pow(10,e);
+            x += (new Array(e+1)).join('0');
         }
       }
       return x;
@@ -602,17 +566,17 @@ export default {
       return new Promise((resolve, reject) => {
         max = max == null ? '' : this.toFixed(max).toString();
         min = min == null ? '' : this.toFixed(min).toString();
-
+        
         let val = this.toFixed(Number(text)).toString()
         let type11 = JSON.parse(JSON.stringify(type))
-        let type12 = ''
-        let lang = JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
-        console.log(lang)
-        for (let i in lang) {
-          if (lang[i] == type11) {
+              let type12 = ''
+             let lang = JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
+             console.log(lang)
+             for(let i in lang){
+          if(lang[i]==type11){
             type12 = i
-          }
         }
+              }
         this.$axios({
           method: 'post',
           url: `/api/Base/CheckTag?argType=${type12}&argValue=${val}&argMax=${max}&argMin=${min}`,
@@ -624,14 +588,12 @@ export default {
           if (res.data.code == 0) {
             resolve(true);
           } else {
-
-            this.$emit('showtip', res.data.msg)
-            // this.TextBoxShow = true;
-            // setTimeout(() => {
-            //   document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-            //   document.querySelector('.TextBoxPop_conter').style.textAlign = 'center';
-            //   document.querySelector('.TextBoxPop_conter').innerHTML = `${res.data.msg}`;
-            // });
+            this.TextBoxShow = true;
+            setTimeout(() => {
+              document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+              document.querySelector('.TextBoxPop_conter').style.textAlign = 'center';
+              document.querySelector('.TextBoxPop_conter').innerHTML = `${res.data.msg}`;
+            });
             resolve(false);
           }
         });
@@ -640,57 +602,46 @@ export default {
     //下发接口
     tagAxios(arr, item, e) {
       console.log(arr)
+      //请求接口 //下发数据
       this.$axios({
         method: 'post',
-        url: `/api/base/CheckTags`,
-        data: arr
-      }).then((res1) => {
-        if (res1.data.code === 0) {
-          this.$emit('shownotip')
-
-          //请求接口 //下发数据
-          this.$axios({
-            method: 'post',
-            url: '/api/Base/PostIOServiceTest',
-            data: arr,
-          }).then((res) => {
-            console.log(res)
-            this.isOriginal = true; //下发允许离焦触发
-            if (res.data.data == true) {
-              item.isShow = false;
-              // setTimeout(() => {
-              //   e.path[0].blur();
-              // }, 300);
-            } else {
-              this.$emit('showtip', this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
-                this.isOriginal = true;
-              //恢复原来值
-              setTimeout(() => {
-                e.path[0].blur();
-              }, 300);
-            }
-          }).catch((error) => {
-            this.$emit('showtip', this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
-              this.isOriginal = true;
-            //恢复原来值
-            setTimeout(() => {
-              e.path[0].blur();
-            }, 300);
-          });
+        url: '/api/Base/PostIOServiceTest',
+        data: arr,
+      }).then((res) => {
+        console.log(res)
+        this.isOriginal = true; //下发允许离焦触发
+        if (res.data.data == true) {
+          item.isShow = true;
+          setTimeout(() => {
+            e.path[0].blur();
+          }, 300);
         } else {
-          this.$emit('showtip', res1.data.msg)
-            this.isOriginal = true;
+          this.TextBoxShow = true;
+          setTimeout(() => {
+            document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+            document.querySelector('.TextBoxPop_conter').style.textAlign = 'center';
+            document.querySelector('.TextBoxPop_conter').innerHTML = this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail;
+          });
           //恢复原来值
           setTimeout(() => {
             e.path[0].blur();
           }, 300);
         }
-
-      })
-
+      }).catch((error) => {
+        this.TextBoxShow = true;
+        setTimeout(() => {
+          document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+          document.querySelector('.TextBoxPop_conter').style.textAlign = 'center';
+          document.querySelector('.TextBoxPop_conter').innerHTML = this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail;
+        });
+        //恢复原来值
+        setTimeout(() => {
+          e.path[0].blur();
+        }, 300);
+      });
     },
     //下发的变量
-    filtrateVariable(item, text2, e) {
+    filtrateVariable(item, text2, e){
       var arr = [];
       arr.push({
         Name: item.TagName,
@@ -703,18 +654,16 @@ export default {
     judgeFun(num, max, min, MaxValue, MinValue, TagType, item, type, e) {
       var text2 = Number(num);
       if (num.length == 0) {
-
-        this.$emit('showtip', this.lang.SCMSExplorerData_ProtocolDataType_PECorrect + TagType + this.lang.SCMSExplorerData_ProtocolDataType_Integer + min + '-' + max)
-        // this.TextBoxShow = true;
-        // setTimeout(() => {
-        //   document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-        //   document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
-        // });
+        this.TextBoxShow = true;
+        setTimeout(() => {
+          document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+          document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
+        });
         return;
       }
 
       //特殊类型设定
-      if (TagType == this.lang['F32位浮点数IEEE754'] || TagType == this.lang['F64位浮点数IEEE754'] || TagType == this.lang['无符号64位整型'] || TagType == this.lang['有符号64位整型']) {
+      if (TagType == this.lang['F32位浮点数IEEE754'] ||  TagType == this.lang['F64位浮点数IEEE754'] || TagType == this.lang['无符号64位整型'] || TagType == this.lang['有符号64位整型']) {
         console.log(TagType, num, max, min)
         this.CheckTagFun(TagType, num, max, min).then((val) => {
           if (val) {
@@ -723,24 +672,20 @@ export default {
         });
       } else {
         if (isNaN(text2)) {
-
-          this.$emit('showtip', this.lang.SCMSExplorerData_ProtocolDataType_PECorrect + TagType + this.lang.SCMSExplorerData_ProtocolDataType_Integer + min + '-' + max)
-          // this.TextBoxShow = true;
-          // setTimeout(() => {
-          //   document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-          //   document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
-          // });
+          this.TextBoxShow = true;
+          setTimeout(() => {
+            document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+            document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
+          });
           return;
         }
 
         if (text2 == '' && text2 != 0) {
-
-          this.$emit('showtip', this.lang.SCMSExplorerData_ProtocolDataType_PECorrect + TagType + this.lang.SCMSExplorerData_ProtocolDataType_Integer + min + '-' + max)
-          // this.TextBoxShow = true;
-          // setTimeout(() => {
-          //   document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-          //   document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
-          // });
+          this.TextBoxShow = true;
+          setTimeout(() => {
+            document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+            document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
+          });
           return;
         }
 
@@ -749,23 +694,19 @@ export default {
             console.log(num)
             let indexNum = num.indexOf('.');
             if (indexNum != -1) {
-
-              this.$emit('showtip', this.lang.SCMSExplorerData_ProtocolDataType_PECorrect + TagType + this.lang.SCMSExplorerData_ProtocolDataType_Integer + min + '-' + max)
-              // this.TextBoxShow = true;
-              // setTimeout(() => {
-              //   document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-              //   document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
-              // });
+              this.TextBoxShow = true;
+              setTimeout(() => {
+                document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+                document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
+              });
               return;
             }
           }
           if (MaxValue != null) {
             if (text2 > MaxValue) {
-              // this.TextBoxShow = true;
-
+              this.TextBoxShow = true;
               setTimeout(() => {
-
-                // document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+                document.querySelector('.TextBoxPop_outPop').style.display = 'block';
                 let msg = this.lang.HMI_HT_HMIUserControlViewModel_InputGreaterThanMaximumValue;
                 let firstL = msg.indexOf('<');
                 let firstR = msg.indexOf('>') + 1;
@@ -775,16 +716,14 @@ export default {
                 let str2 = msg.slice(lastL, lastR);
                 msg = msg.replace(str1, `<${text2}>`);
                 msg = msg.replace(str2, `<${MaxValue}>`);
-                this.$emit('showtip', msg)
-                // document.querySelector('.TextBoxPop_conter').innerHTML = `${msg}`;
+                document.querySelector('.TextBoxPop_conter').innerHTML = `${msg}`;
               });
               return;
             }
             if (text2 < MinValue) {
-              // this.TextBoxShow = true;
+              this.TextBoxShow = true;
               setTimeout(() => {
-
-                // document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+                document.querySelector('.TextBoxPop_outPop').style.display = 'block';
                 let msg = this.lang.HMI_HT_HMIUserControlViewModel_InputLessThanMinimumValue;
                 let firstL = msg.indexOf('<');
                 let firstR = msg.indexOf('>') + 1;
@@ -794,8 +733,7 @@ export default {
                 let str2 = msg.slice(lastL, lastR);
                 msg = msg.replace(str1, `<${text2}>`);
                 msg = msg.replace(str2, `<${MinValue}>`);
-                this.$emit('showtip', msg)
-                // document.querySelector('.TextBoxPop_conter').innerHTML = `${msg}`;
+                document.querySelector('.TextBoxPop_conter').innerHTML = `${msg}`;
               });
               return;
             }
@@ -803,17 +741,15 @@ export default {
 
           this.filtrateVariable(item, text2, e)
         } else {
-
-          this.$emit('showtip', this.lang.SCMSExplorerData_ProtocolDataType_PECorrect + TagType + this.lang.SCMSExplorerData_ProtocolDataType_Integer + min + '-' + max)
-          // this.TextBoxShow = true;
-          // setTimeout(() => {
-          //   document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-          //   document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
-          // });
+          this.TextBoxShow = true;
+          setTimeout(() => {
+            document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+            document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
+          });
         }
       }
     },
-    init() {
+    init(){
       //数据筛选
       this.textblockData = [];
       let dataAll = this.data.Controls.ControlList;
@@ -859,13 +795,13 @@ export default {
       for (var i = 0; i < this.data.Data.MatrixGridAnimationList.length; i++) {
         var a = this.cla.indexOf(this.data.Data.MatrixGridAnimationList[i].ElementName);
         if (a != -1) {
-
-          for (let j = 0; j < this.data.Data.MatrixGridAnimationList[i].MatrixGridDatas.length; j++) {
+          
+          for(let j=0;j<this.data.Data.MatrixGridAnimationList[i].MatrixGridDatas.length;j++){
             arr.push(
               this.data.Data.MatrixGridAnimationList[i].MatrixGridDatas[j].TagName
             );
           }
-
+          
           this.textBbockArr.push(
             this.data.Data.MatrixGridAnimationList[i].ElementName
           );
@@ -880,51 +816,49 @@ export default {
       this.arr = arr;
     },
 
-    setValue(data, list, type) {
-      data.forEach((item, itemIdx) => {
-        if (Array.isArray(item)) {
+    setValue(data, list, type){
+      data.forEach((item, itemIdx)=>{
+        if(Array.isArray(item)){
           this.setValue(item, list, type)
-        } else {
+        }else{
           list.forEach(element => {
-            if (item.TagName === element.Name) {
+            if(item.TagName === element.Name){
               item.Value = element.Value
-              if(item.Value!=='???'){
- this.changeStyle(item, data, itemIdx, type)
-              }
-             
+              this.changeStyle(item, data, itemIdx, type)
             }
           });
         }
       })
     },
     //按条件改变样式
-    changeStyle(item, data, itemIdx, type) {
+    changeStyle(item, data, itemIdx, type){
       let matrixgridList = this.data.Data.MatrixGridAnimationList
       //监测条件
-      if (matrixgridList.length > 0 && !item.IsSetMatrix) {
-        matrixgridList.forEach((gridItem, idx) => {
-          if (gridItem.HasMatrixCellStyle && gridItem.ElementName === type) {
-            for (let i = 0; i < gridItem.MatrixCellStyles.length; i++) {
+      if(matrixgridList.length > 0 && !item.IsSetMatrix){
+        matrixgridList.forEach((gridItem, idx)=>{
+          if(gridItem.HasMatrixCellStyle && gridItem.ElementName === type){
+            for(let i=0; i < gridItem.MatrixCellStyles.length; i++){
               let { FillColor, FontColor, Condition, TagName, TagDataType } = gridItem.MatrixCellStyles[i]
               //固定数值
-              if (TagDataType === "") {
-                if (!isNaN(Number(TagName))) {
-                  if (eval(`${item.Value === '' ? 0 : item.Value}${Condition}${Number(TagName)}`)) {
+              if(TagDataType === ""){
+                if(!isNaN(Number(TagName))){
+                  if(eval(`${item.Value}${Condition}${Number(TagName)}`)){
                     item.Background = this.formatColor(FillColor)
                     item.fontColor = this.formatColor(FontColor)
                     item.textFillColor = this.formatColor(FontColor)
                     item.backgroundClip = "none"
                     item.isChange = true
-
+                    
                     return
                   }
-                } else {
+                }else{
                   //设定值
                   let arr = ["设定A", "设定B", "设定C", "设定D", "设定E"]
                   let arrIndex = arr.indexOf(TagName)
                   //获取对照值
                   let constratVal = this.ValueArr[this.varArr.indexOf(data[itemIdx + arrIndex + 1].TagName)]
-                  if (eval(`${item.Value === '' ? 0 : item.Value}${Condition}${constratVal === '' ? 0 : constratVal}`)) {
+                  
+                  if(eval(`${item.Value}${Condition}${constratVal}`)){
                     item.Background = this.formatColor(FillColor)
                     item.fontColor = this.formatColor(FontColor)
                     item.textFillColor = this.formatColor(FontColor)
@@ -933,9 +867,9 @@ export default {
                     return
                   }
                 }
-              } else {
+              }else{
                 //变量值
-                if (eval(`${item.Value === '' ? 0 : item.Value}${Condition}${this.ValueArr[this.varArr.indexOf(TagName)] === '' ? 0 : this.ValueArr[this.varArr.indexOf(TagName)]}`)) {
+                if(eval(`${item.Value}${Condition}${this.ValueArr[this.varArr.indexOf(TagName)]}`)){
                   item.Background = this.formatColor(FillColor)
                   item.fontColor = this.formatColor(FontColor)
                   item.textFillColor = this.formatColor(FontColor)
@@ -959,14 +893,14 @@ export default {
     //条件判断方法
     judgeFun1(data) {
       let ValueArr1 = [],
-        ValueArr2 = []
-      data.forEach(item => {
+          ValueArr2 = []
+      data.forEach(item=>{
         ValueArr1.push(item.Value)
         ValueArr2.push(item.Name)
       })
       this.ValueArr = ValueArr1
       this.varArr = ValueArr2
-       
+
       if (data.length) {
         for (var i = 0; i < this.textBbockArr.length; i++) {
           if (data[i].Value == null) {
@@ -975,9 +909,7 @@ export default {
               this.dataValue[index133].text = '???';
             }
           } else {
-            console.log("data",this.dataValue)
-             console.log("data",data)
-            this.dataValue.forEach(item => {
+            this.dataValue.forEach(item=>{
               this.setValue(item.gridList, data, item.class)
             })
           }
@@ -985,59 +917,50 @@ export default {
       }
     },
     //数值请求
-    axio() {
+    axio(){
       this.resData = []
       this.DataAnima = this.data.Data.MatrixGridAnimationList
       this.arrFun();
       //请求接口
       this.$axios({
-        method: "post",
-        url: "/api/Base/PostRediusTest?varNameString=" + name,
-        data: this.arr
-      }).then((res) => {
-        console.log("sad",res)
+        method:"post",
+        url:"/api/Base/PostRediusTest?varNameString=" + name,
+        data: new Set(this.arr)
+      }).then((res)=>{
         this.resData.push(res.data.data)
-          console.log("this.resData[0]",res.data.data)
         this.judgeFun1(res.data.data);
       }).catch(function (error) {
-        console.log('err', error);
+        console.log('err',error);
       })
     },
 
     //websocket触发该方法
-    axioImg2(resArr) {
-      // console.log(67765)
-      //console.log(this.arr)
-    
-      if (this.arr) {
+    axioImg2(resArr){
+      if(this.arr){
         let index = this.arr.indexOf(resArr.name)
         let resShow = false
-        if (index != -1) {
-         
-          for (let i = 0; i < this.resData[0].length; i++) {
-            if (this.resData[0][i].Name == this.arr[index]) {
-              //  console.log(this.resData[0][i])
-              //  console.log(333)
-              resShow = this.resData[0][i].Value.toString() == resArr.value.toString() ? false : true
+        if(index != -1){
+          for(let i=0;i<this.resData[0].length;i++){
+            if(this.resData[0][i].Name == this.arr[index]){
+              resShow = this.resData[0][i].Value.toString() == resArr.value.toString()?false:true
             }
           }
         }
-        if (!resShow) {
+        if(!resShow){
           return
         }
       }
-      if (this.resData.length) {
-        for (let z = 0; z < this.resData[0].length; z++) {
-          if (resArr.name == this.resData[0][z].Name) {
+      if(this.resData.length){
+        for(let z=0;z<this.resData[0].length;z++){
+          if(resArr.name == this.resData[0][z].Name){
             this.resData[0][z].Value = resArr.value
           }
         }
-        console.log("this.resData[0]",this.resData[0])
-        this.judgeFun1(this.resData[0])
+        this.judgeFun1(this.resData[0]) 
       }
     },
     //获取变量的数据类型
-    getDataType(item) {
+    getDataType(item){
       var ss = JSON.parse(sessionStorage.getItem('variable'));
       for (let o = 0; o < ss.length; o++) {
         if (item.TagName == ss[o].TagName) {
@@ -1047,9 +970,9 @@ export default {
     },
 
     //赋值
-    gitValue() {
+    gitValue(){
       this.dataValue = []
-      for (let i = 0; i < this.textblockData.length; i++) {
+      for(let i=0;i<this.textblockData.length;i++){
         //加层级zIndex
         let ZIndexs = this.data.Data.ZIndexs;
         if (ZIndexs) {
@@ -1067,13 +990,13 @@ export default {
         let MatrixGridAnimationList = this.data.Data.MatrixGridAnimationList;
         //渐变色变量
         let Shadow = JSON.parse(PropertyList.Shadow),         //阴影
-          fontColor = JSON.parse(PropertyList.Foreground),    //字体颜色
-          background = JSON.parse(PropertyList.Background),   //背景颜色
-          BorderBrush = JSON.parse(PropertyList.BorderBrush)  //边框颜色
-
-        if (MatrixGridAnimationList.length != 0) {
-          for (let j = 0; j < MatrixGridAnimationList.length; j++) {
-            if (MatrixGridAnimationList[j].ElementName === this.textblockData[i].Name) {
+            fontColor = JSON.parse(PropertyList.Foreground),    //字体颜色
+            background = JSON.parse(PropertyList.Background),   //背景颜色
+            BorderBrush = JSON.parse(PropertyList.BorderBrush)  //边框颜色
+          
+        if(MatrixGridAnimationList.length != 0){
+          for(let j=0;j<MatrixGridAnimationList.length; j++){
+            if(MatrixGridAnimationList[j].ElementName === this.textblockData[i].Name){
 
               let tableStyle = {
                 width: PropertyList.Width,
@@ -1099,63 +1022,63 @@ export default {
                 AdjustmentValue: PropertyList.AdjustmentValue
               };
               //判断borderShadow是否为空对象
-              if (Object.getOwnPropertyNames(Shadow).length !== 0) {
+              if(Object.getOwnPropertyNames(Shadow).length !== 0){
                 let ShadowObj = Shadow.InnerShadow === undefined ? Shadow.OuterShadow : Shadow.InnerShadow
                 let shadowType = Shadow.InnerShadow === undefined ? "" : "inset"
                 tableStyle.Shadow = `${ShadowObj.OffsetX}px ${ShadowObj.OffsetY}px ${parseInt(ShadowObj.BlurRadius)}px ${ShadowObj.Color} ${shadowType}`
-              } else {
+              }else{
                 tableStyle.Shadow = ""
               }
               //字体渐变
-              if (fontColor.ColorType == 'SolidColor') {
+              if(fontColor.ColorType == 'SolidColor'){
                 tableStyle.fontColor = this.formatColor(fontColor.Data.Color);
                 tableStyle.backgroundClip = "none"
                 tableStyle.textFillColor = this.formatColor(fontColor.Data.Color)
-              } else {
+              }else{
                 let backgroundColor = ''
-                for (let g = 0; g < fontColor.Data.GradientStops.length; g++) {
+                for(let g=0;g< fontColor.Data.GradientStops.length;g++){
                   let gradient2 = fontColor.Data.GradientStops[g]
-                  backgroundColor = backgroundColor + ',' + gradient2.Color + ' ' + parseInt(gradient2.Offset * 100) + '%'
+                  backgroundColor = backgroundColor + ',' + gradient2.Color + ' ' + parseInt(gradient2.Offset*100) + '%'
                 }
 
-                tableStyle.fontColor = '-webkit-linear-gradient(' + parseInt(fontColor.Data.Angel) + 'deg' + backgroundColor + ')';
+                tableStyle.fontColor = '-webkit-linear-gradient('+ parseInt(fontColor.Data.Angel) +'deg'+backgroundColor+')';
                 tableStyle.backgroundClip = "text"
                 tableStyle.textFillColor = "transparent"
               }
               //背景渐变色
-              if (background.ColorType === "SolidColor") {
+              if(background.ColorType === "SolidColor"){
                 tableStyle.Background = this.formatColor(background.Data.Color)
-              } else {
+              }else{
                 let backColor = ''
-                for (var h1 = 0; h1 < background.Data.GradientStops.length; h1++) {
+                for(var h1=0;h1<background.Data.GradientStops.length;h1++){
                   let gradient = background.Data.GradientStops[h1]
-                  backColor = backColor + ',' + gradient.Color + ' ' + parseInt(gradient.Offset * 100) + '%'
+                  backColor = backColor + ',' + gradient.Color + ' ' + parseInt(gradient.Offset*100) + '%'
                 }
-                tableStyle.Background = '-webkit-linear-gradient(' + parseInt(background.Data.Angel) + 'deg' + backColor + ')';
+                tableStyle.Background = '-webkit-linear-gradient('+ parseInt(background.Data.Angel) +'deg'+backColor+')';
               }
               //边框渐变
-              if (BorderBrush.ColorType == 'SolidColor') {
+              if(BorderBrush.ColorType == 'SolidColor'){
                 tableStyle.BorderBrush = this.formatColor(BorderBrush.Data.Color);
-              } else {
+              }else{
                 let borderColor = ''
-                for (let g = 0; g < BorderBrush.Data.GradientStops.length; g++) {
+                for(let g=0;g< BorderBrush.Data.GradientStops.length;g++){
                   let gradient = BorderBrush.Data.GradientStops[g]
-                  borderColor = borderColor + ',' + gradient.Color + ' ' + parseInt(gradient.Offset * 100) + '%'
+                  borderColor = borderColor + ',' + gradient.Color + ' ' + parseInt(gradient.Offset*100) + '%'
                 }
-                tableStyle.BorderBrush = '-webkit-linear-gradient(' + parseInt(BorderBrush.Data.Angel) + 'deg' + borderColor + ')';
+                tableStyle.BorderBrush = '-webkit-linear-gradient('+ parseInt(BorderBrush.Data.Angel) +'deg'+borderColor+')';
               }
               let gridList = [], //整理后的
-                len = MatrixGridAnimationList[j].MatrixGridList.length, //每组长度（不包含边距）
-                row = (MatrixGridAnimationList[j].Row + 1) / 2, //行
-                column = (MatrixGridAnimationList[j].Column + 1) / (len + 1), //列
-                groupLen = row * column //每行的数据长度 12
-              for (let r = 0; r < row; r++) {
+                  len = MatrixGridAnimationList[j].MatrixGridList.length, //每组长度（不包含边距）
+                  row = (MatrixGridAnimationList[j].Row + 1) / 2, //行
+                  column = (MatrixGridAnimationList[j].Column + 1) / (len + 1), //列
+                  groupLen = row * column //每行的数据长度 12
+              for(let r=0; r < row; r++){
                 let rowList = []
-                for (let c = 0; c < column; c++) {
+                for(let c=0; c < column; c++){
                   // let grid = []
-                  for (let le = 0; le < len; le++) {
+                  for(let le=0; le < len; le++){
                     rowList.push({
-                      ...MatrixGridAnimationList[j].MatrixGridDatas[groupLen * le + c + r * column],
+                      ...MatrixGridAnimationList[j].MatrixGridDatas[groupLen * le + c + r * column], 
                       IsSetMatrix: MatrixGridAnimationList[j].MatrixGridList[le].IsSetMatrix,
                       Value: "???",
                       Background: tableStyle.Background,
@@ -1165,7 +1088,7 @@ export default {
                       isChange: false
                     })
                   }
-                  if (c < (column - 1)) {
+                  if(c < (column - 1)){
                     rowList.push({
                       type: "spaceColumn",
                       IsSetMatrix: false
@@ -1173,137 +1096,137 @@ export default {
                   }
                 }
                 gridList.push(rowList)
-                if (r < (row - 1)) {
+                if(r < (row - 1)){
                   gridList.push({
                     type: "spaceRow",
                     IsSetMatrix: false
                   })
                 }
               }
-
+              
               tableStyle.gridList = gridList
               this.dataValue.push(tableStyle)
               break;
             }
           }
-        } else {
+        }else{
           let PropertyList = this.textblockData[i].PropertyList
-          let tableStyle = {
-            width: PropertyList.Width,
-            height: PropertyList.Height,
-            rotate: PropertyList.RotateAngle,
-            top: PropertyList.Top,
-            left: PropertyList.Left,
-            opacity: PropertyList.Opacity / 100,
-            FontSize: PropertyList.FontSize,
-            family: PropertyList.FontFamily,
-            class: this.textblockData[i].Name,
-            Blod: PropertyList.IsBlod == 'True' ? 'bold' : '',
-            TagName: '',
-            TagDataType: '',
-            BorderThickness: PropertyList.BorderThickness,
-            Shadow: Shadow,
-            TextDecorations: PropertyList.TextDecorations == 'False' ? 'none' : 'underline',
-            ZIndex: this.ZIndex,
-            isShow: true,
-            spaceWidth: PropertyList.SpaceColumnWidth,
-            spaceHeight: PropertyList.SpaceRowHeight,
-            matrixGridElementName: '',
-            gridList: [],
-            AdjustmentValue: PropertyList.AdjustmentValue
-          };
-          //判断borderShadow是否为空对象
-          if (Object.getOwnPropertyNames(Shadow).length !== 0) {
-            let ShadowObj = Shadow.InnerShadow === undefined ? Shadow.OuterShadow : Shadow.InnerShadow
-            let shadowType = Shadow.InnerShadow === undefined ? "" : "inset"
-            tableStyle.Shadow = `${ShadowObj.OffsetX}px ${ShadowObj.OffsetY}px ${parseInt(ShadowObj.BlurRadius)}px ${ShadowObj.Color} ${shadowType}`
-          } else {
-            tableStyle.Shadow = ""
-          }
-          //字体渐变
-          if (fontColor.ColorType == 'SolidColor') {
-            tableStyle.fontColor = this.formatColor(fontColor.Data.Color);
-            tableStyle.backgroundClip = "none"
-            tableStyle.textFillColor = this.formatColor(fontColor.Data.Color)
-          } else {
-            let backgroundColor = ''
-            for (let g = 0; g < fontColor.Data.GradientStops.length; g++) {
-              let gradient2 = fontColor.Data.GradientStops[g]
-              backgroundColor = backgroundColor + ',' + gradient2.Color + ' ' + parseInt(gradient2.Offset * 100) + '%'
-            }
+             let tableStyle = {
+                width: PropertyList.Width,
+                height: PropertyList.Height,
+                rotate: PropertyList.RotateAngle,
+                top: PropertyList.Top,
+                left: PropertyList.Left,
+                opacity: PropertyList.Opacity / 100,
+                FontSize: PropertyList.FontSize,
+                family: PropertyList.FontFamily,
+                class: this.textblockData[i].Name,
+                Blod: PropertyList.IsBlod == 'True' ? 'bold' : '',
+                TagName: '',
+                TagDataType: '',
+                BorderThickness: PropertyList.BorderThickness,
+                Shadow: Shadow,
+                TextDecorations: PropertyList.TextDecorations == 'False' ? 'none' : 'underline',
+                ZIndex: this.ZIndex,
+                isShow: true,
+                spaceWidth: PropertyList.SpaceColumnWidth,
+                spaceHeight: PropertyList.SpaceRowHeight,
+                matrixGridElementName: '',
+                gridList:[],
+                AdjustmentValue: PropertyList.AdjustmentValue
+              };
+               //判断borderShadow是否为空对象
+              if(Object.getOwnPropertyNames(Shadow).length !== 0){
+                let ShadowObj = Shadow.InnerShadow === undefined ? Shadow.OuterShadow : Shadow.InnerShadow
+                let shadowType = Shadow.InnerShadow === undefined ? "" : "inset"
+                tableStyle.Shadow = `${ShadowObj.OffsetX}px ${ShadowObj.OffsetY}px ${parseInt(ShadowObj.BlurRadius)}px ${ShadowObj.Color} ${shadowType}`
+              }else{
+                tableStyle.Shadow = ""
+              }
+              //字体渐变
+              if(fontColor.ColorType == 'SolidColor'){
+                tableStyle.fontColor = this.formatColor(fontColor.Data.Color);
+                tableStyle.backgroundClip = "none"
+                tableStyle.textFillColor = this.formatColor(fontColor.Data.Color)
+              }else{
+                let backgroundColor = ''
+                for(let g=0;g< fontColor.Data.GradientStops.length;g++){
+                  let gradient2 = fontColor.Data.GradientStops[g]
+                  backgroundColor = backgroundColor + ',' + gradient2.Color + ' ' + parseInt(gradient2.Offset*100) + '%'
+                }
 
-            tableStyle.fontColor = '-webkit-linear-gradient(' + parseInt(fontColor.Data.Angel) + 'deg' + backgroundColor + ')';
-            tableStyle.backgroundClip = "text"
-            tableStyle.textFillColor = "transparent"
-          }
-          //背景渐变色
-          if (background.ColorType === "SolidColor") {
-            tableStyle.Background = this.formatColor(background.Data.Color)
-          } else {
-            let backColor = ''
-            for (var h1 = 0; h1 < background.Data.GradientStops.length; h1++) {
-              let gradient = background.Data.GradientStops[h1]
-              backColor = backColor + ',' + gradient.Color + ' ' + parseInt(gradient.Offset * 100) + '%'
-            }
-            tableStyle.Background = '-webkit-linear-gradient(' + parseInt(background.Data.Angel) + 'deg' + backColor + ')';
-          }
-          //边框渐变
-          if (BorderBrush.ColorType == 'SolidColor') {
-            tableStyle.BorderBrush = this.formatColor(BorderBrush.Data.Color);
-          } else {
-            let borderColor = ''
-            for (let g = 0; g < BorderBrush.Data.GradientStops.length; g++) {
-              let gradient = BorderBrush.Data.GradientStops[g]
-              borderColor = borderColor + ',' + gradient.Color + ' ' + parseInt(gradient.Offset * 100) + '%'
-            }
-            tableStyle.BorderBrush = '-webkit-linear-gradient(' + parseInt(BorderBrush.Data.Angel) + 'deg' + borderColor + ')';
-          }
-          let gridList = [], //整理后的
-            len = 1, //每组长度（不包含边距）
-            row = 4, //行
-            column = 4, //列
-            groupLen = row * column //每行的数据长度 12
-          for (let r = 0; r < row; r++) {
-            let rowList = []
-            for (let c = 0; c < column; c++) {
-              // let grid = []
-              for (let le = 0; le < len; le++) {
-                rowList.push({
-                  IsSetMatrix: false,
-                  Value: "",
-                  Background: tableStyle.Background,
-                  fontColor: tableStyle.fontColor,
-                  backgroundClip: tableStyle.backgroundClip,
-                  textFillColor: tableStyle.textFillColor,
-                  isChange: false
-                })
+                tableStyle.fontColor = '-webkit-linear-gradient('+ parseInt(fontColor.Data.Angel) +'deg'+backgroundColor+')';
+                tableStyle.backgroundClip = "text"
+                tableStyle.textFillColor = "transparent"
               }
-              if (c < (column - 1)) {
-                rowList.push({
-                  type: "spaceColumn",
-                  IsSetMatrix: false
-                })
+              //背景渐变色
+              if(background.ColorType === "SolidColor"){
+                tableStyle.Background = this.formatColor(background.Data.Color)
+              }else{
+                let backColor = ''
+                for(var h1=0;h1<background.Data.GradientStops.length;h1++){
+                  let gradient = background.Data.GradientStops[h1]
+                  backColor = backColor + ',' + gradient.Color + ' ' + parseInt(gradient.Offset*100) + '%'
+                }
+                tableStyle.Background = '-webkit-linear-gradient('+ parseInt(background.Data.Angel) +'deg'+backColor+')';
               }
-            }
-            gridList.push(rowList)
-            if (r < (row - 1)) {
-              gridList.push({
-                type: "spaceRow",
-                IsSetMatrix: false
-              })
-            }
-          }
-          tableStyle.gridList = gridList
-          this.dataValue.push(tableStyle)
-          break;
+              //边框渐变
+              if(BorderBrush.ColorType == 'SolidColor'){
+                tableStyle.BorderBrush = this.formatColor(BorderBrush.Data.Color);
+              }else{
+                let borderColor = ''
+                for(let g=0;g< BorderBrush.Data.GradientStops.length;g++){
+                  let gradient = BorderBrush.Data.GradientStops[g]
+                  borderColor = borderColor + ',' + gradient.Color + ' ' + parseInt(gradient.Offset*100) + '%'
+                }
+                tableStyle.BorderBrush = '-webkit-linear-gradient('+ parseInt(BorderBrush.Data.Angel) +'deg'+borderColor+')';
+              }
+                    let gridList = [], //整理后的
+                  len = 1, //每组长度（不包含边距）
+                  row = 4, //行
+                  column = 4, //列
+                  groupLen = row * column //每行的数据长度 12
+              for(let r=0; r < row; r++){
+                let rowList = []
+                for(let c=0; c < column; c++){
+                  // let grid = []
+                  for(let le=0; le < len; le++){
+                    rowList.push({
+                      IsSetMatrix:false,
+                      Value: "",
+                      Background: tableStyle.Background,
+                      fontColor: tableStyle.fontColor,
+                      backgroundClip: tableStyle.backgroundClip,
+                      textFillColor: tableStyle.textFillColor,
+                      isChange: false
+                    })
+                  }
+                  if(c < (column - 1)){
+                    rowList.push({
+                      type: "spaceColumn",
+                      IsSetMatrix: false
+                    })
+                  }
+                }
+                gridList.push(rowList)
+                if(r < (row - 1)){
+                  gridList.push({
+                    type: "spaceRow",
+                    IsSetMatrix: false
+                  })
+                }
+              }
+               tableStyle.gridList = gridList
+               this.dataValue.push(tableStyle)
+              break;
         }
       }
     },
     //16进制颜色转换
     formatColor(color) {
-      if (color.length === 9) {
+      if(color.length === 9){
         return '#' + color.slice(3) + color.slice(1, 3);
-      } else {
+      }else{
         return color
       }
     },
@@ -1312,163 +1235,163 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.TextBoxPop_outPop {
-  display: none;
-  width: 380px;
-  height: 190px;
-  box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.03);
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  z-index: 998;
-  background: #fff;
-  .TextBoxPop_btn {
-    overflow: hidden;
-    margin-top: 10px;
-    .TextBoxPop_confirm {
-      width: 305px;
-      height: 30px;
-      line-height: 30px;
-      background: #f3e3ad;
-      color: #ecaa4e;
-      margin-left: 30px;
-      text-align: center;
-      cursor: pointer;
-    }
-    .TextBoxPop_no {
-      width: 155px;
-      height: 30px;
-      float: left;
-      background: #e0e0e0;
-      color: #8e8e8e;
-      text-align: center;
-      line-height: 30px;
-      margin-left: 22px;
-      cursor: pointer;
-    }
-    .TextBoxPop_yes {
-      width: 155px;
-      height: 30px;
-      float: left;
-      background: #f3e3ad;
-      color: #ecaa4e;
-      margin-left: 5px;
-      text-align: center;
-      line-height: 30px;
-      cursor: pointer;
-    }
-  }
-  .TextBoxPop_conter {
-    //  font-size:16px;
-    //  width:90%;
-    //  margin:0 auto;
-    //  height:100px;
-    // //  padding-top:27px;
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
-    width: 100%;
-    height: 58%;
-    padding: 12px;
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-  }
-  .TextBoxPop_outHead {
-    width: 100%;
-    height: 30px;
-    background: #ffbc3d;
-    text-align: center;
-    line-height: 30px;
+.TextBoxPop_outPop{
+     display: none;
+     width:380px;
+     height:190px;
+     box-shadow: 2px 2px 8px 2px rgba(0,0,0,0.03);
+     position: absolute;
+     left:0;
+     right:0;
+     top:0;
+     bottom:0;
+     margin:auto;
+     z-index: 998;
+     background: #fff;
+     .TextBoxPop_btn{
+         overflow: hidden;
+         margin-top:10px;
+         .TextBoxPop_confirm{
+             width:305px;
+             height:30px;
+             line-height: 30px;
+              background: #F3E3AD;
+             color:#ECAA4E;
+             margin-left:30px;
+             text-align: center;
+             cursor: pointer;
+         }
+         .TextBoxPop_no{
+             width:155px;
+             height:30px;
+             float: left;
+              background: #E0E0E0;
+              color:#8E8E8E;
+              text-align: center;
+              line-height: 30px;
+              margin-left:22px;
+              cursor: pointer;
+         }
+         .TextBoxPop_yes{
+             width:155px;
+             height:30px;
+             float: left;
+             background: #F3E3AD;
+             color:#ECAA4E;
+             margin-left:5px;
+             text-align: center;
+              line-height: 30px;
+              cursor: pointer;
+         }
+     }
+     .TextBoxPop_conter{
+        //  font-size:16px;
+        //  width:90%;
+        //  margin:0 auto;
+        //  height:100px;
+        // //  padding-top:27px;
+        // display: flex;
+        // align-items: center;
+        // justify-content: center;
+        width: 100%;
+        height: 58%;
+        padding: 12px;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+     }
+     .TextBoxPop_outHead{
+         width:100%;
+         height:30px;
+         background: #FFBC3D;
+         text-align: center;
+         line-height: 30px;
 
-    .warning {
-      color: #fff;
-      margin-right: 5px;
-    }
-    .text {
-      font-size: 16px;
-      color: #fff;
-    }
-  }
+         .warning{
+           color:#fff;
+           margin-right:5px;
+         }
+         .text{
+           font-size: 16px;
+           color:#fff;
+         }
+     }
 }
-.commerPop_outPop {
-  width: 360px;
-  height: 190px;
-  box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 260px;
-  margin: auto;
-  z-index: 99;
-  background: #fff;
-  .commerPop_btn {
-    overflow: hidden;
-    margin-top: 10px;
-    .commerPop_confirm {
-      width: 305px;
-      height: 30px;
-      line-height: 30px;
-      background: #f3e3ad;
-      color: #ecaa4e;
-      margin-left: 30px;
+.commerPop_outPop{
+    width:360px;
+    height:190px;
+     box-shadow: 2px 2px 8px 2px rgba(0,0,0,0.1);
+     position: absolute;
+     left:0;
+     right:0;
+     top:260px;
+     margin:auto;
+     z-index: 99;
+     background: #fff;
+     .commerPop_btn{
+         overflow: hidden;
+         margin-top:10px;
+         .commerPop_confirm{
+             width:305px;
+             height:30px;
+             line-height: 30px;
+              background: #F3E3AD;
+             color:#ECAA4E;
+             margin-left:30px;
+             text-align: center;
+             cursor: pointer;
+         }
+         .commerPop_no{
+             width:155px;
+             height:30px;
+             float: left;
+              background: #E0E0E0;
+              color:#8E8E8E;
+              text-align: center;
+              line-height: 30px;
+              margin-left:22px;
+              cursor: pointer;
+         }
+         .commerPop_yes{
+             width:155px;
+             height:30px;
+             float: left;
+             background: #F3E3AD;
+             color:#ECAA4E;
+             margin-left:5px;
+             text-align: center;
+              line-height: 30px;
+              cursor: pointer;
+         }
+     }
+    .commerPop_conter{
+      font-size:16px;
+      width:100%;
+      height:100px;
       text-align: center;
-      cursor: pointer;
+      line-height: 100px;
     }
-    .commerPop_no {
-      width: 155px;
-      height: 30px;
-      float: left;
-      background: #e0e0e0;
-      color: #8e8e8e;
+    .commerPop_outHead{
+      width:100%;
+      height:30px;
+      background: #FFBC3D;
       text-align: center;
       line-height: 30px;
-      margin-left: 22px;
-      cursor: pointer;
+      .warning{
+        color:#fff;
+        margin-right:5px;
+      }
+      .text{
+        font-size: 16px;
+        color:#fff;
+      }
     }
-    .commerPop_yes {
-      width: 155px;
-      height: 30px;
-      float: left;
-      background: #f3e3ad;
-      color: #ecaa4e;
-      margin-left: 5px;
-      text-align: center;
-      line-height: 30px;
-      cursor: pointer;
-    }
-  }
-  .commerPop_conter {
-    font-size: 16px;
-    width: 100%;
-    height: 100px;
-    text-align: center;
-    line-height: 100px;
-  }
-  .commerPop_outHead {
-    width: 100%;
-    height: 30px;
-    background: #ffbc3d;
-    text-align: center;
-    line-height: 30px;
-    .warning {
-      color: #fff;
-      margin-right: 5px;
-    }
-    .text {
-      font-size: 16px;
-      color: #fff;
-    }
-  }
 }
-.matrixgrid {
+.matrixgrid{
   position: relative;
 
-  &::after {
+  &::after{
     content: "";
     position: absolute;
     left: 0;
@@ -1512,7 +1435,7 @@ export default {
     margin-right: 30px;
     text-decoration: inherit;
 
-    .matrixgrid-val {
+    .matrixgrid-val{
       position: relative;
       top: 50%;
       left: 50%;
@@ -1539,7 +1462,7 @@ export default {
       font-size: inherit;
       overflow: auto;
 
-      &:disabled {
+      &:disabled{
         &:hover {
           border-color: transparent;
           background: transparent;
@@ -1547,7 +1470,7 @@ export default {
       }
 
       &:hover {
-        border-color: #779aee;
+        border-color: #779AEE;
         background: #eff4fe;
       }
 
@@ -1569,8 +1492,8 @@ export default {
       background-size: 100% 100%;
       cursor: pointer;
 
-      &:disabled {
-        &:hover {
+      &:disabled{
+        &:hover{
           background: url(../../../assets/images/Default-shang.png) no-repeat;
           background-size: 100% 100%;
           cursor: default;
@@ -1594,8 +1517,8 @@ export default {
       background-size: 100% 100%;
       cursor: pointer;
 
-      &:disabled {
-        &:hover {
+      &:disabled{
+        &:hover{
           background: url(../../../assets/images/Default-xia.png) no-repeat;
           background-size: 100% 100%;
           cursor: default;

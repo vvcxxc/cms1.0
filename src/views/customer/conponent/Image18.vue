@@ -20,7 +20,7 @@
       </div>
   </div>
   <!-- 权限弹窗 -->
-  <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+  <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
         <div v-if="commerPopShow1" class="commerPop_outPop">
           <div class="commerPop_outHead">
               <i class="warning el-icon-warning"></i>
@@ -31,7 +31,7 @@
               <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
           </div>
           </div>
-  </div> -->
+  </div>
 
   </div>
 </template>
@@ -188,8 +188,7 @@ export default {
               if(EventType.length){
                self.jurisdictionShow(item).then(val => { 
                   if(self.CanExcuteShow){
-                    // self.commerPopShow1 = true
-                    self.$emit('showtip',self.lang.NoOperationAuthority)
+                    self.commerPopShow1 = true
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -203,8 +202,7 @@ export default {
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                          // self.commerPopShow1 = true
-                          self.$emit('showtip',self.lang.NoOperationAuthority)
+                          self.commerPopShow1 = true
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -237,8 +235,7 @@ export default {
               if(EventType.length){
                 self.jurisdictionShow(item).then(val => { 
                      if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                     }else{
                       for(var j=0;j<EventType.length;j++){
@@ -252,8 +249,7 @@ export default {
                if(EventType1.length){
                  self.jurisdictionShow(item).then(val => { 
                        if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                       }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -279,8 +275,7 @@ export default {
            if(EventType.length){
              this.jurisdictionShow(item).then(val => { 
                   if(this.CanExcuteShow){
-                        //  this.commerPopShow1 = true
-                         this.$emit('showtip',this.lang.NoOperationAuthority)
+                         this.commerPopShow1 = true
                          return
                    }else{
                      for(var j=0;j<EventType.length;j++){
@@ -295,8 +290,7 @@ export default {
 
         //确认
         Jurisdiction(){
-            //  this.commerPopShow1 = false
-            this.$emit('shownotip')
+             this.commerPopShow1 = false
         },
         //权限配置请求接口
         jurisdictionShow(item){
@@ -383,12 +377,10 @@ export default {
       },
       //条件判断方法
       judgeFun(data){
-        console.log('data==>',data)
-        console.log("11111111111111111111111111111111111")
+        // console.log('data==>',data)
         var TextAnimationListData = this.TextAnimationListData
         var aa
         this.ElementNameHas = ['1']
-        
         if(data.length==0){
           for(let f=0;f<this.Starr.length;f++){
             aa = '#' + this.Starr[f]
@@ -399,9 +391,6 @@ export default {
           //将请求回的值和json文件条件判断
           for(let i=0;i<data.length;i++){
               if(data[i].Value != null){
-      //            if(data[i].Name == "H1"){
-      //    debugger
-      //  }
                     var result
                     var resValue
                     var Runsymbol
@@ -416,7 +405,7 @@ export default {
                         resValue = 0
                     }else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                           resValue = data[i].Value
-                    }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
+                    }else if(typeof(Number(resValueNumber)) == 'number'){
                       resValue = Number(data[i].Value)
                     }else{
                       resValue = data[i].Value
@@ -428,7 +417,7 @@ export default {
                     }
                     else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                           ArrValue =  TextAnimationListData[i].Compare
-                    }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
+                    }else if(typeof(Number(resValueNumber)) == 'number'){
                       ArrValue = Number( TextAnimationListData[i].Compare)
                     }else{
                       ArrValue =  TextAnimationListData[i].Compare
@@ -463,7 +452,7 @@ export default {
                         for(var j=0;j<this.nullArr.length;j++){
                             if(cla == this.nullArr[j].ElementName){
                                   aa = '#' + cla
-                                   if(this.nullArr[j].ImageName == 'DynamicPicture.png'||this.nullArr[j].ImageName == 'DynamicPicture'){
+                                   if(this.nullArr[j].ImageName == 'DynamicPicture.png'){
                                       document.querySelector(aa).src= require(`../../../assets/images/DynamicPicture.png`)
                                     }else{
                                      document.querySelector(aa).src= `/ViewImage/${this.name}/${this.nullArr[j].ImageName}`
@@ -481,8 +470,7 @@ export default {
                           if(TextAnimationListData[i].ElementName == this.nullArr[q].ElementName){
                             var cla1 = TextAnimationListData[i].ElementName
                             aa = '#' + cla1
-                            
-                            if(this.nullArr[j].ImageName == 'DynamicPicture.png'||this.nullArr[j].ImageName == 'DynamicPicture'){
+                            if(this.nullArr[j].ImageName == 'DynamicPicture.png'){
                               document.querySelector(aa).src= require(`../../../assets/images/DynamicPicture.png`)
                             }else{
                              document.querySelector(aa).src= `/ViewImage/${this.name}/${this.nullArr[j].ImageName}`
@@ -508,8 +496,6 @@ export default {
                   data: this.resTagName
               }).then(res => {
                 this.resData.push(res.data.data)
-                console.log( " this.resTagName",this.resTagName)
-                console.log()
                 this.judgeFun(res.data.data)
               })
               .catch(function(error) {
@@ -520,7 +506,6 @@ export default {
     },
       //websocket触发该方法
      axioImg2(resArr){
-       console.log("resArr1111",resArr)
        //防止多次触发
           if(this.resTagName){
             let index = this.resTagName.indexOf(resArr.name)
@@ -536,16 +521,13 @@ export default {
               return
             }
           }
-           
           //改变值执行方法
           if(this.resData.length){
-           
             for(let z=0;z<this.resData[0].length;z++){
                if(resArr.name == this.resData[0][z].Name){
                  this.resData[0][z].Value = resArr.value
                }
              }
-             
              this.judgeFun(this.resData[0]) 
           }
     },

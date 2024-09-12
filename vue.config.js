@@ -16,7 +16,7 @@
 const webpack = require('webpack')
 module.exports = {
     publicPath: './',
-    productionSourceMap: false, //生产环境是否生产syourceMap文件,设置为false可减小打包后的体积
+    productionSourceMap: true, //生产环境是否生产syourceMap文件,设置为false可减小打包后的体积
     devServer: {
         // 项目运行自动打开浏览器
         open: true,
@@ -24,26 +24,24 @@ module.exports = {
             '/api': {
                 //这里最好有一个 /
                 // 'http://192.168.1.123:8807'
-                // 192.168.2.134:8802
-                 target: 'http://192.168.2.37:8802/', // 后台接口域名
-                  ws: true, //如果要代理 websockets，配置这个参数
+                target: 'http://192.168.2.7:8804', // 后台接口域名
+                ws: true, //如果要代理 websockets，配置这个参数
                 secure: false, // 如果是https接口，需要配置这个参数
                 changeOrigin: true, //是否跨域
                 pathRewrite: {
                     '^/api': '/api',
                 }
-            },
-            '/(ISAPI|SDK|webSocketVideoCtrlProxy)': {
-                target: 'http://127.0.0.1:5050', // 摄像头nginx接口地址
-                ws: true, //如果要代理 websocket
-                secure: false, // 如果是https接口，需要配置这个参数
-                changeOrigin: true, //是否跨域
-                pathRewrite: {
-                    '^/ISAPI': '/ISAPI',
-                    '^/SDK': '/SDK',
-                    '^/webSocketVideoCtrlProxy': '/webSocketVideoCtrlProxy'
-                }
-            },
+            }
+            // '/api': {
+            //     //这里最好有一个 /
+            //     target: 'http://192.168.1.237:8802', // 后台接口域名
+            //     ws: true, //如果要代理 websockets，配置这个参数
+            //     secure: false, // 如果是https接口，需要配置这个参数
+            //     changeOrigin: true, //是否跨域
+            //     pathRewrite: {
+            //         '^/api': '/api'
+            //     }
+            // }
         }
     },
     css: {
@@ -63,19 +61,22 @@ module.exports = {
             .end()
     },
     configureWebpack: {
-        devtool: 'source-map',
-        externals: [
-            {
-                './cptable': 'var cptable'
-            }
-        ],
+
+          
         plugins: [
-            new webpack.ProvidePlugin({
-                $: "jquery",
-                jQuery: "jquery",
-                "windows.jQuery": "jquery"
-            })
+
+                  new webpack.ProvidePlugin({
+
+                         $: "jquery",
+
+                        jQuery: "jquery",
+
+                         "windows.jQuery": "jquery"
+
+                       })
+
+                
         ]
-    },
-    transpileDependencies: []
+
+    }
 };

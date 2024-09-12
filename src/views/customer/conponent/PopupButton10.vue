@@ -15,15 +15,11 @@
           + (item.height - item.BorderThickness * 2) + 'px; width:'+ item.width + 'px; height:'
           + item.height + 'px; borderRadius:' + item.radiusLeft + 'px ' + item.radiusTop + 'px ' 
           + item.radiusRight + 'px ' + item.radiusButton + 'px; fontFamily:'+ item.family + '; fontSize:'
-          + item.fontSize + 'px; opacity:' + item.opacity + ';boxSizing:border-box;'
-          + 'transform:rotate('
-          + item.rotate + 'deg);overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow+';zIndex:'+item.ZIndex
-          + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
-          + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`
-          /* + `;${item.showBorder ? `border: ${item.BorderThickness}px solid ${item.borderStyle}` : `padding: ${item.BorderThickness}px`}`
-          + `;${item.showBack ? `border: ${item.BorderThickness}px solid ${item.borderStyle}`: `background: ${item.BorderBrush}`}`  */">
+          + item.fontSize + 'px; opacity:' + item.opacity + ';boxSizing:border-box;padding:' 
+          +item.BorderThickness + 'px;background:' + item.BorderBrush + '; transform:rotate(' 
+          + item.rotate + 'deg);overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow+';zIndex:'+item.ZIndex">
 
-          <span class="contenText" style="display: flex; justify-content:center; align-items: center" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto;line-height:'
+          <span class="contenText" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto;line-height:'
           +item.height +'px;color:'+item.Foreground + ';fontWeight:'+item.Blod + ';background:'
           +item.backgroundColor+';-webkit-background-clip:'+item.clipText">{{item.text}}</span>
           <div class="conten" :style="'width:100%;height:100%;background:' + item.Background + ';borderRadius:' 
@@ -32,7 +28,7 @@
           </div>
       </div>
        <!-- 权限弹窗 -->
-      <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:99">
+      <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:99">
             <div v-if="commerPopShow1" class="commerPop_outPop">
             <div class="commerPop_outHead">
                 <i class="warning el-icon-warning"></i>
@@ -43,10 +39,12 @@
                 <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
             </div>
             </div>
-      </div> -->
+      </div>
     </div>
-         <div class="Pop10" v-if="isShow">
-            <div  style="position:absolute;left:0;top:0;right:0;bottom:0;z-index:99999;"></div>
+
+            <!-- 弹窗 -->
+        <div class="Pop10">
+            <div v-if="isShow" style="position:absolute;left:0;top:0;right:0;bottom:0;z-index:99999;"></div>
             <div  v-drag v-for="(item,index) in PopList22" :key="index" :class="'popbox' +item.ElementName" 
               class="popbox" :style="'width:' + (item.viewWidth) + 'px; height:' 
               + item.viewHeight + 'px; position:absolute; left:' + item.viewpositionX + 'px; top:'
@@ -60,7 +58,6 @@
             </div>
         </div>
       </div>
-
   </div>
 </template>
 
@@ -157,11 +154,10 @@ export default {
           viewtitle:Poplist[j].viewtitle,
           viewWidth:Poplist[j].viewWidth,
           viewHeight:Poplist[j].viewHeight,
-          viewName:Poplist[j].viewName.replace(/\.view$/i,''),
+          viewName:Poplist[j].viewName.slice(0,name.length-5),
           viewpositionX:Poplist[j].viewpositionX,
           viewpositionY:Poplist[j].viewpositionY,
         }
-        console.log("vvvv222222",Popvalue)
         this.PopList.push(Popvalue)
       }
       if(this.textblockData.length != 0){
@@ -175,8 +171,7 @@ export default {
       }
     },
     Jurisdiction(){
-      // this.commerPopShow1 = false
-      this.$emit('shownotip')
+      this.commerPopShow1 = false
     },
      jurisdictionShow(item){
           return new Promise((resolve, reject) => {
@@ -227,8 +222,7 @@ export default {
               if(EventType.length){
                self.jurisdictionShow(item).then(val => { 
                   if(self.CanExcuteShow){
-                    // self.commerPopShow1 = true
-                    self.$emit('showtip',self.lang.NoOperationAuthority)
+                    self.commerPopShow1 = true
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -242,8 +236,7 @@ export default {
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                          // self.commerPopShow1 = true
-                          self.$emit('showtip',self.lang.NoOperationAuthority)
+                          self.commerPopShow1 = true
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -276,8 +269,7 @@ export default {
               if(EventType.length){
                 self.jurisdictionShow(item).then(val => { 
                      if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                     }else{
                       for(var j=0;j<EventType.length;j++){
@@ -291,8 +283,7 @@ export default {
                if(EventType1.length){
                  self.jurisdictionShow(item).then(val => { 
                        if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                       }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -318,8 +309,7 @@ export default {
            if(EventType.length){
              this.jurisdictionShow(item).then(val => { 
                   if(this.CanExcuteShow){
-                        //  this.commerPopShow1 = true
-                        this.$emit('showtip',this.lang.NoOperationAuthority)
+                         this.commerPopShow1 = true
                          return
                    }else{
                      for(var j=0;j<EventType.length;j++){
@@ -334,7 +324,6 @@ export default {
 
     //弹窗按钮
     popbox(item){
-      
                  for(let i=0;i<this.PopList.length;i++){
                    var dom = item.class
                    if(this.PopList[i].ElementName == dom){
@@ -345,15 +334,12 @@ export default {
                               this.PopList22.push(JSON.parse(poplist))
                               this.popdata = this.PopList[i].viewName
                               this.popShow = true
-                              console.log(this.dataValue)
-                              console.log(this.PopList22)
                               this.isShow = true
                               this.$nextTick(()=>{
                                 document.querySelector('.popbox').style.display = 'block'
                               })
                             }else{
-                                // this.commerPopShow1 = true
-                                this.$emit('showtip',this.lang.NoOperationAuthority)
+                                this.commerPopShow1 = true
                             }
                           })
                      }
@@ -459,29 +445,23 @@ export default {
                 backgroundColor = '-webkit-linear-gradient('+lagel1+'deg'+backgroundColor+')';
         }
           //边框色渐变
-          let showLinear = false
-          let linearStyle = ''
           if(borderbrushArr.ColorType == 'SolidColor'){
               borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
           }else{
-                 // 此处为渐变色
-                 let linearColor = ''
+                  borderColor = ''
                   lagel3 = borderbrushArr.Data.Angel.toFixed(0)
               for(var f2=0;f2<borderbrushArr.Data.GradientStops.length;f2++){
                   gradient3 = borderbrushArr.Data.GradientStops[f2]
-                  linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                  borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
               }
-                  // borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
-                  showLinear = true
-                  borderColor = 'transparent'
-                  linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
+                  borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
           }
         //背景色渐变
         if(backgroundArr.ColorType == 'SolidColor'){
             backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
             if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-              // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
-              }
+                borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+            }
         }else{
                 backColor = ''
                 lagel2 = backgroundArr.Data.Angel.toFixed(0)
@@ -517,9 +497,7 @@ export default {
           Shadow:Shadow,
           Shadow2:Shadow2,
           Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-          ZIndex:this.ZIndex,
-          showLinear,
-          linearStyle
+          ZIndex:this.ZIndex
         }
         this.dataValue.push(value)
       }
@@ -533,11 +511,8 @@ export default {
   cursor: pointer;
 }
 .PopupButton10a:hover{
-  // background-color: #71A2C7ff !important;
-  // background: #71A2C7ff !important;
   background-color: #71A2C7ff !important;
-  background: #4EBAF3ff !important;
-  border-color: #71A2C7 !important;
+  background: #71A2C7ff !important;
 }
 
 .PopupButton10a:hover .conten{

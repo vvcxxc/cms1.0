@@ -9,29 +9,23 @@
     <div>
         <div v-for="(item,index) in dataValue" :key="index">
             <div v-if="show"
-                 :class="item.class" 
-                 @dblclick="opendb(item)" 
-                 @contextmenu.prevent 
-                 @mouseup="seupClick(item,$event)"
-                 @mousedown="downFun(item,$event)" 
-                 name="cornerbutton" class="CornerButton6aa" 
+                 :class="item.class" @dblclick="opendb(item)" @contextmenu.prevent @mouseup="seupClick(item,$event)"
+                 name="cornerbutton" class="CornerButton6aa" @mousedown="downFun(item,$event)" 
                 :style="'position:absolute;' + 'left:' + item.left + 'px; top:' + item.top 
                 + 'px; text-align:center; line-height:' + (item.height - item.BorderThickness * 2) 
                 + 'px; width:'+ item.width + 'px; height:'+ item.height + 'px; borderRadius:' 
                 + item.radiusLeft + 'px ' + item.radiusTop + 'px ' + item.radiusRight + 'px ' 
                 + item.radiusButton + 'px; fontFamily:'+ item.family + '; fontSize:'+ item.fontSize 
                 + 'px; opacity:' + item.opacity + '; transform:rotate(' + item.rotate + 'deg);'
-                + 'boxSizing:border-box;'
-                + 'overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow+';zIndex:'+item.ZIndex
-                + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
-                + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`">
-                <span class="contenText" style="display: flex; justify-content:center; align-items: center" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto'
-                 + ';color:' + item.Foreground+';fontWeight:' + item.Blod + ';background:'
-                +item.backgroundColor+';-webkit-background-clip:'+item.clipText">{{item.text}}</span>
-
+                + 'boxSizing:border-box;padding:' + item.BorderThickness + 'px;background:' + item.BorderBrush 
+                + ';overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow + ';zIndex:'+item.ZIndex"
+            >
+                <span class="contenText" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto;line-height:'
+                +item.height + 'px;color:' + item.Foreground+';fontWeight:' + item.Blod">{{item.text}}</span>
                 <div class="conten" :style="'width:100%;height:100%;background:' + item.Background + ';borderRadius:' 
                     + (Number(item.radiusLeft) -1) + 'px ' + (Number(item.radiusTop) -1) + 'px ' + (Number(item.radiusRight) -1) + 'px ' 
                     + (Number(item.radiusButton) -1) + 'px;boxShadow:' + item.Shadow2">
+                   
                 </div>
             </div>
           
@@ -144,38 +138,15 @@ export default {
         commerYesFun(){
               this.commerPopShow = false
                 //请求接口
-                                        this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags`,
-                                  data:this.commonValue
-                             }).then((res1)=>{
-                                  if(res1.data.code === 0){
-                                this.commerPopShow = false
-                                 this.commerPopShow1value =  '该账户无操作权限'
-                                  this.$axios({
+                this.$axios({
                     method: 'post',
                     url: '/api/Base/PostIOServiceTest',
                     data:this.commonValue
                 }).then(res => {
+                    console.log('res111',res)
                 }).catch(function(error) {
-                    console.log('err',error);
+                console.log(error);
                 });
-                            //   this.$axios({                      //下发请求接口
-                            //       method: 'post',
-                            //       url: '/api/Base/PostIOServiceTest',
-                            //       data:item.commonIDarr
-                            //   }).then(res => {
-                            //       console.log('res',res)
-                            //   }).catch(function(error) {
-                            //     console.log('err',error);
-                            //   });
-                                  }else{
-                       console.log("res1",res1)
-                               this.commerPopShow1 = true   
-                               this.commerPopShow1value = res1.data.msg
-                                  }
-                               
-                              })
         },
         //确认
         Jurisdiction(){
@@ -341,7 +312,7 @@ export default {
         },
 
                 //下发
-             issueFun(item){
+        issueFun(item){
             console.log('item66',item)
               if(item.commonIDarr.length !=0){
                       if(!this.CanExcuteShow){
@@ -351,16 +322,6 @@ export default {
                               this.commonValue = item.commonIDarr
                           }else{
                               this.commerPopShow = false
-                                this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags?tagname=${item.commonIDarr[0].Name}&value=${item.commonIDarr[0].Value}`,
-                                  data:item.commonIDarr
-                             }).then((res1)=>{
-                                 console.log("res1",res1.data)
-                                  if(res1.data.code === 0){
-                                this.commerPopShow = false
-                                 this.commerPopShow1value =  '该账户无操作权限'
-                              console.log('66666',item.commonIDarr)
                               this.$axios({                      //下发请求接口
                                   method: 'post',
                                   url: '/api/Base/PostIOServiceTest',
@@ -370,13 +331,6 @@ export default {
                               }).catch(function(error) {
                                 console.log('err',error);
                               });
-                                  }else{
-                       console.log("res1",res1)
-                               this.commerPopShow1 = true   
-                               this.commerPopShow1value = res1.data.msg
-                                  }
-                               
-                              })
                           }
                       }else{
                           this.commerPopShow1 = true
@@ -488,30 +442,22 @@ export default {
                                     backgroundColor = '-webkit-linear-gradient('+lagel1+'deg'+backgroundColor+')';
                             }
                             //边框色渐变
-                            let showLinear = false
-                            let linearStyle = ''
                             if(borderbrushArr.ColorType == 'SolidColor'){
                                 borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                             }else{
-                                 // 此处为渐变色
-                                    let linearColor = ''
-                                    // borderColor = ''
+                                    borderColor = ''
                                     lagel3 = borderbrushArr.Data.Angel.toFixed(0)
                                 for(var f2=0;f2<borderbrushArr.Data.GradientStops.length;f2++){
                                     gradient3 = borderbrushArr.Data.GradientStops[f2]
-                                    // borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
-                                    linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                                    borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
                                 }
-                                showLinear = true
-                                // borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
-                                borderColor = 'transparent'
-                                linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
+                                    borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
                             }
                             //背景色渐变
                             if(backgroundArr.ColorType == 'SolidColor'){
                                 backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                                 if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                                    // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                                    borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                                 }
                             }else{
                                     backColor = ''
@@ -551,9 +497,7 @@ export default {
                                 Shadow:Shadow,
                                 Shadow2:Shadow2,
                                  Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                                ZIndex:this.ZIndex,
-                                showLinear,
-                                linearStyle,
+                                ZIndex:this.ZIndex
                             };
                             this.dataValue.push(value);
                            
@@ -605,28 +549,22 @@ export default {
                                             backgroundColor = '-webkit-linear-gradient('+lagel1+'deg'+backgroundColor+')';
                                     }
                                     //边框色渐变
-                                    let showLinear = false
-                                    let linearStyle = ''
                                     if(borderbrushArr.ColorType == 'SolidColor'){
                                         borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                                     }else{
-                                            // 此处为渐变色
-                                            let linearColor = ''
+                                            borderColor = ''
                                             lagel3 = borderbrushArr.Data.Angel.toFixed(0)
                                         for(var f1=0;f1<borderbrushArr.Data.GradientStops.length;f1++){
                                             gradient3 = borderbrushArr.Data.GradientStops[f1]
-                                            linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                                            borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
                                         }
-                                            // borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
-                                            showLinear = true
-                                            borderColor = 'transparent'
-                                            linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
+                                            borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
                                     }
                                     //背景色渐变
                                     if(backgroundArr.ColorType == 'SolidColor'){
                                         backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                                         if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                                            // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                                            borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                                         }
                                     }else{
                                             backColor = ''
@@ -667,9 +605,7 @@ export default {
                                     Shadow:Shadow,
                                     Shadow2:Shadow2,
                                      Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                                    ZIndex:this.ZIndex,
-                                    showLinear,
-                                    linearStyle,
+                                    ZIndex:this.ZIndex
                                 };
                                 this.dataValue.push(value5);
                             }
@@ -721,28 +657,22 @@ export default {
                             backgroundColor = '-webkit-linear-gradient('+lagel1+'deg'+backgroundColor+')';
                     }
                         //边框色渐变
-                        let showLinear = false
-                        let linearStyle = ''
                         if(borderbrushArr.ColorType == 'SolidColor'){
                             borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                         }else{
-                                // 此处为渐变色
-                                let linearColor = ''
+                                 borderColor = ''
                                  lagel3 = borderbrushArr.Data.Angel.toFixed(0)
                              for(var f=0;f<borderbrushArr.Data.GradientStops.length;f++){
                                 gradient3 = borderbrushArr.Data.GradientStops[f]
-                                linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                                borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
                             }
-                                // borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
-                                showLinear = true
-                                borderColor = 'transparent'
-                                linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
+                                borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
                         }
                     //背景色渐变
                     if(backgroundArr.ColorType == 'SolidColor'){
                         backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                         if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                            // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                            borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                         }
                     }else{
                             backColor = ''
@@ -781,9 +711,7 @@ export default {
                         Shadow:Shadow,
                         Shadow2:Shadow2,
                          Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                         ZIndex:this.ZIndex,
-                         showLinear,
-                        linearStyle,
+                         ZIndex:this.ZIndex
                     };
                     this.dataValue.push(value8);
                 }
@@ -803,11 +731,8 @@ export default {
 }
 
 .CornerButton6aa:hover{
-//   background-color: #71A2C7ff !important;
-//   background: #71A2C7ff !important;
   background-color: #71A2C7ff !important;
-  background: #4EBAF3ff !important;
-  border-color: #71A2C7 !important;
+  background: #71A2C7ff !important;
 }
 
 .CornerButton6aa:hover .conten{

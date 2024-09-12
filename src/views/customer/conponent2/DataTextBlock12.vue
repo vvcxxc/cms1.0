@@ -16,18 +16,15 @@
       @mouseup="seupClick(item,$event)"
       :style="'width:' + item.width + 'px; height:' + item.height + 'px; position:absolute; left:' 
       + item.left + 'px; top:' + item.top + 'px; transform:rotate(' + item.rotate + 'deg); opacity:' + item.opacity 
-      + '; fontFamily:' + item.fontFamily + '; fontSize:' + item.FontSize + 'px;'
-      + 'textAlign:center; lineHeight:' + (item.height - item.BorderThickness * 2) 
-      + 'px;zIndex:'+item.ZIndex+';boxSizing:border-box;'
-      + 'overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow
-      + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
-      + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`
-      /* + `;${item.showBorder ? `border: ${item.BorderThickness}px solid ${item.borderStyle}` : `padding: ${item.BorderThickness}px`}`  */">
+      + '; fontFamily:' + item.fontFamily + '; fontSize:' + item.FontSize + 'px; background:' + item.BorderBrush
+      + ';textAlign:center; lineHeight:' + (item.height - item.BorderThickness * 2) 
+      + 'px;zIndex:'+item.ZIndex+';boxSizing:border-box;padding:'+ item.BorderThickness 
+      + 'px;overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow">
             <div :class="'aa'+item.class" name="datatextblock" class="aaDataTextBlock121aa" 
             :style="'color:'+ item.Foreground +';width:100%;height:100%;background:' 
             + item.Background +';boxShadow:'+item.Shadow+';fontWeight:' + item.Blod 
             + ';text-decoration:' + item.TextDecorations +';'">
-              {{item.text}}</div>
+              {{text}}</div>
       </div>
     </div>
 
@@ -208,15 +205,7 @@ export default {
       }
     },
     methods: {
-      getPointNum(num, n) {
-			 if(isNaN(num)||num===null){
-		     return null
-	         }else{
-             
-		     return Number(num).toFixed(n)
-             }
-		  },
-            //页面初始化
+      //页面初始化
       init(){
         this.dataValue = []
         this.data = this.dae
@@ -1035,7 +1024,7 @@ export default {
                           resValue = 0
                       }else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                             resValue = data[i].Value
-                      }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
+                      }else if(typeof(Number(resValueNumber)) == 'number'){
                         resValue = Number(data[i].Value)
                       }else{
                         resValue = data[i].Value
@@ -1047,7 +1036,7 @@ export default {
                       }
                       else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                             ArrValue =  ColorAnimationList[i].Compare
-                      }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
+                      }else if(typeof(Number(resValueNumber)) == 'number'){
                         ArrValue = Number( ColorAnimationList[i].Compare)
                       }else{
                         ArrValue =  ColorAnimationList[i].Compare
@@ -1192,7 +1181,7 @@ export default {
               var fix = Number(this.digit[i])
               var num = data[i].Value
               Number(num).toFixed(fix)
-                    document.querySelector(Dom).innerHTML =   this.getPointNum(Number(num),fix)
+                    document.querySelector(Dom).innerHTML =  Number(num).toFixed(fix)
               }else{
                   var num1 = data[i].Value
                   var value = /Date/
@@ -1470,28 +1459,22 @@ export default {
                 Shadow = InnerShadow
             }
               //边框色渐变
-              let showLinear = false
-              let linearStyle = ''
                if(borderbrushArr.ColorType == 'SolidColor'){
                    borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                }else{
-                      // 此处为渐变色
-                      let linearColor = ''
+                       borderColor = ''
                        lagel1 = borderbrushArr.Data.Angel.toFixed(0)
                    for(var f1=0;f1<borderbrushArr.Data.GradientStops.length;f1++){
                        gradient1 = borderbrushArr.Data.GradientStops[f1]
-                       linearColor = linearColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
+                       borderColor = borderColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
                    }
-                      //  borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
-                      showLinear = true
-                      borderColor = 'transparent'
-                      linearStyle = `linear-gradient(-${Number(lagel1) - 90}deg ${linearColor}) 1`;
+                       borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
                }
              //背景色渐变
             if(backgroundArr.ColorType == 'SolidColor'){
                 backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                  if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                    // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                    borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                 }
             }else{
                     backColor = ''
@@ -1538,10 +1521,7 @@ export default {
                   Shadow:Shadow,
                   Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
                   TextDecorations:this.textblockData[i].PropertyList.TextDecorations == 'False' ? 'none' : 'underline',
-                  ZIndex:this.ZIndex,
-                  text:this.Sarr.includes(this.textblockData[i].Name)?'Loading...':'数值显示',
-                  showLinear,
-                  linearStyle,
+                  ZIndex:this.ZIndex
                 }
                 this.dataValue.unshift(value)
           }
@@ -1756,10 +1736,10 @@ export default {
     cursor: pointer;
     box-sizing: border-box;
 }
-// .DataTextBlock121aa1:hover{
-//   background-color: #BEE6FD !important;
-//   background: #BEE6FD !important;
-// }
+.DataTextBlock121aa1:hover{
+  background-color: #BEE6FD !important;
+  background: #BEE6FD !important;
+}
  .showWindow2,
  .showWindow{
   position: absolute;

@@ -6,9 +6,9 @@
  * @LastEditTime: 2020-11-12 19:49:02
  -->
 <template>
-    <div class="container lookcontentw">
+    <div class="container lookcontentw" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
         <div class="cover11" v-if="tipchange"></div>
-        <div class="tip"  v-show="tipchange" :style="{zoom:a11}">
+        <div class="tip" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" v-show="tipchange" :style="{zoom:a11}">
             <div
                 class="tiphead"
                 style="position:absolute;width: 380px;height: 40px;"
@@ -55,17 +55,6 @@
                             <!-- <img :src="hao" alt /> -->
                             {{lang.FormulaManage_Template}}
                         </div>
-
-                        <el-button size="small" class="table_btn" type="primary" @click="exportExcel">导出</el-button>
-                        <el-upload
-                            style="float: right"
-                            action="#"
-                            :show-file-list="false"
-                            :http-request="uploadFile"
-                        >
-                            <el-button size="small" class="table_btn" type="primary">导入</el-button>
-                        </el-upload>
-
                     </div>
                     <el-table
                         ref="multipleTable3"
@@ -79,10 +68,9 @@
                         @row-click="handleRowChange"
                         :row-style="{ height: 50 * a11 + 'px' }"
                          :header-cell-style="{
-                    background:
-                        $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
-                    color: $store.state.color == 'grey' ? '#000' : '#fff',
-                    'border-left': '1px solid #cccccc',
+                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+                    color:($store.state.color=='grey')?'#000':'#fff',
+                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
                     height: 50 * a11 + 'px',
                     padding: '0'
                 }"
@@ -151,10 +139,9 @@
                         @row-click="handleRowChange1"
                         :row-style="{ height: 50 * a11 + 'px' }"
                       :header-cell-style="{
-                    background:
-                        $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
-                    color: $store.state.color == 'grey' ? '#000' : '#fff',
-                    'border-left': '1px solid #cccccc',
+                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+                    color:($store.state.color=='grey')?'#000':'#fff',
+                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
                     height: 50 * a11 + 'px',
                     padding: '0'
                 }"
@@ -243,10 +230,9 @@
                         highlight-current-row
                         @row-click="handleRowChange2"
                          :header-cell-style="{
-                    background:
-                        $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
-                    color: $store.state.color == 'grey' ? '#000' : '#fff',
-                    'border-left': '1px solid #cccccc',
+                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+                    color:($store.state.color=='grey')?'#000':'#fff',
+                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
                     height: 50 * a11 + 'px',
                     padding: '0'
                 }"
@@ -313,7 +299,7 @@
             <div class="lookcontent">
                 <div class="lookselect"  :style="{height:436*a11+'px'}">
                     <div class="search" :style="{zoom:a11}">
-                        <span style="color:blue">{{lang.FormulaManage_FormulaTemplateSetting_FormulaProject}}</span>
+                        <span :style="{color: $store.state.color === 'blackBlue' ? '#769EFF' : 'blue'}">{{lang.FormulaManage_FormulaTemplateSetting_FormulaProject}}</span>
                         <span class="lookname">{{lang.FormulaManage_FormulaTemplateSetting_FormulaTemplateName}}</span>
                         <input type="text" v-model="workname" />
                         <span class="add" @click="addproject">{{lang.FormulaManage_FormulaTemplateSetting_Add}}</span>
@@ -329,7 +315,13 @@
                             style="width: 100%"
                             @select="lookdataselect"
                             @select-all="lookdataselect1"
-                            :header-cell-style="{background:(($store.state.color=='grey')?'#D9DBDE':'#E1EDFA'),color:(($store.state.color=='grey')?'#000':'#5281E5'), 'border-left':'1px solid #cccccc', height: 50*a11+'px',padding:'0'}"
+                            :header-cell-style="{
+                                background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#344C8F' : '#5a6c98'),
+                                color:($store.state.color=='grey')?'#000':'#fff',
+                                'border-left': $store.state.color==='blackBlue' ? '1px solid #8B98B8' : '1px solid #cccccc',
+                                height: 50*a11+'px',
+                                padding:'0'
+                            }"
                         >
                             <template slot="empty">
                                 <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
@@ -468,7 +460,13 @@
                             style="width: 100%"
                             @select="select"
                             @select-all="selectall"
-                          :header-cell-style="{background:(($store.state.color=='grey')?'#D9DBDE':'#E1EDFA'),color:(($store.state.color=='grey')?'#000':'#5281E5'), 'border-left':'1px solid #cccccc', height: 50*a11+'px',padding:'0'}"
+                          :header-cell-style="{
+                            background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#344C8F' : '#5a6c98'),
+                            color:($store.state.color=='grey')?'#000':'#fff',
+                            'border-left': $store.state.color==='blackBlue' ? '1px solid #8B98B8' : '1px solid #cccccc',
+                              height: 50*a11+'px',
+                              padding:'0'
+                            }"
                         >
                             <template slot="empty">
                                 <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
@@ -614,7 +612,7 @@ import XLSX from 'xlsx';
 import Index from '../../pages/Index.vue';
 export default {
     components: {
-        // Index
+        Index
         // MyPage
     },
     data() {
@@ -750,7 +748,6 @@ export default {
     beforeDestroy(){
         //清除定时器
         clearInterval(this.time)
-        clearInterval(this.proInterval)
     },
     watch: {
          tableData(val){
@@ -942,43 +939,16 @@ export default {
             this.watchdata();
         }
     },
+    beforeDestroy(){
+  clearInterval(this.time)
+         clearInterval(this.proInterval)
+    },
     beforeRouteLeave (to, from, next){
          clearInterval(this.time)
          clearInterval(this.proInterval)
          next();
     },
     methods: {
-        uploadFile(file) {
-            let $this = this
-            let formData = new FormData()
-            formData.append('file', file.file)
-            this.$axios({
-                method: 'post',
-                url: `/api/FormulaManage/ImportFormulas`,
-                data: formData
-            }).then(res => {
-                if (res.data.code === 0) {
-                    $this.getonedata();
-                    $this.confirm_Pop2($this, '导入成功')
-                } else {
-                    $this.confirm_Pop2($this, res.data.msg)
-                }
-            })
-        },
-        exportExcel() {
-            let $this = this
-            this.$axios({
-                method: 'post',
-                url: `/api/FormulaManage/ExportAllFormulas`,
-                responseType: 'blob',
-            }).then(res => {
-                if (res.status === 200) {
-                    $this.downloadFile(res.data, '配方.xlsx')
-                } else {
-                    $this.confirm_Pop2($this, res.data.msg)
-                }
-            })
-        },
        move(name, namehead) {
           //  $(`.${name}`).addClass('center')
            let left = ($(`.${name}`).width())/2+'px'
@@ -2361,18 +2331,22 @@ export default {
             // this.haschange = 1;
         },
         preonetable() {
+            
             console.log(this.lookdata);
             console.log(this.pdif);
+
             if(this.lookdata.length === 0){
-                setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-                        left: `calc(50% - ${($('.tip').width() / 2) * this.a11}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) * this.a11}px)`
-                    });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
+                             setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
                 this.tipword = this.lang.FormulaManage_HT_FormulaTemplateSetting_ProjectCannotBeNull
                 return;
             }
@@ -2652,14 +2626,14 @@ export default {
             for (i in this.comitdata) {
                 this.comitdata[i].AlarmMsg = this.comitdata[i].Address;
                 this.comitdata[i].PID = this.uuid();
-                // if (
-                //     this.comitdata[i].DateType == this.lang['F32位浮点数IEEE754'] ||
-                //     this.comitdata[i].DateType == this.lang['F64位浮点数IEEE754']
-                // ) {
-                //     this.comitdata[i].Digit = 2;
-                // } else {
-                //     this.comitdata[i].Digit = '';
-                // }
+                if (
+                    this.comitdata[i].DateType == this.lang['F32位浮点数IEEE754'] ||
+                    this.comitdata[i].DateType == this.lang['F64位浮点数IEEE754']
+                ) {
+                    this.comitdata[i].Digit = 2;
+                } else {
+                    this.comitdata[i].Digit = '';
+                }
                 this.comitdata[i].ProjectContent = this.comitdata[i].Name;
                 this.comitdata[i].OriginalProjectContent = this.comitdata[i].Name;
                 this.comitdata[i].ProjectDescription = this.comitdata[i].Descript;
@@ -3511,31 +3485,71 @@ export default {
         },
         oneadd() {
             if(!this.xjmbshow){
-                this.tipword = this.lang.NoOperationAuthority;
-                setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-                        left: `calc(50% - ${($('.tip').width() / 2) * this.a11}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) * this.a11}px)`
-                    });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-                this.pdyd5 = true;
-                return
+            this.tipword = this.lang.NoOperationAuthority;
+             setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+            this.pdyd5 = true;
+            return
             }
-            setTimeout(() => {
+            var aa = [
+                {
+                    PID: '12bf8ed3-024b-47ca-b9fe-a03544ccc33e',
+                    VariableName: 'aa5',
+                    ProjectContent: 'aa5',
+                    Unit: null,
+                    Digit: null,
+                    ProjectDescription: null,
+                    ContentGroup: '1',
+                    CID: '00000000-0000-0000-0000-000000000000',
+                    Value: '',
+                    Address: null,
+                    DataType: this.lang['二进制变量'],
+                    Descript: null,
+                    Number: 1
+                },
+                {
+                    PID: '7246a0a2-6750-4ee9-9041-21b26d981709',
+                    VariableName: 'aa4',
+                    ProjectContent: 'aa4',
+                    Unit: null,
+                    Digit: null,
+                    ProjectDescription: null,
+                    ContentGroup: '2',
+                    CID: '00000000-0000-0000-0000-000000000000',
+                    Value: '',
+                    Address: null,
+                    DataType: this.lang['二进制变量'],
+                    Descript: null,
+                    Number: 2
+                }
+            ];
+            console.log('aa', aa);
+          setTimeout(() => {
                 $('.lookq').css({
-                    left: `calc(50% - ${($('.look').width() / 2) * this.a11}px)`,
-                    top: `calc(50% - ${($('.look').height() / 2) * this.a11}px)`
-                });
-                this.move('lookq', 'looktop')
-                this.onetable = true;
-            })
+                            left: `calc(50% - ${($('.look').width() / 2) *
+                                this.a11}px)`,
+                            top: `calc(50% - ${($('.look').height() / 2) *
+                                this.a11}px)`
+                        });
+                        this.move('lookq', 'looktop')
+         this.onetable = true;
+          })
+            
             this.pdyd1 = true;
             this.lookfalse = false;
             this.lookdata = [];
             this.workname = '';
+
+            //  console.log('aa',this.Project)
         },
         twoadd() {
                if(!this.xjglshow){
@@ -3989,9 +4003,9 @@ export default {
         }
           },
     },
-    computed:{
+     computed:{
         VpowerData() {
-            return this.$store.state.btnPowerData;
+                    return this.$store.state.btnPowerData;
         },
     },
     created(){
@@ -4168,7 +4182,34 @@ export default {
     }
 };
 </script>
-
+<style lang='scss'>
+.container{
+    &.blackBlueBg{
+        .el-table{
+            tr{
+                &.current-row{
+                    &>td{
+                        background-color: #273E7E!important;
+                    }
+                }
+                td{
+                    background-color: #0E1732;
+                    border-color: transparent;
+                    border-bottom-color: #1D2B55;
+                }
+            }
+        }
+        .el-table--striped .el-table__body tr.el-table__row--striped td{
+            background-color: #121C3A;
+            border-bottom-color: #1D2B55;
+        }
+        .el-table--enable-row-hover .el-table__body tr:hover > td{
+            background-color: #2A3A65;
+        }
+    }
+    
+}
+</style>
 <style lang="scss" scoped>
 .file {
     position: relative;
@@ -4208,6 +4249,157 @@ export default {
     background-color: #ececec;
     padding: 20px;
     width: 100%;
+
+    &.blackBlueBg{
+        background-color: #06091F;
+        
+        .lookselect,.Unqualifiedsetinon{
+            .el-table__body-wrapper{
+                background-color: #1A2544!important;
+                
+                tr{
+                    td{
+                        background-color: #1A2544!important;
+                        border-bottom-color: #445992!important;
+                    }
+                }
+            }
+        }
+        .onelook,.onework{
+            color: #fff;
+            background: #233056;
+            .onelookcontent1{
+                .line{
+                    .aa{
+                        background-color: #445992;
+                    }
+                }
+            }
+        }
+        .look{
+            color: #fff;
+            background: #233056;
+
+            .lookselect{
+                background: #28355B;
+                border-color: #445992;
+
+                .table{
+                    border-color: transparent;
+                    background-color: #28355B;
+                    padding: 0;
+                }
+            }
+            .lookcontent{
+                .search{
+                    .lookfor1{
+                        background-color: transparent;
+                        border-color: #fff;
+                        color: #fff;
+                    }
+                    .add{
+                        background-color: transparent!important;
+                        border: 1px solid #46BE05!important;
+                        color: #46BE05!important;
+                    }
+                    .del{
+                        background-color: #4F5871!important;
+                        border: 1px solid #4F5871!important;
+                        color: #fff!important;
+                    }
+                }
+            }
+        }
+        select{
+            background: #1D2846;
+            border-color: #445992!important;
+            color: #C6CAD8;
+
+            &:focus{
+                border-color: #B2C0E4!important;
+            }
+        }
+        .ti{
+            background: #1D2846!important;
+            border-color: #445992;
+
+            &:focus{
+                border-color: #B2C0E4;
+            }
+        }
+
+        .page{
+            color: #9AA3BE;
+
+            .btn{
+                background-color: transparent;
+                border-color: #9AA3BE!important;
+                color: #9AA3BE;
+
+                &.nopage{
+                    border-color: #2E437E!important;
+                    color: #8798C9!important;
+                }
+            }
+        }
+
+        .red{
+            color: #EB4444!important;
+        }
+
+        .table{
+            background-color: #081027;
+            border: 1px solid #1E244B;
+
+            .up{
+                background-color: transparent;
+                border-color: #5C6A95;
+            }
+
+            .firsthead{
+                color: #4270E4;
+            }
+
+            .firstselect{
+                background-color: #0B1530;
+                border: 1px solid #38415A;
+
+                .firstadd{
+                    border-color: #46BE05;
+                    color: #46BE05;
+                    background-color: transparent;
+                }
+                .firstchange,.firstchange1{
+                    border-color: #FDAE22;
+                    color: #FDAE22;
+                    background-color: transparent;
+                }
+            }
+
+            .important,.export{
+                color: #4270E4;
+                background-color: transparent;
+            }
+            .file,.export{
+                border-color: #4270E4;
+                background-color: transparent;
+            }
+            .formulaname{
+                color: #fff;
+            }
+            
+            .firsttable{
+                background-color: #081027;
+                border-color: #1E244B;
+            }
+        }
+        .first{
+            td{
+                border-color: transparent;
+            }
+        }
+    }
+
     .table {
         width: 100%;
         height: 100%;
@@ -4951,6 +5143,10 @@ img {
     box-shadow: 0px 0px 8px black;
     background-color: #f3f3f4;
 
+    &.blackBlueBg{
+        background-color: #3A3C41;
+    }
+
     .messhead{
         position:absolute;
         width: 100%;
@@ -5212,20 +5408,7 @@ input{
  width: 590px;
  height: 260px;
 }
-
-.table_btn.el-button {
-    width: 80px;
-    float: right;
-    height: 38px;
-    background-color: #fff;
-    border: 2px solid #386df0;
-    text-align: center;
-    color: #386df0;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    line-height: 22px;
-    margin: 10px 10px 0 10px;
-}
 </style>
+
+
+

@@ -17,7 +17,7 @@
     <LineVue1 :dataId="dataId" :dae="data"></LineVue1>
       <RectangleVue2 :dataId="dataId" :dae="data"></RectangleVue2>
       <EllipseVue3 :dataId="dataId" :dae="data"></EllipseVue3>
-      <StaticImage4     ref="StaticImage4" :dataId="dataId" :name="name" :dae="data"></StaticImage4>
+      <StaticImage4 :dataId="dataId" :name="name" :dae="data"></StaticImage4>
       <StaticTextBlock5 :dataId="dataId" :dae="data"></StaticTextBlock5>
       <CornerButton6 ref="aaCornerButton6" :dataId="dataId" :dae="data"></CornerButton6>
       <PressButton7 ref="PressButton7" :dataId="dataId" :dae="data"></PressButton7>
@@ -56,29 +56,18 @@
       <!-- 矩阵控件 -->
       <MatrixGrid ref="MatrixGrid" :dataId="dataId" :dae="data"/>
       <MatrixGridSet ref="MatrixGridSet" :dataId="dataId" :dae="data"/>
-      <Camera
-        :dataId="dataId"
-        :name="name"
-        :dae="data"
-      ></Camera>
-      <Combinecombobox
-                    ref="aaCombinecombobox"
-                    :dataId="dataId"
-                    :dae="data"
-                ></Combinecombobox>
+
       <div v-if="isTipsPop" class="mask_box"></div>
   </div>
 </div>
 </template>
 <script>
-import Combinecombobox from  './conponent2/combinecombobox'
 import LineVue1 from './conponent2/LineVue1'
 import MatrixGrid from './conponent2/MatrixGrid'
 import MatrixGridSet from './conponent2/MatrixGridSet'
 import RectangleVue2 from './conponent2/RectangleVue2.vue'
 import EllipseVue3 from './conponent2/EllipseVue3.vue'
 import StaticImage4 from './conponent2/StaticImage4.vue'
-import Camera from './conponent2/Camera.vue'
 import StaticTextBlock5 from './conponent2/StaticTextBlock5.vue'
 import CornerButton6 from './conponent2/CornerButton6.vue'
 import PressButton7 from './conponent2/PressButton7.vue'
@@ -116,7 +105,6 @@ import '../../../public/jquery.signalR-2.4.1.js'
 export default {  
   components: {   //弹窗页面没有弹窗控件
     LineVue1,
-    Combinecombobox,
     MatrixGrid,         //单点矩阵
     MatrixGridSet,      //矩阵设定
     RectangleVue2,
@@ -153,7 +141,6 @@ export default {
     MobileProductsT,
     DynamicProducts,
     Video,
-    Camera, // 摄像头
     TipsPop     //权限提示弹窗
     },
     props:['popdata'],
@@ -196,13 +183,6 @@ export default {
             }
           }
       },
-      '$store.state.staticImagearr':{
-            //静态图片数据
-            deep:true,
-            handler:function(n){
-              this.$refs.StaticImage4.axioImg2(this.$store.state.staticImagearr);
-            }
-        },
     //图表定时触发监听
      "$store.state.setTiemValue": {
       deep: true,
@@ -292,9 +272,6 @@ export default {
             }
             if(this.$refs.MatrixGridSet){
               this.$refs.MatrixGridSet.axioImg2(data)
-            }
-            if(this.$refs.aaCombinecombobox){
-              this.$refs.aaCombinecombobox.axioImg2(data)
             }
       }
     },
@@ -465,7 +442,7 @@ export default {
     //       }).then(res => {
       this.$axios({
               method: 'post',
-              url: `/api/Main/Main_GetViewJson?argViewName=${encodeURIComponent(name)}`,
+              url: `/api/Main/Main_GetViewJson?argViewName=${name}`,
           }).then(res => {
           this.$nextTick(()=>{
             var data =res.data
@@ -567,7 +544,6 @@ export default {
 
       //查询赋值
      queryassignmentFun(name,value){
-       
         window.$.connection.subchart.server.query(this.name,name,value,localStorage.getItem('currentLang'))
      },
       //图表实时、查询连接
@@ -676,7 +652,6 @@ export default {
               for(let k=0;k<ziarr.length;k++){
                 var aab = this.$refs.DateTimePicker282.TimeValueFun()
                 var bbb =this.$refs.Combobox299.TimeValueFun()
-                var bbb1 =this.$refs.aaCombinecombobox.TimeValueFun()
                 var ccb = this.$refs.textimport27a.TimeValueFun()
                 var vv = ''
                 if(ziarr[k].split(',')[1].trim() =='SelectedValue'){    //下拉框   //根据类型和控件名赋值
@@ -850,11 +825,10 @@ export default {
           console.log()
            endarr = [{ScriptContent:undefined,WebProperty:[]}]
          }
-      
+          console.log('脚本事件',endarr)
           // 修改过的
            if(this.$store.state.websocketsShow != null){
-                 console.log('脚本事件111111111',endarr)
-             window.$.connection.chart.server.ExecuteScript(endarr)
+             window.$.connection.chart.server.ExecuteScript(endarr,localStorage.getItem('currentLang'))
            }
      },
 
@@ -871,7 +845,6 @@ export default {
          }else if(this.pressType == '2'){
            pressType = '2'
          }
-          console.log("进来吧122211")
          this.$refs.PressButton7.pressFun(this.scriptItem,pressType)
        }
        if(this.scriptType == '数值显示'){

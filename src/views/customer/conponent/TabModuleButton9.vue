@@ -16,14 +16,10 @@
       + 'px; width:'+ item.width + 'px; height:'+ item.height + 'px; borderRadius:' + item.radiusLeft + 'px ' 
       + item.radiusTop + 'px ' + item.radiusRight + 'px ' + item.radiusButton + 'px; fontFamily:'+ item.family 
       + '; fontSize:'+ item.fontSize + 'px; opacity:' + item.opacity + '; transform:rotate(' + item.rotate 
-      + 'deg); cursor:pointer;zIndex:2' +';boxSizing:border-box'
-      + ';overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow +';zIndex:'+item.ZIndex
-      + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
-      + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`
-      /* + `;${item.showBorder ? `border: ${item.BorderThickness}px solid ${item.borderStyle}` : `padding: ${item.BorderThickness}px`}`
-      + `;${item.showBack ? `border: ${item.BorderThickness}px solid ${item.borderStyle}`: `background: ${item.BorderBrush}`}`  */">
+      + 'deg); cursor:pointer;zIndex:2; background:' + item.BorderBrush + ';boxSizing:border-box;padding:'
+      + item.BorderThickness + 'px;overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow +';zIndex:'+item.ZIndex">
 
-      <span class="contenText" style="display: flex; justify-content:center; align-items: center" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto;line-height:'
+      <span class="contenText" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto;line-height:'
       +item.height + 'px;color:'+item.Foreground + ';fontWeight:'+item.Blod + ';background:'
       +item.backgroundColor+';-webkit-background-clip:'+item.clipText">{{item.text}}</span>
       
@@ -35,7 +31,7 @@
     </div>
   
   <!-- 弹窗提示 -->
-  <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+  <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
     <div v-if="commerPopShow1" class="commerPop_outPop">
     <div class="commerPop_outHead">
         <i class="warning el-icon-warning"></i>
@@ -47,7 +43,7 @@
         <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
     </div>
     </div>
-  </div> -->
+  </div>
 
 
   </div>
@@ -135,8 +131,7 @@ export default {
     // 提示弹窗确认
     Jurisdiction(){
        this.$parent.loding()
-      // this.commerPopShow1 = false
-      this.$emit('shownotip')
+      this.commerPopShow1 = false
     },
     //权限配置请求接口
     jurisdictionShow(item){
@@ -191,7 +186,7 @@ export default {
               if(EventType.length){
                self.jurisdictionShow(item).then(val => { 
                   if(self.CanExcuteShow){
-                    self.$emit('showtip',self.lang.NoOperationAuthority) 
+                    self.commerPopShow1 = true
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -206,7 +201,7 @@ export default {
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                          self.$emit('showtip',self.lang.NoOperationAuthority) 
+                          self.commerPopShow1 = true
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -239,7 +234,7 @@ export default {
               if(EventType.length){
                 self.jurisdictionShow(item).then(val => { 
                      if(self.CanExcuteShow){
-                         self.$emit('showtip',self.lang.NoOperationAuthority) 
+                        self.commerPopShow1 = true
                         return
                     }else{
                       for(var j=0;j<EventType.length;j++){
@@ -255,7 +250,7 @@ export default {
                if(EventType1.length){
                  self.jurisdictionShow(item).then(val => { 
                        if(self.CanExcuteShow){
-                         self.$emit('showtip',self.lang.NoOperationAuthority) 
+                        self.commerPopShow1 = true
                         return
                       }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -282,7 +277,7 @@ export default {
            if(EventType.length){
              this.jurisdictionShow(item).then(val => { 
                   if(this.CanExcuteShow){
-                          this.$emit('showtip',this.lang.NoOperationAuthority) 
+                         this.commerPopShow1 = true
                          return
                    }else{
                      for(var j=0;j<EventType.length;j++){
@@ -297,7 +292,6 @@ export default {
 
 
     Tab(item){
-      // debugger
           this.jurisdictionShow(item).then(val => { 
               if(!this.CanExcuteShow){
                 const _this = this
@@ -327,13 +321,13 @@ export default {
                             
                               if(menuArr[u].id == res.data.data){
                                   this.$parent.loding()
-                                  this.$router.push({path:encodeURIComponent(menuArr[u].to.replace('/', '')),query: {id:menuArr[u].id}});
+                                  this.$router.push({path:menuArr[u].to,query: {id:menuArr[u].id}});
                               }
                               if(menuArr[u].children != null){
                                 for(var y=0;y<menuArr[u].children.length;y++){
                                   if(menuArr[u].children[y].id == res.data.data){
                                     this.$parent.loding()
-                                    this.$router.push({path:encodeURIComponent(menuArr[u].children[y].to.replace('/', '')),query: {id:menuArr[u].children[y].id}})
+                                    this.$router.push({path:menuArr[u].children[y].to,query: {id:menuArr[u].children[y].id}})
                                   }
                                 }
                               }
@@ -352,7 +346,7 @@ export default {
 
               }else{
                 this.$parent.loding()
-                 this.$emit('showtip',this.lang.NoOperationAuthority) 
+                this.commerPopShow1=true
               }
           })
 
@@ -430,29 +424,23 @@ export default {
         }
 
           //边框色渐变
-          let showLinear = false
-          let linearStyle = ''
          if(borderbrushArr.ColorType == 'SolidColor'){
              borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
          }else{
-                // 此处为渐变色
-                let linearColor = ''
+                 borderColor = ''
                  lagel3 = borderbrushArr.Data.Angel.toFixed(0)
              for(var f2=0;f2<borderbrushArr.Data.GradientStops.length;f2++){
                  gradient3 = borderbrushArr.Data.GradientStops[f2]
-                 linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                 borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
              }
-                //  borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
-                showLinear = true
-                borderColor = 'transparent'
-                linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
+                 borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
          }
         //背景色渐变
         if(backgroundArr.ColorType == 'SolidColor'){
             backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
             if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-              // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
-              }
+                borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+            }
         }else{
                 backColor = ''
                 lagel2 = backgroundArr.Data.Angel.toFixed(0)
@@ -506,9 +494,7 @@ export default {
           Shadow:Shadow,
           Shadow2:Shadow2,
           Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-          ZIndex:this.ZIndex,
-          showLinear,
-          linearStyle,
+          ZIndex:this.ZIndex
         }
         this.dataValue.push(value)
       }
@@ -523,11 +509,8 @@ export default {
   display: block;
 }
 .TabModuleButton90aa:hover{
-  // background-color: #71A2C7ff !important;
-  // background: #71A2C7ff !important;
   background-color: #71A2C7ff !important;
-  background: #4EBAF3ff !important;
-  border-color: #71A2C7 !important;
+  background: #71A2C7ff !important;
 }
 
 .TabModuleButton90aa:hover .conten{

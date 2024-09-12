@@ -21,7 +21,7 @@
   >{{text}}</div>
   </div>
     <!-- 权限弹窗 -->
-    <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+    <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
             <div v-if="commerPopShow1" class="commerPop_outPop">
             <div class="commerPop_outHead">
                 <i class="warning el-icon-warning"></i>
@@ -32,7 +32,7 @@
                 <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
             </div>
             </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -154,8 +154,7 @@ export default {
 
       //确认
         Jurisdiction(){
-            //  this.commerPopShow1 = false
-            this.$emit('shownotip')
+             this.commerPopShow1 = false
         },
         //权限配置请求接口
         jurisdictionShow(item){
@@ -211,8 +210,7 @@ export default {
               if(EventType.length){
                self.jurisdictionShow(item).then(val => { 
                   if(self.CanExcuteShow){
-                    // self.commerPopShow1 = true
-                    self.$emit('showtip',self.lang.NoOperationAuthority)
+                    self.commerPopShow1 = true
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -226,8 +224,7 @@ export default {
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                          // self.commerPopShow1 = true
-                          self.$emit('showtip',self.lang.NoOperationAuthority)
+                          self.commerPopShow1 = true
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -260,8 +257,7 @@ export default {
               if(EventType.length){
                 self.jurisdictionShow(item).then(val => { 
                      if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                     }else{
                       for(var j=0;j<EventType.length;j++){
@@ -275,8 +271,7 @@ export default {
                if(EventType1.length){
                  self.jurisdictionShow(item).then(val => { 
                        if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                       }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -302,8 +297,7 @@ export default {
            if(EventType.length){
              this.jurisdictionShow(item).then(val => { 
                   if(this.CanExcuteShow){
-                        //  this.commerPopShow1 = true
-                        this.$emit('showtip',this.lang.NoOperationAuthority)
+                         this.commerPopShow1 = true
                          return
                    }else{
                      for(var j=0;j<EventType.length;j++){
@@ -431,7 +425,6 @@ export default {
               document.querySelector(aa).style.borderRadius = '0px'
             }else if(type==4){
               document.querySelector(aa).style.border = '0px solid red'
-               document.querySelector(aa).style.background = 'rgba(0,0,0,0)'
             }
       },
       //条件判断方法
@@ -469,7 +462,7 @@ export default {
                           resValue = 0
                       }else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                             resValue = data[i].Value
-                      }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
+                      }else if(typeof(Number(resValueNumber)) == 'number'){
                         resValue = Number(data[i].Value)
                       }else{
                         resValue = data[i].Value
@@ -481,7 +474,7 @@ export default {
                         }
                         else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                               ArrValue =  TextAnimationListData[i].Compare
-                        }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
+                        }else if(typeof(Number(resValueNumber)) == 'number'){
                           ArrValue = Number( TextAnimationListData[i].Compare)
                         }else{
                           ArrValue =  TextAnimationListData[i].Compare

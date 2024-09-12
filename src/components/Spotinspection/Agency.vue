@@ -6,7 +6,7 @@
  * @LastEditTime: 2020-08-06 17:53:22
  -->
 <template>
-    <div class="public-table public-table1" @click="changeselect = false">
+    <div class="public-table public-table1" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" @click="changeselect = false">
           			<div class="loadcover" element-loading-spinner="el-icon-loading"
             element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
     width: 100%;
@@ -74,6 +74,8 @@
             <span class="sp4 title">{{lang.MaintenanceManage_ThisTimeStartTime1}}</span>
 
             <el-date-picker
+                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                 v-model="value1"
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -82,6 +84,8 @@
             ></el-date-picker>
             <span class="demonstration title" >-</span>
             <el-date-picker
+                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                 v-model="value2"
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -102,9 +106,10 @@
                 :style="{width: 1700*zoom+'px', fontSize: 14*zoom+'px'}"
                 border
                 highlight-current-row
-              :header-cell-style="{background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',
+              :header-cell-style="{
+                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
                     color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left':'1px solid #cccccc',
+                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
                     height:50*zoom+'px',
                     fontSize: 14*zoom+'px',
                     padding:'0'}"
@@ -900,20 +905,15 @@ export default {
                      }else if(items.Type==4){
                          
                          items.Referencearr = items.Reference.split('|')
-                        //  if(!items.Answer){
+                         if(!items.Answer){
                                items.check = []
                               items.Referencearr.forEach((item2)=>{
                                     items.check.push(0)
                               })
                            
-                        //  }else{
-                        //      let arr = items.Right.split('|')
-                        //      console.log('kkk',items.check,items.Right)
-                        //      items.check = []
-                        //      items.Referencearr.forEach((item2)=>{
-                        //         items.check.push(arr.some(_=>_==item2)?1:0)
-                        //      })
-                        //  }
+                         }else{
+                             items.check = items.Right.split(',')
+                         }
                      }
                      
                 })
@@ -965,20 +965,15 @@ export default {
                          items.Referencearr = items.Reference.split('|')
                      }else if(items.Type==4){
                          items.Referencearr = items.Reference.split('|')
-                        //  if(!items.Right){
+                         if(!items.Right){
                               items.check = []
                              items.Referencearr.forEach((item2)=>{
                                 items.check.push(0)
                              })
                             
-                        //  }else{
-                        //      let arr = items.Right.split('|')
-                        //      console.log('kkk',items.check,items.Right)
-                        //      items.check = []
-                        //      items.Referencearr.forEach((item2)=>{
-                        //         items.check.push(arr.some(_=>_==item2)?1:0)
-                        //      })
-                        //  }
+                         }else{
+                             items.check = items.Right.split(',')
+                         }
                      }
                      
                 })
@@ -1281,7 +1276,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         }
                     }
                      if(this.projectarr[c].Projects[i].Type==4){
-                        console.log('mmm', this.projectarr[c].Projects[i].check)
                        b.Answer = ''
                        b.Answer = this.projectarr[c].Projects[i].check.toString().replace(/,/g, "")
                     }
@@ -1499,14 +1493,25 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     }
 };
 </script>
-
+<style lang="scss">
+.public-table{
+    &.blackBlueBg{
+        .mx .el-radio__label{
+            color: #fff!important;
+        }
+        .mx .el-checkbox__label{
+            color: #fff!important;
+        }
+    }
+}
+</style>
 <style lang="scss" scoped>
 .public-table1{
 
     .el-radio__label{
         padding-left:5px;
     }
-
+    
 }
 
 </style>
@@ -1730,6 +1735,125 @@ select {
     }
     .page-container {
         height: 60px;
+    }
+
+    &.blackBlueBg{
+        .el-tree{
+            background: #1D2846;
+            color: #C6CAD8;
+        }
+
+        .seleword,.seleword2{
+            background: #1D2846;
+            border: 1px solid #445992;
+            color: #C6CAD8;
+        }
+        .search-container{
+            background: #0B1530;
+            border-color: #38415A;
+            color: #E4E4E4;
+            .selectword{
+                background: #1D2846;
+                border: 1px solid #445992;
+            }
+            .addBtn{
+                background-color: transparent;
+                border: 1px solid #46BE05;
+                color: #46BE05;
+            }
+            .deleteBtn{
+                background-color: #4F5871;
+                border: 1px solid #4F5871;
+                color: #fff;
+            }
+        }
+        .table-container{
+            border-color: transparent;
+        }
+        .img{
+            border-color: #5C6A95;
+            background-color: transparent;
+        }
+
+        .boxsad{
+            background: #233056;
+            color: #fff;
+        }
+
+        .twice{
+            background: #28355B;
+            border-color: #445992;
+        }
+        .mx1{
+            color: #fff;
+        }
+        .mx{
+            border-color: #445992;
+        }
+
+        .look{
+            background: #233056;
+
+            .lookselect{
+                background: #28355B;
+                border-color: #445992;
+                color: #fff;
+
+                .table{
+                    border-color: #2A3058;
+                }
+                .el-table--border th.gutter:last-of-type{
+                    background-color: #344c8f;
+                }
+            }
+        }
+
+        select{
+            background: #1D2846!important;
+            border-color: #445992;
+
+            &:disabled{
+                background: #35446D!important;
+                border-color: #445992;
+            }
+
+            &:focus{
+                border-color: #B2C0E4
+            }
+        }
+        .showtext{
+            color: #fff;
+        }
+        .el-checkbok{
+            color: #fff;
+
+            &:disabled{
+                color: #6D789A;
+            }
+        }
+
+        .sestion{
+            border-color: transparent;
+
+            .sestioncontain{
+                background: #233056;
+            }
+            span{
+                color:#fff;
+            }
+            .input1{
+                color: #C6CAD8;
+                background: #35446D;
+                border-color: #445992;
+            }
+            .hometop-title{
+                background-color: transparent;
+            }
+
+            .line{
+                background-color: #445992;
+            }
+        }
     }
 }
 .table-container .img {
@@ -2282,7 +2406,6 @@ img{
     text-overflow: ellipsis;
     overflow: hidden;
     word-break: break-all;
-    border: 1px solid rgb(244,244,244);
         img{
             position: absolute;
             right: 2px;

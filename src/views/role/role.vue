@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-27 14:17:12
  -->
 <template>
-	<div class="alarm-container">
+	<div class="alarm-container" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
 		<!-- <aside class="left-container">
 			<left-nav @tabComponent="tabComponent"></left-nav>
 		</aside> -->

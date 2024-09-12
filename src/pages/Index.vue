@@ -7,7 +7,7 @@
 <template>
     <div class="v-application" >
         <v-tool-bar class="v-tool-bar" ></v-tool-bar>
-        <main class="v-content">
+        <main class="v-content" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
             <div class="v-content__wrap">
                 <router-view></router-view>
             </div>
@@ -72,6 +72,10 @@ export default {
         display: flex;
         .v-content__wrap {
             flex: 1 1 auto;
+        }
+
+        &.blackBlueBg{
+            background-color: #06091F;
         }
     }
 }

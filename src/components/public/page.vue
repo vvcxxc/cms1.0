@@ -8,7 +8,7 @@
 <template>
 	<section class="page-container">
 		<div class="left">
-			{{lang.DataGrid_Reaction_HT_ATotalOf}}{{ pageData.TotalCount }}{{lang.DataGrid_Reaction_HT_RecordsAndTheCurrent}}{{ pageData.PageIndex }}{{lang.DataGrid_Reaction_Page}}
+			{{lang.DataGrid_Reaction_HT_ATotalOf}}{{ pageData.TotalCount }}{{lang.DataGrid_Reaction_HT_RecordsAndTheCurrent}}{ pageData.PageIndex }}{{lang.DataGrid_Reaction_Page}}
 			{{lang.DataGrid_Reaction_HT_ATotalOf}}{{ pageData.TotalPage }}{{lang.DataGrid_Reaction_HT_RecordsAnd}}{{ pageData.PageSize }}{{lang.DataGrid_Reaction_HT_PerPage}}
 		</div>
 		<div class="right">

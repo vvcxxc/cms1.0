@@ -7,70 +7,214 @@
  -->
 <template>
     <div class="public-table">
-        <div class="loadcover" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.4)"
-            v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
-                                                        width: 100%;
-                                                        height: 100%;
-                                                        top: 0;
-                                                        left: 0;"></div>
+        <div
+            class="loadcover"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.4)"
+            v-loading="this.$store.state.isShow"
+            v-show="this.$store.state.isShow"
+            style="
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+            "
+        ></div>
         <div class="search-container" :style="{ zoom }">
-            <my-search :searchList="searchList" :searchData="searchData" @setParams="setParams" @delFn="delFn"
-                @change="change"></my-search>
+            <my-search
+                :searchList="searchList"
+                :searchData="searchData"
+                @setParams="setParams"
+                @change="change"
+                :multipleSelection="multipleSelection"
+                @setTips="setTips"
+                @exportFn="exportFn"
+            ></my-search>
         </div>
         <div class="table-container">
-            <my-table :data="data" ref="table" :tableHead="tableHead" :tip="tip" @handleEdit="handleEdit"
-                @handleEdit1="handleEdit1" @selectFn="selectFn"></my-table>
+            <my-table
+                :data="data"
+                ref="table"
+                :tableHead="tableHead"
+                :tip="tip"
+                @handleEdit="handleEdit"
+                @handleEdit1="handleEdit1"
+                @handleSelectionChange="handleSelectionChange"
+            ></my-table>
         </div>
         <div class="pages-container">
             <my-page :pageData="pageData" @req="req"></my-page>
         </div>
-        <div class="look lookq" v-show="haschange" :style="{ width: 1330 * zoom + 'px', height: 730 * zoom + 'px' }">
+        <div
+            class="look lookq"
+            :class="{ blackBlueBg: $store.state.color === 'blackBlue' }"
+            v-show="haschange"
+            :style="{ width: 1330 * zoom + 'px', height: 730 * zoom + 'px' }"
+        >
             <div class="looktop" :style="{ zoom }"></div>
-            <div class="lookhead" :style="{ zoom }"
-                :class="[{ colordiv: $store.state.color == 'grey' }, { fcolor: $store.state.color == 'grey' }]">
+            <div
+                class="lookhead"
+                :style="{ zoom }"
+                :class="[
+                    { colordiv: $store.state.color == 'grey' },
+                    { fcolor: $store.state.color == 'grey' },
+                ]"
+            >
                 {{ lang.AlarmRecord_FaultRetrieva_FaultSearch }}
-                <img :src="no2" alt class="no1" @click="cancel" v-if="$store.state.color == 'grey'" />
+                <img
+                    :src="no2"
+                    alt
+                    class="no1"
+                    @click="cancel"
+                    v-if="$store.state.color == 'grey'"
+                />
                 <img :src="no" alt class="no1" @click="cancel" v-else />
             </div>
-            <div class="lookcontent" :style="{ padding: 30 * zoom + 'px', paddingBottom: 0 }">
+            <div
+                class="lookcontent"
+                :style="{ padding: 30 * zoom + 'px', paddingBottom: 0 }"
+            >
                 <div class="search" :style="{ zoom }">
-                    <input type="text" :placeholder="lang.AlarmRecord_Time_Keyword" v-model="keyword" />
-                    <input type="text" :placeholder="lang.AlarmRecord_FaultRetrieva_Description" class="inputname"
-                        v-model="AlarmMsg" />
-                    <span @click="search">{{ lang.AlarmRecord_FaultRetrieva_Select }}</span>
+                    <input
+                        type="text"
+                        :placeholder="lang.AlarmRecord_Time_Keyword"
+                        v-model="keyword"
+                    />
+                    <input
+                        type="text"
+                        :placeholder="
+                            lang.AlarmRecord_FaultRetrieva_Description
+                        "
+                        class="inputname"
+                        v-model="AlarmMsg"
+                    />
+                    <span @click="search">{{
+                        lang.AlarmRecord_FaultRetrieva_Select
+                    }}</span>
                 </div>
-                <div class="table atable" :style="{ height: 530 * zoom + 'px' }">
-                    <el-table :data="tableData" v-loading="this.$store.state.isShow"
-                        element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)"
-                        height="100%" border :style="{ width: '100%', fontSize: 14 * zoom + 'px' }"
-                        :header-cell-style="{ background: '#dcf0f9', color: '#5883e7', 'border-left': '1px solid #a7d0e2', height: 50 * zoom + 'px', padding: '0' }">
+                <div
+                    class="table atable"
+                    :style="{ height: 530 * zoom + 'px' }"
+                >
+                    <el-table
+                        :data="tableData"
+                        v-loading="this.$store.state.isShow"
+                        element-loading-spinner="el-icon-loading"
+                        element-loading-background="rgba(0, 0, 0, 0.8)"
+                        height="100%"
+                        border
+                        :style="{ width: '100%', fontSize: 14 * zoom + 'px' }"
+                        :header-cell-style="{
+                            background:
+                                $store.state.color === 'blackBlue'
+                                    ? '#344C8F'
+                                    : '#dcf0f9',
+                            color:
+                                $store.state.color === 'blackBlue'
+                                    ? '#fff'
+                                    : '#5883e7',
+                            'border-left':
+                                $store.state.color === 'blackBlue'
+                                    ? '1px solid #8B98B8'
+                                    : '1px solid #a7d0e2',
+                            height: 50 * zoom + 'px',
+                            padding: '0',
+                        }"
+                    >
                         <template slot="empty">
-                            <span>{{ lang.SCMSConsoleWebApiMySql_NoData }}</span>
+                            <span>{{
+                                lang.SCMSConsoleWebApiMySql_NoData
+                            }}</span>
                         </template>
-                        <el-table-column prop="AlarmSource" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Source"
-                            :width="zoom * 180" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="AlarmTime" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_AlarmTime"
-                            :width="zoom * 180" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="KeyWord" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_KeyWord"
-                            :width="zoom * 180" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="AlarmType" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Type"
-                            :width="zoom * 180" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="AlarmMsg" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Description"
-                            :width="zoom * 280" :show-overflow-tooltip="true">
+                        <el-table-column
+                            prop="AlarmSource"
+                            :label="
+                                lang.AlarmRecord_FaultRetrieva_DataGrid_Source
+                            "
+                            :width="zoom * 180"
+                            :show-overflow-tooltip="true"
+                        ></el-table-column>
+                        <el-table-column
+                            prop="AlarmTime"
+                            :label="
+                                lang.AlarmRecord_FaultRetrieva_DataGrid_AlarmTime
+                            "
+                            :width="zoom * 180"
+                            :show-overflow-tooltip="true"
+                        ></el-table-column>
+                        <el-table-column
+                            prop="KeyWord"
+                            :label="
+                                lang.AlarmRecord_FaultRetrieva_DataGrid_KeyWord
+                            "
+                            :width="zoom * 180"
+                            :show-overflow-tooltip="true"
+                        ></el-table-column>
+                        <el-table-column
+                            prop="AlarmType"
+                            :label="
+                                lang.AlarmRecord_FaultRetrieva_DataGrid_Type
+                            "
+                            :width="zoom * 180"
+                            :show-overflow-tooltip="true"
+                        ></el-table-column>
+                        <el-table-column
+                            prop="AlarmMsg"
+                            :label="
+                                lang.AlarmRecord_FaultRetrieva_DataGrid_Description
+                            "
+                            :width="zoom * 280"
+                            :show-overflow-tooltip="true"
+                        >
                             <template slot-scope="scope">
-                                <a href="javascript:void(0);" @click="getdata(scope.row)">{{ scope.row.AlarmMsg }}</a>
+                                <a
+                                    href="javascript:void(0);"
+                                    @click="getdata(scope.row)"
+                                    >{{ scope.row.AlarmMsg }}</a
+                                >
                             </template>
                         </el-table-column>
-                        <el-table-column prop="Reason" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Cause"
-                            :width="zoom * 280" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="AddPerson" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_User"
-                            :width="zoom * 180" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="DealPerson" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Processor"
-                            :width="zoom * 180" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="AddTime" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Addtime"
-                            :width="zoom * 180" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="FaultTreatment" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Method"
-                            :width="zoom * 260" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column
+                            prop="Reason"
+                            :label="
+                                lang.AlarmRecord_FaultRetrieva_DataGrid_Cause
+                            "
+                            :width="zoom * 280"
+                            :show-overflow-tooltip="true"
+                        ></el-table-column>
+                        <el-table-column
+                            prop="AddPerson"
+                            :label="
+                                lang.AlarmRecord_FaultRetrieva_DataGrid_User
+                            "
+                            :width="zoom * 180"
+                            :show-overflow-tooltip="true"
+                        ></el-table-column>
+                        <el-table-column
+                            prop="DealPerson"
+                            :label="
+                                lang.AlarmRecord_FaultRetrieva_DataGrid_Processor
+                            "
+                            :width="zoom * 180"
+                            :show-overflow-tooltip="true"
+                        ></el-table-column>
+                        <el-table-column
+                            prop="AddTime"
+                            :label="
+                                lang.AlarmRecord_FaultRetrieva_DataGrid_Addtime
+                            "
+                            :width="zoom * 180"
+                            :show-overflow-tooltip="true"
+                        ></el-table-column>
+                        <el-table-column
+                            prop="FaultTreatment"
+                            :label="
+                                lang.AlarmRecord_FaultRetrieva_DataGrid_Method
+                            "
+                            :width="zoom * 260"
+                            :show-overflow-tooltip="true"
+                        ></el-table-column>
                     </el-table>
                 </div>
                 <div class="page" :style="{ zoom }">
@@ -78,19 +222,32 @@
                 </div>
             </div>
         </div>
-        <div class="tip" ref="kongtiao3" v-show="tipchange" :style="{ zoom }">
+        <div
+            class="tip"
+            :class="{ blackBlueBg: $store.state.color === 'blackBlue' }"
+            ref="kongtiao3"
+            v-show="tipchange"
+            :style="{ zoom }"
+        >
             <div class="tiptop">
-                <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
+                <div
+                    class="tiphead"
+                    style="position: absolute; width: 380px; height: 40px"
+                ></div>
                 <img :src="gth" alt />
                 <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
             </div>
             <div class="tipcontanin">
                 <div class="tipword" v-if="deltrue">{{ tipword }}</div>
                 <div class="w" v-if="w1">{{ w }}</div>
-                <div class="tipdetermine" @click="tip2" v-if="deltrue">{{ lang.MessageBox_Confrim }}</div>
+                <div class="tipdetermine" @click="tip2" v-if="deltrue">
+                    {{ lang.MessageBox_Confrim }}
+                </div>
                 <div class="delclass" v-if="!deltrue">
                     <div class="one" @click="no1">{{ lang.MessageBox_NO }}</div>
-                    <div class="two" @click="yes1">{{ lang.MessageBox_YES }}</div>
+                    <div class="two" @click="yes1">
+                        {{ lang.MessageBox_YES }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -98,102 +255,205 @@
         <div class="cover3" v-if="tipchange"></div>
         <div class="cover4" v-if="error"></div>
         <div class="cover4" v-if="error1"></div>
-        <div class="errorsetion errorsetion1" v-show="error" ref="kongtiao4" :style="{ zoom }">
+        <div
+            class="errorsetion errorsetion1"
+            :class="{ blackBlueBg: $store.state.color === 'blackBlue' }"
+            v-show="error"
+            ref="kongtiao4"
+            :style="{ zoom }"
+        >
             <div class="errortop"></div>
-            <div class="errorhead"
-                :class="[{ colordiv: $store.state.color == 'grey' }, { fcolor: $store.state.color == 'grey' }]">
-                <span :class="[{ colordiv: $store.state.color == 'grey' }, { fcolor: $store.state.color == 'grey' }]">{{
-                    lang.AlarmRecord_FaultlDetail_Details }}</span>
-                <img :src="no2" alt class="no1" @click="error = false" v-if="$store.state.color == 'grey'" />
+            <div
+                class="errorhead"
+                :class="[
+                    { colordiv: $store.state.color == 'grey' },
+                    { fcolor: $store.state.color == 'grey' },
+                ]"
+            >
+                <span
+                    :class="[
+                        { colordiv: $store.state.color == 'grey' },
+                        { fcolor: $store.state.color == 'grey' },
+                    ]"
+                    >{{ lang.AlarmRecord_FaultlDetail_Details }}</span
+                >
+                <img
+                    :src="no2"
+                    alt
+                    class="no1"
+                    @click="error = false"
+                    v-if="$store.state.color == 'grey'"
+                />
                 <img :src="no" alt class="no1" @click="error = false" v-else />
             </div>
             <div class="errorcontent">
                 <div class="first">
                     {{ lang.AlarmRecord_FaultlDetail_Source }}
-                    <input type="text" v-model="changedata.AlarmSource" :disabled="disabled" />
+                    <input
+                        type="text"
+                        v-model="changedata.AlarmSource"
+                        :disabled="disabled"
+                    />
                 </div>
                 <div class="second">
                     <div class="fl">
                         {{ lang.AlarmRecord_FaultlDetail_AlarmTime }}
-                        <input type="text" v-model="changedata.AlarmTime" :disabled="disabled" />
+                        <input
+                            type="text"
+                            v-model="changedata.AlarmTime"
+                            :disabled="disabled"
+                        />
                     </div>
                     <div class="fr">
                         {{ lang.AlarmRecord_FaultlDetail_Recoverytime }}
-                        <input type="text" v-model="changedata.RecoverTime" :disabled="disabled" />
+                        <input
+                            type="text"
+                            v-model="changedata.RecoverTime"
+                            :disabled="disabled"
+                        />
                     </div>
                 </div>
                 <div class="second">
                     <div class="fl">
                         {{ lang.AlarmRecord_FaultlDetail_Type }}
-                        <input type="text" v-model="changedata.AlarmType" :disabled="disabled" />
+                        <input
+                            type="text"
+                            v-model="changedata.AlarmType"
+                            :disabled="disabled"
+                        />
                     </div>
                     <div class="fr">
                         {{ lang.AlarmRecord_FaultlDetail_Addtime }}
-                        <input type="text" v-model="changedata.AddTime" :disabled="disabled" />
+                        <input
+                            type="text"
+                            v-model="changedata.AddTime"
+                            :disabled="disabled"
+                        />
                     </div>
                 </div>
                 <div class="second">
                     <div class="fl">
                         {{ lang.AlarmRecord_FaultlDetail_User }}
-                        <input type="text" v-model="changedata.AddPerson" :disabled="disabled" />
+                        <input
+                            type="text"
+                            v-model="changedata.AddPerson"
+                            :disabled="disabled"
+                        />
                     </div>
                     <div class="fr">
                         {{ lang.AlarmRecord_FaultlDetail_Processor }}
-                        <input type="text" v-model="changedata.DealPerson" :disabled="disabled" />
+                        <input
+                            type="text"
+                            v-model="changedata.DealPerson"
+                            :disabled="disabled"
+                        />
                     </div>
                 </div>
                 <div class="third">
                     {{ lang.AlarmRecord_FaultlDetail_KeyWord }}
-                    <input type="text" v-model="changedata.KeyWord" :disabled="disabled" />
+                    <input
+                        type="text"
+                        v-model="changedata.KeyWord"
+                        :disabled="disabled"
+                    />
                 </div>
                 <div class="third">
                     {{ lang.AlarmRecord_FaultlDetail_Information }}
-                    <input type="text" v-model="changedata.AlarmMsg" :disabled="disabled" />
+                    <input
+                        type="text"
+                        v-model="changedata.AlarmMsg"
+                        :disabled="disabled"
+                    />
                 </div>
                 <div class="third">
                     {{ lang.AlarmRecord_FaultlDetail_Cause }}
-                    <input type="text" v-model="changedata.Reason" :disabled="disabled" />
+                    <input
+                        type="text"
+                        v-model="changedata.Reason"
+                        :disabled="disabled"
+                    />
                 </div>
                 <div class="third">
                     {{ lang.AlarmRecord_FaultlDetail_Method }}
-                    <input type="text" v-model="changedata.FaultTreatment" :disabled="disabled" />
+                    <input
+                        type="text"
+                        v-model="changedata.FaultTreatment"
+                        :disabled="disabled"
+                    />
                 </div>
             </div>
         </div>
-        <div class="errorsetion errorsetion2" v-show="error1" ref="kongtiao4"
-            :style="{ width: 900 * zoom + 'px', height: 740 * zoom + 'px' }">
+        <div
+            class="errorsetion errorsetion2"
+            :class="{ blackBlueBg: $store.state.color === 'blackBlue' }"
+            v-show="error1"
+            ref="kongtiao4"
+            :style="{ width: 900 * zoom + 'px', height: 740 * zoom + 'px' }"
+        >
             <div class="errortop" :style="{ zoom }"></div>
-            <div class="errorhead" :class="{ colordiv: $store.state.color == 'grey' }" :style="{ zoom }">
-                <span :class="{ fcolor: $store.state.color == 'grey' }">{{ errortitle }}</span>
-                <img :src="no2" alt class="no1" @click="error2" v-if="$store.state.color == 'grey'" />
+            <div
+                class="errorhead"
+                :class="{ colordiv: $store.state.color == 'grey' }"
+                :style="{ zoom }"
+            >
+                <span :class="{ fcolor: $store.state.color == 'grey' }">{{
+                    errortitle
+                }}</span>
+                <img
+                    :src="no2"
+                    alt
+                    class="no1"
+                    @click="error2"
+                    v-if="$store.state.color == 'grey'"
+                />
                 <img :src="no" alt class="no1" @click="error2" v-else />
             </div>
             <div class="errorcontent" :style="{ zoom }">
                 <div class="second">
                     <div class="fl">
                         {{ lang.AlarmRecord_FaultAddAndModify_Source }}
-                        <input type="text" v-model="changedata.AlarmTagName" disabled />
+                        <input
+                            type="text"
+                            v-model="changedata.AlarmTagName"
+                            disabled
+                        />
                     </div>
                     <div class="fr">
                         {{ lang.AlarmRecord_FaultAddAndModify_AlarmTime }}
-                        <input type="text" v-model="changedata.AlarmTime" disabled />
+                        <input
+                            type="text"
+                            v-model="changedata.AlarmTime"
+                            disabled
+                        />
                     </div>
                 </div>
                 <div class="second">
                     <div class="fl">
                         {{ lang.AlarmRecord_FaultAddAndModify_Type }}
                         <!-- <input type="text" v-model="changedata.OriginalAlarmType" disabled /> -->
-                        <input type="text" v-model="changedata.AlarmType" disabled />
+                        <input
+                            type="text"
+                            v-model="changedata.AlarmType"
+                            disabled
+                        />
                     </div>
                     <div class="fr">
                         {{ lang.AlarmRecord_FaultAddAndModify_Recoverytime }}
-                        <input type="text" v-model="changedata.RecoverTime" disabled />
+                        <input
+                            type="text"
+                            v-model="changedata.RecoverTime"
+                            disabled
+                        />
                     </div>
                 </div>
                 <div class="second">
                     <div class="fl">
                         {{ lang.AlarmRecord_FaultAddAndModify_User }}
-                        <input type="text" v-model="changedata.OperatorName" disabled />
+                        <input
+                            type="text"
+                            v-model="changedata.OperatorName"
+                            disabled
+                        />
                     </div>
                     <div class="fr">
                         {{ lang.AlarmRecord_FaultAddAndModify_Processor }}
@@ -218,35 +478,34 @@
                     <input type="text" v-model="changedata.FaultTreatment" />
                 </div>
                 <div class="btn">
-                    <div class="btn1" @click="error2">{{ lang.AlarmRecord_FaultAddAndModify_Cancel }}</div>
+                    <div class="btn1" @click="error2">
+                        {{ lang.AlarmRecord_FaultAddAndModify_Cancel }}
+                    </div>
 
-                    <div class="btn2" @click="btn">{{ lang.AlarmRecord_FaultAddAndModify_Confirm }}</div>
+                    <div class="btn2" @click="btn">
+                        {{ lang.AlarmRecord_FaultAddAndModify_Confirm }}
+                    </div>
                 </div>
             </div>
         </div>
-        <TipPop v-if="isPopShow" :tipText="tipText" :noCancel="noCancel" @tipCallBack="tipCallBack" />
     </div>
 </template>
 
 <script>
-import TipPop from '../public/tipPop.vue';
 import MySearch from '../public/search06.vue';
 import MyTable from '../public/table2.vue';
 import MyPage from '../public/Pages.vue';
 import MyPage1 from '../public/Pages1.vue';
 export default {
     components: {
-        TipPop,
         MySearch,
         MyTable,
         MyPage,
-        MyPage1
+        MyPage1,
     },
     data() {
         return {
-            isPopShow: false, // 是否显示弹窗
-            tipText: '', // 弹窗提示语
-            noCancel: true, // 弹窗是否带取消按按钮
+            multipleSelection: [],
             deltrue: true,
             tipword: '',
             errortitle: '',
@@ -264,22 +523,22 @@ export default {
                     // 3-未确认未恢复 2-已确认未恢复 1-未确认已恢复 0-已确认已恢复
                     optionList: [],
                     value: 'value',
-                    label: 'label'
+                    label: 'label',
                 },
                 {
                     title: '报警时间范围：',
                     model: 'argStartTime',
-                    type: 'time'
+                    type: 'time',
                 },
                 {
                     title: '-',
                     model: 'argEndTime',
-                    type: 'time'
+                    type: 'time',
                 },
                 {
                     model: 'argKeyword',
-                    type: 'key'
-                }
+                    type: 'key',
+                },
             ],
             searchData: {
                 argAlarmArray: '',
@@ -287,7 +546,7 @@ export default {
                 argAlarmType: '',
                 argStartTime: '',
                 argEndTime: '',
-                argKeyword: ''
+                argKeyword: '',
             },
             tableHead: {
                 AlarmTime: '报警时间',
@@ -303,7 +562,6 @@ export default {
                 ConfirmTime: '确认时间',
                 OperatorName: '报警确认员',
                 AlarmState: '报警状态',
-                AlarmDuration: '报警时长(HH:MM:SS)',
             },
             data: [],
             daochu: '',
@@ -313,7 +571,7 @@ export default {
                 TotalPage: 0,
                 PageIndex: 1,
                 LastEnabled: false,
-                NextEnabled: false
+                NextEnabled: false,
             },
             pageData1: {
                 PageSize: 50,
@@ -321,7 +579,7 @@ export default {
                 TotalPage: 0,
                 PageIndex: 1,
                 LastEnabled: false,
-                NextEnabled: false
+                NextEnabled: false,
             },
             AlarmMsg: '',
             haschange: false,
@@ -335,28 +593,29 @@ export default {
             bbb: 1,
             ccc: 1,
             zoom: 1,
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
-            selectList: []
+            lang: JSON.parse(localStorage.getItem('languages'))[
+                localStorage.getItem('currentLang')
+            ],
         };
     },
     mounted() {
-        this.zoom = window.screen.width / 1920 < 0.7 ? 0.7 : window.screen.width / 1920
+        this.zoom =
+            window.screen.width / 1920 < 0.7 ? 0.7 : window.screen.width / 1920;
         console.log(this.$refs.table);
-
     },
     created() {
-        this.getLangData()
+        this.getLangData();
         let argStartTime = this.$getDate(
             new Date(new Date().toLocaleDateString()).getTime()
         );
         let argEndTime = this.$getDate(
             new Date(new Date().toLocaleDateString()).getTime() +
-            24 * 60 * 60 * 1000 -
-            1
+                24 * 60 * 60 * 1000 -
+                1
         );
         Object.assign(this.searchData, {
             argStartTime,
-            argEndTime
+            argEndTime,
         });
         this.init();
         this.req(1);
@@ -364,7 +623,163 @@ export default {
         this.getDevice();
     },
     methods: {
-        selectFn(list) { this.selectList = list },
+        exportFn() {
+            let filterVal = [
+                'AlarmTime',
+                'AlarmTagName',
+                'AlarmTagAddress',
+                'AlarmDevice',
+                'AlarmType',
+                'AlarmGroup',
+                'AlarmMsg',
+                'AlarmValue',
+                'AlarmLevel',
+                'RecoverTime',
+                'ConfirmTime',
+                'OperatorName',
+                'AlarmStateName',
+            ];
+            let title = [
+                '报警时间',
+                '报警变量名',
+                '报警地址',
+                '报警设备',
+                '报警类别',
+                '报警组',
+                '报警信息',
+                '报警值',
+                '报警等级',
+                '恢复时间',
+                '确认时间',
+                '报警确认员',
+                '报警状态',
+            ];
+            if (this.pageData.TotalCount == 0) {
+                let excelDatas = [
+                    {
+                        tHeader: title,
+                        filterVal: filterVal,
+                        tableDatas: [],
+                        sheetName: 'sheet1',
+                    },
+                    {
+                        tHeader: title,
+                        filterVal: filterVal,
+                        tableDatas: [],
+                        sheetName: 'sheet1',
+                    }, //不知道源码为啥删一次，写两次才正常
+                ];
+                this.json2excel(excelDatas, '历史报警', true, 'xlsx');
+                return;
+            }
+            let params = this.searchData;
+            let userName = '';
+            if (
+                !JSON.parse(sessionStorage.getItem('userInfo1')) ||
+                JSON.parse(sessionStorage.getItem('userInfo1')) == null
+            ) {
+                userName = JSON.parse(
+                    sessionStorage.getItem('sightseerInfo1')
+                ).SCMSUserName;
+            } else {
+                userName = JSON.parse(
+                    sessionStorage.getItem('userInfo1')
+                ).SCMSUserName;
+            }
+            if (params.argAlarmType == undefined) {
+                params.argAlarmType = '';
+            }
+            this.$axios
+                .post(
+                    `/api/HistoricalAlarm/AlarmRecord_GstHistoryAlarmRecord?&argAlarmType=${encodeURIComponent(
+                        params.argAlarmType
+                    )}&argStartTime=${params.argStartTime}&argEndTime=${
+                        params.argEndTime
+                    }&argKeyword=${params.argKeyword}&argPageSize=${
+                        this.pageData.TotalCount
+                    }&argPageIndex=1&argUserAccount=${userName}`
+                )
+                .then((res) => {
+                    if (res.data.code == 0) {
+                        let tableList = [...res.data.data.DataList];
+                        require.ensure([], () => {
+                            const {
+                                expor_json_to_excel,
+                            } = require('../../vendor/Export2Excel');
+                            let excelDatas = [
+                                {
+                                    tHeader: title,
+                                    filterVal: filterVal,
+                                    tableDatas: tableList,
+                                    sheetName: 'sheet1',
+                                },
+                                {
+                                    tHeader: title,
+                                    filterVal: filterVal,
+                                    tableDatas: tableList,
+                                    sheetName: 'sheet1',
+                                }, //不知道源码为啥删一次，写两次才正常
+                            ];
+                            this.json2excel(
+                                excelDatas,
+                                '历史报警',
+                                true,
+                                'xlsx'
+                            );
+                        });
+                    } else {
+                        this.w = res.data.msg;
+                        this.w1 = true;
+                        this.tipword = '';
+                        setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${
+                                    ($('.tip').width() / 2) * this.a11
+                                }px)`,
+                                top: `calc(50% - ${
+                                    ($('.tip').height() / 2) * this.a11
+                                }px)`,
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                    }
+                });
+        },
+        json2excel(tableJson, filenames, autowidth, bookTypes) {
+            var that = this;
+            //这个是引用插件
+            import('@/vendor/Export2Excel').then((excel) => {
+                var tHeader = [];
+                var dataArr = [];
+                var sheetnames = [];
+                for (var i in tableJson) {
+                    tHeader.push(tableJson[i].tHeader);
+                    dataArr.push(
+                        that.formatJson(
+                            tableJson[i].filterVal,
+                            tableJson[i].tableDatas
+                        )
+                    );
+                    sheetnames.push(tableJson[i].sheetName);
+                }
+                excel.export_json_to_excel({
+                    header: tHeader,
+                    data: dataArr,
+                    sheetname: sheetnames,
+                    filename: filenames,
+                    autoWidth: autowidth,
+                    bookType: bookTypes,
+                });
+            });
+        },
+        formatJson(filterVal, jsonData) {
+            return jsonData.map((v) => filterVal.map((j) => v[j]));
+        },
+        handleSelectionChange(val) {
+            this.multipleSelection = val;
+        },
         getLangData() {
             this.searchList = [
                 {
@@ -374,23 +789,23 @@ export default {
                     // 3-未确认未恢复 2-已确认未恢复 1-未确认已恢复 0-已确认已恢复
                     optionList: [],
                     value: 'value',
-                    label: 'label'
+                    label: 'label',
                 },
                 {
                     title: this.lang.AlarmRecord_History_Time,
                     model: 'argStartTime',
-                    type: 'time'
+                    type: 'time',
                 },
                 {
                     title: '-',
                     model: 'argEndTime',
-                    type: 'time'
+                    type: 'time',
                 },
                 {
                     model: 'argKeyword',
-                    type: 'key'
-                }
-            ]
+                    type: 'key',
+                },
+            ];
             this.tableHead = {
                 AlarmTime: this.lang.AlarmRecord_Time_DataGrid_Time,
                 AlarmTagName: this.lang.AlarmRecord_Time_DataGrid_VariableName,
@@ -402,11 +817,12 @@ export default {
                 AlarmValue: this.lang.AlarmRecord_Time_DataGrid_Value,
                 AlarmLevel: this.lang.AlarmRecord_Time_DataGrid_Grade,
                 RecoverTime: this.lang.AlarmRecord_Time_DataGrid_RecoveryTime,
-                ConfirmTime: this.lang.AlarmRecord_Time_DataGrid_ConfirmationTime,
-                OperatorName: this.lang.AlarmRecord_Time_DataGrid_ConfirmationPerson,
+                ConfirmTime:
+                    this.lang.AlarmRecord_Time_DataGrid_ConfirmationTime,
+                OperatorName:
+                    this.lang.AlarmRecord_Time_DataGrid_ConfirmationPerson,
                 AlarmStateName: this.lang.AlarmRecord_Time_DataGrid_State,
-                AlarmDuration: '报警时长(HH:MM:SS)',
-            }
+            };
         },
         error2() {
             this.bbb = 2;
@@ -416,7 +832,8 @@ export default {
                 this.move('tip', 'tiphead');
             });
             this.w1 = true;
-            this.w = this.lang.AlarmRecord_HT_FaultAddAndModify_DoYouRealyWantToSave;
+            this.w =
+                this.lang.AlarmRecord_HT_FaultAddAndModify_DoYouRealyWantToSave;
         },
         getdata(a) {
             console.log(a);
@@ -428,7 +845,6 @@ export default {
             this.disabled = true;
         },
         handleEdit1(a, b, c) {
-
             if (!c) {
                 setTimeout(() => {
                     this.tipchange = true;
@@ -436,23 +852,23 @@ export default {
                 });
                 this.w1 = true;
 
-                this.tipword = ''
+                this.tipword = '';
                 this.w = this.lang.NoOperationAuthority;
-                return
+                return;
             }
-            console.log(c)
+            console.log(c);
             this.$axios
                 .post(
                     `/api/AlarmRecord/AlarmRecord_GetFaultStatus?argAlarmID=${b.ID}&argTableName=${b.TableName}`
                 )
-                .then(res => {
+                .then((res) => {
                     if (res.data.data == '2') {
                         setTimeout(() => {
                             this.tipchange = true;
                             this.move('tip', 'tiphead');
                         });
                         this.w = this.lang.AlarmRecord_HT_IsUpdate;
-                        this.tipword = ''
+                        this.tipword = '';
                         this.changedata = b;
                         this.w1 = true;
                         this.deltrue = false;
@@ -461,7 +877,7 @@ export default {
                             .post(
                                 `/api/AlarmRecord/AlarmRecord_GetFault?argAlarmID=${b.ID}&argTableName=${b.TableName}`
                             )
-                            .then(res => {
+                            .then((res) => {
                                 b.KeyWord = res.data.data[0].KeyWord;
                                 b.Reason = res.data.data[0].Reason;
                                 b.FaultTreatment =
@@ -472,13 +888,14 @@ export default {
                         this.changedata = b;
                         setTimeout(() => {
                             this.error1 = true;
-                            this.errortitle = this.lang.AlarmRecord_HT_FaultAddAndModify_FaultRepairRecordAdding
+                            this.errortitle =
+                                this.lang.AlarmRecord_HT_FaultAddAndModify_FaultRepairRecordAdding;
                             this.move('errorsetion2', 'errortop');
                         });
                     }
                 });
         },
-        overdata() { },
+        overdata() {},
         search() {
             this.getsestion();
         },
@@ -499,9 +916,10 @@ export default {
             this.changedata.AddTime = this.getNowTime();
             this.changedata.AddPerson = this.changedata.OperatorName;
             if (!this.changedata.DealPerson) {
-                this.w = this.lang.AlarmRecord_HT_FaultAddAndModifyViewModel_PEHandler;
+                this.w =
+                    this.lang.AlarmRecord_HT_FaultAddAndModifyViewModel_PEHandler;
                 this.w1 = true;
-                this.tipword = ''
+                this.tipword = '';
                 setTimeout(() => {
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
@@ -513,19 +931,21 @@ export default {
                 this.$axios({
                     method: 'post',
                     url: `/api/AlarmRecord/AlarmRecord_SetFault`,
-                    data: this.changedata
+                    data: this.changedata,
                 })
-                    .then(res => {
+                    .then((res) => {
                         console.log(res);
                         if (res.data.msg == '请求成功') {
                             if (this.w == this.lang.AlarmRecord_HT_IsUpdate) {
-                                this.w = this.lang.AlarmRecord_HT_FaultAddAndModify_UpdateSuccess;
+                                this.w =
+                                    this.lang.AlarmRecord_HT_FaultAddAndModify_UpdateSuccess;
                             } else {
-                                this.w = this.lang.AlarmRecord_HT_FaultAddAndModify_SuccessfulEntry;
+                                this.w =
+                                    this.lang.AlarmRecord_HT_FaultAddAndModify_SuccessfulEntry;
                             }
 
                             this.w1 = true;
-                            this.tipword = ''
+                            this.tipword = '';
                             setTimeout(() => {
                                 this.tipchange = true;
                                 this.move('tip', 'tiphead');
@@ -535,7 +955,7 @@ export default {
                         } else {
                             this.w = res.data.msg;
                             this.w1 = true;
-                            this.tipword = ''
+                            this.tipword = '';
                             setTimeout(() => {
                                 this.tipchange = true;
                                 this.move('tip', 'tiphead');
@@ -549,7 +969,7 @@ export default {
                         //     this.deltrue = true;
                         // }
                     })
-                    .catch(err => { });
+                    .catch((err) => {});
             }
         },
         yes1() {
@@ -562,7 +982,8 @@ export default {
                 this.tipchange = false;
                 setTimeout(() => {
                     this.error1 = true;
-                    this.errortitle = this.lang.AlarmRecord_HT_FaultAddAndModify_FaultRepairRecordUpdate
+                    this.errortitle =
+                        this.lang.AlarmRecord_HT_FaultAddAndModify_FaultRepairRecordUpdate;
                     this.move('errorsetion2', 'errortop');
                 });
             } else {
@@ -570,16 +991,22 @@ export default {
             }
         },
         tip1() {
-
-            if (this.w == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect || this.tipword == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect || this.tipword == this.lang.NoOperationAuthority || this.w == this.lang.NoOperationAuthority) {
+            if (
+                this.w ==
+                    this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect ||
+                this.tipword ==
+                    this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect ||
+                this.tipword == this.lang.NoOperationAuthority ||
+                this.w == this.lang.NoOperationAuthority
+            ) {
                 this.tipchange = false;
                 this.searchData.argStartTime = this.$getDate(
                     new Date(new Date().toLocaleDateString()).getTime()
                 );
                 this.searchData.argEndTime = this.$getDate(
                     new Date(new Date().toLocaleDateString()).getTime() +
-                    24 * 60 * 60 * 1000 -
-                    1
+                        24 * 60 * 60 * 1000 -
+                        1
                 );
                 return;
             }
@@ -602,7 +1029,6 @@ export default {
             // });
         },
         tip2() {
-
             this.bbb = 2;
             this.tipchange = false;
             this.w1 = false;
@@ -611,15 +1037,22 @@ export default {
                 this.error1 = false;
             }
             this.ccc = 2;
-            if (this.w == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect || this.tipword == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect || this.tipword == this.lang.NoOperationAuthority || this.w == this.lang.NoOperationAuthority) {
+            if (
+                this.w ==
+                    this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect ||
+                this.tipword ==
+                    this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect ||
+                this.tipword == this.lang.NoOperationAuthority ||
+                this.w == this.lang.NoOperationAuthority
+            ) {
                 this.tipchange = false;
                 this.searchData.argStartTime = this.$getDate(
                     new Date(new Date().toLocaleDateString()).getTime()
                 );
                 this.searchData.argEndTime = this.$getDate(
                     new Date(new Date().toLocaleDateString()).getTime() +
-                    24 * 60 * 60 * 1000 -
-                    1
+                        24 * 60 * 60 * 1000 -
+                        1
                 );
                 return;
             }
@@ -668,18 +1101,17 @@ export default {
         },
         move(name, namehead) {
             //  $(`.${name}`).addClass('center')
-            let left = ($(`.${name}`).width()) / 2 + 'px'
-            let top = ($(`.${name}`).height()) / 2 + 'px'
-            console.log("left", left)
-            console.log("top", top)
-            console.log($(`.${name}`))
+            let left = $(`.${name}`).width() / 2 + 'px';
+            let top = $(`.${name}`).height() / 2 + 'px';
+            console.log('left', left);
+            console.log('top', top);
+            console.log($(`.${name}`));
             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
             $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
             $(`.${name}`)[0].addEventListener('mousedown', function (e) {
-
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
-                    $(`.${name}`).removeClass('center')
+                    $(`.${name}`).removeClass('center');
                     window.event.stopPropagation();
                     var x = 0;
                     var y = 0;
@@ -694,7 +1126,6 @@ export default {
                     //开关打开
                     isDown = true;
                     var pdmove = false;
-
 
                     //设置样式
                     $('body')[0].style.cursor = 'move';
@@ -711,9 +1142,9 @@ export default {
                         //计算移动后的左偏移量和顶部的偏移量
                         var nl = nx - (x - l);
                         var nt = ny - (y - t);
-                        console.log(nx)
-                        console.log(x)
-                        console.log(l)
+                        console.log(nx);
+                        console.log(x);
+                        console.log(l);
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
@@ -733,12 +1164,11 @@ export default {
                 });
                 this.w1 = true;
 
-                this.tipword = ''
+                this.tipword = '';
                 this.w = this.lang.NoOperationAuthority;
-                return
+                return;
             }
             setTimeout(() => {
-
                 this.haschange = true;
                 this.move('lookq', 'looktop');
             });
@@ -787,7 +1217,7 @@ export default {
             let data = '设备';
             this.$axios
                 .post(`/api/Main/Main_GetProjectName`)
-                .then(res => {
+                .then((res) => {
                     // if (res.data.code === 0) {
                     //     let data = res.data.data;
                     //     if (data === 'SCMS自来水监控系统') {
@@ -852,16 +1282,16 @@ export default {
                     //     }
                     // }
                 })
-                .catch(err => { });
+                .catch((err) => {});
         },
         change(e) {
             let data = this.deviceList[e];
             if (data.length > 0) {
                 this.searchList[1].optionList = [];
-                data.map(item => {
+                data.map((item) => {
                     this.searchList[1].optionList.push({
                         value: item,
-                        label: item
+                        label: item,
                     });
                 });
             }
@@ -881,6 +1311,16 @@ export default {
             s = s < 10 ? '0' + s : s;
             return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
         },
+        setTips(msg) {
+            setTimeout(() => {
+                this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
+            this.w1 = true;
+
+            this.tipword = '';
+            this.w = msg;
+        },
         setParams(params, a) {
             if (!a) {
                 setTimeout(() => {
@@ -889,9 +1329,9 @@ export default {
                 });
                 this.w1 = true;
 
-                this.tipword = ''
+                this.tipword = '';
                 this.w = this.lang.NoOperationAuthority;
-                return
+                return;
             }
             this.searchData = params;
             if (
@@ -903,92 +1343,51 @@ export default {
                     this.move('tip', 'tiphead');
                 });
                 this.w1 = true;
-                this.tipword = ''
+                this.tipword = '';
                 this.w = this.lang.AlarmRecord_HT_TheQueryDate;
-            }
-        },
-        delFn(a) {
-            if (!a) {
-                this.isPopShow = true;
-                this.tipText = this.lang.NoOperationAuthority;
-                return
-            }
-            if (!this.selectList.length) {
-                this.isPopShow = true;
-                this.tipText = this.lang.APPFormManage_NoDeleteData
-                return
-            }
-            this.noCancel = false;
-            this.isPopShow = true;
-            this.tipText = this.lang.APPFormManage_DeleteData
-        },
-        tipCallBack(str) {
-            this.noCancel = true;
-            if (str == 'yes') {
-                this.isPopShow = false;
-                console.log(this.selectList)
-
-                this.$axios
-                    .post(
-                        `/api/AlarmRecord/DeleteAlarmRecord`,
-                        this.selectList.map(_ => ({
-                            ID: _.ID,
-                            TableName: _.TableName
-                        }))
-                    )
-                    .then(res => {
-                        if (res.data.code == 0) {
-                            this.tipText = this.lang.APPFormManage_DeleteSuccessful;
-                            this.isPopShow = true;
-                            this.req(1)
-                        } else {
-                            this.tipText = res.data.msg;
-                            this.isPopShow = true;
-                        }
-                    });
-
-            } else {
-                this.isPopShow = false;
             }
         },
         //获取故障检索信息
         getsestion() {
-            console.log(`/api/AlarmRecord/AlarmRecord_GstFaultRetrieva?argKeyword=${this.keyword}&argPageSize=50&argPageIndex=1&argDescribe=${this.AlarmMsg}`)
+            console.log(
+                `/api/AlarmRecord/AlarmRecord_GstFaultRetrieva?argKeyword=${this.keyword}&argPageSize=50&argPageIndex=1&argDescribe=${this.AlarmMsg}`
+            );
             this.$axios
                 .post(
                     `/api/AlarmRecord/AlarmRecord_GstFaultRetrieva?argKeyword=${this.keyword}&argPageSize=50&argPageIndex=1&argDescribe=${this.AlarmMsg}`
                 )
-                .then(res => {
-                    console.log(res)
+                .then((res) => {
+                    console.log(res);
                     this.pageData1 = res.data.data.ParameterList;
                     this.tableData = res.data.data.DataList;
                 });
         },
         // 获取仪表
-        getDevice() { },
+        getDevice() {},
         // 获取报警类型
         getAlarmType() {
             this.$axios
                 .post(`/api/AlarmRecord/AlarmRecord_GstAlarmType`)
-                .then(res => {
+                .then((res) => {
                     if (res.data.code == 0) {
                         this.searchList[0].optionList = [];
                         let data = res.data.data;
-                        data.map(item => {
+                        data.map((item) => {
                             this.searchList[0].optionList.push({
                                 value: item.Value,
-                                label: item.Text
+                                label: item.Text,
                             });
                         });
                         this.searchList[0].optionList.unshift({
                             value: this.lang.AlarmRecord_HT_Unlimited,
-                            label: this.lang.AlarmRecord_HT_Unlimited
+                            label: this.lang.AlarmRecord_HT_Unlimited,
                         });
 
-                        this.searchData.argAlarmType = this.searchList[0].optionList[0].value;
+                        this.searchData.argAlarmType =
+                            this.searchList[0].optionList[0].value;
                     }
                 })
-                .catch(err => { });
+                .catch((err) => {});
         },
         isPositiveInteger(s) {
             //是否为正整数
@@ -1005,7 +1404,7 @@ export default {
                     });
                     this.w = this.lang.DataGrid_Reaction_HT_PEAPositiveInteger;
                     this.w1 = true;
-                    this.tipword = ''
+                    this.tipword = '';
                     return;
                 } else {
                     if (
@@ -1020,9 +1419,10 @@ export default {
                                 this.tipchange = true;
                                 this.move('tip', 'tiphead');
                             });
-                            this.w = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
+                            this.w =
+                                this.lang.DataGrid_Reaction_HT_PEThePageNumber;
                             this.w1 = true;
-                            this.tipword = ''
+                            this.tipword = '';
                             return;
                         }
                     }
@@ -1031,13 +1431,37 @@ export default {
 
             let params = Object.assign(this.searchData, {
                 argPageIndex: pageIndex,
-                argPageSize: this.pageData.PageSize
+                argPageSize: this.pageData.PageSize,
             });
+            let userName = '';
+            if (
+                !JSON.parse(sessionStorage.getItem('userInfo1')) ||
+                JSON.parse(sessionStorage.getItem('userInfo1')) == null
+            ) {
+                userName = JSON.parse(
+                    sessionStorage.getItem('sightseerInfo1')
+                ).SCMSUserName;
+            } else {
+                userName = JSON.parse(
+                    sessionStorage.getItem('userInfo1')
+                ).SCMSUserName;
+            }
+            if (params.argAlarmType == undefined) {
+                params.argAlarmType = '';
+            }
             this.$axios
                 .post(
-                    `/api/AlarmRecord/AlarmRecord_GstHistoryAlarmRecord?&argAlarmType=${encodeURIComponent(params.argAlarmType)}&argStartTime=${params.argStartTime}&argEndTime=${params.argEndTime}&argKeyword=${params.argKeyword}&argPageSize=${params.argPageSize}&argPageIndex=${params.argPageIndex}`
+                    `/api/HistoricalAlarm/AlarmRecord_GstHistoryAlarmRecord?&argAlarmType=${encodeURIComponent(
+                        params.argAlarmType
+                    )}&argStartTime=${params.argStartTime}&argEndTime=${
+                        params.argEndTime
+                    }&argKeyword=${params.argKeyword}&argPageSize=${
+                        params.argPageSize
+                    }&argPageIndex=${
+                        params.argPageIndex
+                    }&argUserAccount=${userName}`
                 )
-                .then(res => {
+                .then((res) => {
                     console.log(res);
                     let i = 0;
                     if (res.data.code == 0) {
@@ -1046,16 +1470,15 @@ export default {
                     } else {
                         this.w = res.data.msg;
                         this.w1 = true;
-                        this.tipword = ''
+                        this.tipword = '';
                         setTimeout(() => {
                             this.tipchange = true;
                             this.move('tip', 'tiphead');
                         });
                     }
-
                 })
 
-                .catch(err => { });
+                .catch((err) => {});
         },
         req1(pageIndex, s) {
             this.deltrue = true;
@@ -1067,18 +1490,25 @@ export default {
                     });
                     this.w = this.lang.DataGrid_Reaction_HT_PEAPositiveInteger;
                     this.w1 = true;
-                    this.tipword = ''
+                    this.tipword = '';
                     return;
                 } else {
-                    if (pageIndex !== 1 && pageIndex !== this.pageData1.TotalPage) {
-                        if (pageIndex < 1 || pageIndex > this.pageData1.TotalPage) {
+                    if (
+                        pageIndex !== 1 &&
+                        pageIndex !== this.pageData1.TotalPage
+                    ) {
+                        if (
+                            pageIndex < 1 ||
+                            pageIndex > this.pageData1.TotalPage
+                        ) {
                             setTimeout(() => {
                                 this.tipchange = true;
                                 this.move('tip', 'tiphead');
                             });
-                            this.w = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
+                            this.w =
+                                this.lang.DataGrid_Reaction_HT_PEThePageNumber;
                             this.w1 = true;
-                            this.tipword = ''
+                            this.tipword = '';
                             return;
                         }
                     }
@@ -1087,20 +1517,20 @@ export default {
 
             let params = Object.assign(this.searchData, {
                 argPageIndex: pageIndex,
-                argPageSize: this.pageData1.PageSize
+                argPageSize: this.pageData1.PageSize,
             });
             this.$axios
                 .post(
                     `/api/AlarmRecord/AlarmRecord_GstFaultRetrieva?argKeyword=${this.keyword}&argPageSize=50&argPageIndex=${pageIndex}&argDescribe=${this.AlarmMsg}`
                 )
-                .then(res => {
+                .then((res) => {
                     this.pageData1 = res.data.data.ParameterList;
                     this.tableData = res.data.data.DataList;
                 })
 
-                .catch(err => { });
-        }
-    }
+                .catch((err) => {});
+        },
+    },
 };
 </script>
 
@@ -1113,7 +1543,6 @@ export default {
     height: 730px;
     background-color: #eeeeee;
     box-shadow: 0px 0px 8px black;
-
     .lookhead {
         width: 100%;
         height: 50px;
@@ -1122,7 +1551,6 @@ export default {
         background-color: #386df0;
         position: relative;
         color: #ffffff;
-
         img {
             cursor: pointer;
             z-index: 12999999;
@@ -1133,7 +1561,6 @@ export default {
             bottom: 15px;
         }
     }
-
     .looktop {
         width: 100%;
         height: 50px;
@@ -1142,28 +1569,23 @@ export default {
         left: 0;
         z-index: 11999999;
     }
-
     .lookcontent {
         padding: 30px 30px 0px 30px;
-
         .search {
             height: 50px;
             line-height: 45px;
             border: 1px solid #cccccc;
             padding-left: 20px;
-
             input {
                 height: 30px;
                 text-indent: 0.5em;
 
                 border: none;
             }
-
             .inputname {
                 margin: 0px 10px;
                 width: 600px;
             }
-
             span {
                 display: inline-block;
                 background-color: #ffffff;
@@ -1180,30 +1602,63 @@ export default {
             }
         }
     }
-
     .table {
         width: 100%;
         height: 530px;
         border: 1px solid #ccc;
         margin-top: 10px;
     }
-}
 
+    &.blackBlueBg {
+        background-color: #222d50;
+        .lookcontent {
+            .search {
+                background: #28355b;
+                border: 1px solid #445992;
+
+                input {
+                    background: #1d2846;
+                    border: 1px solid #445992;
+                    color: #c6cad8;
+                }
+                span {
+                    background-color: transparent;
+                    border: 1px solid #ffffff;
+                    color: #ffffff;
+                }
+            }
+            .table {
+                color: #8798c9;
+                background: #28355b;
+                border: 1px solid #445992;
+
+                .el-table td {
+                    border-bottom: 1px solid #445992;
+                }
+            }
+            .input {
+                color: #9aa3be;
+            }
+            .el-tooltip {
+                a {
+                    color: #769eff;
+                }
+            }
+        }
+    }
+}
 .public-table {
     display: flex;
     flex-direction: column;
     height: 100%;
-
     .table-container {
         flex: 1;
         // overflow: auto;
     }
-
     .page-container {
         height: 60px;
     }
 }
-
 .cover2 {
     width: 100%;
     height: 100%;
@@ -1212,7 +1667,6 @@ export default {
     top: 0;
     left: 0;
 }
-
 .tip {
     position: fixed;
     width: 380px;
@@ -1222,19 +1676,16 @@ export default {
     left: 750px;
     box-shadow: 0px 0px 8px black;
     background-color: #f3f3f4;
-
     .tiptop {
         width: 380px;
         height: 40px;
         background-color: #ffbc3d;
-
         img {
             width: 20px;
             height: 20px;
             margin-top: 10px;
             margin-left: 160px;
         }
-
         span {
             color: #ffffff;
             position: relative;
@@ -1242,17 +1693,14 @@ export default {
             margin-left: 7px;
         }
     }
-
     .tipword {
         width: 100%;
         // padding: 30px;
         padding-bottom: 0;
     }
-
     .tipcontanin {
         height: calc(100% - 40px);
     }
-
     .w {
         width: 100%;
         height: 75%;
@@ -1264,7 +1712,6 @@ export default {
         justify-content: center;
         padding: 12px;
     }
-
     .tipdetermine {
         cursor: pointer;
         color: #ea9328;
@@ -1277,13 +1724,11 @@ export default {
         height: 30px;
         background-color: #f3e3ad;
     }
-
     .delclass {
         width: 330px;
         line-height: 30px;
         margin-left: 25px;
         height: 30px;
-
         .one {
             cursor: pointer;
             display: inline-block;
@@ -1293,7 +1738,6 @@ export default {
             background-color: #e0e0e0;
             color: #7e7e7e;
         }
-
         .two {
             cursor: pointer;
             display: inline-block;
@@ -1306,7 +1750,6 @@ export default {
         }
     }
 }
-
 .cover3 {
     width: 100%;
     height: 100%;
@@ -1315,7 +1758,6 @@ export default {
     top: 0;
     left: 0;
 }
-
 .errorsetion {
     position: fixed;
     box-shadow: 0px 0px 8px black;
@@ -1325,7 +1767,6 @@ export default {
     z-index: 30999999;
     top: 180px;
     left: 430px;
-
     .errortop {
         position: absolute;
         height: 50px;
@@ -1333,7 +1774,6 @@ export default {
         width: 100%;
         z-index: 31999999;
     }
-
     .errorhead {
         background-color: #386df0;
         height: 50px;
@@ -1342,7 +1782,6 @@ export default {
         text-align: center;
         color: #ffffff;
     }
-
     .no1 {
         width: 24px;
         height: 24px;
@@ -1351,17 +1790,14 @@ export default {
         right: 20px;
         top: 10px;
     }
-
     .errorcontent {
         padding: 30px 70px 0px 70px;
     }
-
     .first {
         width: 220px;
         height: 40px;
         margin-bottom: 40px;
     }
-
     input {
         margin-top: 5px;
         width: 100%;
@@ -1372,27 +1808,22 @@ export default {
         border: none;
         border: 1px solid #cccccc;
     }
-
     .second {
         margin-top: 10px;
         overflow: hidden;
         width: 500px;
-
         .fl {
             float: left;
             width: 220px;
         }
-
         .fr {
             float: right;
             width: 220px;
         }
     }
-
     .third {
         margin-top: 10px;
         width: 100%;
-
         input {
             margin-top: 5px;
             width: 100%;
@@ -1403,11 +1834,9 @@ export default {
             border: 1px solid #cccccc;
         }
     }
-
     .btn {
         margin-top: 20px;
         float: right;
-
         .btn1 {
             cursor: pointer;
             width: 100px;
@@ -1421,7 +1850,6 @@ export default {
             cursor: pointer;
             margin-right: 20px;
         }
-
         .btn2 {
             cursor: pointer;
             text-align: center;
@@ -1437,7 +1865,6 @@ export default {
         }
     }
 }
-
 .cover4 {
     position: fixed;
     width: 100%;
@@ -1450,15 +1877,12 @@ export default {
 .colordiv {
     background-color: #d9dbde !important;
 }
-
 .colortip {
     background-color: #efeff0 !important;
 }
-
 .fcolor {
     color: #000 !important;
 }
-
 img {
     cursor: pointer;
 }

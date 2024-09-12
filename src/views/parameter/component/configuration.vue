@@ -6,227 +6,148 @@
  * @LastEditTime: 2021-04-08 15:25:35
  -->
 <template>
-    <div v-loading="loading || loading2 || loading3" ref="head" class="tapwater" :style="{ zoom: zoomValue }">
-        <div class="linebox" id="linebox">
-            <div class="query-table clearfix">
+    <div  v-loading="loading"  ref="head"  class="tapwater" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" :style="{zoom:zoomValue}">
+        <div class="linebox" id="linebox" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+            <div class="table clearfix" >
                 <div class="fl">
-                    <span>完工时间范围</span>
-                    <el-date-picker @change="stateTime" @focus="getZoom()" v-model="value1"
-                        :disabled="selectVale == lang.ProcessParameterReport_HT_AccurateMatching" type="datetime"
-                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate" value-format="yyyy-MM-dd HH:mm:ss"
-                        :style="{ width: '160px' }"></el-date-picker>
-                    <span>-</span>
-                    <el-date-picker @change="entTime" @focus="getZoom()" v-model="value2"
-                        :disabled="selectVale == lang.ProcessParameterReport_HT_AccurateMatching" type="datetime"
-                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate" value-format="yyyy-MM-dd HH:mm:ss"
-                        :style="{ width: '160px' }"></el-date-picker>
-                    <span>产品型号</span>
-                    <el-select style="margin-left:5px;width:120px" v-model="ProductTypeCode" @focus="getZoom()"
-                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
-                        <el-option label="全部" value="全部"> </el-option>
-                        <el-option v-for="item in ProductTypeList" :key="item.ProductTypeCode" :label="item.ProductTypeCode"
-                            :value="item.ProductTypeCode">
+                    <span>{{lang.ProcessParameterConfigure_ProcessParameterReportUserControl_QueryTimeRange}}</span>
+                    <div class="container">
+                        <div class="block">
+                            <span class="demonstration"></span>
+                        
+                            <el-date-picker
+                                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                                @change="stateTime"
+                                @focus="getZoom()"
+                                v-model="value1"
+                                 :disabled="selectVale== lang.ProcessParameterReport_HT_AccurateMatching"
+                                type="datetime"
+                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                :style="{width:'220px'}"
+                            ></el-date-picker>
+                        </div>
+                        <i class="separate">-</i>
+                        <div class="block">
+                            <span class="demonstration"></span>
+                            <el-date-picker
+                                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                                @change="entTime"
+                                @focus="getZoom()"
+                                v-model="value2"
+                              :disabled="selectVale== lang.ProcessParameterReport_HT_AccurateMatching"
+                                type="datetime"
+                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                :style="{width:'220px'}"
+                            ></el-date-picker>
+                        </div>
+                    </div>
+                    <el-select style="margin-left:5px;width:170px" 
+                        v-model="selectVale"  
+                        :popper-append-to-body="false"
+                        @focus="getZoom()" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
+                        <el-option
+                        v-for="item in selectOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
                         </el-option>
                     </el-select>
-                    <span>是否合格</span>
-                    <el-select style="margin-left:5px;width:80px" v-model="QualitiedType" @focus="getZoom()"
-                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
-                        <el-option label="全部" value="全部"> </el-option>
-                        <el-option label="是" value="是"> </el-option>
-                        <el-option label="否" value="否"> </el-option>
-                    </el-select>
-                    <span>类型</span>
-                    <el-select style="margin-left:5px;width:80px" v-model="WorkType" @focus="getZoom()"
-                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
-                        <el-option label="全部" value="全部"> </el-option>
-                        <el-option label="正常" value="正常"> </el-option>
-                        <el-option label="返修" value="返修"> </el-option>
-                        <el-option label="导入" value="导入"> </el-option>
-                    </el-select>
-                    <el-select style="margin-left:5px;width:100px" v-model="QueryKeyType" @focus="getZoom()"
-                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
-                        <el-option label="产品ID" value="产品ID"> </el-option>
-                        <el-option label="工单号" value="工单号"> </el-option>
-                    </el-select>
-                    <!--    <el-select style="margin-left:5px;width:100px" v-model="selectVale" @focus="getZoom()"
-                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
-                        <el-option v-for="item in selectOptions" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select> -->
-                    <input style="margin-left:5px;width:120px" type="text" v-model="codeText"
-                        :placeholder="lang.ProcessParameterConfigure_ProcessParameterReportUserControl_InputCode"
-                        class="txt">
-                    <div class="query" @click="changetime()">{{ lang.FormulaManage_AddProject_Select }}</div>
-                    <div class="set" @click="openDisplaySettings">显示设置</div>
-                    <div class="edit" @click="openProductScrapping">产品解绑</div>
-                    <div class="query" @click="openDataUpdate">数据修改</div>
-                    <el-upload action="#" accept=".xlsx" :show-file-list="false" :http-request="uploadExcel">
-                        <div class="export" @click="handleUpload">导入</div>
-                    </el-upload>
-                    <div class="export" @click="exportTempLate()">导出模板</div>
-                    <div class="export" @click="exportTable()">导出</div>
+                    <input type="text"  v-model="codeText" :placeholder="lang.ProcessParameterConfigure_ProcessParameterReportUserControl_InputCode" class="txt">
+                    <div class="query" @click="changetime()">{{lang.FormulaManage_AddProject_Select}}</div>
+                </div>
+                <div class="fr">
+                    <div class="export" @click="exportTable()">{{lang.ProcessParameterConfigure_ProcessParameterReportUserControl_Export}}</div>
                 </div>
             </div>
             <div id="conter" class="conter">
-                <!--  <div class="report-banner">
-                    <div class="banner-item">
-                        <div class="item-content">
-                            <div class="item-label">产量</div>
-                            <div class="item-num">{{ TotalCount }}</div>
-                            <div class="item-unit">件</div>
-                        </div>
+                <div :style="{width: '100%', height: '340px',position: 'relative',marginBottom:'15px'}">  <div id="myChart" ref="myChart" :style="{width: 100/zoomValue+'%', height: '340px',zoom:1/zoomValue,transform:'scale('+zoomValue+')'}" ></div></div>
+              
+                <div class="tabledata" :style="{width: '100%', height: '470px'}">
+                    <div class="someLeft">
+                        <div @click="someLeftFun(item,index,$event)" v-for="(item,index) in Leftarr" :key="index"  class="try">{{item.name}}</div>
                     </div>
-                    <div class="banner-item">
-                        <div class="item-content">
-                            <div class="item-label">OK数</div>
-                            <div class="item-num">{{ OKCout }}</div>
-                            <div class="item-unit">件</div>
-                        </div>
-                    </div>
-                    <div class="banner-item">
-                        <div class="item-content">
-                            <div class="item-label">NG数</div>
-                            <div class="item-num red">{{ NGCount }}</div>
-                            <div class="item-unit">件</div>
-                        </div>
-                    </div>
-                    <div class="banner-item">
-                        <div class="item-content">
-                            <div class="item-label">合格率</div>
-                            <div class="item-num green">{{ PassRate }}</div>
-                            <div class="item-unit">%</div>
-                        </div>
-                    </div>
-                </div> -->
-                <div class="report-page">
-                    <div class="charts">
-                        <div class="chart-label">
-                            <div class="c-w">
-                                <div class="c-i"></div>
-                            </div>
-                            {{ tableData.chartTitle }}
-                        </div>
-                        <div class="mychart" id="mychart"></div>
-                    </div>
-                    <div class="table">
-                        <div class="table-l">
-                            <div class="l-item" v-for="item in tableData.leftarr" :key="item.WID" @click="changeLeft(item)"
-                                :style="leftItemStyle(tableData.curLeft && item.WID == tableData.curLeft.WID, item.displayColor)">
-                                {{ item.WorkName }}
-                                <div class="l-icon"></div>
-                            </div>
-                        </div>
-                        <div class="table-r" v-if="tableData.curLeft">
-                            <div class="table-box">
-                                <!-- 拒绝el-table,从你我做起，eltable加载七八百条数据就卡的飞起 -->
-                                <table cellspacing="0" cellpadding="1">
-                                    <thead>
-                                        <!-- <tr>
-                                            <th colspan="5" rowspan="1" class="blue-th">{{
-                                                lang.ProcessParameterReport_HT_Information }}</th>
-                                            <th :colspan="tableData.curLeft.WorkSteps.reduce((sum, w) => { return w.Projects.length + sum }, 1)"
-                                                rowspan="1">
-                                                {{ tableData.curLeft.WorkName }}</th>
-                                        </tr> -->
-                                        <tr>
-                                            <th colspan="1" rowspan="2" class="blue-th no1 fixed-title">{{
-                                                lang.ProcessParameterReport_HT_SerialNumber }}</th>
-                                            <th colspan="1" rowspan="2" class="blue-th no2 fixed-title">
-                                                {{ lang.ProcessParameterReport_HT_ProductID }}</th>
-                                            <th colspan="1" rowspan="2" class="blue-th no3">托盘码</th>
-
-                                            <th colspan="1" rowspan="2" class="blue-th no3">产品型号</th>
-                                            <th colspan="1" rowspan="2" class="blue-th no3">工单号</th>
-                                            <th colspan="1" rowspan="2" class="blue-th no3">类型</th>
-                                            <th colspan="1" rowspan="2" class="blue-th no4">{{
-                                                lang.ProcessParameterReport_HT_IsProductQualified }}</th>
-                                            <th colspan="1" rowspan="2" class="blue-th no5">{{
-                                                lang.ProcessParameterReport_HT_ReasonForFailure }}</th>
-                                            <th colspan="1" rowspan="2" class="blue-th no6">上线时间</th>
-                                            <th colspan="1" rowspan="2" class="blue-th no6">完工时间</th>
-                                            <th colspan="1" rowspan="2" class="blue-th no6">操作员</th>
-                                            <th :colspan="item.Projects.length" rowspan="1"
-                                                v-for="(item, idx)  in tableData.curLeft.WorkSteps"
-                                                :key="item.SID + idx + 'S1'">
-                                                {{ item.StepName }}</th>
-                                        </tr>
-                                        <tr>
-                                            <template v-for="(item, idx) in tableData.curLeft.WorkSteps">
-                                                <th colspan="1" rowspan="1" v-for="item2 in item.Projects "
-                                                    :key="item2.PID + 'P1'"
-                                                    :class="{ 'hover-border': true, 'blue-Border': tableData.curPid == item2.PID }"
-                                                    @click="clickHeader(item2.PID)">
-                                                    {{ item2.ProjectName }}
-                                                </th>
-                                            </template>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="1" rowspan="1" class="blue-th no1 fixed-title">//</th>
-                                            <th colspan="1" rowspan="1" class="blue-th no2 fixed-title">//</th>
-                                            <th colspan="1" rowspan="1" class="blue-th no3">//</th>
-                                            <th colspan="1" rowspan="1" class="blue-th no3">//</th>
-                                            <th colspan="1" rowspan="1" class="blue-th no3">//</th>
-                                            <th colspan="1" rowspan="1" class="blue-th no3">//</th>
-                                            <th colspan="1" rowspan="1" class="blue-th no4">//</th>
-                                            <th colspan="1" rowspan="1" class="blue-th no5">//</th>
-                                            <th colspan="1" rowspan="1" class="blue-th no6">//</th>
-                                            <th colspan="1" rowspan="1" class="blue-th no6">//</th>
-                                            <th colspan="1" rowspan="1" class="blue-th no6">//</th>
-                                            <template v-for="(item, idx)  in tableData.curLeft.WorkSteps">
-                                                <th colspan="1" rowspan="1" v-for="item2 in item.Projects "
-                                                    :key="item2.PID + 'P2'">
-                                                    {{ item2.Unit }}
-                                                </th>
-                                            </template>
-                                        <tr>
-                                        </tr>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="item in tableData.dataList" :key="item.Number + 'data'">
-                                            <td class="no1">{{ item.Number }}</td>
-                                            <td class="no2">{{ item.ProductID }}</td>
-                                            <td class="no3">{{ item.PalletID }}</td>
-                                            <td class="no3">{{ item.ProductTypeCode }}</td>
-                                            <td class="no3">{{ item.OrderNumber }}</td>
-
-                                            <td class="no3">{{ item.WorkTypeText }}</td>
-                                            <td class="no4" :style="{ color: !item.IsQualified ? '#f56c6c' : '#000' }">{{
-                                                item.IsQualifiedText
-                                            }}</td>
-                                            <el-tooltip effect="dark" :content="item.Reason" placement="top">
-                                                <td class="no5" :style="{ color: !item.IsQualified ? '#f56c6c' : '#000' }">
-                                                    {{ item.Reason }}
-                                                </td>
-                                            </el-tooltip>
-                                            <td class="no6">{{ item.GetInTime }}</td>
-                                            <td class="no6">{{ item.RecordTime }}</td>
-                                            <td class="no6">{{ item.Operator }}</td>
-                                            <template v-for="(item2, _idx) in tableData.curLeft.WorkSteps">
-                                                <td colspan="1" rowspan="1" v-for="item3 in item2.Projects "
-                                                    :key="item3.PID + 'P3'"
-                                                    :style="{ color: returnProject(item, item3.PID).Red ? '#f56c6c' : '#000' }">
-                                                    {{ returnProject(item, item3.PID).Value }}
-                                                </td>
-                                            </template>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="sometable" @scroll="menu()">
+                        <div class="manytable">
+                        <table class="table1" cellspacing="0">
+                            <thead class="thead1">
+                                    <tr class="tbody5" style="position:sticky;top:0px" >
+                                      <th class="tbody5_th" style="font-size:16px;background:#b7dee8;height:60px;position: sticky;top:0;" colspan="5">{{lang.ProcessParameterReport_HT_Information}}</th>
+                                    </tr>
+                                <tbody class="tbody1">
+                                    <div style="position:sticky;top:60px;background:#b7dee8;">
+                                    <tr class="tbody2" style="font-size:16px;background:#b7dee8;height:42px !important;position: sticky;top:62px;line-height:63px">
+                                        <td class="tbody2Bt" rowspan="2" style="font-size:16px;width:140px !important;height:32px;position: sticky;top:62px;background:#b7dee8;min-width:200px !important;">{{lang.ProcessParameterReport_HT_SerialNumber}}</td>
+                                        <td class="tbody2Bt" rowspan="2" style="font-size:16px;width:180px !important;height:32px;position: sticky;top:62px;background:#b7dee8;min-width:160px !important;">{{lang.ProcessParameterReport_HT_Date}}</td>
+                                        <td class="tbody2Bt" rowspan="2" style="font-size:16px;width:180px !important;height:32px;position: sticky;top:62px;background:#b7dee8;min-width:200px !important;">{{lang.ProcessParameterReport_HT_ProductID}}</td>
+                                        <td class="tbody2Bt" rowspan="2" style="font-size:16px;width:180px !important;height:32px;position: sticky;top:62px;background:#b7dee8;min-width:200px !important;">{{lang.ProcessParameterReport_HT_IsProductQualified}}</td>
+                                        <td class="tbody2Bt" rowspan="2" style="font-size:16px;width:300px !important;height:32px;position: sticky;top:62px;background:#b7dee8;min-width:700px !important;">{{lang.ProcessParameterReport_HT_ReasonForFailure}}</td>
+                                    </tr>
+                                      <tr style="background:#b7dee8;height:22px !important;position: sticky;top:92px;"></tr>
+                                    <tr class="tbody4" style="background:#b7dee8;height:30px;position:sticky;top:133px;line-height:24px">
+                                        <td class="tbody4Bt tbody4Bt1" style = "background:#b7dee8;position:sticky;top:133px;height:30px;">//</td>
+                                        <td class="tbody4Bt" style = "background:#b7dee8;position:sticky;top:133px;height:30px;">//</td>
+                                        <td class="tbody4Bt" style = "background:#b7dee8;position:sticky;top:133px;height:30px;">//</td>
+                                        <td class="tbody4Bt" style = "background:#b7dee8;position:sticky;top:133px;height:30px;">//</td>
+                                        <td class="tbody4Bt" style = "background:#b7dee8;position:sticky;top:133px;height:30px;">//</td>
+                                    </tr>
+                                    </div>
+                                   <div>
+                                    <tr class="reporData" v-for="(item,index) in ReportData" :key="index" style = "height:30px;width:100%;line-height:30px">
+                                        <td width="200px">{{item.Number}}</td>
+                                        <td width="180px">{{item.Date}}</td>
+                                        <td width="200px">{{item.ProductID}}</td>
+                                        <td width="200px" :class="item.IsQualified==true ? 'color1' : 'color2'">{{item.IsQualified ==true? lang.ProcessParameterReport_HT_Yes: lang.ProcessParameterReport_HT_No}}</td>
+                                        <td width="700px" :class="item.IsQualified==true ? 'color1' : 'color2'">{{item.Reason==null ? lang.ProcessParameterReport_HT_Null : item.Reason}}</td>
+                                    </tr>
+                                   </div>
+                                </tbody>
+                             </thead>
+                        </table>
+                        <table class="table2" cellspacing="0">
+                            <thead class="thead2">
+                                <tr style="position:sticky;top:0px">
+                                <th class="table2_tbdoy2" style="font-size:16px;border-left:1px solid #000;background:#c4d79b;height:62px;position: sticky;top:0;" :colspan="Projectsdata.length+1">
+                                    {{Text}}
+                                </th>
+                                </tr>
+                                <tbody >
+                                    <div style="position:sticky;top:62px">
+                                    <tr class="tbody2" style = "font-size:16px;background:#c4d79b;height:32px !important;position: sticky;top:62px;">
+                                        <td class="tbody2_td" rowspan="2" style="font-size:16px;width:250px !important;height:32px;background:#c4d79b;position: sticky;top:62px;line-height:32px"><span style="position:absolute;top:17px;left:96px">{{lang.ProcessParameterReport_HT_RecordingTime}}</span></td>
+                                        <td class="tbody2_td" style="font-size:16px;line-height:24px"  rowspan="1" :colspan="item.num" v-for="(item,index) in SIDsArr" :key="index" >{{item.name}}</td>
+                                    </tr>
+                                     <tr style="background:#c4d79b;height:30px !important">
+                                        <td @click="proNameFun(item,index)" class="proName" :style="'width:'+DomArr1[index] + 'px'" v-for="(item,index) in Projectsdata" :key="index" width="140px">{{item.ProjectName}}</td>
+                                    </tr>
+                                    <tr style="background:#c4d79b;height:30px;position: sticky;top:127px;">
+                                        <td class="tbody4Bt" style = "background:#c4d79b;position: sticky;top:127px;height:30px;line-height:24px">//</td>
+                                        <td class="tbody4Bt" v-for="(item,index) in Projectsdata" :key="index" style = "background:#c4d79b;position: sticky;top:127px;height:30px;line-height:24px">{{item.Unit}}</td>
+                                    </tr>
+                                    </div>
+                                  <div>
+                                    <tr class="reporData" v-for="(item,index) in ReportDataLeftArr" :key="index" style = "height:'30px';line-height:30px;">
+                                        <td style = "width:250px;border-left:1px solid #000 !important">{{item.time}}</td>
+                                        <!-- <td style = "min-width:140px" :style="'width:'+DomArr1[ind] + 'px'" class="repopNumDom"  v-for="(i,ind) in item.Arrdata" :class="[i.value>=i.lower && i.value<=i.upper ? 'color1' : 'color2','repopNumDom' + ind]" :key="ind">{{i.value}}</td> -->
+                                        <td style = "min-width:140px" :style="'width:'+DomArr1[ind] + 'px'" class="repopNumDom"  v-for="(i,ind) in item.Arrdata" :class="[i.red == false ? 'color1' : 'color2','repopNumDom' + ind]" :key="ind">{{i.value}}</td>
+                                    </tr>
+                                  </div>
+                                </tbody>
+                            </thead>
+                        </table>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         <!-- 导出弹窗 -->
         <exportTasble v-if="isExport"></exportTasble>
         <!-- 提示弹窗和遮罩层 -->
         <TipsPop :popText="TipsPopText" v-if="isTipsPop"></TipsPop>
-        <div v-if="isTipsPop || isExport" class="mask_box"></div>
-        <ProductScrapping v-if="ProductScrappingShow" @callback="ProductScrappingCallback"></ProductScrapping>
-        <DataUpdate v-if="DataUpdateShow" @callback="DataUpdateCallback"></DataUpdate>
-        <DisplaySettings v-if="DisplaySettingsShow" @callback="DisplaySettingsCallback"></DisplaySettings>
+        <div v-if="isTipsPop ||isExport" class="mask_box"></div>
     </div>
 </template>
 
@@ -236,416 +157,878 @@ let echarts = require('echarts/lib/echarts')
 import html2canvas from "html2canvas"
 import TipsPop from '../../customer/TipsPop'
 import exportTasble from './exportTablePop'
-import ProductScrapping from './ProductScrapping'
-import DataUpdate from './DataUpdate'
-import DisplaySettings from './DisplaySettings'
+
+let myChart
 export default {
     name: 'tapwater',
-    components: {
+    components:{
         TipsPop,
-        exportTasble,
-        ProductScrapping,
-        DataUpdate,
-        DisplaySettings
+        exportTasble
     },
     data() {
         return {
-            ProductScrappingShow: false,
-            DataUpdateShow: false,
-            DisplaySettingsShow: false,
             value1: new Date(new Date().toLocaleDateString()),
             value2: new Date(
                 new Date(new Date().toLocaleDateString()).getTime() +
-                24 * 60 * 60 * 1000 - 1
+                    24 * 60 * 60 * 1000 - 1
             ),
+            tablenames: '',
+            Meter: '',
+            chardata: '',
+            couponSelected: '',
             starttime: '',
             endtime: '',
             change: 2,
-            timevalue2: '',
-            timevalue1: '',
-            oldTimeValue1: '',
-            oldTimeValue2: "",
-            codeText: '',//产品码
-            loading: false,
-            loading2: false,
-            loading3: false,
-            queryId: '',
-            exportId: '',
-            exportTemplateId: '',
-            importId: '',
-            scrappingId: '',
-            displaySettingId: '',
-            dataUpdateId: '',
-            TipsPopText: '该用户没有操作权限',
-            isTipsPop: false,
-            isExport: false,
-            exportCodeText: '',
-            selectOptions: [{
+            tableData: [],
+            hasnum: 1,
+            timevalue2:'',
+            timevalue1:'',
+            oldTimeValue1:'',
+            oldTimeValue2:"",
+            WID:'', 
+            Leftarr:[],
+            codeText:'',//产品码
+            Projectsdata:[],//项目名
+            ReportData:[],
+            ReportDataLeft:[],
+            ReportDataLeftArr:[],
+            pidArr:[],
+            UpperArr:[],
+            LowerArr:[],
+            ProductIDArr:[],
+            WIDShow:false,
+            ItemArr:[],
+            Text:'',
+            SIDsArr:[],
+            scroll:'',
+            scrollShow:true,
+            loading:false,
+            powerDataAll:[],
+            queryId:'',
+            exportId:'',
+            TipsPopText:'该用户没有操作权限',
+            isTipsPop:false,
+            isExport:false,
+            exportCodeText:'',
+            selectOptions:[{
                 value: '模糊匹配',
                 label: '模糊匹配'
-            }, {
+            },{
                 value: '精准匹配',
                 label: '精准匹配'
             }],
-            selectVale: '模糊匹配',
+            selectVale:'模糊匹配',
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
             zoomValue: 0,
-            tableData: {
-                leftarr: [],
-                curLeft: null,
-                dataList: [],
-                curPid: '',
-                chartTitle: ''
-            },
-            PageContext: {},
-            ProductTypeList: [],
-            ProductTypeCode: '全部',
-            QualitiedType: '全部',
-            WorkType: '全部',
-            QueryKeyType: '产品ID',
-            NGCount: 0,
-            OKCout: 0,
-            PassRate: 0,
-            TotalCount: 0,
-
+            skin: ''
         };
     },
-    created() {
+    created(){
         this.$nextTick(() => {
-            this.zoomValue = Number(parseFloat(window.screen.width / 1920).toFixed(2)) <= 0.9 ? 0.9 : Number(parseFloat(window.screen.width / 1920).toFixed(2))
+            this.zoomValue = Number(parseFloat(window.screen.width/1920).toFixed(2)) <= 0.9 ? 0.9 : Number(parseFloat(window.screen.width/1920).toFixed(2))
 
         })
+        this.skin = this.$store.state.color === 'blackBlue'
         this.getLangData()
         this.getDate1()
         this.allConfigure()
         this.powerBtn()
         //重新改变图表大小
-        $(window).bind("resize",
+         $(window).bind("resize",
             function () {
-                let _dom = document.getElementById('mychart')
-                let myChart = echarts.init(_dom);
                 myChart.resize()
             }
-        );
+        ); 
     },
-    watch: {
-        VpowerData(val) {  //监听按钮权限
+    watch:{
+        theme(val){
+            this.skin = val === 'blackBlue'
+            this.drawLine()
+        },
+        VpowerData(val){  //监听按钮权限
             this.powerBtn()
-        },
-        "tableData.curLeft": {
-            deep: true,
-            immediate: true,
-            handler: function (val, oldVal) {
-                if (!val || !val.WID) return;
-                if (oldVal && (val.WID === oldVal.WID)) return;
-                this.Search();
-            }
-        },
-
+        }
     },
-    computed: {
+    computed:{
+        theme(){
+            return this.$store.state.color
+        },
         VpowerData() {
             return this.$store.state.btnPowerData;
         },
     },
     methods: {
-        openDisplaySettings() {
-            this.isPower(this.displaySettingId).then((val) => {
-                if (val) {
-                    this.DisplaySettingsShow = true;
-                } else {
-                    this.isTipsPop = true
-                    this.TipsPopText = '该用户没有操作权限！'
-                }
-            })
-        },
-        DisplaySettingsCallback(type, str) {
-            this.DisplaySettingsShow = false;
-            if (str) {
-                this.isTipsPop = true
-                this.TipsPopText = str
-            }
-            if (type == 'yes') {
-                this.PageContext = {}//重置查询，回去第一页
-                this.QueryReportData(true);
-            }
-        },
-        openProductScrapping() {
-            this.isPower(this.scrappingId).then((val) => {
-                if (val) {
-                    this.ProductScrappingShow = true;
-                } else {
-                    this.isTipsPop = true
-                    this.TipsPopText = '该用户没有操作权限！'
-                }
-            })
-
-        },
-        ProductScrappingCallback(type, str) {
-            this.ProductScrappingShow = false;
-            if (str) {
-                this.isTipsPop = true
-                this.TipsPopText = str
-            }
-            if (type == 'yes') {
-                this.PageContext = {}//重置查询，回去第一页
-                this.QueryReportData(true);
-            }
-        },
-        openDataUpdate() {
-            this.isPower(this.dataUpdateId).then((val) => {
-                if (val) {
-                    this.DataUpdateShow = true;
-                } else {
-                    this.isTipsPop = true
-                    this.TipsPopText = '该用户没有操作权限！'
-                }
-            })
-
-        },
-        DataUpdateCallback(type, str) {
-            this.DataUpdateShow = false;
-            if (str) {
-                this.isTipsPop = true
-                this.TipsPopText = str
-            }
-            if (type == 'yes') {
-                this.PageContext = {}//重置查询，回去第一页
-                this.QueryReportData(true);
-            }
-        },
-        leftItemStyle(selected, displayColor) {
-            if (selected) {
-                return {
-                    backgroundColor: displayColor || '#808080',
-                    color: '#fff',
-                    border: 'none',
-                }
-            }
-            return {
-                backgroundColor: '#fff',
-                color: displayColor || '#808080',
-                border: displayColor ? `1px solid ${displayColor}` : '1px solid #808080',
-            }
-        },
-        getLangData() {
-            this.selectOptions = [
-                {
+       getLangData() {
+           this.selectOptions = [
+               {
                     value: this.lang.ProcessParameterReport_HT_FuzzyMatching,
                     label: this.lang.ProcessParameterReport_HT_FuzzyMatching,
-                }, {
+                },{
                     value: this.lang.ProcessParameterReport_HT_AccurateMatching,
                     label: this.lang.ProcessParameterReport_HT_AccurateMatching
                 }
             ]
             this.selectVale = this.lang.ProcessParameterReport_HT_FuzzyMatching
-        },
+       },
         //关闭弹窗提示
-        clonePopFun() {
-            this.isTipsPop = false
-        },
-        // 筛选按钮数据
-        powerBtn() {
-            var powerData = this.$store.state.btnPowerData
-            var btnList = [] // 按钮数据列表
-            var btnObj = {} // 按钮对象是为了能根据key快速查询对应的按钮数据
-            // 获取按钮权限ID
-            for (let i = 0, iLen = powerData.length; i < iLen; i++) {
-                const Children = powerData[i].Children;
-                for (let n = 0, nLen = Children.length; n < nLen; n++) {
-                    const item = Children[n];
-                    if (item.RightID === this.$route.query.id) {
-                        btnList = item.Children;
-                        break
-                    }
-                }
-                if (btnList.length) break;
-            }
-            btnList.forEach((item) => {
-                btnObj[item.RightDesc] = item
-            });
-            console.log("btnObj", btnObj)
-            this.exportId = btnObj['参数报表-导出按钮'].RightID
-            this.queryId = btnObj['参数报表-查询按钮'].RightID
-            this.scrappingId = btnObj['参数报表-数据清除按钮'].RightID
-            this.displaySettingId = btnObj['参数报表-显示设置按钮'].RightID
-            this.dataUpdateId = btnObj['参数报表-数据修改按钮'].RightID
-            this.exportTemplateId = btnObj['参数报表-导出模板按钮'].RightID
-            this.importId = btnObj['参数报表-导入按钮'].RightID
-        },
-        // 该用户是否有权限
-        isPower(id) {
-            if (!id) {
-                this.isTipsPop = true
-                this.TipsPopText = 'ID不能为空';
-                return;
-            }
-            return new Promise((resolve, reject) => {
+      clonePopFun(){
+         this.isTipsPop = false
+      },
+      //筛选按钮数据
+       powerBtn(){
+                  var powerData = this.$store.state.btnPowerData
+                  var pagePower = this.$route.query.id
+                  var btnData = []
+                  this.powerDataAll
+                  //获取按钮权限ID
+                  for(let i=0;i<powerData.length;i++){
+                      var Children = powerData[i].Children
+                      for(let j=0;j<Children.length;j++){
+                          if(Children[j].RightID == pagePower){
+                             btnData = Children[j].Children
+                          }
+                      }
+                  }
+                  for(let i1=0;i1<btnData.length;i1++){
+                      if(btnData[i1].RightName == '导出按钮'){
+                          this.exportId = btnData[i1].RightID
+                      }
+                      if(btnData[i1].RightName == '查询按钮'){
+                         this.queryId = btnData[i1].RightID
+                      }
+                  }
+       },
+        //该用户是否有权限
+        isPower(id){
+          return new Promise((resolve, reject) => {
+                var argUserID 
                 var userinfo = JSON.parse(sessionStorage.getItem('userInfo1'));
                 var sightseerInfo1 = JSON.parse(sessionStorage.getItem('sightseerInfo1'));
-                var argUserID = (userinfo != null) ? argUserID = userinfo.SCMSUserID : argUserID = sightseerInfo1.SCMSUserID
-                this.$axios({
+                if(userinfo != null){
+                    argUserID = userinfo.SCMSUserID
+                }else{
+                    argUserID = sightseerInfo1.SCMSUserID
+                }
+                var argRightID = id
+                this.$axios({                      //权限配置请求接口
                     method: 'post',
-                    url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${argUserID}&argRightID=${id}`,
-                }).then(res => {
-                    resolve(res.data.data)
-                }, err => {
-                    console.log('该用户是否有权限-报错', err)
-                })
+                    url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${argUserID}&argRightID=${argRightID}`,
+                    argUserID:argUserID,
+                    argRightID:argRightID,
+                }) .then(res => {
+                      console.log('是否权限',res)
+                      resolve(res.data.data)
             })
+          })
+      },
+          //懒加载
+          menu() {
+            var hei = document.querySelector('.sometable').scrollHeight
+            var ltop = document.querySelector('.sometable').scrollTop
+            var chei = document.querySelector('.sometable').clientHeight
+             if (hei - ltop == chei) {        //条件触发
+                     if (this.scrollShow) {
+                           this.scrollNum = this.scrollNum + 1
+                           if(this.aa == 'false'){    //防止重复点击
+                               return
+                           }
+                          this.pidArr = []
+                          this.ProductIDArr = []
+                          this.UpperArr = []
+                          this.LowerArr = []
+                          this.ReportDataLeftArr = []
+                          var NumLen 
+                            if(this.scrollNum * 100 > this.resDataArr.length){
+                                    NumLen = this.resDataArr.length
+                                    this.aa = 'false'
+                                    console.log('结束了')
+                            }else{
+                                NumLen = this.scrollNum * 100
+                            }
+                             for(var i=((this.scrollNum-1) * 100);i< NumLen;i++){
+                              var value ={                              //格式展示的数据
+                                  Number:this.resDataArr[i].Number,
+                                  Date:this.resDataArr[i].Date,
+                                  ProductID:this.resDataArr[i].ProductID,
+                                  IsQualified:this.resDataArr[i].IsQualified,
+                                  Reason:this.resDataArr[i].Reason,
+                                  RecordTime:this.resDataArr[i].RecordTime,
+                                 ProjectDatas:this.resDataArr[i].ProjectDatas,
+                              }
+                              var value8 = {                          //格式展示的数据
+                                  ProjectDatas:this.resDataArr[i].ProjectDatas,
+                                  ProductID:this.resDataArr[i].ProductID
+                              }
+                              this.ReportDataLeft.push(value8)
+                              this.ReportData.push(value)
+                          }
+
+                            for(var j=0;j<this.ReportDataLeft.length;j++){
+                            var arr = []                              //添加最大值最小值和当前值
+                            for(var k=0;k<this.ReportDataLeft[j].ProjectDatas.length;k++){
+                                    var value5 ={
+                                        value:this.ReportDataLeft[j].ProjectDatas[k].Value,
+                                        upper:this.leftarr1[k].Upper,
+                                        lower:this.leftarr1[k].Lower,
+                                        red:this.ReportDataLeft[j].ProjectDatas[k].Red,
+                                    }
+                                arr.push(value5)
+                            }                       //时间和工位数据展示
+                                var value3 ={
+                                    Arrdata:arr,
+                                    time:this.resDataArr[j].RecordTime
+                                }
+                                this.ReportDataLeftArr.push(value3)
+                                 for(var o=0;o<arr.length;o++){         //自适应盒子长度
+                                      if(arr[o].value != null ){
+                                          var num = arr[o].value.length * 18
+                                          var numsize3 = 0
+                                        for(let i=0;i<arr[o].value.length;i++){
+                                            var gz3 = /^[A-Za-z0-9]+$/
+                                            var show3 = gz3.test(arr[o].value[i])
+                                            if(show3){
+                                                numsize3= numsize3 + 9
+                                            }else{
+                                                numsize3 = numsize3 + 18
+                                            }
+                                        }
+                                        num = numsize3
+
+                                        if(num > 140){
+                                            if(num > this.DomArr1[o]){
+                                                this.DomArr1[o] = num
+                                            }
+                                        }
+                                      }
+                           }
+                        }
+                          this.scrollShow = true
+                     }
+             }
+        },
+        //计算宽度
+        initWidth1(){
+    
+            setTimeout(function(){
+                document.querySelector('.manytable').style.width = 100000 + 'px'
+                var t1W =document.querySelector('.table1').offsetWidth
+                var t2W =document.querySelector('.table2').offsetWidth
+                document.querySelector('.manytable').style.width = t1W + t2W  + 'px'
+            },300)
+        },
+        //点击工位
+        proNameFun(item,index){
+             this.pidArr = []
+             this.ItemArr = item
+             this.proName = item.ProjectName
+             this.pid = item.PID
+             $('.proNameBorColor').remove()      //激活当前工位
+             $(document.querySelectorAll('.proName')[index]).append('<div class="proNameBorColor" style="position:absolute;left:0;top:0;width:100%;height:29px;border:1px solid blue;box-sizing:border-box;z-index:999"></div>')
+            if(this.WIDShow){
+                this.pidArr = []
+                this.ProductIDArr = []
+                this.UpperArr = []
+                this.LowerArr = []
+               if(this.ReportDataLeft1.length){
+                   
+                   for(var j=0;j<this.ReportDataLeft1.length;j++){
+                             var arr = []                         //整理图表数据
+                             for(var k=0;k<this.ReportDataLeft1[j].ProjectDatas.length;k++){
+                                  if(this.ReportDataLeft1[j].ProjectDatas[k].PID == this.pid){
+                                      if(this.ReportDataLeft1[j].ProjectDatas[k].Value != null){
+                                          this.pidArr.push(this.ReportDataLeft1[j].ProjectDatas[k].Value)
+                                      }
+                                          this.ProductIDArr.push(this.ReportDataLeft1[j].ProductID)
+                                          this.UpperArr.push(this.leftarr1[k].Upper) 
+                                          this.LowerArr.push(this.leftarr1[k].Lower) 
+                                  }
+                                  var value5 ={
+                                     value:this.ReportDataLeft1[j].ProjectDatas[k].Value,
+                                     upper:this.leftarr1[k].Upper,
+                                     lower:this.leftarr1[k].Lower
+                                  }
+                              arr.push(value5)
+                             }
+                         }
+                       this.drawLine()
+               }else{
+                   this.UpperArr.push(item.Upper)
+                   this.LowerArr.push(item.Lower)
+               }
+
+            }else{
+                this.UpperArr = []
+                this.LowerArr = []
+                this.UpperArr.push(item.Upper)
+                this.LowerArr.push(item.Lower)
+                this.drawLine()
+            }
         },
 
-        clickHeader(id) {
-            this.tableData.curPid = id
-            this.drawLine()
-        },
+        //点击参数报表组
+        someLeftFun(item,indexx,e){
+            var tryDom = document.querySelectorAll('.try')
+            for(let f=0;f<tryDom.length;f++){
+                tryDom[f].classList.remove('tryActive')
+                // tryDom[f].style.background = '#fff'
+                tryDom[f].classList.add('try-normal')
+            }
+            e.path[0].classList.add('tryActive')
+            var domColor = $( e.path[0]).css('border-color')
+            // $( e.path[0]).css('background',domColor)
 
-        returnProject(row, pid) {
-            let _obj = row.ProjectDatas.find(item => item.PID == pid)
-            return _obj || {}
+            this.loading = true
+            this.Sid= []
+            this.Sids = []
+            this.sidNum = []
+            this.sidName=[]
+            this.sidName1=[]
+            this.SIDsArr = []
+            this.Projectsdata = []
+            this.ReportDataLeftArr = []
+            this.pidArr = []
+            this.UpperArr = []
+            this.LowerArr = []
+            this.ProductIDArr=[]
+            this.ItemArr = item.Projects[0]
+            this.Text = item.name
+            this.WIDShow = true
+            this.WID = item.wid
+            this.scrollShow = true
+            this.scrollNum = 1
+            this.numLength = 0
+            this.DomArr1 = []
+            document.querySelector('.sometable').scrollTop = 0
+            this.aa = 'true'             //以上为重置
+            this.QueryReportData()       //请求数据
+            for(var i=0;i<item.Projects.length;i++){
+                var value = {
+                    PID:item.Projects[i].PID,       //格式表格数据展示
+                    ProjectName:item.Projects[i].ProjectName,
+                    Upper:item.Projects[i].Upper,
+                    Lower:item.Projects[i].Lower,
+                    Unit:item.Projects[i].Unit
+                }
+                this.Projectsdata.push(value) 
+            }
+            console.log('item',item)
+             for(var s=0;s<this.Projectsdata.length;s++){
+                let num1 = this.Projectsdata[s].ProjectName.length * 18
+                //中文为false
+                let numsize = 0
+                for(let i=0;i<this.Projectsdata[s].ProjectName.length;i++){
+                    let gz = /^[A-Za-z0-9]+$/
+                    let show = gz.test(this.Projectsdata[s].ProjectName[i])
+                    if(show){
+                        numsize = numsize + 9
+                    }else{
+                        numsize = numsize + 18
+                    }
+                }
+                num1 = numsize
+                if(num1 > 140){                //自适应盒子长度
+                    this.DomArr1.push(num1)
+                }else{
+                    this.DomArr1.push(140)
+                }
+            }
+            for(let s1=0;s1<this.Projectsdata.length;s1++){
+                let num1 = this.Projectsdata[s1].Unit.length * 18
+                let numsize2 = 0
+                for(let i=0;i<this.Projectsdata[s1].Unit.length;i++){
+                    let gz2 = /^[A-Za-z0-9]+$/
+                    let show2 = gz2.test(this.Projectsdata[s1].Unit[i])
+                    if(show2){
+                        numsize2= numsize2 + 10
+                    }else{
+                        numsize2 = numsize2 + 20
+                    }
+                }
+                num1 = numsize2     
+                if(num1 > 140){  //自适应盒子长度
+                    if(num1 > this.DomArr1[s1]){
+                        this.DomArr1[s1] = num1
+                    }
+                }
+            }
+
+            this.pid = item.Projects[0].PID
+            this.proName = item.Projects[0].ProjectName
+            $('.proNameBorColor').remove()                    //激活第一个工位
+             $(document.querySelectorAll('.proName')[0]).append('<div class="proNameBorColor" style="position:absolute;left:0;top:0;width:100%;height:29px;border:1px solid blue;box-sizing:border-box;z-index:999"></div>')
+            document.querySelector('.table2').style.width=''
+            window.setTimeout(() => {                            //自适应表格宽度
+                 document.querySelector('.manytable').style.width = 100000 + 'px'
+                var t1W =document.querySelector('.table1').offsetWidth
+                var t2W =document.querySelector('.table2').offsetWidth
+                document.querySelector('.manytable').style.width = t1W + t2W  + 'px'
+            },300)
+ 
+              var projestArr = this.Leftarr[indexx].Projects
+              this.Sids =this.Leftarr[indexx].SIDs                //整理工位数据
+                     for(var k=0;k<projestArr.length;k++){
+                        this.Sid.push(projestArr[k].SID)
+                     }
+                    var obj = {}; 
+                    for(var y= 0, l = this.Sid.length; y< l; y++){ 
+                        var item1 = this.Sid[y]; 
+                        obj[item1] = (obj[item1] +1 ) || 1; 
+                    } 
+                    for(let i in obj ){  
+                        var valueId = {
+                            name: i,
+                            num: obj[i]
+                        }
+                       this.sidNum.push(valueId)
+                       this.sidName.push(i)
+                    }
+                    var nameArr = []
+                    for(let a=0;a<projestArr.length;a++){
+                        for(let b=0;b<this.sidName.length;b++){
+                            if(projestArr[a].SID == this.sidName[b]){
+                                var index = nameArr.indexOf(projestArr[a].StepName)
+                                if (index == -1) {
+                                    var valueID = {
+                                        name: projestArr[a].StepName,
+                                        id: projestArr[a].SID
+                                    }
+                                  nameArr.push(projestArr[a].StepName)
+                                  this.sidName1.push(valueID)
+                                }
+                            }
+                        }
+                    }
+                     for(let c=0;c<this.sidName1.length;c++){
+                         for (let h = -0; h < this.sidNum.length; h++) {
+                              if (this.sidNum[h].name == this.sidName1[c].id) {
+                                  var value6 = {
+                                      name:this.sidName1[c].name,
+                                      num:this.sidNum[h].num
+                                  }
+                                this.SIDsArr.push(value6)
+                              }
+                         }
+                     }
+                      for(var s1=0;s1<this.SIDsArr.length;s1++){
+                            var num2 = this.SIDsArr[s1].name.length * 18
+                             var numsize1 = 0
+                            for(let i=0;i<this.SIDsArr[s1].name.length;i++){
+                                var gz1 = /^[A-Za-z0-9]+$/
+                                var show1 = gz1.test(this.SIDsArr[s1].name[i])
+                                if(show1){
+                                    numsize1= numsize1 + 9
+                                }else{
+                                    numsize1 = numsize1 + 18
+                                }
+                            }
+                            num2 = numsize1
+                            if(num2 > this.DomArr1[s1]){                //自适应盒子长度
+                                this.DomArr1[s1] = num2
+                            }
+                        }
+                        this.initWidth1()
         },
 
         //查询所有报表的所有配置
-        allConfigure() {
-
+        allConfigure(){
             this.$axios({
-                method: 'post',
-                url: '/api/FormulaManage/QueryProductType',
-            }).then(res => {
-                if (res.data.code == 0) {
-                    this.ProductTypeList = res.data.data || [];
-                    // if (this.ProductTypeList.length) {
-                    //     this.ProductTypeCode = this.ProductTypeList[0].ProductTypeCode
-                    // }
-                    ///////////////
-                    this.$axios({
-                        method: 'post',
-                        url: '/api/ProcessParameterReport/QueryWorkSections',
-                    }).then(res => {
-                        console.log('allConfigure', res.data.data)
-                        if (!res.data.data || !res.data.data.length) {
-                            this.$message.warning('请配置工序！');
-                            return
+                  method: 'post',
+                  url: '/api/ProcessParameterReport/QueryWorkSections',
+              }).then(res => {
+                  this.Sid= []
+                  this.Sids = []
+                  this.sidNum = []
+                  this.sidName=[]
+                  this.sidName1=[]
+                  this.SIDsArr = []
+                  this.Leftarr=[]
+                  this.UpperArr = []
+                  this.LowerArr = []
+                   for(var i=0;i<res.data.data.length;i++){
+                       var value ={
+                           wid:res.data.data[i].WID,
+                           name:res.data.data[i].WorkName,
+                           Projects:res.data.data[i].Projects,
+                           SIDs:res.data.data[i].SIDs,
+                       } 
+                    this.Leftarr.push(value)
+                   }
+                    var projestArr = res.data.data[0].Projects
+                    this.Sids = res.data.data[0].SIDs
+                     for(var k=0;k<projestArr.length;k++){
+                        this.Sid.push(projestArr[k].SID)
+                     }
+                    var obj = {}; 
+                    for(var y= 0, l = this.Sid.length; y< l; y++){ 
+                        var item = this.Sid[y]; 
+                        obj[item] = (obj[item] +1 ) || 1; 
+                    } 
+
+                    for(let i in obj ){  
+                       this.sidNum.push(obj[i])
+                       this.sidName.push(i)
+                    }
+                    for(var a=0;a<projestArr.length;a++){
+                        for(var b=0;b<this.sidName.length;b++){
+                            if(projestArr[a].SID == this.sidName[b]){
+                                this.sidName1.push(projestArr[a].StepName)
+                            }
                         }
-                        this.tableData.leftarr = res.data.data;
-                        this.tableData.curLeft = this.tableData.leftarr[0];
-                        this.$nextTick(() => {
-                            this.tableScroll()
-                        })
+                    }
+                        this.sidName1 = new Set(this.sidName1)
+                        this.sidName1 = [...this.sidName1]
+                     for(var c=0;c<this.sidName1.length;c++){
+                         var value6 = {
+                             name:this.sidName1[c],
+                             num:this.sidNum[c]
+                         }
+                       this.SIDsArr.push(value6)
+                     }
+                       
+                     this.WID =  this.Leftarr[0].wid
+                     this.Text = this.Leftarr[0].name
+
+                     for(var j=0;j<res.data.data[0].Projects.length;j++){
+                        var value1 = {
+                            PID:res.data.data[0].Projects[j].PID,
+                            ProjectName:res.data.data[0].Projects[j].ProjectName,
+                            Upper:res.data.data[0].Projects[j].Upper,
+                            Lower:res.data.data[0].Projects[j].Lower,
+                            Unit:res.data.data[0].Projects[j].Unit,
+                        }
+                        this.Projectsdata.push(value1) 
+
+                        this.DomArr1 = []
+                         for(var s=0;s<this.Projectsdata.length;s++){
+                            let num1 = this.Projectsdata[s].ProjectName.length * 18
+                             let numsize2 = 0
+                            for(let i=0;i<this.Projectsdata[s].ProjectName.length;i++){
+                                let gz2 = /^[A-Za-z0-9]+$/
+                                let show2 = gz2.test(this.Projectsdata[s].ProjectName[i])
+                                if(show2){
+                                    numsize2= numsize2 + 9
+                                }else{
+                                    numsize2 = numsize2 + 18
+                                }
+                            }
+                            num1 = numsize2
+                            if(num1 > 140){                //自适应盒子长度
+                                this.DomArr1.push(num1)
+                            }else{
+                                this.DomArr1.push(140)
+                            }
+                        }
+                         for(let s1=0;s1<this.Projectsdata.length;s1++){
+                            let num1 = this.Projectsdata[s1].Unit.length * 18
+                            let numsize2 = 0
+                        
+                            for(let i=0;i<this.Projectsdata[s1].Unit.length;i++){
+                                let gz2 = /^[A-Za-z0-9]+$/
+                                let show2 = gz2.test(this.Projectsdata[s1].Unit[i])
+                                if(show2){
+                                    numsize2= numsize2 + 9
+                                }else{
+                                    numsize2 = numsize2 + 18
+                                }
+                            }
+                            num1 = numsize2     
+                            if(num1 > 140){  //自适应盒子长度
+                                if(num1 > this.DomArr1[s1]){
+                                    this.DomArr1[s1] = num1
+                                }
+                            }
+                        }
+
+                        console.log('eee22',this.DomArr1,this.Projectsdata)
+                    }
+                    this.pid = this.Projectsdata[0].PID
+                    this.proName = this.Projectsdata[0].ProjectName
+                    this.ItemArr = this.Projectsdata[0]
+                    this.UpperArr.push(this.Projectsdata[0].Upper)
+                    this.LowerArr.push(this.Projectsdata[0].Lower)
+                    var leftWidth = $('.someLeft').width()
+                    var aW = document.body.clientWidth
+                    $('.sometable').css('width', `${(((aW - (leftWidth)) / aW)*100) - (4*this.zoomValue)}%`)
+                    this.drawLine();
+                    this.initWidth1()
+                    
+                    this.$nextTick(()=>{
+                        $($('.try')[0]).addClass('tryActive')    //激活当前工序高亮
+                        // $($('.try')[0]).css('background','#808080')
                     })
-                } else {
-                    this.isTipsPop = true
-                    this.TipsPopText = res.data.msg
+
+               }).catch(err => {
+                  console.log('提醒err',err)
+              });
+
+        },
+
+           //查询默认激活高亮颜色
+        defaultColor(){
+            let Domindex
+            for(let j=0;j<$('.try').length;j++){
+                if('try tryActive' == $($('.try')[j]).attr('class')){
+                    Domindex = j
                 }
-            })
-
-
-
+            }
+            var domColor = $($('.try')[Domindex]).css('border-color')
+            $($('.try')[Domindex]).css('background',domColor)
         },
-        tableScroll() {
-            let _dom = document.getElementsByClassName('table-r')[0]
-            let that = this;
-            //记录初始滚动条高度
-            let beforeScrollTop = _dom.scrollTop;
-            _dom.addEventListener('scroll', () => {
-                // 滚动距离
-                let scrollTop = _dom.scrollTop
-                // 变量windowHeight是可视区的高度
-                let windowHeight = _dom.clientHeight || _dom.clientHeight
-                // 变量scrollHeight是滚动条的总高度
-                let scrollHeight = _dom.scrollHeight || _dom.scrollHeight
-                //滚动高度差，向下滚动才触发加载更多，横向滚动不触发
-                let delta = scrollTop - beforeScrollTop;
-                if (delta > 0 && (scrollTop + windowHeight === scrollHeight)) {
-                    // 获取到的不是全部数据 当滚动到底部 继续获取新的数据
-                    console.log("loadMorePage")
-                    that.QueryReportData();
-                }
-            })
-
-        },
-        changeLeft(curLeft) {
-            this.tableData.curLeft = null
-            this.tableData.curLeft = curLeft
-        },
-
-        Search() {
-            this.tableData.dataList = [];
-            let _id = this.tableData.curPid
-            this.tableData.curPid = ''
-            this.tableData.curPid = _id
-            this.PageContext = {}//重置查询，回去第一页
-            this.QueryReportData(true);
-            sessionStorage.setItem('configurationData', JSON.stringify({}));
-        },
-
 
         //查询报表数据
-        QueryReportData(first) {
-            this.loading3 = true
-            var accurate
+        QueryReportData(text){
+            console.log('查询',this.selectVale)
+             console.log('this.DomArr1',this.DomArr1)
+             var $this = this
+            var accurate 
             //1是模糊 2是精准
-            if (this.selectVale == this.lang.ProcessParameterReport_HT_FuzzyMatching) {
+            if(this.selectVale == this.lang.ProcessParameterReport_HT_FuzzyMatching){
                 accurate = 1
-            } else {
+            }else{
                 accurate = 2
             }
-            this.$axios({
-                method: 'post',
-                url: `/api/ProcessParameterReport/QueryReportData?wid=${this.tableData.curLeft.WID}&startTime=${this.timevalue1}&endTime=${this.timevalue2}&code=${this.codeText}&accurate=${accurate}`,
-                data: {
-                    WID: this.tableData.curLeft.WID,
-                    StartTime: this.timevalue1,
-                    EndTime: this.timevalue2,
-                    Code: this.codeText,
-                    Accurate: accurate,
-                    PageContext: this.PageContext,
+             this.$axios({
+                  method: 'post',
+                  url: `/api/ProcessParameterReport/QueryReportData?wid=${this.WID}&startTime=${this.timevalue1}&endTime=${this.timevalue2}&code=${this.codeText}&accurate=${accurate}`,
+                  wid:this.WID,
+                  startTime:this.timevalue1,
+                  endTime:this.timevalue2,
+                  code:this.codeText,
+              }).then(res => {
+                  console.log('res==>',res,this.DomArr1)
+                 
+                  
+                  if(this.codeText != '' && this.selectVale != this.lang.ProcessParameterReport_HT_FuzzyMatching){   //查询产品码改颜色
+                       var tryDom = $('.try')
+                      if(res.data.data.color){
+                        if(res.data.data.color.length == tryDom.length){
+                            for(let i=0;i<res.data.data.color.length;i++){
+                                $(tryDom[i]).removeClass('try-normal')
+                                $(tryDom[i]).removeClass('try-success')
+                                $(tryDom[i]).removeClass('try-danger')
+                                if(res.data.data.color[i] == 0){
+                                    $(tryDom[i]).addClass('try-normal')
+                                    // $(tryDom[i]).css('borderColor','#808080')
+                                    // $(tryDom[i]).css('color','#808080')
+                                }else if(res.data.data.color[i] == 1){
+                                    $(tryDom[i]).addClass('try-success')
+                                    // $(tryDom[i]).css('borderColor','#7ABD7A')
+                                    // $(tryDom[i]).css('color','#7ABD7A')
+                                }else if(res.data.data.color[i] == 2){
+                                    $(tryDom[i]).addClass('try-danger')
+                                    // $(tryDom[i]).css('borderColor','#F96363')
+                                    // $(tryDom[i]).css('color','#F96363')
+                                }
+                                this.defaultColor()
+                            }
 
-                    ProductTypeCode: this.ProductTypeCode,
-                    QualitiedType: this.QualitiedType,
-                    WorkType: this.WorkType,
-                    QueryKeyType: this.QueryKeyType
-                },
-            }).then(res => {
-                this.loading3 = false
-                let data = res.data.data
-                let temp = this.tableData.leftarr;
-                if (data.color && data.color.length) {
-                    temp.forEach((item, idx) => {
-                        item.displayColor = data.color[idx] == 1 ? '#7ABD7A' : data.color[idx] == 2 ? '#F96363' : '#808080'
-                    })
-                } else {
-                    temp.forEach((item, idx) => {
-                        item.displayColor = '#808080'
-                    })
-                }
-                this.tableData.leftarr = temp;
-                this.tableData.dataList = this.tableData.dataList.concat(data.data || []);
-
-                this.PageContext = data.PageContext
-
-                //查第一页的逻辑放这里面
-                //查第一页时顺便查下曲线
-                //跟运行版不同，运行版的QueryReportData是查第一页loadmorepage是查下一页，web的第一页和下一页都是QueryReportData
-                if (first) {
-                    this.tableData.curPid = '';
-                    if (this.tableData.curLeft.WorkSteps.length && this.tableData.curLeft.WorkSteps[0].Projects.length) {
-                        this.tableData.curPid = this.tableData.curLeft.WorkSteps[0].Projects[0].PID
+                        }else{   //不是查询产品码恢复默认颜色
+                            $('.try').addClass('try-normal')
+                            $('.try').removeClass('try-success')
+                            $('.try').removeClass('try-danger')
+                            // $('.try').css('borderColor','#808080')
+                            // $('.try').css('color','#808080')
+                            this.defaultColor()
+                        }
                     }
-                    this.drawLine()
-                }
+                  }else{
+                        $('.try').addClass('try-normal')
+                        $('.try').removeClass('try-success')
+                        $('.try').removeClass('try-danger')
+                        // $('.try').css('borderColor','#808080')
+                        // $('.try').css('color','#808080')
+                        this.defaultColor()
+                  }
+                  console.log('res报表数据',res)
 
-            })
+                   this.ReportData = []
+                   this.ReportDataLeft = []
+                   this.ProductIDArr = []
+                   this.pidArr=[]
+                   this.ReportDataLeftArr = []
+                   this.LowerArr = []
+                   this.UpperArr = []
+                   this.ReportDataLeft1 = []
+                   this.ReportData1 = []
+                   this.resDataArr = []
+                   this.resDataArr = res.data.data.data
+                   if(res.data.data.data.length!=0){
+                       for(var w=0;w<this.Leftarr.length;w++){
+                           if(this.WID == this.Leftarr[w].wid){
+                               this.leftarr1 = this.Leftarr[w].Projects
+                           }
+                       }
+                       console.log('this.DomArr1',this.DomArr1)
+                      if(res.data.data.data.length > 100){
+                          for(var i=0;i<100;i++){
+                              var value ={
+                                  Number:res.data.data.data[i].Number,
+                                  Date:res.data.data.data[i].Date,
+                                  ProductID:res.data.data.data[i].ProductID,
+                                  IsQualified:res.data.data.data[i].IsQualified,
+                                  Reason:res.data.data.data[i].Reason,
+                                  RecordTime:res.data.data.data[i].RecordTime,
+                                 ProjectDatas:res.data.data.data[i].ProjectDatas,
+                              }
+                              var value8 = {
+                                 ProjectDatas:res.data.data.data[i].ProjectDatas,
+                                  ProductID:res.data.data.data[i].ProductID
+                              }
+                              this.ReportDataLeft.push(value8)
+                              this.ReportData.push(value)
+                          }
+                           for(var j=0;j<this.ReportDataLeft.length;j++){
+                           var arr = []
+                           for(var k=0;k<this.ReportDataLeft[j].ProjectDatas.length;k++){
+                                var value5 ={
+                                   value:this.ReportDataLeft[j].ProjectDatas[k].Value,
+                                   upper:this.leftarr1[k].Upper,
+                                   lower:this.leftarr1[k].Lower,
+                                   red:this.ReportDataLeft[j].ProjectDatas[k].Red,
+                                }
+                            arr.push(value5)
+                           }
+                            var value3 ={
+                                Arrdata:arr,
+                                   time:res.data.data.data[j].RecordTime
+                               }
+                            this.ReportDataLeftArr.push(value3)
+                            
+                               for(var o=0;o<arr.length;o++){
+                                   if(arr[o].value != null ){
+                                          var num = arr[o].value.length * 18
+                                            var numsize2 = 0
+                                        for(let i=0;i<arr[o].value.length;i++){
+                                            var gz2 = /^[A-Za-z0-9]+$/
+                                            var show2 = gz2.test(arr[o].value[i])
+                                            if(show2){
+                                                numsize2= numsize2 + 9
+                                            }else{
+                                                numsize2 = numsize2 + 18
+                                            }
+                                        }
+                                        num = numsize2
+                                     
+                                        if(num > 140){
+                                            if(num > this.DomArr1[o]){
+                                                this.DomArr1[o] = num
+                                            }
+                                        }
+                                   }
+                               }
+                            }
+                      }else{
+                           for(var f=0;f<res.data.data.data.length;f++){
+                              var value1 ={
+                                  Number:res.data.data.data[f].Number,
+                                  Date:res.data.data.data[f].Date,
+                                  ProductID:res.data.data.data[f].ProductID,
+                                  IsQualified:res.data.data.data[f].IsQualified,
+                                  Reason:res.data.data.data[f].Reason,
+                                  RecordTime:res.data.data.data[f].RecordTime,
+                                  ProjectDatas:res.data.data.data[f].ProjectDatas,
+                              }
+                              var value9 = {
+                                  ProjectDatas:res.data.data.data[f].ProjectDatas,
+                                  ProductID:res.data.data.data[f].ProductID
+                              }
+                              this.ReportDataLeft.push(value9)
+                              this.ReportData.push(value1)
+                          }
+
+                          for(var r=0;r<$this.ReportDataLeft.length;r++){
+                           var arr1 = []
+                           for(var e=0;e<$this.ReportDataLeft[r].ProjectDatas.length;e++){
+                                var value6 ={
+                                   value:$this.ReportDataLeft[r].ProjectDatas[e].Value,
+                                   upper:$this.leftarr1[e].Upper,
+                                   lower:$this.leftarr1[e].Lower,
+                                   red:$this.ReportDataLeft[r].ProjectDatas[e].Red
+                                }
+                                arr1.push(value6)
+                           }
+                            var value7 ={
+                                   Arrdata:arr1,
+                                   time:res.data.data.data[r].RecordTime
+                               }
+                          
+                             for(var u=0;u<arr1.length;u++){
+                                  if(arr1[u].value != null ){
+                                      var num1 = arr1[u].value.length * 18
+                                        var numsize3 = 0
+                                        console.log('arr1[u].value.length',arr1[u].value,arr1[u].value.length)
+                                        for(let i=0;i< arr1[u].value.length;i++){
+                                            var gz3 = /^[A-Za-z0-9]+$/
+                                            var show3 = gz3.test( arr1[u].value[i])
+                                            if(show3){
+                                                numsize3= numsize3 + 9
+                                            }else{
+                                                numsize3 = numsize3 + 18
+                                            }
+                                        }
+                                        num1 = numsize3
+                                       if(num1 > 140){
+                                           if(num1 > this.DomArr1[u]){
+                                               this.DomArr1[u] = num1
+                                           }
+                                       }
+                                  }
+                           }
+                           console.log('this.DomArr1[u]',this.DomArr1)
+                           this.ReportDataLeftArr.push(value7)
+                       }
+                      }
+                   }else{
+                          this.UpperArr.push(this.ItemArr.Upper)
+                          this.LowerArr.push(this.ItemArr.Lower)
+                          this.drawLine()
+                   }
+                     for(var e1=0;e1<res.data.data.data.length;e1++){
+                           var value4 ={
+                                  Number:res.data.data.data[e1].Number,
+                                  Date:res.data.data.data[e1].Date,
+                                  ProductID:res.data.data.data[e1].ProductID,
+                                  IsQualified:res.data.data.data[e1].IsQualified,
+                                  Reason:res.data.data.data[e1].Reason,
+                                  RecordTime:res.data.data.data[e1].RecordTime,
+                                 ProjectDatas:res.data.data.data[e1].ProjectDatas,
+                              }
+                                var value81 = {
+                                 ProjectDatas:res.data.data.data[e1].ProjectDatas,
+                                  ProductID:res.data.data.data[e1].ProductID
+                              }
+                              this.ReportDataLeft1.push(value81)
+                              this.ReportData1.push(value4)
+                       }
+                       for(var w1=0;w1<this.ReportDataLeft1.length;w1++){
+                           for(var q=0;q<this.ReportDataLeft1[w1].ProjectDatas.length;q++){
+                                if(this.ReportDataLeft1[w1].ProjectDatas[q].PID == this.pid){
+                                    if(this.ReportDataLeft1[w1].ProjectDatas[q].Value != null){
+                                        this.pidArr.push(this.ReportDataLeft1[w1].ProjectDatas[q].Value)
+                                        this.ProductIDArr.push(this.ReportDataLeft1[w1].ProductID)
+                                        this.UpperArr.push(this.leftarr1[q].Upper) 
+                                        this.LowerArr.push(this.leftarr1[q].Lower) 
+                                    }
+                                }
+                           } 
+                       }
+                       console.log('this.UpperArr',this.UpperArr,this.LowerArr)
+                        this.drawLine()
+                        this.initWidth1()         
+                        this.loading = false
+               }).catch(err => {
+                  console.log('提醒err参数报表',err)
+              });
         },
 
-        //初始化时间
-        getDate1() {
-            var myDate = new Date(); //获取当前年
+       //初始化时间
+        getDate1(){
+            var myDate =new Date(); //获取当前年
             var year = myDate.getFullYear();        //获取当前月
             var month = myDate.getMonth() + 1;
             var mothe = month > 9 ? month : '0' + month            //获取当前日
             var date = myDate.getDate();
-            var da = date > 9 ? date : '0' + date
+            var da = date >9 ? date : '0' + date
             var h = myDate.getHours(); //获取当前小时数(0-23)
             var he = h > 9 ? h : '0' + h
             var m = myDate.getMinutes(); //获取当前分钟数(0-59)
@@ -653,10 +1036,10 @@ export default {
             var s = myDate.getSeconds();
             var se = s > 9 ? s : '0' + s
             this.timevalue1 = year + '/' + mothe + '/' + da + ' ' + '00:00:00'       //获取当前时间
-            this.timevalue2 = year + '.' + mothe + '.' + da + ' ' + '23:59:59'
+            this.timevalue2 = year + '.' + mothe + '.' + da + ' '  + '23:59:59'
             this.oldTimeValue1 = year + '/' + mothe + '/' + da + ' ' + '00:00:00'       //获取当前时间
             this.oldTimeValue2 = year + '/' + mothe + '/' + da + ' ' + '23:59:59'       //获取当前时间
-        },
+       },
         getZoom() {
             this.$nextTick(() => {
                 let dates = [...document.querySelectorAll('.el-picker-panel.el-date-picker')]
@@ -668,79 +1051,93 @@ export default {
                     item.style.zoom = this.zoomValue
                 })
             })
-
+            
         },
-        //改数据格式
-        stateTime() {
-            this.timevalue1 = this.value1.replace(/-/g, "/")
+      //改数据格式
+      stateTime(){
+           this.timevalue1 = this.value1.replace(/-/g, "/")
             var sTime = this.$moment(this.timevalue1).format('YYYY-MM-DD HH:mm:ss')
             var eTime = this.$moment(this.timevalue2).format('YYYY-MM-DD HH:mm:ss')
             var diffs = this.$moment(eTime).diff(this.$moment(sTime), 'seconds')
-            if (diffs < 0) {
-                this.timevalue1 = this.$moment(this.oldTimeValue1).format('YYYY-MM-DD HH:mm:ss')
-                this.value1 = this.$moment(this.oldTimeValue1).format('YYYY-MM-DD HH:mm:ss')
+            if(diffs<0){
+                 this.timevalue1 = this.$moment(this.oldTimeValue1).format('YYYY-MM-DD HH:mm:ss')
+                 this.value1 = this.$moment(this.oldTimeValue1).format('YYYY-MM-DD HH:mm:ss')
                 this.isTipsPop = true
                 this.TipsPopText = this.lang.ProcessParameterReport_HT_TimeCompare
-            } else if (diffs == 0) {
+            }else if(diffs == 0){
                 this.timevalue1 = this.oldTimeValue1
                 this.timevalue2 = this.oldTimeValue2
                 this.value1 = this.$moment(this.oldTimeValue1).format('YYYY-MM-DD HH:mm:ss')
                 this.isTipsPop = true
                 this.TipsPopText = '开始时间不能等于结束时间'
-
-            } else {
-                this.oldTimeValue1 = sTime
+               
+            }else{
+                    this.oldTimeValue1 = sTime
             }
 
-        },
-        entTime() {
-            this.timevalue2 = this.value2.replace(/-/g, ".")
+      },
+      entTime(){
+          this.timevalue2 = this.value2.replace(/-/g, ".")
             var sTime = this.$moment(this.timevalue1).format('YYYY-MM-DD HH:mm:ss')
             var eTime = this.$moment(this.timevalue2).format('YYYY-MM-DD HH:mm:ss')
+            console.log(sTime)
+            console.log(eTime)
             var diffs = this.$moment(eTime).diff(this.$moment(sTime), 'seconds')
-            if (diffs < 0) {
+            console.log(diffs)
+            if(diffs<0){
                 this.timevalue2 = this.$moment(this.oldTimeValue2).format('YYYY-MM-DD HH:mm:ss')
                 this.value2 = this.$moment(this.oldTimeValue2).format('YYYY-MM-DD HH:mm:ss')
                 this.isTipsPop = true
                 this.TipsPopText = this.lang.ProcessParameterReport_HT_TimeCompare
-            } else if (diffs == 0) {
+            }else if(diffs == 0){
                 this.timevalue2 = this.oldTimeValue2
                 this.value2 = this.$moment(this.oldTimeValue2).format('YYYY-MM-DD HH:mm:ss')
                 this.isTipsPop = true
                 this.TipsPopText = '开始时间不能等于结束时间'
-
-            } else {
+               
+            }else{
                 this.oldTimeValue2 = eTime
             }
 
-        },
-        //查询
+      },
+       //查询
         changetime() {
-            this.isPower(this.queryId).then((val) => {
-                if (val) {
-                    this.Search()
-                } else {
-                    this.isTipsPop = true
-                    this.TipsPopText = '该用户没有操作权限！'
-                }
+            this.isPower(this.queryId).then((val) => { 
+               if(val){
+                   this.exportCodeText = this.codeText
+                   this.loading = true
+                   this.scrollShow = true
+                   this.scrollNum = 1
+                   this.numLength = 0
+                   this.aa = 'true'
+                   document.querySelector('.sometable').scrollTop = 0
+                   this.WIDShow = true
+                   if(this.codeText != ''){
+                       this.QueryReportData('产品码')
+                   }else{
+                       this.QueryReportData()
+                   }
+               }else{
+                  this.isTipsPop = true
+               }
             })
         },
         //导出xlsx
-        exportXlsxFun() {
+        exportXlsxFun(){
             this.isExport = false
             var accurate
-            //1是模糊 2是精准
-            if (this.selectVale == this.lang.ProcessParameterReport_HT_FuzzyMatching) {
+             //1是模糊 2是精准
+            if(this.selectVale == this.lang.ProcessParameterReport_HT_FuzzyMatching){
                 accurate = 1
-            } else {
+            }else{
                 accurate = 2
             }
-            window.open(
-                `/api/ProcessParameterReport/Export?wid=${this.tableData.curLeft.WID}&startTime=${this.timevalue1}&endTime=${this.timevalue2}&code=${this.exportCodeText}&accurate=${accurate}&argLanguage=${localStorage.getItem('currentLang')}`
-            );
+             window.open(
+                   `/api/ProcessParameterReport/Export?wid=${this.WID}&startTime=${this.timevalue1}&endTime=${this.timevalue2}&code=${this.exportCodeText}&accurate=${accurate}&argLanguage=${localStorage.getItem('currentLang')}`
+                );
         },
         //导出图片
-        exportPngFun() {
+        exportPngFun(){
             this.loading = true
             html2canvas(document.getElementById('linebox')).then(canvas => {
                 this.imgmap = canvas.toDataURL()
@@ -766,69 +1163,20 @@ export default {
             });
         },
         //关闭弹窗
-        exportClose() {
+        exportClose(){
             this.isExport = false
         },
         //开启导出弹窗
         exportTable() {
-            this.isPower(this.exportId).then((val) => {
-                if (val) {
+            this.isPower(this.exportId).then((val) => { 
+                if(val){
                     this.isExport = true
-
-                } else {
+                  
+                }else{
                     this.isTipsPop = true
-                    this.TipsPopText = '该用户没有操作权限！'
                 }
             })
 
-        },
-        exportTempLate() {
-            this.isPower(this.exportTemplateId).then((val) => {
-                if (val) {
-                    var accurate
-                    //1是模糊 2是精准
-                    if (this.selectVale == this.lang.ProcessParameterReport_HT_FuzzyMatching) {
-                        accurate = 1
-                    } else {
-                        accurate = 2
-                    }
-                    window.open(
-                        `/api/ProcessParameterReport/ExportTemplate?wid=${this.tableData.curLeft.WID}`
-                    );
-
-                } else {
-                    this.isTipsPop = true
-                    this.TipsPopText = '该用户没有操作权限！'
-                }
-            })
-        },
-        handleUpload(e) {
-            this.isPower(this.importId).then((val) => {
-                if (!val) {
-                    this.tipText = this.lang.NoOperationAuthority;
-                    this.noCancel = true
-                    this.isPopShow = true;
-                    e.stopPropagation()
-                    return
-                }
-            })
-        },
-        uploadExcel(file) {
-            let formData = new FormData()
-            formData.append('file', file.file)
-            this.$axios({
-                method: 'post',
-                url: `/api/ProcessParameterReport/ImportProcessDatas`,
-                data: formData
-            }).then((res) => {
-                if (res.data.code == 0) {
-                    this.Search();
-                } else {
-                    this.isTipsPop = true
-                    this.TipsPopText = res.data.msg
-                }
-
-            })
         },
         formatJson(filterVal, jsonData) {
             return jsonData.map(v => filterVal.map(j => v[j]));
@@ -851,261 +1199,170 @@ export default {
         },
         // 基于准备好的dom，初始化echarts实例
         drawLine() {
-            let SID = '';
-            this.tableData.curLeft.WorkSteps.forEach(item => {
-                let _obj = item.Projects.find(item2 => item2.PID == this.tableData.curPid)
-                if (_obj) {
-                    SID = item.SID
-                }
-            })
-            let configurationData = JSON.parse(sessionStorage.getItem('configurationData')) || {}
-            console.log('line', SID, configurationData)
-            if (configurationData[SID] && configurationData[SID].length) {
-                this.printLine(configurationData[SID])
-            } else {
-                var accurate
-                //1是模糊 2是精准
-                if (this.selectVale == this.lang.ProcessParameterReport_HT_FuzzyMatching) {
-                    accurate = 1
-                } else {
-                    accurate = 2
-                }
-                this.loading2 = true
-                this.$axios({
-                    method: 'post',
-                    url: `/api/ProcessParameterReport/QueryReportChartData`,
-                    data: {
-                        SID: SID,
-                        WID: this.tableData.curLeft.WID,
-                        StartTime: this.timevalue1,
-                        EndTime: this.timevalue2,
-                        Code: this.codeText,
-                        Accurate: accurate,
-
-                        ProductTypeCode: this.ProductTypeCode,
-                        QualitiedType: this.QualitiedType,
-                        WorkType: this.WorkType,
-                        QueryKeyType: this.QueryKeyType
-                    },
-                }).then(res => {
-                    this.loading2 = false
-                    let _data = res.data.data.data
-                    configurationData[SID] = _data
-                    sessionStorage.setItem('configurationData', JSON.stringify(configurationData));
-                    this.printLine(_data)
-                })
-            }
-            // this.$axios({
-            //     method: 'post',
-            //     url: `/api/ProcessParameterReport/QueryReportProduction`,
-            //     data: {
-            //         SID: SID,
-            //         WID: this.tableData.curLeft.WID,
-            //         StartTime: this.timevalue1,
-            //         EndTime: this.timevalue2,
-            //         Code: this.codeText,
-            //         Accurate: accurate,
-
-
-            //         ProductTypeCode: this.ProductTypeCode,
-            //         QualitiedType: this.QualitiedType,
-            //         WorkType: this.WorkType,
-            //         QueryKeyType: this.QueryKeyType
-
-            //     },
-            // }).then(res => {
-            //     this.NGCount = res.data.data.NGCount;
-            //     this.OKCout = res.data.data.OKCout;
-            //     this.PassRate = res.data.data.PassRate;
-            //     this.TotalCount = res.data.data.TotalCount;
-            // })
-
-
-        },
-        printLine(_data) {
-            let temp = [], xList = [], stepName = '';
-            let Upper = 100, Lower = 0, proName = '';
-
-            _data.forEach(item => {
-                let _obj = item.ProjectDatas.find(_ => _.PID == this.tableData.curPid)
-                if (_obj) {
-                    temp.push(Number(_obj.Value))
-                }
-            })
-
-            xList = _data.map(item => item.ProductID)
-            this.tableData.curLeft.WorkSteps.forEach(item => {
-                let _obj = item.Projects.find(item3 => item3.PID == this.tableData.curPid)
-                if (_obj) {
-                    Upper = _obj.Upper
-                    Lower = _obj.Lower
-                    proName = _obj.ProjectName;
-                    stepName = item.StepName
-                }
-            })
-            this.tableData.chartTitle = `${this.tableData.curLeft.WorkName}-${stepName}-${proName}曲线图`
-            let uList = temp.map(_ => Upper)
-            let lList = temp.map(_ => Lower)
-            let option = {
-                title: {
-                    text: ' '
+            myChart = echarts.init(document.getElementById('myChart'));// 绘制图表
+            myChart.clear()
+            myChart.setOption({
+                color: this.skin ? ['#F0B95C', '#5EC75E', '#EFEF70'] : ['red', 'green', 'blue'],
+                 title: {
+                    text: ''
                 },
                 tooltip: {
                     trigger: 'axis'
                 },
-                color: ['#7ABD7A', '#FF7474', '#FF7474'],
                 legend: {
-                    right: '4%',
-                    data: [proName, this.lang.CruxParameterConfigure_CruxParameterConfigureUserControl_DataGrid_Upper, this.lang.ProcessParameterConfigure_ProcessParameterReportUserControl_Lower]
+                    data: [
+                        this.lang.CruxParameterConfigure_CruxParameterConfigureUserControl_DataGrid_Upper, 
+                        this.proName, 
+                        this.lang.CruxParameterConfigure_CruxParameterConfigureUserControl_DataGrid_Lower
+                    ],
+                    icon: 'line',
+                    textStyle: {
+                        color: this.skin ? '#9AA3BE' : '#333'
+                    }
                 },
                 grid: {
-                    left: '3%',
+                    left: '4%',
                     right: '4%',
-                    bottom: '3%',
+                    bottom: '4%',
                     containLabel: true
                 },
-
                 xAxis: {
                     type: 'category',
-                    boundaryGap: false,
-                    data: xList
+                    data: this.ProductIDArr,
+                    axisLine: { show: true }, //轴线不显示
+                    axisLabel: {
+                        color: this.skin ? '#9AA3BE' : '#999'
+                    },
+                    axisLine:{
+                        lineStyle:{
+                            color: this.skin ? '#4C5777' : '#333'
+                        }
+                    }
                 },
                 yAxis: {
-                    type: 'value'
-                },
-                visualMap: [{
-                    type: 'piecewise',
-                    show: false,
-                    dimension: 1,
-                    seriesIndex: 1, //第一部分数据  
-                    pieces: [
-                        {
-                            max: Lower, // 没有设置最小值，表明当前范围 [-Infinity, max] 变色
-                            color: '#FF8484'
-                        },
-                        {
-                            min: Upper, // 没有设置最大值，表明当前范围 [min, Infinity] 变色
-                            color: '#FF8484'
+                    type: 'value',
+                    min: 'dataMin',
+                    max: 'dataMax',
+                    splitLine:{
+                        lineStyle:{
+                            color: this.skin ? '#25335A' : '#ccc'
                         }
-                    ],
-                    outOfRange: { // 在选中范围外  
-                        color: '#7ABD7A',
+                    },
+                    axisLabel: {
+                        color: this.skin ? '#9AA3BE' : '#999'
+                    },
+                    axisLine:{
+                        lineStyle:{
+                            color: this.skin ? '#4C5777' : '#333'
+                        }
                     }
-                }],
+                },
                 series: [
                     {
+                        symbol: "none",
                         name: this.lang.CruxParameterConfigure_CruxParameterConfigureUserControl_DataGrid_Upper,
                         type: 'line',
-                        symbol: 'none',
-                        data: uList,
-                        lineStyle: {
-                            normal: {
-                                color: '#FF7474',
-                                width: 1,
-                            }
-                        },
-                        itemStyle: {
-                            normal: {
-                                color: '#FF7474',
-                            }
+                        animation:false ,
+                        data: this.UpperArr,
+                         itemStyle : { 
+                            normal : { 
+                                lineStyle:{ 
+                                    color: this.skin ? '#F0B95C' : 'red', //改变折线颜色
+                                    width:2,
+                                } 
+                            } 
                         },
                     },
                     {
-                        name: proName,
+                        symbol: "none",
+                        name: this.proName,
                         type: 'line',
-                        symbol: 'none',
-                        data: temp,
+                        data: this.pidArr,
+                        animation:false ,
+                          itemStyle : { 
+                            normal : { 
+                                lineStyle:{ 
+                                    color: this.skin ? '#5EC75E' : 'green', //改变折线颜色
+                                    width:2,
+                                } 
+                            } 
+                        },
                     },
                     {
+                        symbol: "none",
                         name: this.lang.ProcessParameterConfigure_ProcessParameterReportUserControl_Lower,
                         type: 'line',
-                        symbol: 'none',
-                        data: lList,
-                        lineStyle: {
-                            normal: {
-                                color: '#FF7474',
-                                width: 1,
-                            }
-                        },
-                        itemStyle: {
-                            normal: {
-                                color: '#FF7474',
-                            }
+                        data: this.LowerArr,
+                        animation:false ,
+                        itemStyle : { 
+                            normal : { 
+                                lineStyle:{ 
+                                    color: this.skin ? '#EFEF70' : 'blue', //改变折线颜色
+                                    width:2,
+                                } 
+                            } 
                         },
                     },
+                   
                 ]
-            };
-            let _dom = document.getElementById('mychart')
-            let myChart = echarts.init(_dom);
-            myChart.clear()
-            myChart.setOption(option, true);
-
-        }
+            });
+        },
     },
     //渲染后计算宽度
     mounted() {
         this.DomArr = []
-
+        window.setTimeout(() => {
+            $(document.querySelectorAll('.proName')[0]).append('<div class="proNameBorColor" style="position:absolute;left:0;top:0;width:100%;height:29px;border:1px solid blue;box-sizing:border-box;z-index:999"></div>')
+            this.initWidth1()
+        },300)
     },
 };
 </script>
 
 <style lang="scss">
-.tapwater {
-    .fl .el-input--prefix .el-input__inner {
-        padding-left: 25px !important;
+.tapwater{
+    .fl .el-input--prefix .el-input__inner{
+        padding-left:25px !important;
     }
-
-    .table input {
-        text-indent: 4px;
+    .table input{
+        text-indent:4px;
     }
 }
 </style>
 
 <style lang="scss" scoped>
-.mask_box {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
+ .mask_box{
+        position: absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right: 0;
+        margin: auto;
+        width: 100%;
+        height: 100%;
+        z-index: 999;
 }
-
-.conter {
-    width: 100%;
-    height: calc(100% - 60px);
+.conter{
+    width:100%;
 }
-
-.border1 {
-    border: 1px solid blue;
+.border1{
+    border:1px solid blue;
 }
-
-.border2 {
-    border: 1px solid #000;
+.border2{
+    border:1px solid #000;
 }
-
-.color2 {
-    color: red
+.color2{
+    color:red
 }
-
-.color1 {
-    color: #000;
+.color1{
+    color:#000;
 }
-
 .fl {
     float: left;
-    display: flex;
-    align-items: center;
 }
-
 .fr {
     float: right;
 }
-
 .clearfix::after {
     content: '';
     height: 0;
@@ -1113,53 +1370,194 @@ export default {
     clear: both;
     visibility: hidden;
 }
-
 .clearfix {
     zoom: 1;
 }
-
+.blackBlueBg .color1{
+    color: #9AA3BE!important;
+}
+.blackBlueBg .color2{
+    color: #EB4444!important;
+}
+.tabledata .someLeft .try.someLeftText{
+    background: transparent;
+    border-color: #38415A;
+    color: #fff;
+}
+.blackBlueBg .someLeft .someLeftText{
+    background: transparent;
+    border-color: #38415A;
+    color: #fff;
+}
+.someLeft .try-normal{
+    background: transparent;
+    border-color: #808080;
+    color: #808080;
+}
+.blackBlueBg .someLeft .try.try-normal{
+    background: transparent;
+    border-color: #4F5871;
+    color: #fff;
+}
+.tabledata .someLeft .try.try-success{
+    border-color: #7ABD7A;
+    color: #7ABD7A;
+}
+.blackBlueBg .tabledata .someLeft .try{
+    color: #fff;
+}
+.blackBlueBg .someLeft .try.try-success{
+    border-color: #46BE05;
+    color: #46BE05;
+}
+.tabledata .someLeft .try.try-danger{
+    background: #F96363;
+    color: #F96363;
+}
+.blackBlueBg .someLeft .try.try-danger{
+    background: #EB4444;
+    color: #EB4444;
+}
+.tabledata .someLeft .try.tryActive{
+    background: #808080;
+    border-color: #fff;
+}
+.blackBlueBg .someLeft .try.tryActive{
+    background: #4F5871;
+    border-color: #38415A;
+    color: #fff;
+}
+.someLeft .tryActive.try-success{
+    background: #7ABD7A;
+    color: #fff;
+}
+.blackBlueBg .someLeft .tryActive.try-success{
+    background: #46BE05;
+    color: #fff;
+}
+.someLeft .tryActive.try-danger{
+    background: #F96363;
+    color: #fff;
+}
+.blackBlueBg .someLeft .tryActive.try-danger{
+    background: #EB4444;
+    color: #fff;
+}
 .tapwater {
     position: fixed;
     top: 100px;
-    height: calc(100% - 130px);
+    height: 95%;
     padding: 20px;
     width: 100%;
-    min-width: 1280px;
+    min-width:1280px;
     overflow: auto;
     background-color: #eeeeee;
-    box-sizing: border-box;
+
+    &.blackBlueBg{
+        background-color: #06091F;
+        .sometable{
+            border-color: #435382;
+        }
+        // .someLeft{
+        //     .try{
+        //         color: #fff;
+        //         border-color: #4F5871;
+        //         background-color: transparent;
+
+        //         &.tryActive{
+        //             border-color: transparent;;
+        //             background-color: #4F5871;
+        //         }
+        //     }
+        // }
+
+        .linebox{
+            color: #E4E4E4;
+            background: #081027 ;
+            border: 1px solid #38415A;
+        }
+        .fl, .fr, .table{
+            background: #0B1530;
+            color: #E4E4E4;
+        }
+        .query{
+            background: #386DF0;
+        }
+        .export{
+            color: #386DF0;
+            background-color: transparent;
+            border-color: #386DF0;
+        }
+        table{
+            tr{
+                background-color: transparent!important;;
+            }
+            td, th{
+                background-color: #506998!important;
+            }
+            .tbody1{
+                div{
+                    background-color: #506998!important;
+                }
+            }
+            .reporData{
+                td{
+                    color: #9AA3BE;
+                    border-color: #435382;
+                    background-color: #081027!important;
+                }
+            }
+        }
+
+        .table2{
+            tr, th{
+                background-color: #4FA0CF!important;
+
+                td{
+                    background-color: transparent!important;;
+                }
+            }
+
+            .reporData{
+                background-color: transparent!important;
+                td{
+                    border-color: #435382;
+                }
+            }
+        }
+        .color1{
+            color: #9AA3BE;
+        }
+        .color2{
+            color: #eb4444;
+        }
+    }
 
     .linebox {
-        height: 100%;
+        height: 950px;
         width: 100%;
         background-color: #ffffff;
         border: 1px solid #d5d5d5;
         overflow: auto;
     }
-
-    .query-table {
+    .table {
         height: 60px;
         background-color: #dddddd;
         line-height: 60px;
         overflow: hidden;
         font-size: 14px;
         color: #6b6668;
-
         span {
-            margin: 0 5px;
-            word-break: keep-all;
+            margin-left: 18px;
         }
-
         .tablename {
             height: 40px;
             width: 250px;
         }
-
         .tabledatetime {
             height: 40px;
             width: 178px;
         }
-
         .starttime {
             height: 40px;
             width: 210px;
@@ -1169,7 +1567,6 @@ export default {
             line-height: 40px;
             padding-left: 12px;
         }
-
         .endtime {
             height: 40px;
             width: 210px;
@@ -1179,362 +1576,184 @@ export default {
             padding-left: 12px;
         }
     }
-
     .query,
-    .set,
-    .edit,
     .export {
         display: inline-block;
         height: 40px;
-        width: 85px;
+        width: 118px;
         text-align: center;
         line-height: 40px;
         color: #ffffff;
         border-radius: 5px;
         font-weight: 600;
         cursor: pointer;
-        margin-left: 10px;
-        box-sizing: border-box;
     }
-
     .query {
         background-color: #4270e4;
+        margin-left: 10px;
     }
-
-    .set {
-        background-color: #a0a0a0;
-    }
-
-    .edit {
-        background-color: #f59a23;
-    }
-
     .export {
         background-color: #ffffff;
         color: #4270e4;
         border: 2px solid #4270e4;
+        margin-right: 20px;
     }
-
     .container {
         display: inline-block;
         height: 40px;
-
         .block {
             display: inline-block;
         }
     }
-
     .separate {
         position: relative;
         left: 7px;
     }
 }
-
-
-
-.txt {
-    // width: 300px;
-    border: none;
-    width: 200px;
+.tabledata {
+    padding:0 2%;
+    width: calc(100%-20px);
+    position: relative;
+    overflow: hidden;
+    .someLeft{
+         float: left;
+         min-width:13%;
+         height:470px;
+         overflow: auto;
+        .try {
+            padding:5px 10px;
+            color: #808080;
+            text-align: left;
+            line-height: 30px;
+            margin-top:10px;
+            width:85%;
+            max-width:197px;
+            margin-left:15%;
+            cursor: pointer;
+            border-radius:10px;
+            border:1px solid #808080;
+            position: relative;
+        }
+       
+        .try::before{
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -20px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background:rgba(66, 112, 228, 1);
+            display: none;
+        }
+    }
+    .someLeft .try:hover:before{
+        display: block;
+    }
+    .someLeft .tryActive{
+        color:#fff !important;
+    }
+    .sometable {
+        float: left;
+        width:86%;
+        height: 100%;
+        border: 1px solid #000;
+        margin-left: 10px;
+        overflow: auto;
+        position: relative;
+    }
+    .manytable{
+        height: 100%;
+        width: 10000px;
+    }
+    table{
+        height: 372px;
+        float: left;
+        td{
+            border: 0.5px solid  #000;
+            text-align: center;
+        }
+        th{
+            text-align: center;
+        }
+    }
+}
+.txt{
+    width: 300px;
     text-indent: 1em;
     margin-left: 10px;
     height: 40px;
 }
-</style>
-<style  lang="scss"  >
-.report-banner {
-    width: 100%;
-    height: 100px;
-    box-sizing: border-box;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    .banner-item {
-        width: 24%;
-        height: 100%;
-        background: #ededed;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        .item-content {
-            display: flex;
-            align-items: flex-end;
-
-            .item-label {
-                font-size: 30px;
-                font-weight: bold;
-                line-height: 1;
-            }
-
-            .item-num {
-                font-size: 30px;
-                font-weight: bolder;
-                line-height: 1;
-                margin: 0 5px;
-            }
-
-            .item-unit {
-                line-height: 1;
-            }
-
-            .red {
-                color: #db2e28;
-            }
-
-            .green {
-                color: #7ABD7A;
-            }
-        }
+ .tbody5_th{
+    border-bottom:none !important;
+        border-top:none !important;
+        border-left:none !important;
+        border-right:none !important;
+  }
+  .tbody2Bt {
+          border-right: none !important;
+          border-bottom: none !important;
+          font-weight: 400;
+      }
+    .tbody2Bt:first-of-type {
+        border-left: none !important;
     }
-}
-
-.report-page {
-    width: 100%;
-    height: 100%;
-    // height: calc(100% - 100px);
-    box-sizing: border-box;
-    padding: 0 16px 10px;
-
-    /* 滚动条样式 */
-    ::-webkit-scrollbar {
-        width: 9px;
-        height: 9px;
+    .tbody4Bt {
+          border-right: none !important;
+      }
+      .tbody4Bt:nth-of-type(1) {
+          border-left: none !important;
+      }
+      .reporData td {
+          border-right: none !important;
+          border-top: none !important;
+          font-weight: 400;
+      }
+    .reporData td:nth-of-type(1) {
+        border-left: none !important;
     }
-
-    ::-webkit-scrollbar-thumb {
-        border-radius: 5px;
-        border-style: dashed;
-        background-color: #757575;
-        border-color: transparent;
-        border-width: 2px;
-        background-clip: padding-box;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background-clip: border-box;
-
-    }
-
-    ::-webkit-scrollbar-thumb:active {
-        background-color: #326CF3;
-
-    }
-
-    /*定义水平和垂直滚动条两者的交界处（拐角）*/
-    ::-webkit-scrollbar-corner {
-        background-color: transparent;
-    }
-
-    .el-scrollbar .el-scrollbar__thumb {
-        background: #000;
-    }
-
-    /* page部分 */
-    * {
-        padding: 0;
-        margin: 0;
-    }
-
-
-    .charts {
-        width: 100%;
-        height: 350px;
-        padding-bottom: 16px;
-        box-sizing: border-box;
-        border: 1px solid #EEF0F5;
-        position: relative;
-        border-top-left-radius: 8px;
-        overflow: hidden;
-    }
-
-    .chart-label {
-        position: absolute;
-        left: 0;
-        top: 0;
-        padding: 8px 60px 8px 16px;
-        font-size: 16px;
-        color: #4270E4;
-        background-color: #E7EDF6;
-        font-weight: bolder;
-        display: flex;
-        align-items: center;
-    }
-
-    .c-w {
-        width: 12px;
-        height: 12px;
-        border-radius: 6px;
-        background: #B5C7F1;
-        margin-right: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .c-i {
-        width: 8px;
-        height: 8px;
-        border-radius: 4px;
-        background: #4270E4;
-    }
-
-    .mychart {
-        width: 100%;
-        height: 100%;
-    }
-
-    .table {
-        width: 100%;
-        height: calc(100% - 370px);
-        margin-top: 20px;
-        display: flex;
-        padding: 16px;
-        box-sizing: border-box;
-    }
-
-    .table-l {
-        height: 100%;
-        width: 200px;
-        padding-left: 24px;
-        overflow-y: auto;
-    }
-
-    .l-item {
-        width: 160px;
-        height: 40px;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        margin-bottom: 16px;
-        cursor: pointer;
-        position: relative;
-    }
-
-    .l-item:hover .l-icon {
-        width: 12px;
-        height: 12px;
-        border-radius: 6px;
-        background-color: #326CF3;
-        position: absolute;
-        top: 50%;
-        left: -5px;
-        transform: translate(-100%, -50%);
-    }
-
-
-
-    /* 表格样式 */
-    .table-r {
-        height: 100%;
-        width: calc(100% - 200px);
-        overflow: auto;
-        position: relative;
-        border: 1px solid #808080;
-        box-sizing: border-box;
-    }
-
-    .table-box {
-        width: fit-content;
-        height: fit-content;
-    }
-
-    table {
-        height: 100%;
-        table-layout: fixed;
-        width: 100%;
-        display: block;
-    }
-
-    table thead tr th {
-        background-color: #7ABD7A;
-        color: #fff;
-        position: sticky;
-        top: 0;
-    }
-
-    table thead tr:nth-child(2) th {
-        top: 30px;
-    }
-
-    table thead tr:nth-child(3) th {
-        top: 60px;
-    }
-
-    table thead tr:nth-child(4) th {
-        top: 90px;
-    }
-
-    .blue-th {
-        background-color: #4270E4;
-    }
-
-    th,
-    td {
-        height: 30px;
-        min-width: 100px;
-        word-break: keep-all;
-        border: 1px solid #E2E2E2;
-        box-sizing: border-box;
-        text-align: center;
-        background-color: #fff;
-    }
-
-    th {
-        border: 1px solid #fff;
-    }
-
-    .no1 {
-        min-width: 80px;
-        position: sticky;
-        z-index: 10;
-        left: 0;
-    }
-
-    .no2 {
-        min-width: 110px;
-        position: sticky;
-        z-index: 10;
-        left: 80px;
-    }
-
-    .no3 {
-        min-width: 207px;
-    }
-
-    .no4 {
-        min-width: 123px;
-    }
-
-    .no5 {
-        min-width: 190px;
-        max-width: 860px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
-
-    .no6 {
-        min-width: 160px;
-    }
-
-    .hover-border:hover {
-        border: 1px solid #326CF3;
-        box-sizing: border-box;
-        cursor: pointer;
-    }
-
-    .blue-Border {
-        background-color: #F8AD3D;
-    }
-
-    .fixed-title {
-        z-index: 11;
-    }
-}
+    .proName22 {
+          border-right: none !important;
+          border-bottom: none !important;
+      }
+      .tbody4Bt2 {
+          border-right: none !important;
+      }
+      .bodyTitle {
+          border-bottom: none !important;
+          border-top: none !important;
+          border-right: none !important;
+      }
+      .tbody2_Bt5{
+          border-bottom:none !important;
+          border-right:none !important;
+      }
+      .tbody2_td{
+          border-right:none !important;
+          border-bottom:none !important;
+      }
+      .tbody2_td:last-of-type(){
+          border-right:1px solid #000 !important;
+      }
+      .table2 .tbody4Bt:nth-of-type(1){
+         border-left:1px solid #000 !important;
+      }
+      .proName{
+          border-right:none !important;
+          border-bottom:none !important;
+          position: relative;
+      }
+      .table2_tbdoy2{
+          border-right:none !important;
+          border-top:none !important;
+          border-bottom:none !important;
+      }
+      #myChart{
+          transform-origin:0%;
+          position:absolute;
+          top:0px;
+          bottom:0;
+          left:0;
+          margin:auto;
+      }
 </style>

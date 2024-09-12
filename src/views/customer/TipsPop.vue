@@ -6,7 +6,7 @@
  * @LastEditTime: 2021-02-22 14:00:52
 -->
 <template>
-    <div v-if="true" class="deletePop" >
+    <div v-if="true" class="deletePop" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
         <div class="title">
             <span class="title_i el-icon-warning"></span>
             <span class="text">{{lang.HT_MessageBoxCaption_Tips}}</span>
@@ -38,7 +38,6 @@ export default {
     },
     props:["popText"],
     created(){
-        
         this.text = this.popText
     },
     methods:{
@@ -65,6 +64,13 @@ export default {
         border:1px solid #eee;
          box-shadow:-7px 7px 50px 0px rgba(51,51,51,0.5);
         z-index: 1000;
+
+        &.blackBlueBg{
+            background: #2A3E76;
+            border-color: transparent;
+            color: #fff;
+        }
+
         .title{
             width:100%;
             height:40px;

@@ -6,7 +6,7 @@
  * @LastEditTime: 2020-09-22 13:35:38
  -->
 <template>
-<div class="tendenCOnter">
+<div class="tendenCOnter" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
 <tendencyTwo ref="mychild22" :key='keyone' :ty="1" :ide="ide1" :ShowtextTo="Showtext" :moreWindowTo="moreWindow" :curveIDTo="curveID" :timeShowTo="timeShow" :showTime="show" class="Two_1" :id='qscxcharttwo'></tendencyTwo>
 <tendencyTwo ref="mychild23" :key='keytwo' :ty="2" :ide="ide2" :ShowtextTo="Showtext" :curveIDTo="curveID" :timeShowTo="timeShow" :showTime="show" class="Two_2" :id='qscxcharttree'></tendencyTwo>
 </div>
@@ -87,6 +87,15 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     height:100%;
 	// min-width: 1280px;
 	background-color: #EEEEEE;
+
+	&.blackBlueBg{
+		background-color: #081027;
+
+		.Two_1,.Two_2{
+			background-color: #081027;
+			border-color: #38415A;
+		}
+	}
 
 		.Two_1{
 			display: flex;

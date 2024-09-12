@@ -21,12 +21,10 @@
                 + item.radiusLeft + 'px ' + item.radiusTop + 'px ' + item.radiusRight + 'px ' 
                 + item.radiusButton + 'px; fontFamily:'+ item.family + '; fontSize:'+ item.fontSize 
                 + 'px; opacity:' + item.opacity + '; transform:rotate(' + item.rotate + 'deg);'
-                + 'boxSizing:border-box;'
-                + 'overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow+';zIndex:'+item.ZIndex
-                + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
-                + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`">
-                <span class="contenText" style="display: flex; justify-content:center; align-items: center" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto'
-                 + ';color:' + item.Foreground+';fontWeight:' + item.Blod + ';background:'
+                + 'boxSizing:border-box;padding:' + item.BorderThickness + 'px;background:' + item.BorderBrush 
+                + ';overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow+';zIndex:'+item.ZIndex">
+                <span class="contenText" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto;line-height:'
+                +item.height + 'px;color:' + item.Foreground+';fontWeight:' + item.Blod + ';background:'
                 +item.backgroundColor+';-webkit-background-clip:'+item.clipText">{{item.text}}</span>
 
                 <div class="conten" :style="'width:100%;height:100%;background:' + item.Background + ';borderRadius:' 
@@ -36,7 +34,7 @@
             </div>
             
             <!-- 是否下发提示弹窗 -->
-            <!-- <div v-show="commerPopShow" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+            <div v-show="commerPopShow" style="width:100%;height:100%;position:fixed;z-index:2147483647">
                     <div v-if="commerPopShow" class="commerPop_outPop">
                     <div class="commerPop_outHead">
                         <i class="warning el-icon-warning"></i>
@@ -48,10 +46,10 @@
                         <div @click="commerYesFun" class="commerPop_yes">{{lang.MessageBox_YES}}</div>
                     </div>
                     </div>
-            </div> -->
+            </div>
             
             <!-- 权限弹窗 -->
-            <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+            <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
                     <div v-if="commerPopShow1" class="commerPop_outPop">
                     <div class="commerPop_outHead">
                         <i class="warning el-icon-warning"></i>
@@ -62,7 +60,7 @@
                         <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
                     </div>
                     </div>
-            </div> -->
+            </div>
         </div>
     </div>
 </template>
@@ -124,22 +122,13 @@ export default {
         },
         //关闭下发弹窗
         commerNoFun(){
-            //   this.commerPopShow = false
-            this.$emit('shownotip')
+              this.commerPopShow = false
         },
         //执行下发
-       commerYesFun(){
-        
+        commerYesFun(){
+              this.commerPopShow = false
                 //请求接口
-                            this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags`,
-                                  data:this.commonValue
-                             }).then((res1)=>{
-                                  if(res1.data.code === 0){
-                                 this.$emit('shownotip')
-                                
-                                  this.$axios({
+                this.$axios({
                     method: 'post',
                     url: '/api/Base/PostIOServiceTest',
                     data:this.commonValue
@@ -147,17 +136,10 @@ export default {
                 }).catch(function(error) {
                     console.log('err',error);
                 });
-                                  }else{
-                    this.$emit('showtip',res1.data.msg)
-                                  }
-                               
-                              })
-            
         },
         //确认
         Jurisdiction(){
-            //  this.commerPopShow1 = false
-            this.$emit('shownotip')
+             this.commerPopShow1 = false
         },
         //权限请求
         jurisdictionShow(item){
@@ -208,8 +190,7 @@ export default {
               if(EventType.length){
                   self.jurisdictionShow(item).then(val => { 
                       if(self.CanExcuteShow){
-                        //   self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                          self.commerPopShow1 = true
                           return
                       }else{
                           for(var j=0;j<EventType.length;j++){
@@ -223,8 +204,7 @@ export default {
                   if(EventType1.length){
                       self.jurisdictionShow(item).then(val => { 
                            if(self.CanExcuteShow){
-                                // self.commerPopShow1 = true
-                                self.$emit('showtip',self.lang.NoOperationAuthority)
+                                self.commerPopShow1 = true
                                 return
                             }else{
                                 for(var j1=0;j1<EventType1.length;j1++){
@@ -250,8 +230,7 @@ export default {
              if(EventType.length){
                this.jurisdictionShow(item).then(val => { 
                    if(this.CanExcuteShow){
-                    //    this.commerPopShow1 = true
-                    this.$emit('showtip',this.lang.NoOperationAuthority)
+                       this.commerPopShow1 = true
                        return
                    }else{
                        for(var j=0;j<EventType.length;j++){
@@ -281,8 +260,7 @@ export default {
                       self.jurisdictionShow(item).then(val => { 
                           if(EventType.length){
                               if(self.CanExcuteShow){
-                                    // self.commerPopShow1 = true
-                                    self.$emit('showtip',self.lang.NoOperationAuthority)
+                                    self.commerPopShow1 = true
                                     return
                                 }else{
                                     for(var j=0;j<EventType.length;j++){
@@ -299,8 +277,7 @@ export default {
                 if(EventType1.length){
                 self.jurisdictionShow(item).then(val => {
                      if(self.CanExcuteShow){
-                        // self.commerPopShow1 = true
-                        self.$emit('showtip',self.lang.NoOperationAuthority)
+                        self.commerPopShow1 = true
                         return
                     }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -313,43 +290,29 @@ export default {
             }
         },
         //下发
-                issueFun(item){
+        issueFun(item){
+            console.log('item66',item)
               if(item.commonIDarr.length !=0){
                       if(!this.CanExcuteShow){
                           if(item.HasText == true){
-                             this.$emit('showIssueTip',item.WindowText,`/api/base/CheckTags?tagname=${item.commonIDarr[0].Name}&value=${item.commonIDarr[0].Value}`,item.commonIDarr)
+                              this.commerPopShow = true
+                              this.commerText = item.WindowText
                               this.commonValue = item.commonIDarr
                           }else{
-                            
-                              this.$axios({
-                                  method:'post',
-                                  url:`/api/base/CheckTags?tagname=${item.commonIDarr[0].Name}&value=${item.commonIDarr[0].Value}`,
-                                  data:item.commonIDarr
-                             }).then((res1)=>{
-                                 console.log("res1",res1.data)
-                                  if(res1.data.code === 0){
-                              this.$emit('shownotip')
+                              this.commerPopShow = false
+                              console.log('66666',item.commonIDarr)
                               this.$axios({                      //下发请求接口
                                   method: 'post',
                                   url: '/api/Base/PostIOServiceTest',
                                   data:item.commonIDarr
                               }).then(res => {
                                   console.log('res',res)
-                                  if(res.data.code != 0){
-                                    this.$emit('showtip',res.data.msg)
-                                    }
                               }).catch(function(error) {
                                 console.log('err',error);
                               });
-                                  }else{
-                      this.$emit('showtip',res1.data.msg)
-                                  }
-                               
-                              })
-
                           }
                       }else{
-                        this.$emit('showtip',this.lang.NoOperationAuthority)
+                          this.commerPopShow1 = true
                       }
               }
         },
@@ -415,30 +378,23 @@ export default {
                     backgroundColor = '-webkit-linear-gradient('+lagel1+'deg'+backgroundColor+')';
             }
                 //边框色渐变
-                let showLinear = false
-                let linearStyle = ''
                 if(borderbrushArr.ColorType == 'SolidColor'){
                     borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                 }else{
-                    // 此处为渐变色
-                        let linearColor = ''
+                        borderColor = ''
                         lagel3 = borderbrushArr.Data.Angel.toFixed(0)
                     for(var f2=0;f2<borderbrushArr.Data.GradientStops.length;f2++){
                         gradient3 = borderbrushArr.Data.GradientStops[f2]
-                        // borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
-                        linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                        borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
                     }
-                        // borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
-                        showLinear = true
-                        borderColor = 'transparent'
-                        linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
+                        borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
                 }
             //背景色渐变
             if(backgroundArr.ColorType == 'SolidColor'){
                 backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                     if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                        // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
-                    }
+                    borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                }
             }else{
                     backColor = ''
                     lagel2 = backgroundArr.Data.Angel.toFixed(0)
@@ -457,9 +413,7 @@ export default {
                 backgroundColor:backgroundColor,
                 clipText:clipText,
                 borderColor:borderColor,
-                backColor:backColor,
-                showLinear,
-                linearStyle,
+                backColor:backColor
             }
             return value
          },
@@ -553,9 +507,7 @@ export default {
                                 Shadow:Shadow,
                                 Shadow2:Shadow2,
                                 Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                                ZIndex:this.ZIndex,
-                                showLinear: colorData.showLinear,
-                                linearStyle: colorData.linearStyle
+                                ZIndex:this.ZIndex
                             };
                             this.dataValue.push(value);
                            
@@ -602,9 +554,7 @@ export default {
                                     Shadow:Shadow,
                                     Shadow2:Shadow2,
                                     Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                                    ZIndex:this.ZIndex,
-                                    showLinear: colorData.showLinear,
-                                    linearStyle: colorData.linearStyle
+                                    ZIndex:this.ZIndex
                                 };
                                 this.dataValue.push(value5);
                             }
@@ -651,9 +601,7 @@ export default {
                         Shadow:Shadow,
                         Shadow2:Shadow2,
                         Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                        ZIndex:this.ZIndex,
-                        showLinear: colorData.showLinear,
-                        linearStyle: colorData.linearStyle
+                        ZIndex:this.ZIndex
                     };
                     this.dataValue.push(value8);
                 }
@@ -673,11 +621,8 @@ export default {
 }
 
 .CornerButton6aa:hover{
-//   background-color: #71A2C7ff !important;
-//   background: #71A2C7ff !important;
   background-color: #71A2C7ff !important;
-  background: #4EBAF3ff !important;
-  border-color: #71A2C7 !important;
+  background: #71A2C7ff !important;
 }
 
 .CornerButton6aa:hover .conten{

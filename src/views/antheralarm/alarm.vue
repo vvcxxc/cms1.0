@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-27 14:53:55
  -->
 <template>
-	<div class="alarm-container">
+	<div class="alarm-container" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
 	<aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200*(width/1920)+'px'}]">
 			<left-nav @tabComponent="tabComponent"></left-nav>
 		</aside>
@@ -63,7 +63,6 @@ export default {
 	}
 };
 </script>
-
 <style lang='scss' scoped>
 .alarm-container {
 	// width: 100%;
@@ -77,7 +76,6 @@ export default {
 	background-color: #eee;
 	padding: 20px 10px;
 	box-sizing: border-box;
-
 }
 aside {
 	// width: 20%;

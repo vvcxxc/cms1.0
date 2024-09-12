@@ -1,7 +1,7 @@
 
 <template>
     <div class="ww">
-        <div id="myChart2" ref="myChart" :style="{width: '100%', height: '130%'}"></div>
+        <div id="this.myChart2" ref="this.myChart" :style="{width: '100%', height: '130%'}"></div>
     </div>
 </template>
 <script>
@@ -9,19 +9,50 @@ export default {
     props: ['ChartDataItem', 'ChartDataSource', 'ChartCalResult'],
     data() {
         return {
-            targetPage: 1
+            targetPage: 1,
+            option11: {},
+            myChart: null
         };
     },
     created() {
         // this.targetPage = this.pageData.PageIndex;
+    },
+    computed:{
+        theme(){
+            return this.$store.state.color
+        }
+    },  
+    watch: {
+        theme(val){
+            if(val === 'blackBlue'){
+                this.option11.yAxis[0].splitLine.lineStyle.color = '#4C5777'
+                this.option11.yAxis[0].axisLabel.color = '#9AA3BE'
+                this.option11.yAxis[1].splitLine.lineStyle.color = '#4C5777'
+                this.option11.yAxis[1].axisLabel.color = '#9AA3BE'
+
+                this.option11.xAxis[0].splitLine.lineStyle.color = '#4C5777'
+                this.option11.xAxis[0].axisLabel.color = '#9AA3BE'
+                this.option11.title.textStyle.color = '#fff'
+            }else{
+                this.option11.yAxis[0].splitLine.lineStyle.color = '#ccc'
+                this.option11.yAxis[0].axisLabel.color = '#333'
+                this.option11.yAxis[1].splitLine.lineStyle.color = '#ccc'
+                this.option11.yAxis[1].axisLabel.color = '#333'
+
+                this.option11.xAxis[0].splitLine.lineStyle.color = '#ccc'
+                this.option11.xAxis[0].axisLabel.color = '#333'
+                this.option11.title.textStyle.color = '#333'
+            }
+            this.myChart.setOption(this.option11);
+        }
     },
     methods: {
         intheadchart3() {
             let means = parseFloat(this.ChartCalResult.m_means);
             let sigmas = parseFloat(this.ChartCalResult.m_rs);
             console.log("asd",this.ChartCalResult)
-            let myChart = this.$echarts.init(
-                document.getElementById('myChart2')
+            this.myChart = this.$echarts.init(
+                document.getElementById('this.myChart2')
             );
             //提取y值
             let CPKY = new Array();
@@ -155,11 +186,12 @@ export default {
             let minxx = parseFloat((min - interval).toFixed(3));
             let maxxx = parseFloat((max + interval).toFixed(3));
             let intervalxx = parseFloat(interval.toFixed(3));
-            let option11 = {
+            this.option11 = {
                 title: {
                     text: this.$t('CpkMsg.CpkCapabilityAssessment'),
                     textStyle: {
-                        fontFamily: 'SiYuanHei'
+                        fontFamily: 'SiYuanHei',
+                        color: this.$store.state.color === 'blackBlue' ? '#fff' : '#333',
                     },
                     //sublink: 'https://github.com/ecomfe/echarts-stat',
                     left: 'center',
@@ -175,31 +207,55 @@ export default {
                         type: 'value',
                         min: minxx,
                         max: maxxx,
-                        interval: intervalxx
+                        interval: intervalxx,
+                        splitLine:{
+                            lineStyle: {
+                                color: this.$store.state.color === 'blackBlue' ? '#4C5777' : '#ccc'
+                            }
+                        },
+                        axisLabel: {
+                            color: this.$store.state.color === 'blackBlue' ? '#9AA3BE' : '#333',
+                        },
                     }
                 ],
                 yAxis: [
                     {
                         type: 'value',
                          "axisTick":{       //y轴刻度线
-          "show":true
-        },
-       "axisLine":{       //y轴
-          "show":true
-
-        },
+                            "show":true
+                        },
+                        "axisLine":{       //y轴
+                            "show":true
+                        },
+                        splitLine:{
+                            lineStyle: {
+                                color: this.$store.state.color === 'blackBlue' ? '#4C5777' : '#ccc'
+                            }
+                        },
+                        axisLabel: {
+                            color: this.$store.state.color === 'blackBlue' ? '#9AA3BE' : '#333',
+                            formatter: '{value}'
+                        },
                         //min: 0,
                         //max: 100,
                     },
                     {
                         type: 'value',
-                         "axisTick":{       //y轴刻度线
-          "show":true
-        },
-       "axisLine":{       //y轴
-          "show":true
-
-        },
+                        "axisTick":{       //y轴刻度线
+                            "show":true
+                        },
+                        "axisLine":{       //y轴
+                            "show":true
+                        },
+                        splitLine:{
+                            lineStyle: {
+                                color: this.$store.state.color === 'blackBlue' ? '#4C5777' : '#ccc'
+                            }
+                        },
+                        axisLabel: {
+                            color: this.$store.state.color === 'blackBlue' ? '#9AA3BE' : '#333',
+                            formatter: '{value}'
+                        },
                         //min: 0,
                         //max: 100,
                     }
@@ -262,8 +318,8 @@ export default {
                     }
                 ]
             };
-            console.log("11111123123213",option11)
-            myChart.setOption(option11);
+            console.log("11111123123213",this.option11)
+            this.myChart.setOption(this.option11);
        
         }
     },

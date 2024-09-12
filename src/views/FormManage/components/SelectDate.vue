@@ -5,7 +5,7 @@
     <div class="select-date component-content" :class="last ? 'last-compoennt-content' : ''">
       <div class="component-title">
         {{formData.componentAttribute.title}}
-        <span class="font-2" v-if="formData.componentAttribute && !formData.componentAttribute.required">({{lang.EquipmentAccount_Optional}})</span>
+        <span class="font-2" v-if="formData.componentAttribute && !formData.componentAttribute.required">(选填)</span>
         <el-tooltip 
           class="item" 
           effect="dark" 
@@ -50,8 +50,7 @@ export default {
   data() {
     return {
       dateIcon: require('../../../assets/images/date.png'),
-      warning: require('../../../assets/images/warning.png'),
-      lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
+      warning: require('../../../assets/images/warning.png')
     }
   },
   methods: {
@@ -81,19 +80,19 @@ export default {
 }
 </script>
 <style lang='scss'>
-.select-date{
+.component-value{
   .input-group{
     .el-date-editor.el-input{
       width: 230px;
-      .el-input__inner{
-        padding: 0 30px 0 12px;
-        background-color: transparent;
-        border: 0;
-        color: #7C7F8E;
-        font-family: DIN;
-        font-size: 14px;
-        font-weight: 500;
-      }
+    }
+    .el-input__inner{
+      padding: 0 30px 0 12px;
+      background-color: transparent;
+      border: 0;
+      color: #7C7F8E;
+      font-size: 14px;
+      font-family: DIN;
+      font-weight: 500;
     }
     .el-input__prefix{
       display: none;
@@ -104,18 +103,20 @@ export default {
 <style lang='scss' scoped>
   .component-content{
     position: relative;
-    padding: 8px 26px;
+    padding: 10px 16px;
     display: flex;
     align-items: center;
     overflow: hidden;
 
     .component-title{
       flex: 1;
+      font-family: Source Han Sans CN;
       font-size: 14px;
       font-weight: 400;
       color: #7C7F8E;
 
       .font-2 {
+          font-family: PingFang SC;
           font-size: 12px;
           font-weight: 500;
           color: #7C7F8E;
@@ -132,6 +133,7 @@ export default {
     .component-value{
       position: relative;
       font-size: 14px;
+      font-family: DIN;
       font-weight: 500;
       color: #7C7F8E;
 

@@ -7,7 +7,7 @@
  * @LastEditTime: 2020-12-21 11:26:04
  -->
 <template>
-    <div class="public-table ysj search-containersb" @click="changeselect = false">
+    <div class="public-table ysj search-containersb" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" @click="changeselect = false">
           			<div class="loadcover" element-loading-spinner="el-icon-loading"
             element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
     width: 100%;
@@ -46,6 +46,8 @@
             <span class="sp4 tinput title" >{{lang.MaintenanceManage_ThisTimeStartTime1}}</span>
 
             <el-date-picker
+                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                 v-model="value1"
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -54,6 +56,8 @@
             ></el-date-picker>
             <span class="demonstration title">-</span>
             <el-date-picker
+                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                 v-model="value2"
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -78,9 +82,10 @@
                 @select-all="select2"
                 border
                 highlight-current-row
-                :header-cell-style="{background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',
+                :header-cell-style="{
+                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
                     color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left':'1px solid #cccccc',
+                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
                     height:50*zoom+'px',
                     fontSize: 14*zoom+'px',
                     padding:'0'}"
@@ -197,6 +202,7 @@
 
                         <el-select
                             class="porper_ipt"
+                            :popper-append-to-body="false"
                             v-model="userValue"
                             @focus="sx"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
@@ -212,6 +218,7 @@
                         </el-select>
                         <el-select
                             class="porper_ipt"
+                            :popper-append-to-body="false"
                             v-model="userValue"
                              @focus="sx"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
@@ -228,6 +235,7 @@
                         </el-select>
                         <el-select
                             class="porper_ipt"
+                            :popper-append-to-body="false"
                              @focus="sx"
                             v-model="sesstion.Executor"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
@@ -247,6 +255,8 @@
                     <div class="form-block" >
                         <span class="name_text" :style="{fontSize: 16*1+'px',marginRight: 15*1+'px',width:100*1+'px'}">{{lang.RepairManage_TaskStartTime}}</span>
                         <el-date-picker
+                            :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                            :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                             @change="starFun"
                             v-model="startime"
                             type="datetime"
@@ -255,6 +265,8 @@
                       :style="{width:'280px'}"
                         ></el-date-picker>
                         <el-date-picker
+                            :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                            :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                             @change="starFun"
                             v-model="sesstion.CurrentStartTime"
                             type="datetime"
@@ -264,6 +276,8 @@
                     :style="{width:'280px'}"
                         ></el-date-picker>
                         <el-date-picker
+                            :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                            :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                             @change="starFun"
                             v-model="sesstion.CurrentStartTime"
                             type="datetime"
@@ -281,6 +295,7 @@
                                 <input type="text" @input="endValue()" v-if="sestion == 3" v-model="rwtime" :style="{width: 180*1+'px', height: 32*1+'px', lineHeight: 32*1+'px', fontSize:16*1+'px'}" />
                                   <el-select
                                    @focus="sx"
+                            :popper-append-to-body="false"
                             class="sl1"
                             :style="{width: 100+'px',height: 32+'px'}"
                             v-model="sesstion.rwselect"
@@ -298,6 +313,7 @@
                         </el-select>
                              <el-select
                             class="sl1"
+                            :popper-append-to-body="false"
                         @focus="sx"
                           :style="{width: 100+'px',height: 32+'px'}"
                             v-model="sesstion.rwselect"
@@ -316,6 +332,7 @@
                         </el-select>
                              <el-select
                             class="sl1"
+                            :popper-append-to-body="false"
                            @focus="sx"
                             v-model="rwselect"
                            :style="{width: 100+'px',height: 32+'px'}"
@@ -400,6 +417,7 @@
                         <el-select
                          @focus="sx"
                             class="porper_ipt"
+                            :popper-append-to-body="false"
                             @change="timeValueFun"
                             v-model="timeValue"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
@@ -416,6 +434,7 @@
                         </el-select>
                         <el-select
                          @focus="sx"
+                            :popper-append-to-body="false"
                             class="porper_ipt"
                             @change="timeValueFun"
                             v-model="sesstion.PeriodUnit"
@@ -435,6 +454,7 @@
                         <el-select
                          @focus="sx"
                             class="porper_ipt"
+                            :popper-append-to-body="false"
                             @change="timeValueFun"
                             v-model="sesstion.PeriodUnit"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
@@ -454,6 +474,8 @@
                     <div class="inspection_right">
                         <span class="time_text" :style="{fontSize: 16*1+'px',marginRight: 15*1+'px',width:115*1+'px'}">{{lang.MaintenanceManage_PlanEndTime}}</span>
                         <el-date-picker
+                            :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                            :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                             @change="expireFun"
                             v-if="sestion == 3"
                             v-model="Expiretime"
@@ -462,6 +484,8 @@
                            :style="{width:'280px'}"
                         ></el-date-picker>
                         <el-date-picker
+                            :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                            :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                             @change="expireFun"
                             v-if="sestion == 1"
                             v-model="sesstion.MaturityTime"
@@ -471,6 +495,8 @@
                             :style="{width:'280px'}"
                         ></el-date-picker>
                         <el-date-picker
+                            :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
+                            :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                             @change="expireFun"
                             v-if="sestion == 2"
                             v-model="sesstion.MaturityTime"
@@ -515,6 +541,7 @@
                         />
                         <el-select
                          @focus="sx"
+                            :popper-append-to-body="false"
                             class="porper_ipt"
                             v-model="sesstion.ReminderTimeUnit"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
@@ -532,6 +559,7 @@
                         </el-select>
                         <el-select
                          @focus="sx"
+                            :popper-append-to-body="false"
                             class="porper_ipt"
                             v-model="sesstion.ReminderTimeUnit"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
@@ -548,6 +576,7 @@
                         </el-select>
                         <el-select
                          @focus="sx"
+                            :popper-append-to-body="false"
                             class="porper_ipt"
                             v-model="timeValuee"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
@@ -565,7 +594,7 @@
                     </div>
                     <div class="inspection_right">
                         <span class="name-text" :style="{fontSize: 16*1+'px',marginRight: 15*1+'px',width:115*1+'px'}">{{lang.MaintenanceManage_PlanExecutionStatus}}</span>
-                        <el-select  @focus="sx" v-model="hsavalue" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose" v-if="sestion == 3" :style="{width: 280+'px'}">
+                        <el-select  @focus="sx" :popper-append-to-body="false" v-model="hsavalue" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose" v-if="sestion == 3" :style="{width: 280+'px'}">
                             <el-option
                                 v-for="item in hasoptions"
                                 :key="item.value"
@@ -574,7 +603,7 @@
                             ></el-option>
                         </el-select>
                         <el-select
-                         @focus="sx"
+                         @focus="sx" :popper-append-to-body="false"
                             v-model="sesstion.IsEnabled"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                             v-if="sestion == 1"
@@ -589,7 +618,7 @@
                             ></el-option>
                         </el-select>
                         <el-select
-                         @focus="sx"
+                         @focus="sx" :popper-append-to-body="false"
                             v-model="sesstion.IsEnabled"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                             v-if="sestion == 2"
@@ -676,7 +705,7 @@
                                 :class="{nowcheck:nowcheck == i.Number}"
                             >{{i.DeviceModel}}</div>
                             <div class="type" :class="{nowcheck:nowcheck == i.Number}">
-                                <el-select
+                                <el-select :popper-append-to-body="false"
                                  @focus="sx"
                                     @change="typeFun(i,ind)"
                                     v-model="i.value"
@@ -715,7 +744,7 @@
                             >{{i.DeviceModel}}</div>
                             <div class="type">
                                 <el-select
-                                 @focus="sx"
+                                 @focus="sx" :popper-append-to-body="false"
                                     @change="typeFun(i,ind)"
                                     v-model="i.Name"
                                     :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
@@ -754,7 +783,7 @@
                             >{{i.DeviceModel}}</div>
                             <div class="type" :class="{nowcheck:nowcheck == i.Number}">
                                 <el-select
-                                 @focus="sx"
+                                 @focus="sx" :popper-append-to-body="false"
                                     v-model="i.Name"
                                     @change="currStationChange(i)"
                                     :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
@@ -3581,6 +3610,138 @@ for(let i=0;i<$('.atooltip').length;i++){
     flex-direction: column;
     height: 100%;
 
+    &.blackBlueBg{
+        .el-tree{
+            background: #1D2846;
+            color: #C6CAD8;
+        }
+
+        .seleword,.seleword2{
+            background: #1D2846;
+            border: 1px solid #445992;
+            color: #C6CAD8;
+        }
+        .search-container{
+            background: #0B1530;
+            border-color: #38415A;
+            color: #E4E4E4;
+            .selectword{
+                background: #1D2846;
+                border: 1px solid #445992;
+            }
+            .addBtn{
+                background-color: transparent;
+                border: 1px solid #46BE05;
+                color: #46BE05;
+            }
+            .deleteBtn{
+                background-color: #4F5871;
+                border: 1px solid #4F5871;
+                color: #fff;
+            }
+        }
+        .table-container{
+            border-color: transparent;
+        }
+        .img{
+            border-color: #5C6A95;
+            background-color: transparent;
+        }
+
+        .boxsad{
+            background: #233056;
+            color: #fff;
+        }
+
+        .addPop{
+            background: #233056;
+            color: #fff;
+
+            .addPop_list{
+                background-color: #1A2544;
+                border: 1px solid #2A3058;
+            }
+            
+            .addPop_table .inspection_btn .deleteBtn{
+                background-color: #4F5871;
+                border: 1px solid #4F5871;
+                color: #fff;
+            }
+        }
+        .addEquipment{
+            background: #233056;
+            color: #fff;
+
+            .conter{
+                background: #28355B;
+                border-color: #445992;
+            }
+        }
+        .look{
+            background: #233056;
+
+            .lookselect{
+                background: #28355B;
+                border-color: #445992;
+                color: #fff;
+
+                .table{
+                    border-color: #2A3058;
+                }
+                .el-table--border th.gutter:last-of-type{
+                    background-color: #344c8f;
+                }
+            }
+        }
+
+        select{
+            background: #1D2846!important;
+            border-color: #445992;
+
+            &:disabled{
+                background: #35446D!important;
+                border-color: #445992;
+            }
+
+            &:focus{
+                border-color: #B2C0E4
+            }
+        }
+        .showtext{
+            color: #fff;
+        }
+        .el-checkbok{
+            color: #fff;
+
+            &:disabled{
+                color: #6D789A;
+            }
+        }
+
+        .sestion{
+            border-color: transparent;
+
+            .sestioncontain{
+                background: #233056;
+            }
+            span{
+                color:#fff;
+            }
+            .input1{
+                color: #C6CAD8;
+                background: #35446D;
+                border-color: #445992;
+            }
+            .hometop-title{
+                background-color: transparent;
+            }
+
+            .line{
+                background-color: #445992;
+            }
+        }
+    }
+
     .addEquipment {
         .looktop1 {
             position: absolute;
@@ -4754,7 +4915,6 @@ img{
     text-overflow: ellipsis;
     overflow: hidden;
     word-break: break-all;
-    border: 1px solid rgb(244, 244, 244);
         img{
             position: absolute;
             right: 2px;

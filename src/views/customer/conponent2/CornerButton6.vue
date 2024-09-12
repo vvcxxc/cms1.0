@@ -9,8 +9,12 @@
     <div>
         <div v-for="(item,index) in dataValue" :key="index">
             <div v-if="show"
-                 :class="item.class" @dblclick="opendb(item)" @contextmenu.prevent @mouseup="seupClick(item,$event)"
-                 name="cornerbutton" class="CornerButton6aa" @mousedown="downFun(item,$event)" 
+                 :class="item.class" 
+                 @dblclick="opendb(item)" 
+                 @contextmenu.prevent 
+                 @mouseup="seupClick(item,$event)"
+                 @mousedown="downFun(item,$event)" 
+                 name="cornerbutton" class="CornerButton6aa" 
                 :style="'position:absolute;' + 'left:' + item.left + 'px; top:' + item.top 
                 + 'px; text-align:center; line-height:' + (item.height - item.BorderThickness * 2) 
                 + 'px; width:'+ item.width + 'px; height:'+ item.height + 'px; borderRadius:' 
@@ -18,17 +22,16 @@
                 + item.radiusButton + 'px; fontFamily:'+ item.family + '; fontSize:'+ item.fontSize 
                 + 'px; opacity:' + item.opacity + '; transform:rotate(' + item.rotate + 'deg);'
                 + 'boxSizing:border-box;'
-                + 'overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow + ';zIndex:'+item.ZIndex
+                + 'overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow+';zIndex:'+item.ZIndex
                 + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
-                + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`"
-            >
-                <span class="contenText" style="display: flex; justify-content:center; align-items: center"
-                :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto;'
-                + 'color:' + item.Foreground+';fontWeight:' + item.Blod">{{item.text}}</span>
+                + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`">
+                <span class="contenText" style="display: flex; justify-content:center; align-items: center" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto'
+                 + ';color:' + item.Foreground+';fontWeight:' + item.Blod + ';background:'
+                +item.backgroundColor+';-webkit-background-clip:'+item.clipText">{{item.text}}</span>
+
                 <div class="conten" :style="'width:100%;height:100%;background:' + item.Background + ';borderRadius:' 
                     + (Number(item.radiusLeft) -1) + 'px ' + (Number(item.radiusTop) -1) + 'px ' + (Number(item.radiusRight) -1) + 'px ' 
                     + (Number(item.radiusButton) -1) + 'px;boxShadow:' + item.Shadow2">
-                   
                 </div>
             </div>
           
@@ -549,9 +552,6 @@ export default {
                                 Shadow2:Shadow2,
                                  Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
                                 ZIndex:this.ZIndex,
-                                showBorder,
-                                showBack,
-                                borderStyle,
                                 showLinear,
                                 linearStyle,
                             };

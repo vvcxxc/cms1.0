@@ -18,13 +18,12 @@
       class="RWTextBox13a contenBox" type="text" 
       :style="'width:' + item.width + 'px; height:' +item.height + 'px; position:absolute; left:' 
       + item.left + 'px; top:' + item.top + 'px; transform:rotate(' + item.rotate + 'deg); opacity:' 
-      + item.opacity + '; fontFamily:' + item.fontFamily + '; fontSize:' + item.FontSize + 'px; background:' 
-      + item.BorderBrush + '; fontWeight:' + item.Blod +';boxSizing:border-box;'
-      + 'overflow:hidden;white-space:nowrap;boxShadow:' + item.Shadow+';zIndex:'+item.ZIndex
+      + item.opacity + '; fontFamily:' + item.fontFamily + '; fontSize:' + item.FontSize + 'px;'
+      + 'fontWeight:' + item.Blod +';boxSizing:border-box;'
+      + 'overflow:hidden;white-space:nowrap;boxShadow:' + item.Shadow+';zIndex:'+ item.ZIndex
       + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
       + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`
-      /* + `;${item.showBorder ? `border: ${item.BorderThickness}px solid ${item.borderStyle}` : `padding: ${item.BorderThickness}px`}`  */">
-
+      /* `;${item.showBorder ? `border: ${item.BorderThickness}px solid ${item.borderStyle}` : `padding: ${item.BorderThickness}px`}` */ ">
         <div class="conten" 
         :style="'width:100%;height:100%;background:' + item.Background + ';boxShadow:' 
         + item.Shadow + ';boxSizing:border-box;fontSize:' +item.FontSize + 'px'">
@@ -1681,8 +1680,6 @@ export default {
                    TextDecorations:this.textblockData[i].PropertyList.TextDecorations == 'False' ? 'none' : 'underline',
                    ZIndex:this.ZIndex,
                    isShow:true,
-                   showBorder,
-                    borderStyle,
                     showLinear,
                     linearStyle,
                  }

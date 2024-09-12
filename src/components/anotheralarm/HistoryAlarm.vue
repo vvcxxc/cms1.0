@@ -7,116 +7,90 @@
  -->
 <template>
     <div class="public-table">
-              			<div class="loadcover" element-loading-spinner="el-icon-loading"
-            element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;"></div>
-        <div class="search-container" :style="{zoom}">
-            <my-search
-                :searchList="searchList"
-                :searchData="searchData"
-                @setParams="setParams"
-                @change="change"
-            ></my-search>
+        <div class="loadcover" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.4)"
+            v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
+                                                        width: 100%;
+                                                        height: 100%;
+                                                        top: 0;
+                                                        left: 0;"></div>
+        <div class="search-container" :style="{ zoom }">
+            <my-search :searchList="searchList" :searchData="searchData" @setParams="setParams" @delFn="delFn" @exportFn="exportFn"
+                @change="change"></my-search>
         </div>
         <div class="table-container">
-            <my-table
-                :data="data"
-                ref="table"
-                :tableHead="tableHead"
-                :tip="tip"
-                @handleEdit="handleEdit"
-                @handleEdit1="handleEdit1"
-            ></my-table>
+            <my-table :data="data" ref="table" :tableHead="tableHead" :tip="tip" @handleEdit="handleEdit"
+                @handleEdit1="handleEdit1" @selectFn="selectFn"></my-table>
         </div>
         <div class="pages-container">
             <my-page :pageData="pageData" @req="req"></my-page>
         </div>
-        <div class="look lookq"  v-show="haschange" :style="{width: 1330*zoom+'px',height: 730*zoom+'px'}">
-            <div
-                class="looktop"
-             
-                :style="{zoom}"
-            ></div>
-            <div
-                class="lookhead" :style="{zoom}"
-                :class="[{colordiv:$store.state.color=='grey'},{fcolor:$store.state.color=='grey'}]"
-            >
-                {{lang.AlarmRecord_FaultRetrieva_FaultSearch}}
-                <img
-                    :src="no2"
-                    alt
-                    class="no1"
-                    @click="cancel"
-                    v-if="$store.state.color=='grey'"
-                />
+        <div class="look lookq" v-show="haschange" :style="{ width: 1330 * zoom + 'px', height: 730 * zoom + 'px' }">
+            <div class="looktop" :style="{ zoom }"></div>
+            <div class="lookhead" :style="{ zoom }"
+                :class="[{ colordiv: $store.state.color == 'grey' }, { fcolor: $store.state.color == 'grey' }]">
+                {{ lang.AlarmRecord_FaultRetrieva_FaultSearch }}
+                <img :src="no2" alt class="no1" @click="cancel" v-if="$store.state.color == 'grey'" />
                 <img :src="no" alt class="no1" @click="cancel" v-else />
             </div>
-            <div class="lookcontent" :style="{padding: 30*zoom+'px',paddingBottom: 0}">
-                <div class="search" :style="{zoom}">
+            <div class="lookcontent" :style="{ padding: 30 * zoom + 'px', paddingBottom: 0 }">
+                <div class="search" :style="{ zoom }">
                     <input type="text" :placeholder="lang.AlarmRecord_Time_Keyword" v-model="keyword" />
-                    <input type="text" :placeholder="lang.AlarmRecord_FaultRetrieva_Description" class="inputname" v-model="AlarmMsg" />
-                    <span @click="search">{{lang.AlarmRecord_FaultRetrieva_Select}}</span>
+                    <input type="text" :placeholder="lang.AlarmRecord_FaultRetrieva_Description" class="inputname"
+                        v-model="AlarmMsg" />
+                    <span @click="search">{{ lang.AlarmRecord_FaultRetrieva_Select }}</span>
                 </div>
-                <div class="table atable" :style="{height: 530*zoom+'px'}">
-                    <el-table
-                        :data="tableData"
-                        v-loading="this.$store.state.isShow"
-                        element-loading-spinner="el-icon-loading"
-                        element-loading-background="rgba(0, 0, 0, 0.8)"
-                        height="100%"
-                        border
-                        :style="{width: '100%', fontSize: 14*zoom+'px'}"
-                        :header-cell-style="{background:'#dcf0f9',color:'#5883e7', 'border-left':'1px solid #a7d0e2',height:50*zoom+'px',padding:'0'}"
-                    >
+                <div class="table atable" :style="{ height: 530 * zoom + 'px' }">
+                    <el-table :data="tableData" v-loading="this.$store.state.isShow"
+                        element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)"
+                        height="100%" border :style="{ width: '100%', fontSize: 14 * zoom + 'px' }"
+                        :header-cell-style="{ background: '#dcf0f9', color: '#5883e7', 'border-left': '1px solid #a7d0e2', height: 50 * zoom + 'px', padding: '0' }">
                         <template slot="empty">
-                            <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
+                            <span>{{ lang.SCMSConsoleWebApiMySql_NoData }}</span>
                         </template>
-                        <el-table-column prop="AlarmSource" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Source" :width="zoom*180" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="AlarmTime" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_AlarmTime" :width="zoom*180" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="KeyWord" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_KeyWord" :width="zoom*180" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="AlarmType" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Type" :width="zoom*180" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="AlarmMsg" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Description" :width="zoom*280" :show-overflow-tooltip="true">
+                        <el-table-column prop="AlarmSource" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Source"
+                            :width="zoom * 180" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="AlarmTime" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_AlarmTime"
+                            :width="zoom * 180" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="KeyWord" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_KeyWord"
+                            :width="zoom * 180" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="AlarmType" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Type"
+                            :width="zoom * 180" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="AlarmMsg" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Description"
+                            :width="zoom * 280" :show-overflow-tooltip="true">
                             <template slot-scope="scope">
-                                <a
-                                    href="javascript:void(0);"
-                                    @click="getdata(scope.row)"
-                                >{{scope.row.AlarmMsg}}</a>
+                                <a href="javascript:void(0);" @click="getdata(scope.row)">{{ scope.row.AlarmMsg }}</a>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="Reason" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Cause" :width="zoom*280" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="AddPerson" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_User" :width="zoom*180" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="DealPerson" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Processor" :width="zoom*180" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="AddTime" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Addtime" :width="zoom*180" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column prop="FaultTreatment" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Method" :width="zoom*260" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="Reason" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Cause"
+                            :width="zoom * 280" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="AddPerson" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_User"
+                            :width="zoom * 180" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="DealPerson" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Processor"
+                            :width="zoom * 180" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="AddTime" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Addtime"
+                            :width="zoom * 180" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="FaultTreatment" :label="lang.AlarmRecord_FaultRetrieva_DataGrid_Method"
+                            :width="zoom * 260" :show-overflow-tooltip="true"></el-table-column>
                     </el-table>
                 </div>
-                <div class="page" :style="{zoom}">
+                <div class="page" :style="{ zoom }">
                     <my-page1 :pageData="pageData1" @req="req1"></my-page1>
                 </div>
             </div>
         </div>
-        <div class="tip" ref="kongtiao3" v-show="tipchange" :style="{zoom}">
-            <div
-                class="tiptop"
-            
-            >
-              <div
-                    class="tiphead"
-                    style="position:absolute;width: 380px;height: 40px;"
-                ></div>
+        <div class="tip" ref="kongtiao3" v-show="tipchange" :style="{ zoom }">
+            <div class="tiptop">
+                <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
                 <img :src="gth" alt />
-                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
+                <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
             </div>
             <div class="tipcontanin">
-                <div class="tipword" v-if="deltrue">{{tipword}}</div>
-                <div class="w" v-if="w1">{{w}}</div>
-                <div class="tipdetermine" @click="tip2" v-if="deltrue">{{lang.MessageBox_Confrim}}</div>
+                <div class="tipword" v-if="deltrue">{{ tipword }}</div>
+                <div class="w" v-if="w1">{{ w }}</div>
+                <div class="tipdetermine" @click="tip2" v-if="deltrue">{{ lang.MessageBox_Confrim }}</div>
                 <div class="delclass" v-if="!deltrue">
-                    <div class="one" @click="no1">{{lang.MessageBox_NO}}</div>
-                    <div class="two" @click="yes1">{{lang.MessageBox_YES}}</div>
+                    <div class="one" @click="no1">{{ lang.MessageBox_NO }}</div>
+                    <div class="two" @click="yes1">{{ lang.MessageBox_YES }}</div>
                 </div>
             </div>
         </div>
@@ -124,160 +98,145 @@
         <div class="cover3" v-if="tipchange"></div>
         <div class="cover4" v-if="error"></div>
         <div class="cover4" v-if="error1"></div>
-        <div class="errorsetion errorsetion1" v-show="error" ref="kongtiao4" :style="{zoom}">
-            <div
-                class="errortop"
-         
-            ></div>
-            <div class="errorhead"  :class="[{colordiv:$store.state.color=='grey'},{fcolor:$store.state.color=='grey'}]">
-                <span  :class="[{colordiv:$store.state.color=='grey'},{fcolor:$store.state.color=='grey'}]">{{lang.AlarmRecord_FaultlDetail_Details}}</span>
-                <img
-                    :src="no2"
-                    alt
-                    class="no1"
-                    @click="error = false"
-                    v-if="$store.state.color=='grey'"
-                />
+        <div class="errorsetion errorsetion1" v-show="error" ref="kongtiao4" :style="{ zoom }">
+            <div class="errortop"></div>
+            <div class="errorhead"
+                :class="[{ colordiv: $store.state.color == 'grey' }, { fcolor: $store.state.color == 'grey' }]">
+                <span :class="[{ colordiv: $store.state.color == 'grey' }, { fcolor: $store.state.color == 'grey' }]">{{
+                    lang.AlarmRecord_FaultlDetail_Details }}</span>
+                <img :src="no2" alt class="no1" @click="error = false" v-if="$store.state.color == 'grey'" />
                 <img :src="no" alt class="no1" @click="error = false" v-else />
             </div>
             <div class="errorcontent">
                 <div class="first">
-                    {{lang.AlarmRecord_FaultlDetail_Source}}
+                    {{ lang.AlarmRecord_FaultlDetail_Source }}
                     <input type="text" v-model="changedata.AlarmSource" :disabled="disabled" />
                 </div>
                 <div class="second">
                     <div class="fl">
-                        {{lang.AlarmRecord_FaultlDetail_AlarmTime}}
+                        {{ lang.AlarmRecord_FaultlDetail_AlarmTime }}
                         <input type="text" v-model="changedata.AlarmTime" :disabled="disabled" />
                     </div>
                     <div class="fr">
-                        {{lang.AlarmRecord_FaultlDetail_Recoverytime}}
-                        <input
-                            type="text"
-                            v-model="changedata.RecoverTime"
-                            :disabled="disabled"
-                        />
+                        {{ lang.AlarmRecord_FaultlDetail_Recoverytime }}
+                        <input type="text" v-model="changedata.RecoverTime" :disabled="disabled" />
                     </div>
                 </div>
                 <div class="second">
                     <div class="fl">
-                        {{lang.AlarmRecord_FaultlDetail_Type}}
+                        {{ lang.AlarmRecord_FaultlDetail_Type }}
                         <input type="text" v-model="changedata.AlarmType" :disabled="disabled" />
                     </div>
                     <div class="fr">
-                        {{lang.AlarmRecord_FaultlDetail_Addtime}}
+                        {{ lang.AlarmRecord_FaultlDetail_Addtime }}
                         <input type="text" v-model="changedata.AddTime" :disabled="disabled" />
                     </div>
                 </div>
                 <div class="second">
                     <div class="fl">
-                        {{lang.AlarmRecord_FaultlDetail_User}}
+                        {{ lang.AlarmRecord_FaultlDetail_User }}
                         <input type="text" v-model="changedata.AddPerson" :disabled="disabled" />
                     </div>
                     <div class="fr">
-                        {{lang.AlarmRecord_FaultlDetail_Processor}}
+                        {{ lang.AlarmRecord_FaultlDetail_Processor }}
                         <input type="text" v-model="changedata.DealPerson" :disabled="disabled" />
                     </div>
                 </div>
                 <div class="third">
-                    {{lang.AlarmRecord_FaultlDetail_KeyWord}}
+                    {{ lang.AlarmRecord_FaultlDetail_KeyWord }}
                     <input type="text" v-model="changedata.KeyWord" :disabled="disabled" />
                 </div>
                 <div class="third">
-                    {{lang.AlarmRecord_FaultlDetail_Information}}
+                    {{ lang.AlarmRecord_FaultlDetail_Information }}
                     <input type="text" v-model="changedata.AlarmMsg" :disabled="disabled" />
                 </div>
                 <div class="third">
-                    {{lang.AlarmRecord_FaultlDetail_Cause}}
+                    {{ lang.AlarmRecord_FaultlDetail_Cause }}
                     <input type="text" v-model="changedata.Reason" :disabled="disabled" />
                 </div>
                 <div class="third">
-                    {{lang.AlarmRecord_FaultlDetail_Method}}
-                    <input
-                        type="text"
-                        v-model="changedata.FaultTreatment"
-                        :disabled="disabled"
-                    />
+                    {{ lang.AlarmRecord_FaultlDetail_Method }}
+                    <input type="text" v-model="changedata.FaultTreatment" :disabled="disabled" />
                 </div>
             </div>
         </div>
-        <div class="errorsetion errorsetion2" v-show="error1" ref="kongtiao4" :style="{width:900*zoom+'px',height:740*zoom+'px'}">
-            <div
-                class="errortop"
-               
-                :style="{zoom}"
-            ></div>
-            <div class="errorhead" :class="{colordiv:$store.state.color=='grey'}" :style="{zoom}">
-                <span :class="{fcolor:$store.state.color=='grey'}">{{errortitle}}</span>
-                <img :src="no2" alt class="no1" @click="error2" v-if="$store.state.color=='grey'" />
+        <div class="errorsetion errorsetion2" v-show="error1" ref="kongtiao4"
+            :style="{ width: 900 * zoom + 'px', height: 740 * zoom + 'px' }">
+            <div class="errortop" :style="{ zoom }"></div>
+            <div class="errorhead" :class="{ colordiv: $store.state.color == 'grey' }" :style="{ zoom }">
+                <span :class="{ fcolor: $store.state.color == 'grey' }">{{ errortitle }}</span>
+                <img :src="no2" alt class="no1" @click="error2" v-if="$store.state.color == 'grey'" />
                 <img :src="no" alt class="no1" @click="error2" v-else />
             </div>
-            <div class="errorcontent" :style="{zoom}">
+            <div class="errorcontent" :style="{ zoom }">
                 <div class="second">
                     <div class="fl">
-                        {{lang.AlarmRecord_FaultAddAndModify_Source}}
+                        {{ lang.AlarmRecord_FaultAddAndModify_Source }}
                         <input type="text" v-model="changedata.AlarmTagName" disabled />
                     </div>
                     <div class="fr">
-                        {{lang.AlarmRecord_FaultAddAndModify_AlarmTime}}
+                        {{ lang.AlarmRecord_FaultAddAndModify_AlarmTime }}
                         <input type="text" v-model="changedata.AlarmTime" disabled />
                     </div>
                 </div>
                 <div class="second">
                     <div class="fl">
-                        {{lang.AlarmRecord_FaultAddAndModify_Type}}
+                        {{ lang.AlarmRecord_FaultAddAndModify_Type }}
                         <!-- <input type="text" v-model="changedata.OriginalAlarmType" disabled /> -->
                         <input type="text" v-model="changedata.AlarmType" disabled />
                     </div>
                     <div class="fr">
-                        {{lang.AlarmRecord_FaultAddAndModify_Recoverytime}}
+                        {{ lang.AlarmRecord_FaultAddAndModify_Recoverytime }}
                         <input type="text" v-model="changedata.RecoverTime" disabled />
                     </div>
                 </div>
                 <div class="second">
                     <div class="fl">
-                        {{lang.AlarmRecord_FaultAddAndModify_User}}
+                        {{ lang.AlarmRecord_FaultAddAndModify_User }}
                         <input type="text" v-model="changedata.OperatorName" disabled />
                     </div>
                     <div class="fr">
-                        {{lang.AlarmRecord_FaultAddAndModify_Processor}}
+                        {{ lang.AlarmRecord_FaultAddAndModify_Processor }}
                         <input type="text" v-model="changedata.DealPerson" />
                     </div>
                 </div>
                 <div class="third">
-                    {{lang.AlarmRecord_FaultAddAndModify_KeyWord}}
+                    {{ lang.AlarmRecord_FaultAddAndModify_KeyWord }}
                     <input type="text" v-model="changedata.KeyWord" />
                 </div>
                 <div class="third">
-                    {{lang.AlarmRecord_FaultAddAndModify_Information}}
+                    {{ lang.AlarmRecord_FaultAddAndModify_Information }}
                     <!-- <input type="text" v-model="changedata.OriginalAlarmMsg" disabled /> -->
-                    <input type="text" v-model="changedata.AlarmMsg" disabled /> 
+                    <input type="text" v-model="changedata.AlarmMsg" disabled />
                 </div>
                 <div class="third">
-                    {{lang.AlarmRecord_FaultAddAndModify_Cause}}
+                    {{ lang.AlarmRecord_FaultAddAndModify_Cause }}
                     <input type="text" v-model="changedata.Reason" />
                 </div>
                 <div class="third">
-                    {{lang.AlarmRecord_FaultAddAndModify_Method}}
+                    {{ lang.AlarmRecord_FaultAddAndModify_Method }}
                     <input type="text" v-model="changedata.FaultTreatment" />
                 </div>
                 <div class="btn">
-                    <div class="btn1" @click="error2">{{lang.AlarmRecord_FaultAddAndModify_Cancel}}</div>
+                    <div class="btn1" @click="error2">{{ lang.AlarmRecord_FaultAddAndModify_Cancel }}</div>
 
-                    <div class="btn2" @click="btn">{{lang.AlarmRecord_FaultAddAndModify_Confirm}}</div>
+                    <div class="btn2" @click="btn">{{ lang.AlarmRecord_FaultAddAndModify_Confirm }}</div>
                 </div>
             </div>
         </div>
+        <TipPop v-if="isPopShow" :tipText="tipText" :noCancel="noCancel" @tipCallBack="tipCallBack" />
     </div>
 </template>
 
 <script>
+import TipPop from '../public/tipPop.vue';
 import MySearch from '../public/search06.vue';
 import MyTable from '../public/table2.vue';
 import MyPage from '../public/Pages.vue';
 import MyPage1 from '../public/Pages1.vue';
 export default {
     components: {
+        TipPop,
         MySearch,
         MyTable,
         MyPage,
@@ -285,9 +244,12 @@ export default {
     },
     data() {
         return {
+            isPopShow: false, // 是否显示弹窗
+            tipText: '', // 弹窗提示语
+            noCancel: true, // 弹窗是否带取消按按钮
             deltrue: true,
             tipword: '',
-            errortitle:'',
+            errortitle: '',
             tipchange: false,
             gth: require('../../assets/images/gth.png'),
             no: require(`../../assets/images/no.png`),
@@ -372,7 +334,8 @@ export default {
             bbb: 1,
             ccc: 1,
             zoom: 1,
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
+            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
+            selectList: []
         };
     },
     mounted() {
@@ -387,8 +350,8 @@ export default {
         );
         let argEndTime = this.$getDate(
             new Date(new Date().toLocaleDateString()).getTime() +
-                24 * 60 * 60 * 1000 -
-                1
+            24 * 60 * 60 * 1000 -
+            1
         );
         Object.assign(this.searchData, {
             argStartTime,
@@ -400,6 +363,7 @@ export default {
         this.getDevice();
     },
     methods: {
+        selectFn(list) { this.selectList = list },
         getLangData() {
             this.searchList = [
                 {
@@ -445,32 +409,32 @@ export default {
         error2() {
             this.bbb = 2;
             this.deltrue = false;
-                setTimeout(() => {
-                     this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
+            setTimeout(() => {
+                this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
             this.w1 = true;
             this.w = this.lang.AlarmRecord_HT_FaultAddAndModify_DoYouRealyWantToSave;
         },
         getdata(a) {
             console.log(a);
             this.changedata = a;
-                setTimeout(() => {
-                      this.error = true;
-                        this.move('errorsetion1', 'errortop');
-                    });
+            setTimeout(() => {
+                this.error = true;
+                this.move('errorsetion1', 'errortop');
+            });
             this.disabled = true;
         },
-        handleEdit1(a, b,c) {
-            
-              if(!c){
+        handleEdit1(a, b, c) {
+
+            if (!c) {
                 setTimeout(() => {
-                     this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.w1 = true;
-                
-                      this.tipword = ''
+
+                this.tipword = ''
                 this.w = this.lang.NoOperationAuthority;
                 return
             }
@@ -481,12 +445,12 @@ export default {
                 )
                 .then(res => {
                     if (res.data.data == '2') {
-                            setTimeout(() => {
-                     this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
+                        setTimeout(() => {
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
                         this.w = this.lang.AlarmRecord_HT_IsUpdate;
-                          this.tipword = ''
+                        this.tipword = ''
                         this.changedata = b;
                         this.w1 = true;
                         this.deltrue = false;
@@ -504,15 +468,15 @@ export default {
                             });
                     } else {
                         this.changedata = b;
-                            setTimeout(() => {
-                      this.error1 = true;
-                      this.errortitle = this.lang.AlarmRecord_HT_FaultAddAndModify_FaultRepairRecordAdding
-                        this.move('errorsetion2', 'errortop');
-                    });
+                        setTimeout(() => {
+                            this.error1 = true;
+                            this.errortitle = this.lang.AlarmRecord_HT_FaultAddAndModify_FaultRepairRecordAdding
+                            this.move('errorsetion2', 'errortop');
+                        });
                     }
                 });
         },
-        overdata() {},
+        overdata() { },
         search() {
             this.getsestion();
         },
@@ -535,11 +499,11 @@ export default {
             if (!this.changedata.DealPerson) {
                 this.w = this.lang.AlarmRecord_HT_FaultAddAndModifyViewModel_PEHandler;
                 this.w1 = true;
-                   this.tipword = ''
-                    setTimeout(() => {
-                     this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
+                this.tipword = ''
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.ccc = 2;
                 this.deltrue = true;
             } else {
@@ -552,28 +516,28 @@ export default {
                     .then(res => {
                         console.log(res);
                         if (res.data.msg == '请求成功') {
-                            if(this.w == this.lang.AlarmRecord_HT_IsUpdate){
-                             this.w = this.lang.AlarmRecord_HT_FaultAddAndModify_UpdateSuccess;
-                            }else{
-                           this.w = this.lang.AlarmRecord_HT_FaultAddAndModify_SuccessfulEntry;
+                            if (this.w == this.lang.AlarmRecord_HT_IsUpdate) {
+                                this.w = this.lang.AlarmRecord_HT_FaultAddAndModify_UpdateSuccess;
+                            } else {
+                                this.w = this.lang.AlarmRecord_HT_FaultAddAndModify_SuccessfulEntry;
                             }
-                           
+
                             this.w1 = true;
-                               this.tipword = ''
-                                setTimeout(() => {
-                     this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
+                            this.tipword = ''
+                            setTimeout(() => {
+                                this.tipchange = true;
+                                this.move('tip', 'tiphead');
+                            });
                             this.deltrue = true;
                             this.error1 = false;
                         } else {
                             this.w = res.data.msg;
                             this.w1 = true;
-                               this.tipword = ''
-                                setTimeout(() => {
-                     this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
+                            this.tipword = ''
+                            setTimeout(() => {
+                                this.tipchange = true;
+                                this.move('tip', 'tiphead');
+                            });
                             this.deltrue = true;
                         }
                         console.log(this.pageData);
@@ -583,7 +547,7 @@ export default {
                         //     this.deltrue = true;
                         // }
                     })
-                    .catch(err => {});
+                    .catch(err => { });
             }
         },
         yes1() {
@@ -594,30 +558,30 @@ export default {
             this.ccc = 1;
             if (this.bbb == 1) {
                 this.tipchange = false;
-                    setTimeout(() => {
-                      this.error1 = true;
-                       this.errortitle = this.lang.AlarmRecord_HT_FaultAddAndModify_FaultRepairRecordUpdate
-                        this.move('errorsetion2', 'errortop');
-                    });
+                setTimeout(() => {
+                    this.error1 = true;
+                    this.errortitle = this.lang.AlarmRecord_HT_FaultAddAndModify_FaultRepairRecordUpdate
+                    this.move('errorsetion2', 'errortop');
+                });
             } else {
                 this.btn();
             }
         },
         tip1() {
-    
-                 if(this.w==this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect||this.tipword==this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect||this.tipword==this.lang.NoOperationAuthority||this.w==this.lang.NoOperationAuthority){
-             this.tipchange = false;
-               this.searchData.argStartTime = this.$getDate(
-            new Date(new Date().toLocaleDateString()).getTime()
-        );
-         this.searchData.argEndTime = this.$getDate(
-            new Date(new Date().toLocaleDateString()).getTime() +
-                24 * 60 * 60 * 1000 -
-                1
-        );
-             return;
+
+            if (this.w == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect || this.tipword == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect || this.tipword == this.lang.NoOperationAuthority || this.w == this.lang.NoOperationAuthority) {
+                this.tipchange = false;
+                this.searchData.argStartTime = this.$getDate(
+                    new Date(new Date().toLocaleDateString()).getTime()
+                );
+                this.searchData.argEndTime = this.$getDate(
+                    new Date(new Date().toLocaleDateString()).getTime() +
+                    24 * 60 * 60 * 1000 -
+                    1
+                );
+                return;
             }
-         
+
             this.bbb = 2;
             this.tipchange = false;
             this.w1 = false;
@@ -636,7 +600,7 @@ export default {
             // });
         },
         tip2() {
-            
+
             this.bbb = 2;
             this.tipchange = false;
             this.w1 = false;
@@ -645,17 +609,17 @@ export default {
                 this.error1 = false;
             }
             this.ccc = 2;
-                if(this.w==this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect||this.tipword==this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect||this.tipword==this.lang.NoOperationAuthority||this.w==this.lang.NoOperationAuthority){
-             this.tipchange = false;
-               this.searchData.argStartTime = this.$getDate(
-            new Date(new Date().toLocaleDateString()).getTime()
-        );
-         this.searchData.argEndTime = this.$getDate(
-            new Date(new Date().toLocaleDateString()).getTime() +
-                24 * 60 * 60 * 1000 -
-                1
-        );
-             return;
+            if (this.w == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect || this.tipword == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect || this.tipword == this.lang.NoOperationAuthority || this.w == this.lang.NoOperationAuthority) {
+                this.tipchange = false;
+                this.searchData.argStartTime = this.$getDate(
+                    new Date(new Date().toLocaleDateString()).getTime()
+                );
+                this.searchData.argEndTime = this.$getDate(
+                    new Date(new Date().toLocaleDateString()).getTime() +
+                    24 * 60 * 60 * 1000 -
+                    1
+                );
+                return;
             }
         },
         mouseDownHandleelse3(event) {
@@ -700,17 +664,17 @@ export default {
             window.onmousemove = null;
             event.currentTarget.style.cursor = 'move';
         },
-                move(name, namehead) {
-          //  $(`.${name}`).addClass('center')
-           let left = ($(`.${name}`).width())/2+'px'
-           let top = ($(`.${name}`).height())/2+'px'
-           console.log("left",left)
-           console.log("top",top)
-           console.log($(`.${name}`))
-             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
-            $(`.${name}`)[0].addEventListener('mousedown', function(e) {
-                
+        move(name, namehead) {
+            //  $(`.${name}`).addClass('center')
+            let left = ($(`.${name}`).width()) / 2 + 'px'
+            let top = ($(`.${name}`).height()) / 2 + 'px'
+            console.log("left", left)
+            console.log("top", top)
+            console.log($(`.${name}`))
+            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+            $(`.${name}`)[0].addEventListener('mousedown', function (e) {
+
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
                     $(`.${name}`).removeClass('center')
@@ -729,11 +693,11 @@ export default {
                     isDown = true;
                     var pdmove = false;
 
-                     
+
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
-                    $('body')[0].addEventListener('mousemove', function(e) {
+                    $('body')[0].addEventListener('mousemove', function (e) {
                         pdmove = true;
                         if (isDown == false) {
                             return;
@@ -751,7 +715,7 @@ export default {
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
-                    $('body')[0].addEventListener('mouseup', function(e) {
+                    $('body')[0].addEventListener('mouseup', function (e) {
                         //开关关闭
                         isDown = false;
                         $('body')[0].style.cursor = 'default';
@@ -759,23 +723,23 @@ export default {
                 }
             });
         },
-        handleEdit(a, b,c) {
-             if(!c){
+        handleEdit(a, b, c) {
+            if (!c) {
                 setTimeout(() => {
-                     this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.w1 = true;
-                
-                      this.tipword = ''
+
+                this.tipword = ''
                 this.w = this.lang.NoOperationAuthority;
                 return
             }
-             setTimeout(() => {
-                       
-                        this.haschange = true;
-                        this.move('lookq', 'looktop');
-                    });
+            setTimeout(() => {
+
+                this.haschange = true;
+                this.move('lookq', 'looktop');
+            });
             this.AlarmMsg = b.AlarmMsg;
             this.getsestion();
         },
@@ -886,7 +850,7 @@ export default {
                     //     }
                     // }
                 })
-                .catch(err => {});
+                .catch(err => { });
         },
         change(e) {
             let data = this.deviceList[e];
@@ -915,15 +879,15 @@ export default {
             s = s < 10 ? '0' + s : s;
             return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
         },
-        setParams(params,a) {
-               if(!a){
+        setParams(params, a) {
+            if (!a) {
                 setTimeout(() => {
-                     this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.w1 = true;
-                
-                      this.tipword = ''
+
+                this.tipword = ''
                 this.w = this.lang.NoOperationAuthority;
                 return
             }
@@ -932,18 +896,82 @@ export default {
                 new Date(params.argStartTime).getTime() >
                 new Date(params.argEndTime).getTime()
             ) {
-                    setTimeout(() => {
-                     this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.w1 = true;
-                   this.tipword = ''
+                this.tipword = ''
                 this.w = this.lang.AlarmRecord_HT_TheQueryDate;
+            }
+        },
+        delFn(a) {
+            if (!a) {
+                this.isPopShow = true;
+                this.tipText = this.lang.NoOperationAuthority;
+                return
+            }
+            if (!this.selectList.length) {
+                this.isPopShow = true;
+                this.tipText = this.lang.APPFormManage_NoDeleteData
+                return
+            }
+            this.noCancel = false;
+            this.isPopShow = true;
+            this.tipText = this.lang.APPFormManage_DeleteData
+        },
+        exportFn(a) {
+            if (!a) {
+                this.isPopShow = true;
+                this.tipText = this.lang.NoOperationAuthority;
+                return
+            }
+            this.$axios({
+                method: 'post',
+                url: `/api/AlarmRecord/ExportHistory`,
+                responseType: 'blob',
+                data: {
+                    StartTime: this.searchData.argStartTime,
+                    EndTime: this.searchData.argEndTime,
+                    Alarmtype: this.searchData.argAlarmType,
+                    Keyword: this.searchData.argKeyword
+                }
+            }).then(res => {
+                 this.downloadFile(res.data, '历史报警.xlsx')
+            })
+         },
+        tipCallBack(str) {
+            this.noCancel = true;
+            if (str == 'yes') {
+                this.isPopShow = false;
+                console.log(this.selectList)
+
+                this.$axios
+                    .post(
+                        `/api/AlarmRecord/DeleteAlarmRecord`,
+                        this.selectList.map(_ => ({
+                            ID: _.ID,
+                            TableName: _.TableName
+                        }))
+                    )
+                    .then(res => {
+                        if (res.data.code == 0) {
+                            this.tipText = this.lang.APPFormManage_DeleteSuccessful;
+                            this.isPopShow = true;
+                            this.req(1)
+                        } else {
+                            this.tipText = res.data.msg;
+                            this.isPopShow = true;
+                        }
+                    });
+
+            } else {
+                this.isPopShow = false;
             }
         },
         //获取故障检索信息
         getsestion() {
-            console.log( `/api/AlarmRecord/AlarmRecord_GstFaultRetrieva?argKeyword=${this.keyword}&argPageSize=50&argPageIndex=1&argDescribe=${this.AlarmMsg}`)
+            console.log(`/api/AlarmRecord/AlarmRecord_GstFaultRetrieva?argKeyword=${this.keyword}&argPageSize=50&argPageIndex=1&argDescribe=${this.AlarmMsg}`)
             this.$axios
                 .post(
                     `/api/AlarmRecord/AlarmRecord_GstFaultRetrieva?argKeyword=${this.keyword}&argPageSize=50&argPageIndex=1&argDescribe=${this.AlarmMsg}`
@@ -955,7 +983,7 @@ export default {
                 });
         },
         // 获取仪表
-        getDevice() {},
+        getDevice() { },
         // 获取报警类型
         getAlarmType() {
             this.$axios
@@ -978,7 +1006,7 @@ export default {
                         this.searchData.argAlarmType = this.searchList[0].optionList[0].value;
                     }
                 })
-                .catch(err => {});
+                .catch(err => { });
         },
         isPositiveInteger(s) {
             //是否为正整数
@@ -989,13 +1017,13 @@ export default {
             this.deltrue = true;
             if (s == 'jump') {
                 if (!this.isPositiveInteger(pageIndex)) {
-                        setTimeout(() => {
-                     this.tipchange = true;
+                    setTimeout(() => {
+                        this.tipchange = true;
                         this.move('tip', 'tiphead');
                     });
                     this.w = this.lang.DataGrid_Reaction_HT_PEAPositiveInteger;
                     this.w1 = true;
-                       this.tipword = ''
+                    this.tipword = ''
                     return;
                 } else {
                     if (
@@ -1006,13 +1034,13 @@ export default {
                             pageIndex < 1 ||
                             pageIndex > this.pageData.TotalPage
                         ) {
-                                setTimeout(() => {
-                     this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
+                            setTimeout(() => {
+                                this.tipchange = true;
+                                this.move('tip', 'tiphead');
+                            });
                             this.w = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
                             this.w1 = true;
-                               this.tipword = ''
+                            this.tipword = ''
                             return;
                         }
                     }
@@ -1030,51 +1058,51 @@ export default {
                 .then(res => {
                     console.log(res);
                     let i = 0;
-                  if(res.data.code == 0){
+                    if (res.data.code == 0) {
                         this.data = res.data.data.DataList;
-                    this.pageData = res.data.data.ParameterList;
-                  }else{
-                         this.w = res.data.msg;
+                        this.pageData = res.data.data.ParameterList;
+                    } else {
+                        this.w = res.data.msg;
                         this.w1 = true;
-                           this.tipword = ''
-                            setTimeout(() => {
-                     this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
-                  }
-                  
+                        this.tipword = ''
+                        setTimeout(() => {
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                    }
+
                 })
 
-                .catch(err => {});
+                .catch(err => { });
         },
-        req1(pageIndex,s) {
+        req1(pageIndex, s) {
             this.deltrue = true;
-                 if(s=='jump'){
-                   if (!this.isPositiveInteger(pageIndex)) {
+            if (s == 'jump') {
+                if (!this.isPositiveInteger(pageIndex)) {
                     setTimeout(() => {
-                     this.tipchange = true;
+                        this.tipchange = true;
                         this.move('tip', 'tiphead');
                     });
-                this.w = this.lang.DataGrid_Reaction_HT_PEAPositiveInteger;
-                this.w1 = true;
-                   this.tipword = ''
-                return;
-            } else {
-                if (pageIndex !== 1 && pageIndex !== this.pageData1.TotalPage) {
-                    if (pageIndex < 1 || pageIndex > this.pageData1.TotalPage) {
+                    this.w = this.lang.DataGrid_Reaction_HT_PEAPositiveInteger;
+                    this.w1 = true;
+                    this.tipword = ''
+                    return;
+                } else {
+                    if (pageIndex !== 1 && pageIndex !== this.pageData1.TotalPage) {
+                        if (pageIndex < 1 || pageIndex > this.pageData1.TotalPage) {
                             setTimeout(() => {
-                     this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
-                        this.w = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
-                        this.w1 = true;
-                           this.tipword = ''
-                        return;
+                                this.tipchange = true;
+                                this.move('tip', 'tiphead');
+                            });
+                            this.w = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
+                            this.w1 = true;
+                            this.tipword = ''
+                            return;
+                        }
                     }
                 }
             }
-                 }
-           
+
             let params = Object.assign(this.searchData, {
                 argPageIndex: pageIndex,
                 argPageSize: this.pageData1.PageSize
@@ -1088,7 +1116,7 @@ export default {
                     this.tableData = res.data.data.DataList;
                 })
 
-                .catch(err => {});
+                .catch(err => { });
         }
     }
 };
@@ -1103,6 +1131,7 @@ export default {
     height: 730px;
     background-color: #eeeeee;
     box-shadow: 0px 0px 8px black;
+
     .lookhead {
         width: 100%;
         height: 50px;
@@ -1111,6 +1140,7 @@ export default {
         background-color: #386df0;
         position: relative;
         color: #ffffff;
+
         img {
             cursor: pointer;
             z-index: 12999999;
@@ -1121,6 +1151,7 @@ export default {
             bottom: 15px;
         }
     }
+
     .looktop {
         width: 100%;
         height: 50px;
@@ -1129,23 +1160,28 @@ export default {
         left: 0;
         z-index: 11999999;
     }
+
     .lookcontent {
         padding: 30px 30px 0px 30px;
+
         .search {
             height: 50px;
             line-height: 45px;
             border: 1px solid #cccccc;
             padding-left: 20px;
+
             input {
                 height: 30px;
                 text-indent: 0.5em;
 
                 border: none;
             }
+
             .inputname {
                 margin: 0px 10px;
                 width: 600px;
             }
+
             span {
                 display: inline-block;
                 background-color: #ffffff;
@@ -1162,6 +1198,7 @@ export default {
             }
         }
     }
+
     .table {
         width: 100%;
         height: 530px;
@@ -1169,18 +1206,22 @@ export default {
         margin-top: 10px;
     }
 }
+
 .public-table {
     display: flex;
     flex-direction: column;
     height: 100%;
+
     .table-container {
         flex: 1;
         // overflow: auto;
     }
+
     .page-container {
         height: 60px;
     }
 }
+
 .cover2 {
     width: 100%;
     height: 100%;
@@ -1189,6 +1230,7 @@ export default {
     top: 0;
     left: 0;
 }
+
 .tip {
     position: fixed;
     width: 380px;
@@ -1198,16 +1240,19 @@ export default {
     left: 750px;
     box-shadow: 0px 0px 8px black;
     background-color: #f3f3f4;
+
     .tiptop {
         width: 380px;
         height: 40px;
         background-color: #ffbc3d;
+
         img {
             width: 20px;
             height: 20px;
             margin-top: 10px;
             margin-left: 160px;
         }
+
         span {
             color: #ffffff;
             position: relative;
@@ -1215,14 +1260,17 @@ export default {
             margin-left: 7px;
         }
     }
+
     .tipword {
         width: 100%;
         // padding: 30px;
         padding-bottom: 0;
     }
+
     .tipcontanin {
         height: calc(100% - 40px);
     }
+
     .w {
         width: 100%;
         height: 75%;
@@ -1234,11 +1282,12 @@ export default {
         justify-content: center;
         padding: 12px;
     }
+
     .tipdetermine {
         cursor: pointer;
         color: #ea9328;
-        position:absolute;
-        bottom:18px;
+        position: absolute;
+        bottom: 18px;
         width: 310px;
         line-height: 30px;
         text-align: center;
@@ -1246,11 +1295,13 @@ export default {
         height: 30px;
         background-color: #f3e3ad;
     }
+
     .delclass {
         width: 330px;
         line-height: 30px;
         margin-left: 25px;
         height: 30px;
+
         .one {
             cursor: pointer;
             display: inline-block;
@@ -1260,6 +1311,7 @@ export default {
             background-color: #e0e0e0;
             color: #7e7e7e;
         }
+
         .two {
             cursor: pointer;
             display: inline-block;
@@ -1272,6 +1324,7 @@ export default {
         }
     }
 }
+
 .cover3 {
     width: 100%;
     height: 100%;
@@ -1280,6 +1333,7 @@ export default {
     top: 0;
     left: 0;
 }
+
 .errorsetion {
     position: fixed;
     box-shadow: 0px 0px 8px black;
@@ -1289,6 +1343,7 @@ export default {
     z-index: 30999999;
     top: 180px;
     left: 430px;
+
     .errortop {
         position: absolute;
         height: 50px;
@@ -1296,6 +1351,7 @@ export default {
         width: 100%;
         z-index: 31999999;
     }
+
     .errorhead {
         background-color: #386df0;
         height: 50px;
@@ -1304,6 +1360,7 @@ export default {
         text-align: center;
         color: #ffffff;
     }
+
     .no1 {
         width: 24px;
         height: 24px;
@@ -1312,14 +1369,17 @@ export default {
         right: 20px;
         top: 10px;
     }
+
     .errorcontent {
         padding: 30px 70px 0px 70px;
     }
+
     .first {
         width: 220px;
         height: 40px;
         margin-bottom: 40px;
     }
+
     input {
         margin-top: 5px;
         width: 100%;
@@ -1330,22 +1390,27 @@ export default {
         border: none;
         border: 1px solid #cccccc;
     }
+
     .second {
         margin-top: 10px;
         overflow: hidden;
         width: 500px;
+
         .fl {
             float: left;
             width: 220px;
         }
+
         .fr {
             float: right;
             width: 220px;
         }
     }
+
     .third {
         margin-top: 10px;
         width: 100%;
+
         input {
             margin-top: 5px;
             width: 100%;
@@ -1356,9 +1421,11 @@ export default {
             border: 1px solid #cccccc;
         }
     }
+
     .btn {
         margin-top: 20px;
         float: right;
+
         .btn1 {
             cursor: pointer;
             width: 100px;
@@ -1372,6 +1439,7 @@ export default {
             cursor: pointer;
             margin-right: 20px;
         }
+
         .btn2 {
             cursor: pointer;
             text-align: center;
@@ -1387,6 +1455,7 @@ export default {
         }
     }
 }
+
 .cover4 {
     position: fixed;
     width: 100%;
@@ -1399,12 +1468,15 @@ export default {
 .colordiv {
     background-color: #d9dbde !important;
 }
+
 .colortip {
     background-color: #efeff0 !important;
 }
+
 .fcolor {
     color: #000 !important;
 }
+
 img {
     cursor: pointer;
 }

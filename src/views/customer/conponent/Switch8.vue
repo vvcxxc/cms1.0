@@ -553,11 +553,11 @@ export default{
                 var iptCheck1 = document.querySelector(`.${item.class}ipt`).checked
                 if(iptCheck1 == true){
                     document.querySelector(`.${item.class}ipt`).checked = false
-                    document.querySelector(`.${item.class}ipt`).nextElementSibling.nextElementSibling.innerHTML = 'Off'
+                    document.querySelector(`.${item.class}ipt`).nextElementSibling.nextElementSibling.innerHTML = item.OffText
                     $(`.${item.class}`).find('#switch-area')[0].style.background= "rgb(221, 221, 221)"
                 }else{
                     document.querySelector(`.${item.class}ipt`).checked = true
-                    document.querySelector(`.${item.class}ipt`).nextElementSibling.nextElementSibling.innerHTML = 'On'
+                    document.querySelector(`.${item.class}ipt`).nextElementSibling.nextElementSibling.innerHTML = item.OnText
                     $(`.${item.class}`).find('#switch-area')[0].style.background= "rgb(221, 221, 221)"
                 }
          }
@@ -674,7 +674,7 @@ export default{
                                       family:this.textblockData[i].PropertyList.FontFamily,
                                       Background:"#" + backColor ,
                                       Foreground:"#" + foreColor ,
-                                      fontSize:Number(this.textblockData[i].PropertyList.FontSize),//*textBl,
+                                      fontSize:Number(this.textblockData[i].PropertyList.FontSize)*textBl,
                                       class:this.textblockData[i].Name,
                                       OnColor:switchlist[j].OnColor == null?'':'#'+switchlist[j].OnColor.slice(3) + switchlist[j].OnColor.slice(1,3),
                                       OffColor:switchlist[j].OffColor,
@@ -766,8 +766,8 @@ export default{
                                     class:this.textblockData[i].Name,
                                     OnColor:'#DDDDDD',
                                     OffColor:'#DDDDDD',
-                                    OnText:'On',
-                                    OffText:'Off',
+                                    OnText:this.textblockData[i].PropertyList.OnText,
+                                    OffText:this.textblockData[i].PropertyList.OffText,
                                     CornerRadius:0,
                                     ModeType:2,
                                     FormType:0,
@@ -849,8 +849,8 @@ export default{
                             class:this.textblockData[i].Name,
                             OnColor:'#DDDDDD',
                             OffColor:'#DDDDDD',
-                            OnText:'On',
-                            OffText:'Off',
+                            OnText:this.textblockData[i].PropertyList.OnText,
+                            OffText:this.textblockData[i].PropertyList.OffText,
                             CornerRadius:0,
                             ModeType:2,
                             FormType:0,

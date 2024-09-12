@@ -157,7 +157,7 @@ export default {
           viewtitle:Poplist[j].viewtitle,
           viewWidth:Poplist[j].viewWidth,
           viewHeight:Poplist[j].viewHeight,
-          viewName:Poplist[j].viewName.slice(0,name.length-5),
+          viewName:Poplist[j].viewName.replace(/\.view$/i,''),
           viewpositionX:Poplist[j].viewpositionX,
           viewpositionY:Poplist[j].viewpositionY,
         }

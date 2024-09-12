@@ -900,15 +900,20 @@ export default {
                      }else if(items.Type==4){
                          
                          items.Referencearr = items.Reference.split('|')
-                         if(!items.Answer){
+                        //  if(!items.Answer){
                                items.check = []
                               items.Referencearr.forEach((item2)=>{
                                     items.check.push(0)
                               })
                            
-                         }else{
-                             items.check = items.Right.split(',')
-                         }
+                        //  }else{
+                        //      let arr = items.Right.split('|')
+                        //      console.log('kkk',items.check,items.Right)
+                        //      items.check = []
+                        //      items.Referencearr.forEach((item2)=>{
+                        //         items.check.push(arr.some(_=>_==item2)?1:0)
+                        //      })
+                        //  }
                      }
                      
                 })
@@ -960,15 +965,20 @@ export default {
                          items.Referencearr = items.Reference.split('|')
                      }else if(items.Type==4){
                          items.Referencearr = items.Reference.split('|')
-                         if(!items.Right){
+                        //  if(!items.Right){
                               items.check = []
                              items.Referencearr.forEach((item2)=>{
                                 items.check.push(0)
                              })
                             
-                         }else{
-                             items.check = items.Right.split(',')
-                         }
+                        //  }else{
+                        //      let arr = items.Right.split('|')
+                        //      console.log('kkk',items.check,items.Right)
+                        //      items.check = []
+                        //      items.Referencearr.forEach((item2)=>{
+                        //         items.check.push(arr.some(_=>_==item2)?1:0)
+                        //      })
+                        //  }
                      }
                      
                 })
@@ -1109,13 +1119,11 @@ export default {
                         this.PageData = res.data.data.ParameterList;
                     let i = 0;
                     for (i in this.tableData1) {
-                        this.tableData1[i].StartTime = this.gettime(
+                        this.tableData1[i].StartTime =  
                             this.tableData1[i].StartTime
-                        );
-                        this.tableData1[i].EndTime = this.gettime(
+                         this.tableData1[i].EndTime =  
                             this.tableData1[i].EndTime
-                        );
-                        let a = i;
+                         let a = i;
                         this.tableData1[i].Number = ++a;
                         if (this.tableData1[i].Status == 4) {
                             this.tableData1[i].Status = this.lang.MaintenanceManage_Closed;
@@ -1271,6 +1279,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         }
                     }
                      if(this.projectarr[c].Projects[i].Type==4){
+                        console.log('mmm', this.projectarr[c].Projects[i].check)
                        b.Answer = ''
                        b.Answer = this.projectarr[c].Projects[i].check.toString().replace(/,/g, "")
                     }

@@ -327,13 +327,13 @@ export default {
                             
                               if(menuArr[u].id == res.data.data){
                                   this.$parent.loding()
-                                  this.$router.push({path:menuArr[u].to,query: {id:menuArr[u].id}});
+                                  this.$router.push({path:encodeURIComponent(menuArr[u].to.replace('/', '')),query: {id:menuArr[u].id}});
                               }
                               if(menuArr[u].children != null){
                                 for(var y=0;y<menuArr[u].children.length;y++){
                                   if(menuArr[u].children[y].id == res.data.data){
                                     this.$parent.loding()
-                                    this.$router.push({path:menuArr[u].children[y].to,query: {id:menuArr[u].children[y].id}})
+                                    this.$router.push({path:encodeURIComponent(menuArr[u].children[y].to.replace('/', '')),query: {id:menuArr[u].children[y].id}})
                                   }
                                 }
                               }

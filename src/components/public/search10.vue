@@ -7,53 +7,91 @@
  -->
 <template>
     <div class="search-container search-containersb" :style="{
-        zoom: a1
-    }">
+                zoom:a1
+            }">
         <div class="search-left">
-            <div class="search-item" v-for="(item, index) in searchList" :key="index">
-                <div class="title" :class="{ mr10: item.title == '-' }" v-if="item.type !== 'key'">
+            <div
+                class="search-item"
+                v-for="(item, index) in searchList"
+                :key="index"
+            >
+                <div
+                    class="title"
+                    :class="{ mr10: item.title == '-' }"
+                    v-if="item.type !== 'key'"
+                  
+                >
                     {{ item.title }}
                 </div>
-                <el-select v-if="item.type === 'select'" clearable filterable v-model="searchData[item.model]"
-                    class="search-select" @change="change(item, $event)" :style="[
+                <el-select
+                    v-if="item.type === 'select'"
+                    clearable
+                    filterable
+                    v-model="searchData[item.model]"
+                    class="search-select"
+                    @change="change(item, $event)"
+                >
+                    <!-- <el-option label="全部" value="全部"></el-option> -->
+                    <el-option
+                        v-for="(options, optionsIndex) in item.optionList"
+                        :key="optionsIndex"
+                        :label="item.label ? options[item.label] : options"
+                        :value="item.value ? options[item.value] : options"
+                    ></el-option>
+                </el-select>
+                <el-date-picker
+                    :style="[
                         { lineHeight: 40 * 1 + 'px' },
                         { height: 40 * 1 + 'px' },
                         { fontSize: 16 * 1 + 'px' },
                         { width: 230 * 1 + 'px' }
-                    ]">
-                    <!-- <el-option label="全部" value="全部"></el-option> -->
-                    <el-option v-for="(options, optionsIndex) in item.optionList" :key="optionsIndex"
-                        :label="item.label ? options[item.label] : options"
-                        :value="item.value ? options[item.value] : options"></el-option>
-                </el-select>
-                <el-date-picker :style="[
-                    { lineHeight: 40 * 1 + 'px' },
-                    { height: 40 * 1 + 'px' },
-                    { fontSize: 16 * 1 + 'px' },
-                    { width: 230 * 1 + 'px' }
-                ]" v-if="item.type === 'time'" @focus='sx' v-model="searchData[item.model]" type="datetime"
-                    :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate" default-time="12:00:00"
-                    value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                    ]"
+                    v-if="item.type === 'time'"
+                    @focus='sx'
+                    v-model="searchData[item.model]"
+                    type="datetime"
+                    :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
+                    default-time="12:00:00"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                ></el-date-picker>
 
-                <el-date-picker @focus='sx' :style="[
-                    { lineHeight: 40 * 1 + 'px' },
-                    { height: 40 * 1 + 'px' },
-                    { fontSize: 16 * 1 + 'px' },
-                    { width: 230 * 1 + 'px' }
-                ]" v-if="item.type === 'datetimerange'" v-model="searchData[item.model]" type="datetimerange"
-                    range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
-                    value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
-                <el-input :style="[
-                    { lineHeight: 40 * 1 + 'px' },
-                    { height: 40 * 1 + 'px' },
-                    { fontSize: 16 * 1 + 'px' },
-                    { width: 230 * 1 + 'px' }
-                ]" v-if="item.type === 'key'" v-model="searchData[item.model]"
-                    :placeholder="item.placeholder || lang.AlarmRecord_FaultRetrieva_KeyWord" clearable></el-input>
+                <el-date-picker
+                  @focus='sx'
+                    :style="[
+                        { lineHeight: 40 * 1 + 'px' },
+                        { height: 40 * 1 + 'px' },
+                        { fontSize: 16 * 1 + 'px' },
+                        { width: 230 * 1 + 'px' }
+                    ]"
+                    v-if="item.type === 'datetimerange'"
+                    v-model="searchData[item.model]"
+                    type="datetimerange"
+                    range-separator="-"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                ></el-date-picker>
+                <el-input
+                    :style="[
+                        { lineHeight: 40 * 1 + 'px' },
+                        { height: 40 * 1 + 'px' },
+                        { fontSize: 16 * 1 + 'px' },
+                        { width: 230 * 1 + 'px' }
+                    ]"
+                    v-if="item.type === 'key'"
+                    v-model="searchData[item.model]"
+                    :placeholder="item.placeholder || lang.AlarmRecord_FaultRetrieva_KeyWord"
+                    clearable
+                ></el-input>
             </div>
 
-            <div class="btn pointer" @click="search" :id="cxid">
-                {{ lang.RoleManage_Query }}
+            <div
+                class="btn pointer"
+                @click="search"
+                :id="cxid"
+
+            >
+               {{lang.RoleManage_Query}}
             </div>
         </div>
         <!-- <div class="fr">
@@ -68,11 +106,11 @@ export default {
     props: ['searchList', 'searchData'],
     data() {
         return {
-            cxid: '',
-            cxshow: true,
-            a1: 1,
-            jurisdiction: [],
-            buttonarr: [],
+             cxid:'',
+            cxshow:true,
+             a1: 1,
+            jurisdiction:[],
+            buttonarr:[],
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
@@ -82,9 +120,8 @@ export default {
             this.a1 = 0.8;
         }
 
-        setTimeout(() => {
-            $(".el-input__icon").css({ lineHeight: 40 * this.a1 + 'px' })
-            $(".el-input").css({height: 40* this.a1 + 'px' })
+        setTimeout(()=>{
+            $(".el-input__icon").css({lineHeight: 40*this.a1+'px'})
         })
     },
     created() {
@@ -118,15 +155,15 @@ export default {
             });
     },
     methods: {
-        sx() {
+                sx(){
             console.log("吃饭")
             let that = this
-            setTimeout(() => {
-                for (let i = 0; i < $('.el-picker-panel').length; i++) {
-                    $('.el-picker-panel')[i].style.zoom = that.a1
-                }
+            setTimeout(()=>{
+for(let i=0;i<$('.el-picker-panel').length;i++){
+                $('.el-picker-panel')[i].style.zoom = that.a1
+            }
             })
-
+              
         },
         findPathByLeafId(id, node, path) {
             if (!path) {
@@ -170,6 +207,9 @@ export default {
         },
         search() {
             this.$emit('setParams', this.searchData, this.cxshow);
+            if (this.cxshow) {
+                this.$parent.req(1);
+            }
         },
         change(item, e) {
             if (
@@ -188,7 +228,6 @@ export default {
     display: flex;
     align-items: center;
 }
-
 .search-container {
     @extend %flex;
     justify-content: space-between;
@@ -196,27 +235,22 @@ export default {
     width: 100%;
     position: relative;
 }
-
 span {
     position: absolute;
     left: 315px;
 }
-
 .search-left {
     @extend %flex;
     flex-wrap: wrap;
     margin-bottom: 10px;
-
     .search-item {
         @extend %flex;
         margin: 10px;
         margin-bottom: 0;
-
         .mr10 {
             margin-right: 10px;
         }
     }
-
     .btn {
         @extend %flex;
         justify-content: center;
@@ -228,7 +262,6 @@ span {
         margin-top: 10px;
     }
 }
-
 .import {
     border: 1px solid #fda100;
     background-color: #ffffff;
@@ -243,7 +276,6 @@ span {
     float: left;
     color: #fda100;
 }
-
 .export {
     border: 1px solid #fda100;
     background-color: #ffffff;
@@ -259,7 +291,6 @@ span {
     float: left;
     margin-left: 10px;
 }
-
 .fr {
     width: 260px;
     height: 100%;

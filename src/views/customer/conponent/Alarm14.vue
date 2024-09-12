@@ -48,7 +48,7 @@
             >
                 <div
                     class="alarm_box2"
-                    :style="'width:100%;height:100%;;padding:14px;box-sizing:border-box;'"
+                    :style="`width:100%;height:100%;;padding:14px;box-sizing:border-box;background: ${item.Background}`"
                 >
                     <div
                         class="alarm_title clearfix"
@@ -869,6 +869,7 @@ export default {
         },
         //格式数据
         datafun(resData, index, className, item) {
+            // debugger
             this.dataValue[index].resdata = [];
             this.timeArr = [];
             this.dataArr = [];
@@ -948,28 +949,33 @@ export default {
             }
 
             //排序字段dom宽度变为一致
-            var noDom = document.querySelectorAll(
-                `.${this.routerName}${className}alarm_conter_no`
-            );
-            var noDomLength = 0;
-            for (let k = 0; k < noDom.length; k++) {
-                noDom[k].style.width = 'auto';
-                var kLength = noDom[k].offsetWidth;
-                if (kLength > noDomLength) {
-                    noDomLength = kLength;
+            // debugger
+            try {
+                var noDom = document.querySelectorAll(
+                    `.${this.routerName}${className}alarm_conter_no`
+                );
+                var noDomLength = 0;
+                for (let k = 0; k < noDom.length; k++) {
+                    noDom[k].style.width = 'auto';
+                    var kLength = noDom[k].offsetWidth;
+                    if (kLength > noDomLength) {
+                        noDomLength = kLength;
+                    }
                 }
-            }
-            var titleDom = document.querySelector(
-                `.${this.routerName}${className}alarm_title_no`
-            );
+                var titleDom = document.querySelector(
+                    `.${this.routerName}${className}alarm_title_no`
+                );
 
-            if (titleDom.offsetWidth > noDomLength) {
-                noDomLength = titleDom.offsetWidth - 8;
-            } else {
-                titleDom.style.width = noDomLength + 8 + 'px';
-            }
-            for (let f = 0; f < noDom.length; f++) {
-                noDom[f].style.width = noDomLength + 'px';
+                if (titleDom.offsetWidth > noDomLength) {
+                    noDomLength = titleDom.offsetWidth - 8;
+                } else {
+                    titleDom.style.width = noDomLength + 8 + 'px';
+                }
+                for (let f = 0; f < noDom.length; f++) {
+                    noDom[f].style.width = noDomLength + 'px';
+                }
+            } catch (err) {
+                console.log(err)
             }
 
             var headH = document.querySelector(

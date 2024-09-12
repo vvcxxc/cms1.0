@@ -5,7 +5,7 @@
  * @LastEditors: Tao
  * @LastEditTime: 2021-02-24 15:27:38
  -->
- <template>
+<template>
     <div v-if="show">
         <div
             v-for="(item, key) in cavantable"
@@ -13,24 +13,27 @@
             :id="item.Name"
             :style="
                 'position:absolute;' +
-                'left:' +
-                item.PropertyList.Left +
-                'px; top:' +
-                item.PropertyList.Top +
-                'px; width:' +
-                item.PropertyList.Width +
-                'px; height:' +
-                item.PropertyList.Height +
-                'px;' +
-                'RotateAngle:' +
-                item.PropertyList.RotateAngle +
-                'Opacity:' +
-                item.PropertyList.Opacity +
-                ';zIndex:' +
-                item.PropertyList.ZIndex
+                    'left:' +
+                    item.PropertyList.Left +
+                    'px; top:' +
+                    item.PropertyList.Top +
+                    'px; width:' +
+                    item.PropertyList.Width +
+                    'px; height:' +
+                    item.PropertyList.Height +
+                    'px;' +
+                    'RotateAngle:' +
+                    item.PropertyList.RotateAngle +
+                    'Opacity:' +
+                    item.PropertyList.Opacity +
+                    ';zIndex:' +
+                    item.PropertyList.ZIndex
             "
         >
-            <div v-html="item.ParameterReportItemtList.dd.zhtml"  class="table-box"></div>
+            <div
+                v-html="item.ParameterReportItemtList.dd.zhtml"
+                class="table-box"
+            ></div>
         </div>
         <!-- <div class="tip12" ref="kongtiao2" v-if="tipchange" :class="{yd:pdyd3}">
             <div
@@ -39,13 +42,13 @@
                 @mouseup="mouseUpHandleelse2($event)"
             >
                 <img :src="gth" alt />
-                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
-            </div>
-            <div class="tipcontanin">
-                <div class="tipword">{{tipword}}</div>
-                <div class="tipdetermine" @click="tip1">{{lang.MessageBox_Confrim}}</div>
-            </div>
-        </div> -->
+                                                                    <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
+                                                                </div>
+                                                                <div class="tipcontanin">
+                                                                    <div class="tipword">{{tipword}}</div>
+                                                                    <div class="tipdetermine" @click="tip1">{{lang.MessageBox_Confrim}}</div>
+                                                                </div>
+                                                            </div> -->
     </div>
 </template>
 
@@ -106,7 +109,7 @@ export default {
             footarr: [],
             Name: 'parameterreport',
             cavantable: [],
-            value3: '',
+            value3: ''
         };
     },
     props: ['dae'],
@@ -124,8 +127,8 @@ export default {
                     //  this.first();
                 }
                 //  this.pageleft()
-            },
-        },
+            }
+        }
     },
 
     created() {
@@ -442,15 +445,15 @@ export default {
         dealWithData2(data) {
             let c = [];
             let d = {};
-            data.forEach((element) => {
+            data.forEach(element => {
                 if (!d[element.timewd]) {
                     c.push({
                         timewd: element.timewd,
-                        allData: [element],
+                        allData: [element]
                     });
                     d[element.timewd] = element;
                 } else {
-                    c.forEach((ele) => {
+                    c.forEach(ele => {
                         if (ele.timewd == element.timewd) {
                             ele.allData.push(element);
                         }
@@ -463,15 +466,15 @@ export default {
         dealWithData(data) {
             let c = [];
             let d = {};
-            data.forEach((element) => {
+            data.forEach(element => {
                 if (!d[element.banciwd]) {
                     c.push({
                         banciwd: element.banciwd,
-                        allData: [element],
+                        allData: [element]
                     });
                     d[element.banciwd] = element;
                 } else {
-                    c.forEach((ele) => {
+                    c.forEach(ele => {
                         if (ele.banciwd == element.banciwd) {
                             ele.allData.push(element);
                         }
@@ -483,15 +486,15 @@ export default {
         dealWithData3(data) {
             let c = [];
             let d = {};
-            data.forEach((element) => {
+            data.forEach(element => {
                 if (!d[element.resourcedataid]) {
                     c.push({
                         resourcedataid: element.resourcedataid,
-                        allData: [element],
+                        allData: [element]
                     });
                     d[element.resourcedataid] = element;
                 } else {
-                    c.forEach((ele) => {
+                    c.forEach(ele => {
                         if (ele.resourcedataid == element.resourcedataid) {
                             ele.allData.push(element);
                         }
@@ -599,10 +602,9 @@ export default {
                             );
                     }
 
-                    let sumdata =
-                        this.cavantable[
-                            i
-                        ].ParameterReportItemtList.dd.kzsummotype.split(',');
+                    let sumdata = this.cavantable[
+                        i
+                    ].ParameterReportItemtList.dd.kzsummotype.split(',');
                     if (
                         this.cavantable[i].ParameterReportItemtList.dd
                             .kzdirection == '纵向扩展'
@@ -649,8 +651,7 @@ export default {
                             }
                             this.cavantable[
                                 i
-                            ].ParameterReportItemtList.dd.kzresourcedataitemarray =
-                                dataarry;
+                            ].ParameterReportItemtList.dd.kzresourcedataitemarray = dataarry;
                             for (
                                 let j = 0;
                                 j <
@@ -658,12 +659,11 @@ export default {
                                     .kzresourcedataitemarray.length;
                                 j++
                             ) {
-                                let shi2 =
-                                    this.cavantable[
-                                        i
-                                    ].ParameterReportItemtList.dd.kzresourcedataitemarray[
-                                        j
-                                    ].id.split('-');
+                                let shi2 = this.cavantable[
+                                    i
+                                ].ParameterReportItemtList.dd.kzresourcedataitemarray[
+                                    j
+                                ].id.split('-');
                                 this.cavantable[i].shi2.push(
                                     parseInt(shi2[0]) -
                                         parseInt(
@@ -696,12 +696,11 @@ export default {
                                         .dd.kzresourcedataitemarray[j]
                                         .itemdata == '归档时间'
                                 ) {
-                                    let shi3 =
-                                        this.cavantable[
-                                            i
-                                        ].ParameterReportItemtList.dd.kzresourcedataitemarray[
-                                            j
-                                        ].id.split('-');
+                                    let shi3 = this.cavantable[
+                                        i
+                                    ].ParameterReportItemtList.dd.kzresourcedataitemarray[
+                                        j
+                                    ].id.split('-');
                                     this.cavantable[i].shi3.push(
                                         parseInt(shi3[0]) -
                                             parseInt(
@@ -735,12 +734,11 @@ export default {
                                         .dd.kzresourcedataitemarray[j]
                                         .itemdata !== '归档时间'
                                 ) {
-                                    let shi5 =
-                                        this.cavantable[
-                                            i
-                                        ].ParameterReportItemtList.dd.kzresourcedataitemarray[
-                                            j
-                                        ].id.split('-');
+                                    let shi5 = this.cavantable[
+                                        i
+                                    ].ParameterReportItemtList.dd.kzresourcedataitemarray[
+                                        j
+                                    ].id.split('-');
                                     let a = {
                                         id:
                                             parseInt(shi5[0]) -
@@ -755,11 +753,10 @@ export default {
                                                 .kzresourcedataitemarray[j]
                                                 .xsnumber
                                         ),
-                                        defauldisplay:
-                                            this.cavantable[i]
-                                                .ParameterReportItemtList.dd
-                                                .kzresourcedataitemarray[j]
-                                                .defauldisplay,
+                                        defauldisplay: this.cavantable[i]
+                                            .ParameterReportItemtList.dd
+                                            .kzresourcedataitemarray[j]
+                                            .defauldisplay
                                     };
                                     this.cavantable[i].shi5.push(a);
                                 }
@@ -781,12 +778,11 @@ export default {
                                         .dd.kzresourcedataitemarray[j]
                                         .itemdata == '归档时间'
                                 ) {
-                                    let shi5 =
-                                        this.cavantable[
-                                            i
-                                        ].ParameterReportItemtList.dd.kzresourcedataitemarray[
-                                            j
-                                        ].id.split('-');
+                                    let shi5 = this.cavantable[
+                                        i
+                                    ].ParameterReportItemtList.dd.kzresourcedataitemarray[
+                                        j
+                                    ].id.split('-');
                                     let a = {
                                         id:
                                             parseInt(shi5[0]) -
@@ -795,11 +791,10 @@ export default {
                                                     .ParameterReportItemtList.dd
                                                     .startpox
                                             ),
-                                        itemformat:
-                                            this.cavantable[i]
-                                                .ParameterReportItemtList.dd
-                                                .kzresourcedataitemarray[j]
-                                                .itemformat,
+                                        itemformat: this.cavantable[i]
+                                            .ParameterReportItemtList.dd
+                                            .kzresourcedataitemarray[j]
+                                            .itemformat
                                     };
                                     this.cavantable[i].shi6.push(a);
                                 }
@@ -927,12 +922,11 @@ export default {
                                     .kzresourcedataitemarray.length;
                                 j++
                             ) {
-                                let shi2 =
-                                    this.cavantable[
-                                        i
-                                    ].ParameterReportItemtList.dd.kzresourcedataitemarray[
-                                        j
-                                    ].id.split('-');
+                                let shi2 = this.cavantable[
+                                    i
+                                ].ParameterReportItemtList.dd.kzresourcedataitemarray[
+                                    j
+                                ].id.split('-');
                                 this.cavantable[i].shi2.push(parseInt(shi2[1]));
                             }
                         }
@@ -958,12 +952,11 @@ export default {
                                         .dd.kzresourcedataitemarray[j]
                                         .itemdata == '归档时间'
                                 ) {
-                                    let shi3 =
-                                        this.cavantable[
-                                            i
-                                        ].ParameterReportItemtList.dd.kzresourcedataitemarray[
-                                            j
-                                        ].id.split('-');
+                                    let shi3 = this.cavantable[
+                                        i
+                                    ].ParameterReportItemtList.dd.kzresourcedataitemarray[
+                                        j
+                                    ].id.split('-');
                                     this.cavantable[i].shi3.push(
                                         parseInt(shi3[1])
                                     );
@@ -992,12 +985,11 @@ export default {
                                         .dd.kzresourcedataitemarray[j]
                                         .itemdata !== '归档时间'
                                 ) {
-                                    let shi5 =
-                                        this.cavantable[
-                                            i
-                                        ].ParameterReportItemtList.dd.kzresourcedataitemarray[
-                                            j
-                                        ].id.split('-');
+                                    let shi5 = this.cavantable[
+                                        i
+                                    ].ParameterReportItemtList.dd.kzresourcedataitemarray[
+                                        j
+                                    ].id.split('-');
                                     let a = {
                                         id: parseInt(shi5[1]),
                                         xsnumber: parseInt(
@@ -1006,11 +998,10 @@ export default {
                                                 .kzresourcedataitemarray[j]
                                                 .xsnumber
                                         ),
-                                        defauldisplay:
-                                            this.cavantable[i]
-                                                .ParameterReportItemtList.dd
-                                                .kzresourcedataitemarray[j]
-                                                .defauldisplay,
+                                        defauldisplay: this.cavantable[i]
+                                            .ParameterReportItemtList.dd
+                                            .kzresourcedataitemarray[j]
+                                            .defauldisplay
                                     };
                                     this.cavantable[i].shi5.push(a);
                                 }
@@ -1032,19 +1023,17 @@ export default {
                                         .dd.kzresourcedataitemarray[j]
                                         .itemdata == '归档时间'
                                 ) {
-                                    let shi5 =
-                                        this.cavantable[
-                                            i
-                                        ].ParameterReportItemtList.dd.kzresourcedataitemarray[
-                                            j
-                                        ].id.split('-');
+                                    let shi5 = this.cavantable[
+                                        i
+                                    ].ParameterReportItemtList.dd.kzresourcedataitemarray[
+                                        j
+                                    ].id.split('-');
                                     let a = {
                                         id: parseInt(shi5[1]),
-                                        itemformat:
-                                            this.cavantable[i]
-                                                .ParameterReportItemtList.dd
-                                                .kzresourcedataitemarray[j]
-                                                .itemformat,
+                                        itemformat: this.cavantable[i]
+                                            .ParameterReportItemtList.dd
+                                            .kzresourcedataitemarray[j]
+                                            .itemformat
                                     };
                                     this.cavantable[i].shi6.push(a);
                                 }
@@ -1217,7 +1206,7 @@ export default {
             }
         },
         delay(index, i) {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 if (!i) {
                     setTimeout(resolve, index * 0.1);
                 } else {
@@ -1227,2743 +1216,46 @@ export default {
         },
         //    导出
         async export(it) {
-            console.log('data', new Date());
-            //  this.$emit('percentage1',0)
-            var dcnum = 0;
-            var dcnum1 = 0;
-            //            for (let dc1 = 0; dc1 < this.cavantable.length; dc1++) {
-            //                 if (
-            //                     this.cavantable[dc1].ParameterReportItemtList.dd
-            //                         .dckongjian == it.class
-            //                 ) {
-            //                if(this.cavantable[dc1].numpage == 0){
-            //                 dcnum1+=parseInt($('#'+this.cavantable[dc1].Name).find('td').length)
-            //                }else{
-            //                dcnum1+=parseInt($('#'+this.cavantable[dc1].Name).find('td').length)+(parseInt(this.cavantable[dc1].ParameterReportItemtList.dd.endpoy)-parseInt(this.cavantable[dc1].ParameterReportItemtList.dd.startpoy))*(parseInt(this.cavantable[dc1].ParameterReportItemtList.dd.endpox)-parseInt(this.cavantable[dc1].ParameterReportItemtList.dd.startpox))*(parseInt(this.cavantable[dc1].numpage)-1)
+            let _obj = this.cavantable.find(
+                _ => _.ParameterReportItemtList.dd.dckongjian == it.class
+            );
+            if (_obj) {
+                let _data = _obj.ParameterReportItemtList.dd;
+                console.log('_', _obj);
 
-            //                }
-
-            //                 }
-            //   }
-            //   if(dcnum1>10000){
-            //         this.tipchange = true;
-            //         this.tipword = '导出数据不能超过10000!';
-            //         this.pdyd3 = true;
-            //         this.$store.state.isShow = false;
-            //         return;
-            //   }
-            for (let dc1 = 0; dc1 < this.cavantable.length; dc1++) {
-                console.log(JSON.parse(JSON.stringify(this.cavantable)));
-                if (
-                    this.cavantable[dc1].ParameterReportItemtList.dd
-                        .dckongjian == it.class
-                ) {
-                    dcnum++;
-                }
-            }
-
-            for (let dc = 0; dc < this.cavantable.length; dc++) {
-                if (
-                    this.cavantable[dc].ParameterReportItemtList.dd
-                        .dckongjian == it.class
-                ) {
-                    this.footarr = [];
-                    this.$store.state.isShow = true;
-                    $('.btablecover').hide();
-                    this.$emit('percentage1', 0);
-
-                    await this.delay(100);
-                    $('.btablecover').show();
-                    let word = this.lang.ReportForm_Exporting.replace(
-                        '{0}',
-                        dc + 1
+                let starttime = $($('.' + _data.startkongjian)[0])
+                    .find('input')
+                    .val();
+                let endtime = $($('.' + _data.endkongjian)[0])
+                    .find('input')
+                    .val();
+                console.log('_2', starttime);
+                let data = {
+                    // ..._data,
+                    argwaibuparalist: _data.kopngjianarray,
+                    kzbanciwd: _data.kzbanciwd,
+                    kzresource: _data.kzresource,
+                    kzresourcedataitemarray: _data.kzresourcedataitemarray,
+                    kzresourceid: _data.kzresourceid,
+                    kztimewd: _data.kztimewd,
+                    starttime,
+                    endtime
+                };
+                this.$axios({
+                    method: 'post',
+                    url: `/api/ParameterReport/Export`,
+                    data: data,
+                    responseType: 'blob'
+                }).then(res => {
+                    this.downloadFile(
+                        res.data,
+                        `自定义报表${'' +
+                            new Date().getFullYear() +
+                            Number(new Date().getMonth() + 1) +
+                            new Date().getDate() +
+                            new Date().getTime()}.xlsx`
                     );
-                    $('.btableconterword')[0].innerHTML = word;
-                    // setTimeout(() => {
-                    if (this.cavantable[dc].data.length > 65000) {
-                        // this.tipchange = true;
-                        // this.tipword = this.lang.ReportForm_ExportDataUpTo10000;
-                        this.$emit(
-                            'showtip',
-                            /* this.lang.ReportForm_ExportDataUpTo10000 */
-                            '导出数据最多6.5W条'
-                        );
-                        this.pdyd3 = true;
-                        this.$store.state.isShow = false;
-                        $('.btablecover').hide();
-                        return;
-                    }
-
-                    var nowdai = JSON.stringify(this.cavantable[dc]);
-                    let daiti = this.cavantable[dc].ParameterReportItemtList.dd;
-
-                    if (daiti.kzdirection == '纵向扩展') {
-                        let adiv = this.cavantable[dc].daochutable;
-
-                        let a = $(this.cavantable[dc].daochutable)[0].cloneNode(
-                            true
-                        );
-                        let b = $(this.cavantable[dc].daochutable)[0].cloneNode(
-                            true
-                        );
-                        //               for(let a1=0;a1<$(b).find('.heibin').length;a1++){
-                        //             if(parseFloat($(b).find('.heibin')[a1].id.split('-')[0])<parseFloat(this.cavantable[dc].ParameterReportItemtList.dd.startpox)&&parseFloat($(b).find('.heibin')[a1].id.split('-')[1])>parseFloat(this.cavantable[dc].ParameterReportItemtList.dd.startpoy)){
-                        //    if(parseFloat($(b).find('.heibin')[a1].id.split('-')[0])+parseFloat($($('.heibin')[a1]).attr('colspan'))>parseFloat(this.cavantable[dc].ParameterReportItemtList.dd.startpox)){
-                        //                        let c = parseFloat(this.cavantable[dc].ParameterReportItemtList.dd.startpox);
-                        //                        $($(b).find('.heibin')[a1]).attr('rowspan',c)
-                        //                        for(let a2=0;a2<$($(b).find('.heibin')[a1]).attr('name').split(',').length;a2++){
-                        //                            let c1 = $($(b).find('.heibin')[a1]).attr('name').split(',')[a2]
-                        //                            if(c1){
-                        //                 if(this.cavantable[dc].shi5.includes($('#'+c1)[0].id.split('-')[0])){
-                        //                             $($($(b).find('.heibin')[a1]).find('#'+c1)).show()
-                        //                          }
-                        //                            }
-
-                        //                        }
-                        //                     // console.log("sadsadsad",$($(b).find('.heibin')[a1]))
-
-                        //             }
-                        //             }
-
-                        //         }
-                        if ($('#' + this.cavantable[dc].Name + 'page')[0]) {
-                            for (
-                                let cc = 0;
-                                cc < $(b).find('.dataready').length;
-                                cc++
-                            ) {
-                                $($(b).find('.dataready')[cc])
-                                    .find('input')[0]
-                                    .setAttribute('value', '');
-                                $($(b).find('.dataready')[cc]).find(
-                                    'input'
-                                )[0].value = '';
-                            }
-
-                            for (
-                                let ai = 0;
-                                ai <
-                                this.cavantable[dc].ParameterReportItemtList.dd
-                                    .cellparaarray.length;
-                                ai++
-                            ) {
-                                $(b).find(
-                                    '#' +
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .cellparaarray[ai].id
-                                )[0].innerHTML = $(
-                                    '#' + this.cavantable[dc].Name
-                                ).find(
-                                    '#' +
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .cellparaarray[ai].id
-                                )[0].innerHTML;
-                            }
-
-                            let div = document.createElement('table');
-                            let length = $(a).find('.daochu').length;
-                            for (
-                                let i1 = 0;
-                                i1 < $(a).find('td').length;
-                                i1++
-                            ) {
-                                if (
-                                    $(a).find('td')[i1].style.display ==
-                                        'none' &&
-                                    parseInt(
-                                        $($(a).find('td')[i1])
-                                            .attr('id')
-                                            .split('-')[0]
-                                    ) <
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .startpox
-                                ) {
-                                    $(a).find('td')[i1].style.display = 'block';
-                                }
-                            }
-                            for (let i1 = 0; i1 < length; i1++) {
-                                let a1 = 0;
-                                div.append($(a).find('.daochu')[a1]);
-
-                                this.$emit(
-                                    'percentage1',
-                                    parseInt(10 / (length - i1))
-                                );
-
-                                await this.delay(i1);
-                            }
-
-                            let div1 = $(div)[0].cloneNode(true);
-
-                            for (
-                                let i = 0;
-                                i < $(div1).find('input').length;
-                                i++
-                            ) {
-                                $(div1).find('input')[i].value = null;
-                            }
-                            let sumdata1 = daiti.kzsummotype.split(',');
-                            let length1 = $($(div).find('tr')[0]).find(
-                                'input'
-                            ).length;
-                            let y1 = $(div).find('input').length;
-
-                            let endlength;
-                            var xzdata =
-                                Math.ceil(
-                                    this.cavantable[dc].data.length /
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .kzresourcedataitemarray.length
-                                ) +
-                                Number(
-                                    this.cavantable[dc].ParameterReportItemtList
-                                        .dd.startpoy
-                                );
-                            if (daiti.kzsummopos !== '分布在前') {
-                                endlength =
-                                    parseInt(length) +
-                                    parseInt(
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
-                                    );
-                            } else {
-                                endlength =
-                                    parseInt(length) +
-                                    sumdata1.length +
-                                    parseInt(
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
-                                    );
-                            }
-
-                            let shi5 = this.cavantable[dc].shi5;
-                            let shi6 = this.cavantable[dc].shi6;
-                            let lenght3;
-                            for (
-                                let cc1 = 1;
-                                cc1 < this.cavantable[dc].numpage;
-                                cc1++
-                            ) {
-                                lenght3 = length - 1;
-                                for (let cc = 0; cc < length; cc++) {
-                                    //         if(cc==1){
-                                    //                for (
-                                    //     let i = 0;
-                                    //     i < $(div1).find('td').length;
-                                    //     i++
-                                    // ) {
-                                    //     if( $(div1).find('td')[i].innerText){
-                                    //     //   $(div1).find('td')[i].innerText = '';
-                                    //     //   $($(div1).find('td')[i]).removeAttr('class')
-                                    //     }
-
-                                    // }
-                                    //         }
-                                    let div3 = $($(div1).find('tr'))[
-                                        lenght3
-                                    ].cloneNode(true);
-                                    for (
-                                        let a22 = 0;
-                                        a22 < $(div3).find('.heibin').length;
-                                        a22++
-                                    ) {
-                                        $($(div3).find('.heibin')[a22]).attr(
-                                            'rowspan',
-                                            1
-                                        );
-                                        $($(div3).find('.heibin')[a22]).attr(
-                                            'colspan',
-                                            1
-                                        );
-                                    }
-                                    //         if(cc1>1){
-
-                                    // 	for (let cc11 = 0; cc11 < $(div3).find('td').length; cc11++) {
-                                    // 		if(!$($(div3).find('td')[cc11]).hasClass('dataready')&&!$($(div3).find('td')[cc11]).hasClass('datareadyfoot')){
-                                    // 			// $(div3).find('td')[cc11].innerHTML = ''
-                                    // 			// $($(div3).find('td')[cc11]).removeAttr('style')
-                                    // 		// if($($(div3).find('td')[cc11]).hasClass('item')){
-                                    // 		// 	$($(div3).find('td')[cc11]).removeAttr('class')
-                                    // 		// }
-
-                                    // 		}
-                                    // 	}
-                                    // }
-
-                                    $($(b).find('#row-' + endlength)[0]).after(
-                                        div3
-                                    );
-
-                                    lenght3--;
-                                }
-                                var changeii = [];
-
-                                if (
-                                    this.cavantable[dc].numpage > 1 &&
-                                    $(
-                                        '#' + this.cavantable[dc].Name + 'page'
-                                    )[0]
-                                ) {
-                                    for (
-                                        let ii = parseInt(endlength);
-                                        ii <
-                                        parseInt(endlength) +
-                                            parseInt(
-                                                $(
-                                                    $(
-                                                        '#' +
-                                                            this.cavantable[dc]
-                                                                .Name
-                                                    ).find('td')[
-                                                        $(
-                                                            '#' +
-                                                                this.cavantable[
-                                                                    dc
-                                                                ].Name
-                                                        ).find('td').length - 1
-                                                    ]
-                                                )
-                                                    .attr('id')
-                                                    .split('-')[1]
-                                            ) -
-                                            parseInt(
-                                                $(
-                                                    $(
-                                                        '#' +
-                                                            this.cavantable[dc]
-                                                                .Name
-                                                    ).find('.dataready')[
-                                                        $(
-                                                            '#' +
-                                                                this.cavantable[
-                                                                    dc
-                                                                ].Name
-                                                        ).find('.dataready')
-                                                            .length - 1
-                                                    ]
-                                                )
-                                                    .attr('id')
-                                                    .split('-')[1]
-                                            );
-                                        ii++
-                                    ) {
-                                        let changeil = [];
-                                        for (
-                                            let cc11 = 0;
-                                            cc11 <
-                                            $($(b).find('#row-' + ii)[0]).find(
-                                                'td'
-                                            ).length;
-                                            cc11++
-                                        ) {
-                                            if (
-                                                !$(
-                                                    $(
-                                                        $(b).find(
-                                                            '#row-' + ii
-                                                        )[0]
-                                                    ).find('td')[cc11]
-                                                ).hasClass('dataready') &&
-                                                !$(
-                                                    $(
-                                                        $(b).find(
-                                                            '#row-' + ii
-                                                        )[0]
-                                                    ).find('td')[cc11]
-                                                ).hasClass('datareadyfoot')
-                                            ) {
-                                                if (
-                                                    ii <=
-                                                    this.cavantable[dc].endpoy +
-                                                        this.cavantable[
-                                                            dc
-                                                        ].ParameterReportItemtList.dd.kzsummotype.split(
-                                                            ','
-                                                        ).length
-                                                ) {
-                                                    if (
-                                                        $(
-                                                            $(
-                                                                '#' +
-                                                                    this
-                                                                        .cavantable[
-                                                                        dc
-                                                                    ].Name
-                                                            ).find(
-                                                                '#row-' + ii
-                                                            )[0]
-                                                        ).find('td')[cc11]
-                                                    ) {
-                                                        if (
-                                                            $(
-                                                                $(
-                                                                    $(
-                                                                        '#' +
-                                                                            this
-                                                                                .cavantable[
-                                                                                dc
-                                                                            ]
-                                                                                .Name
-                                                                    ).find(
-                                                                        '#row-' +
-                                                                            ii
-                                                                    )[0]
-                                                                ).find('td')[
-                                                                    cc11
-                                                                ]
-                                                            ).attr('style') ||
-                                                            $(
-                                                                $(
-                                                                    '#' +
-                                                                        this
-                                                                            .cavantable[
-                                                                            dc
-                                                                        ].Name
-                                                                ).find(
-                                                                    '#row-' + ii
-                                                                )[0]
-                                                            ).find('td')[cc11]
-                                                                .innerHTML ||
-                                                            $(
-                                                                $(
-                                                                    $(
-                                                                        '#' +
-                                                                            this
-                                                                                .cavantable[
-                                                                                dc
-                                                                            ]
-                                                                                .Name
-                                                                    ).find(
-                                                                        '#row-' +
-                                                                            ii
-                                                                    )[0]
-                                                                ).find('td')[
-                                                                    cc11
-                                                                ]
-                                                            ).hasClass(
-                                                                'bordertop'
-                                                            ) ||
-                                                            $(
-                                                                $(
-                                                                    $(
-                                                                        '#' +
-                                                                            this
-                                                                                .cavantable[
-                                                                                dc
-                                                                            ]
-                                                                                .Name
-                                                                    ).find(
-                                                                        '#row-' +
-                                                                            ii
-                                                                    )[0]
-                                                                ).find('td')[
-                                                                    cc11
-                                                                ]
-                                                            ).hasClass(
-                                                                'borderleft'
-                                                            )
-                                                        ) {
-                                                            changeil.push({
-                                                                index: cc11,
-                                                                text: $(
-                                                                    $(
-                                                                        '#' +
-                                                                            this
-                                                                                .cavantable[
-                                                                                dc
-                                                                            ]
-                                                                                .Name
-                                                                    ).find(
-                                                                        '#row-' +
-                                                                            ii
-                                                                    )[0]
-                                                                ).find('td')[
-                                                                    cc11
-                                                                ].innerHTML,
-                                                                style: $(
-                                                                    $(
-                                                                        $(
-                                                                            '#' +
-                                                                                this
-                                                                                    .cavantable[
-                                                                                    dc
-                                                                                ]
-                                                                                    .Name
-                                                                        ).find(
-                                                                            '#row-' +
-                                                                                ii
-                                                                        )[0]
-                                                                    ).find(
-                                                                        'td'
-                                                                    )[cc11]
-                                                                ).attr('style'),
-                                                                classname: $(
-                                                                    $(
-                                                                        $(
-                                                                            '#' +
-                                                                                this
-                                                                                    .cavantable[
-                                                                                    dc
-                                                                                ]
-                                                                                    .Name
-                                                                        ).find(
-                                                                            '#row-' +
-                                                                                ii
-                                                                        )[0]
-                                                                    ).find(
-                                                                        'td'
-                                                                    )[cc11]
-                                                                ).attr('class'),
-                                                            });
-                                                        }
-                                                    }
-
-                                                    $(
-                                                        $(b).find(
-                                                            '#row-' + ii
-                                                        )[0]
-                                                    ).find('td')[
-                                                        cc11
-                                                    ].innerHTML = '';
-                                                    $(
-                                                        $(
-                                                            $(b).find(
-                                                                '#row-' + ii
-                                                            )[0]
-                                                        ).find('td')[cc11]
-                                                    ).removeAttr('style');
-                                                    $(
-                                                        $(
-                                                            $(b).find(
-                                                                '#row-' + ii
-                                                            )[0]
-                                                        ).find('td')[cc11]
-                                                    ).removeAttr('class');
-                                                }
-                                            }
-                                        }
-                                        changeii.push(changeil);
-                                    }
-                                }
-                                this.$emit(
-                                    'percentage1',
-                                    parseInt(
-                                        70 /
-                                            (this.cavantable[dc].numpage -
-                                                cc1) +
-                                            10
-                                    )
-                                );
-
-                                await this.delay(/* cc1 */0);
-                            }
-
-                            // return
-
-                            let shengxiadata =
-                                y1 * this.cavantable[dc].numpage -
-                                this.cavantable[dc].data.length;
-
-                            for (let i = 0; i < shengxiadata; i++) {
-                                this.cavantable[dc].data.push({
-                                    value: null,
-                                });
-                            }
-
-                            let now =
-                                parseInt(
-                                    this.cavantable[dc].ParameterReportItemtList
-                                        .dd.startpoy
-                                ) + 1;
-
-                            let nowii = 0;
-                            let nowi2 = 0;
-                            let sumnum = 0;
-
-                            for (
-                                let i2 = 0;
-                                i2 <
-                                $('#' + this.cavantable[dc].Name).find('tr')
-                                    .length;
-                                i2++
-                            ) {
-                                for (
-                                    let i3 = 0;
-                                    i3 <
-                                    $(
-                                        $('#' + this.cavantable[dc].Name).find(
-                                            'tr'
-                                        )[i2]
-                                    ).find('td').length;
-                                    i3++
-                                ) {
-                                    if (
-                                        $(
-                                            $(
-                                                $(
-                                                    '#' +
-                                                        this.cavantable[dc].Name
-                                                ).find('tr')[i2]
-                                            ).find('td')[i3]
-                                        ).hasClass('datareadyfoot')
-                                    ) {
-                                        sumnum = sumnum + 1;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (daiti.kzsummopos == '分布在前') {
-                                now += sumnum;
-                            }
-                            let length5 =
-                                length * this.cavantable[dc].numpage + now;
-                            if (daiti.kzsummopos == '分布在后') {
-                                length5 =
-                                    length * this.cavantable[dc].numpage + now;
-                            }
-                            let removeid =
-                                parseInt(endlength) +
-                                parseInt(
-                                    $(
-                                        $('#' + this.cavantable[dc].Name).find(
-                                            'td'
-                                        )[
-                                            $(
-                                                '#' + this.cavantable[dc].Name
-                                            ).find('td').length - 1
-                                        ]
-                                    )
-                                        .attr('id')
-                                        .split('-')[1]
-                                ) -
-                                parseInt(
-                                    $(
-                                        $('#' + this.cavantable[dc].Name).find(
-                                            '.dataready'
-                                        )[
-                                            $(
-                                                '#' + this.cavantable[dc].Name
-                                            ).find('.dataready').length - 1
-                                        ]
-                                    )
-                                        .attr('id')
-                                        .split('-')[1]
-                                );
-                            let nowcii = 0;
-                            if (
-                                this.cavantable[dc].numpage > 1 &&
-                                $('#' + this.cavantable[dc].Name + 'page')[0]
-                            ) {
-                                for (let ii = now; ii < length5; ii++) {
-                                    if (
-                                        this.cavantable[dc].numpage > 1 &&
-                                        $(
-                                            '#' +
-                                                this.cavantable[dc].Name +
-                                                'page'
-                                        )[0]
-                                    ) {
-                                        if (ii > endlength) {
-                                            for (
-                                                let cc11 = 0;
-                                                cc11 <
-                                                $($(b).find('tr')[ii]).find(
-                                                    'td'
-                                                ).length;
-                                                cc11++
-                                            ) {
-                                                if (
-                                                    !$(
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('td')[cc11]
-                                                    ).hasClass('dataready') &&
-                                                    !$(
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('td')[cc11]
-                                                    ).hasClass('datareadyfoot')
-                                                ) {
-                                                    $($(b).find('tr')[ii]).find(
-                                                        'td'
-                                                    )[cc11].innerHTML = '';
-                                                    $(
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('td')[cc11]
-                                                    ).removeAttr('style');
-                                                    $(
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('td')[cc11]
-                                                    ).removeAttr('class');
-                                                }
-                                            }
-                                        }
-                                        if (ii > endlength && ii < removeid) {
-                                            if (changeii.length > 0) {
-                                                //    for(let cc12 = 0; cc12 < changeii.length; cc12++){
-                                                for (
-                                                    let cc11 = 0;
-                                                    cc11 <
-                                                    changeii[nowcii].length;
-                                                    cc11++
-                                                ) {
-                                                    if (
-                                                        changeii[nowcii][cc11]
-                                                            .index >
-                                                            parseInt(
-                                                                this.cavantable[
-                                                                    dc
-                                                                ].endpox
-                                                            ) ||
-                                                        changeii[nowcii][cc11]
-                                                            .index <
-                                                            parseInt(
-                                                                this.cavantable[
-                                                                    dc
-                                                                ].startpox
-                                                            )
-                                                    ) {
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('td')[
-                                                            changeii[nowcii][
-                                                                cc11
-                                                            ].index
-                                                        ].innerHTML =
-                                                            changeii[nowcii][
-                                                                cc11
-                                                            ].text;
-                                                        $(
-                                                            $(
-                                                                $(b).find('tr')[
-                                                                    ii
-                                                                ]
-                                                            ).find('td')[
-                                                                changeii[
-                                                                    nowcii
-                                                                ][cc11].index
-                                                            ]
-                                                        ).attr(
-                                                            'class',
-                                                            changeii[nowcii][
-                                                                cc11
-                                                            ].classname
-                                                        );
-                                                        $(
-                                                            $(
-                                                                $(b).find('tr')[
-                                                                    ii
-                                                                ]
-                                                            ).find('td')[
-                                                                changeii[
-                                                                    nowcii
-                                                                ][cc11].index
-                                                            ]
-                                                        ).attr(
-                                                            'style',
-                                                            changeii[nowcii][
-                                                                cc11
-                                                            ].style
-                                                        );
-                                                    }
-                                                }
-                                                nowcii++;
-                                                //    }
-                                            }
-                                        }
-                                    }
-                                    //               if(removeid.indexOf( $($($(b).find('tr')[ii]).find('td')[0]).attr('id').split('-')[0])>0){
-
-                                    // 	}
-                                    //         }else{
-                                    //  removeid.push( $($($(b).find('tr')[ii]).find('td')[0]).attr('id').split('-')[0])
-                                    //         }
-
-                                    for (let i2 = 0; i2 < length1; i2++) {
-                                        let an = nowi2;
-
-                                        if (
-                                            $($(b).find('tr')[ii]).find(
-                                                'input'
-                                            )[i2].id !== 'undefined'
-                                        ) {
-                                            let xnumber = '';
-                                            let de = '';
-                                            var itemformat = null;
-                                            for (
-                                                let i1 = 0;
-                                                i1 < shi5.length;
-                                                i1++
-                                            ) {
-                                                if (shi5[i1].id == i2) {
-                                                    xnumber = shi5[i1].xsnumber;
-                                                    de = shi5[i1].defauldisplay;
-                                                    break;
-                                                } else {
-                                                    xnumber = '';
-                                                    de = '';
-                                                }
-                                            }
-                                            for (
-                                                let i1 = 0;
-                                                i1 < shi6.length;
-                                                i1++
-                                            ) {
-                                                if (
-                                                    shi6[i1].id ==
-                                                    parseInt(
-                                                        $(
-                                                            $(
-                                                                $(b).find('tr')[
-                                                                    ii
-                                                                ]
-                                                            ).find('input')[i2]
-                                                        )
-                                                            .parent()
-                                                            .attr('id')
-                                                            .split('-')[0]
-                                                    ) -
-                                                        parseInt(
-                                                            this.cavantable[dc]
-                                                                .ParameterReportItemtList
-                                                                .dd.startpox
-                                                        )
-                                                ) {
-                                                    itemformat =
-                                                        shi6[i1].itemformat;
-                                                    break;
-                                                } else {
-                                                    itemformat = null;
-                                                }
-                                            }
-                                            let aaa = '';
-                                            if (xnumber !== '') {
-                                                if (
-                                                    this.getPointNum(
-                                                        this.cavantable[dc]
-                                                            .data[an].value,
-                                                        xnumber
-                                                    ) == null ||
-                                                    this.getPointNum(
-                                                        this.cavantable[dc]
-                                                            .data[an].value,
-                                                        xnumber
-                                                    ) == 'null' ||
-                                                    this.getPointNum(
-                                                        this.cavantable[dc]
-                                                            .data[an].value,
-                                                        xnumber
-                                                    ) == ''
-                                                ) {
-                                                    aaa = '';
-                                                } else {
-                                                    aaa = this.getPointNum(
-                                                        this.cavantable[dc]
-                                                            .data[an].value,
-                                                        xnumber
-                                                    );
-                                                }
-                                                if (aaa == null || aaa == '') {
-                                                    if (de !== '') {
-                                                        if (
-                                                            de == 'null' ||
-                                                            de == 'undefine' ||
-                                                            de == null ||
-                                                            de == undefined
-                                                        ) {
-                                                            de = '';
-                                                        }
-
-                                                        if (xzdata >= ii) {
-                                                            $(
-                                                                $(b).find('tr')[
-                                                                    ii
-                                                                ]
-                                                            ).find('input')[
-                                                                i2
-                                                            ].value = de;
-                                                            $(
-                                                                $(b).find('tr')[
-                                                                    ii
-                                                                ]
-                                                            )
-                                                                .find('input')
-                                                                [
-                                                                    i2
-                                                                ].setAttribute(
-                                                                    'value',
-                                                                    de
-                                                                );
-                                                        }
-                                                    } else {
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('input')[
-                                                            i2
-                                                        ].value = aaa;
-                                                        $($(b).find('tr')[ii])
-                                                            .find('input')
-                                                            [i2].setAttribute(
-                                                                'value',
-                                                                aaa
-                                                            );
-                                                    }
-                                                } else {
-                                                    $($(b).find('tr')[ii]).find(
-                                                        'input'
-                                                    )[i2].value = aaa;
-                                                    $($(b).find('tr')[ii])
-                                                        .find('input')
-                                                        [i2].setAttribute(
-                                                            'value',
-                                                            aaa
-                                                        );
-                                                }
-                                            } else {
-                                                if (
-                                                    this.cavantable[dc].data[an]
-                                                        .value == null ||
-                                                    this.cavantable[dc].data[an]
-                                                        .value == 'null' ||
-                                                    this.cavantable[dc].data[an]
-                                                        .value == ''
-                                                ) {
-                                                    aaa = '';
-                                                } else {
-                                                    aaa =
-                                                        this.cavantable[dc]
-                                                            .data[an].value;
-                                                }
-                                                if (aaa == null) {
-                                                    if (de !== '') {
-                                                        if (
-                                                            de == 'null' ||
-                                                            de == 'undefine' ||
-                                                            de == null ||
-                                                            de == undefined
-                                                        ) {
-                                                            de = '';
-                                                        }
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('input')[
-                                                            i2
-                                                        ].value = de;
-                                                        $($(b).find('tr')[ii])
-                                                            .find('input')
-                                                            [i2].setAttribute(
-                                                                'value',
-                                                                de
-                                                            );
-                                                    } else {
-                                                        $(
-                                                            $(b).find('tr')[ii]
-                                                        ).find('input')[
-                                                            i2
-                                                        ].value = aaa;
-                                                        $($(b).find('tr')[ii])
-                                                            .find('input')
-                                                            [i2].setAttribute(
-                                                                'value',
-                                                                aaa
-                                                            );
-                                                    }
-                                                } else {
-                                                    $($(b).find('tr')[ii]).find(
-                                                        'input'
-                                                    )[i2].value = aaa;
-                                                    $($(b).find('tr')[ii])
-                                                        .find('input')
-                                                        [i2].setAttribute(
-                                                            'value',
-                                                            aaa
-                                                        );
-                                                }
-                                            }
-                                        } else {
-                                            let aaa;
-                                            this.cavantable[dc].data.splice(
-                                                an,
-                                                0,
-                                                {
-                                                    value: null,
-                                                }
-                                            );
-                                            $($(b).find('tr')[ii]).find(
-                                                'input'
-                                            )[i2].value =
-                                                this.cavantable[dc].data[
-                                                    an
-                                                ].value;
-                                            if (
-                                                this.cavantable[dc].data[an]
-                                                    .value == null ||
-                                                this.cavantable[dc].data[an]
-                                                    .value == 'null' ||
-                                                this.cavantable[dc].data[an]
-                                                    .value == ''
-                                            ) {
-                                                aaa = '';
-                                            } else {
-                                                aaa =
-                                                    this.cavantable[dc].data[an]
-                                                        .value;
-                                            }
-                                            $($(b).find('tr')[ii])
-                                                .find('input')
-                                                [i2].setAttribute('value', aaa);
-                                        }
-
-                                        if (
-                                            $($(b).find('tr')[ii]).find(
-                                                'input'
-                                            )[i2].value
-                                        ) {
-                                            if (
-                                                !isNaN(
-                                                    $($(b).find('tr')[ii]).find(
-                                                        'input'
-                                                    )[i2].value
-                                                )
-                                            ) {
-                                                let arr = [];
-                                                arr.push(
-                                                    $($(b).find('tr')[ii]).find(
-                                                        'input'
-                                                    )[i2].value
-                                                );
-                                                arr.push(i2);
-                                                this.footarr.push(arr);
-                                            }
-
-                                            if (itemformat) {
-                                                let aaa1 = this.dateFormat(
-                                                    itemformat,
-                                                    $($(b).find('tr')[ii]).find(
-                                                        'input'
-                                                    )[i2].value
-                                                );
-                                                $($(b).find('tr')[ii])
-                                                    .find('input')
-                                                    [i2].setAttribute(
-                                                        'value',
-                                                        aaa1
-                                                    );
-                                                $($(b).find('tr')[ii]).find(
-                                                    'input'
-                                                )[i2].value = aaa1;
-                                            }
-                                        }
-                                        nowi2++;
-                                        this.$emit(
-                                            'percentage1',
-                                            parseInt(
-                                                20 *
-                                                    ((ii * length1 + i2) /
-                                                        (length5 * length1))
-                                            ) + 80
-                                        );
-
-                                        await this.delay(/* i2, 0.5 */ 0);
-                                    }
-
-                                    nowii++;
-                                }
-
-                                let wantdao = [];
-
-                                for (
-                                    let a2 = 0;
-                                    a2 <
-                                    $(
-                                        $(b).find('.datareadyfoot').parent()[0]
-                                    ).find('.datareadyfoot').length;
-                                    a2++
-                                ) {
-                                    if (
-                                        $(
-                                            $(b)
-                                                .find('.datareadyfoot')
-                                                .parent()[0]
-                                        ).find('.datareadyfoot')[a2]
-                                            .innerHTML !== '\\' &&
-                                        $(
-                                            $(b)
-                                                .find('.datareadyfoot')
-                                                .parent()[0]
-                                        ).find('.datareadyfoot')[a2]
-                                            .innerHTML !== ''
-                                    ) {
-                                        wantdao.push(a2);
-                                    }
-                                }
-                                if (sumdata1.length !== 0) {
-                                    let newarry = [];
-                                    console.log(this.footarr);
-                                    // for (
-                                    //     let j = 0;
-                                    //     j < this.cavantable[dc].data.length;
-                                    //     j++
-                                    // ) {
-                                    //     for (
-                                    //         let j1 = 0;
-                                    //         j1 < wantdao.length;
-                                    //         j1++
-                                    //     ) {
-                                    //         if (j % length1 == wantdao[j1]) {
-                                    //             let newarry1 = [];
-                                    //             newarry1.push(
-                                    //                 this.cavantable[dc].data[j]
-                                    //                     .value,
-                                    //                 wantdao[j1]
-                                    //             );
-                                    //             newarry.push(newarry1);
-                                    //         }
-                                    //     }
-                                    // }
-                                    for (
-                                        let ii = 0;
-                                        ii < wantdao.length;
-                                        ii++
-                                    ) {
-                                        for (
-                                            let i = 0;
-                                            i < sumdata1.length;
-                                            i++
-                                        ) {
-                                            if (sumdata1[i] == 'sum') {
-                                                console.log('分割线');
-                                                let sumdao = 0;
-
-                                                for (
-                                                    let i2 = 0;
-                                                    i2 < this.footarr.length;
-                                                    i2++
-                                                ) {
-                                                    // console.log(wantdao[ii])
-                                                    if (
-                                                        this.footarr[i2][1] ==
-                                                        wantdao[ii]
-                                                    ) {
-                                                        // if (
-                                                        //     !isNaN(
-                                                        //         parseFloat(
-                                                        //             this.footarr[
-                                                        //                 i2
-                                                        //             ][0]
-                                                        //         )
-                                                        //     )
-                                                        // ) {
-                                                        // console.log(this.footarr[i2][0])
-                                                        let cd = 0;
-                                                        //  for(let iia=0;iia<$(b).find('.dataready').length;iia++){
-                                                        //        if($($(b).find('.dataready')[iia]).attr('id').split('-')[0] ==  $($(b).find('.datareadyfoot')[wantdao[ii]]).attr('id').split('-')[0]){
-
-                                                        //             cd = $($(b).find('.dataready')[iia]).find('input').val()
-                                                        //        }
-                                                        //  }
-                                                        for (
-                                                            let iia = 0;
-                                                            iia <
-                                                            this.cavantable[dc]
-                                                                .shi5.length;
-                                                            iia++
-                                                        ) {
-                                                            if (
-                                                                this.cavantable[
-                                                                    dc
-                                                                ].shi5[iia]
-                                                                    .id ==
-                                                                wantdao[ii]
-                                                            ) {
-                                                                cd =
-                                                                    this
-                                                                        .footarr[
-                                                                        i2
-                                                                    ][0];
-                                                            }
-                                                        }
-                                                        console.log(
-                                                            parseFloat(cd)
-                                                        );
-                                                        sumdao =
-                                                            sumdao +
-                                                            parseFloat(cd);
-
-                                                        // }
-                                                    }
-                                                }
-                                                // for (
-                                                //     let ii2 = 0;
-                                                //     ii2 < shi5.length;
-                                                //     ii2++
-                                                // ) {
-                                                //     if (
-                                                //      shi5[ii2].id ==
-                                                //        ((wantdao[ii]))
-                                                //     ) {
-                                                //         sumdao = this.getPointNum(
-                                                //             sumdao,
-                                                //             shi5[ii2].xsnumber
-                                                //         );
-                                                //         break;
-                                                //     }
-                                                // }
-                                                if (!sumdao) {
-                                                    sumdao = 0;
-                                                }
-                                                if (
-                                                    Number(
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[wantdao[ii]].innerHTML
-                                                    ) +
-                                                        '' !==
-                                                    NaN + ''
-                                                ) {
-                                                    $(
-                                                        $(b)
-                                                            .find(
-                                                                '.datareadyfoot'
-                                                            )
-                                                            .parent()[i]
-                                                    ).find('.datareadyfoot')[
-                                                        wantdao[ii]
-                                                    ].innerHTML = sumdao;
-                                                }
-                                            }
-                                            if (sumdata1[i] == 'mean') {
-                                                let sumdao = 0;
-                                                let meandao = 0;
-                                                for (
-                                                    let i2 = 0;
-                                                    i2 < this.footarr.length;
-                                                    i2++
-                                                ) {
-                                                    if (
-                                                        this.footarr[i2][1] ==
-                                                        wantdao[ii]
-                                                    ) {
-                                                        let cd = 0;
-                                                        for (
-                                                            let iia = 0;
-                                                            iia <
-                                                            this.cavantable[dc]
-                                                                .shi5.length;
-                                                            iia++
-                                                        ) {
-                                                            if (
-                                                                this.cavantable[
-                                                                    dc
-                                                                ].shi5[iia]
-                                                                    .id ==
-                                                                wantdao[ii]
-                                                            ) {
-                                                                cd =
-                                                                    this
-                                                                        .footarr[
-                                                                        i2
-                                                                    ][0];
-                                                                sumdao =
-                                                                    sumdao +
-                                                                    parseFloat(
-                                                                        cd
-                                                                    );
-                                                                meandao++;
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                console.log('sumdao', sumdao);
-                                                console.log(meandao);
-                                                let mean = sumdao / meandao;
-                                                console.log('mean', mean);
-                                                for (
-                                                    let ii2 = 0;
-                                                    ii2 < shi5.length;
-                                                    ii2++
-                                                ) {
-                                                    if (
-                                                        shi5[ii2].id ==
-                                                        wantdao[ii]
-                                                    ) {
-                                                        mean = this.getPointNum(
-                                                            mean,
-                                                            shi5[ii2].xsnumber
-                                                        );
-                                                        break;
-                                                    }
-                                                }
-                                                if (
-                                                    isNaN(mean) ||
-                                                    mean == null
-                                                ) {
-                                                    mean = 0;
-                                                }
-                                                if (
-                                                    Number(
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[wantdao[ii]].innerHTML
-                                                    ) +
-                                                        '' !==
-                                                    NaN + ''
-                                                ) {
-                                                    $(
-                                                        $(b)
-                                                            .find(
-                                                                '.datareadyfoot'
-                                                            )
-                                                            .parent()[i]
-                                                    ).find('.datareadyfoot')[
-                                                        wantdao[ii]
-                                                    ].innerHTML = mean;
-                                                }
-                                            }
-                                            if (sumdata1[i] == 'min') {
-                                                let min = [];
-                                                for (
-                                                    let i2 = 0;
-                                                    i2 < this.footarr.length;
-                                                    i2++
-                                                ) {
-                                                    if (
-                                                        this.footarr[i2][1] ==
-                                                        wantdao[ii]
-                                                    ) {
-                                                        if (
-                                                            !isNaN(
-                                                                parseFloat(
-                                                                    this
-                                                                        .footarr[
-                                                                        i2
-                                                                    ][0]
-                                                                )
-                                                            )
-                                                        ) {
-                                                            min.push(
-                                                                parseFloat(
-                                                                    this
-                                                                        .footarr[
-                                                                        i2
-                                                                    ][0]
-                                                                )
-                                                            );
-                                                        }
-                                                    }
-                                                }
-                                                min.sort(function (a, b) {
-                                                    return a - b;
-                                                });
-                                                if (
-                                                    Number(
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[wantdao[ii]].innerHTML
-                                                    ) +
-                                                        '' !==
-                                                    NaN + ''
-                                                ) {
-                                                    if (min[0] == 'undefined') {
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[
-                                                            wantdao[ii]
-                                                        ].innerHTML = 0;
-                                                    } else {
-                                                        for (
-                                                            let ii2 = 0;
-                                                            ii2 < shi5.length;
-                                                            ii2++
-                                                        ) {
-                                                            if (
-                                                                shi5[ii2].id ==
-                                                                wantdao[ii]
-                                                            ) {
-                                                                min[0] =
-                                                                    this.getPointNum(
-                                                                        min[0],
-                                                                        shi5[
-                                                                            ii2
-                                                                        ]
-                                                                            .xsnumber
-                                                                    );
-                                                                break;
-                                                            }
-                                                        }
-                                                        if (!min[0]) {
-                                                            min[0] = 0;
-                                                        }
-
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[
-                                                            wantdao[ii]
-                                                        ].innerHTML = min[0];
-                                                    }
-                                                }
-                                            }
-                                            if (sumdata1[i] == 'max') {
-                                                let max = [];
-                                                for (
-                                                    let i2 = 0;
-                                                    i2 < this.footarr.length;
-                                                    i2++
-                                                ) {
-                                                    if (
-                                                        this.footarr[i2][1] ==
-                                                        wantdao[ii]
-                                                    ) {
-                                                        if (
-                                                            !isNaN(
-                                                                parseFloat(
-                                                                    this
-                                                                        .footarr[
-                                                                        i2
-                                                                    ][0]
-                                                                )
-                                                            )
-                                                        ) {
-                                                            max.push(
-                                                                parseFloat(
-                                                                    this
-                                                                        .footarr[
-                                                                        i2
-                                                                    ][0]
-                                                                )
-                                                            );
-                                                        }
-                                                    }
-                                                }
-                                                max.sort(function (a, b) {
-                                                    return a - b;
-                                                });
-                                                if (!max[max.length - 1]) {
-                                                    max[max.length - 1] = 0;
-                                                }
-                                                if (
-                                                    Number(
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[wantdao[ii]].innerHTML
-                                                    ) +
-                                                        '' !==
-                                                    NaN + ''
-                                                ) {
-                                                    if (
-                                                        max[max.length - 1] ==
-                                                        'undefined'
-                                                    ) {
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[
-                                                            wantdao[ii]
-                                                        ].innerHTML = 0;
-                                                    } else {
-                                                        for (
-                                                            let ii2 = 0;
-                                                            ii2 < shi5.length;
-                                                            ii2++
-                                                        ) {
-                                                            if (
-                                                                shi5[ii2].id ==
-                                                                wantdao[ii]
-                                                            ) {
-                                                                max[
-                                                                    max.length -
-                                                                        1
-                                                                ] = this.getPointNum(
-                                                                    max[
-                                                                        max.length -
-                                                                            1
-                                                                    ],
-                                                                    shi5[ii2]
-                                                                        .xsnumber
-                                                                );
-                                                                break;
-                                                            }
-                                                        }
-
-                                                        $(
-                                                            $(b)
-                                                                .find(
-                                                                    '.datareadyfoot'
-                                                                )
-                                                                .parent()[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[
-                                                            wantdao[ii]
-                                                        ].innerHTML =
-                                                            max[max.length - 1];
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            this.cavantable[dc] = JSON.parse(nowdai);
-                            this.cavantable[dc].daochutable = adiv;
-                        } else {
-                            this.$emit('percentage1', 100);
-
-                            await this.delay(10);
-                        }
-                        console.log('data5', new Date());
-                        //    let cc1  = $(b).find('td').length
-                        //   for(let cc =0;cc<cc1;cc++){
-                        //      if(($(b).find('td')[cc])){
-                        //      if($($(b).find('td')[cc])[0].style.display == 'none'||$($(b).find('td')[cc]).attr('showtd')){
-                        //          $($(b).find('td')[cc]).addClass('delclass')
-                        //         //   cc--
-                        //       }
-
-                        //       if($($(b).find('td')[cc]).hasClass('item')){
-                        //            if(!$(b).find('td')[cc].style.backgroundColor){
-                        //                   $($(b).find('td')[cc]).css('background','#F9DEE0')
-                        //                }
-                        //        if(!$(b).find('td')[cc].style.color){
-                        //                  $($(b).find('td')[cc]).css('color','#EF3460')
-                        //                }
-                        //       }
-                        //    if($($(b).find('td')[cc]).attr('colspan')==1){
-                        //         $($(b).find('td')[cc]).removeAttr("colspan")
-                        //       }
-                        //         if($($(b).find('td')[cc]).attr('rowspan')==1){
-                        //         $($(b).find('td')[cc]).removeAttr("rowspan")
-                        //       }
-                        //      }
-
-                        //   }
-                        // for(let cc =0;cc<$(b).find('.heibin').length;cc++){
-                        // for(let cc1 =0;cc1<$($(b).find('.heibin')[cc]).attr('name').split(',').length;cc1++){
-                        // 	if($($(b).find('.heibin')[cc]).attr('name').split(',')[cc1]){
-                        // 		$($(b).find('#'+$($(b).find('.heibin')[cc]).attr('name').split(',')[cc1])[0]).remove()
-
-                        // 	}
-                        // }
-                        // }
-                        let name = [];
-                        for (
-                            let cc = 0;
-                            cc < $(b).find('.heibin').length;
-                            cc++
-                        ) {
-                            for (
-                                let cc1 = 0;
-                                cc1 <
-                                $($(b).find('.heibin')[cc])
-                                    .attr('name')
-                                    .split(',').length;
-                                cc1++
-                            ) {
-                                if (
-                                    $($(b).find('.heibin')[cc])
-                                        .attr('name')
-                                        .split(',')[cc1]
-                                ) {
-                                    let bb = $(b).find(
-                                        '#' +
-                                            $($(b).find('.heibin')[cc])
-                                                .attr('name')
-                                                .split(',')[cc1]
-                                    ).length;
-                                    for (let cc2 = 0; cc2 < bb; cc2++) {
-                                        if (
-                                            !name.includes(
-                                                $($(b).find('.heibin')[cc])
-                                                    .attr('name')
-                                                    .split(',')[cc1]
-                                            )
-                                        ) {
-                                            name.push(
-                                                $($(b).find('.heibin')[cc])
-                                                    .attr('name')
-                                                    .split(',')[cc1]
-                                            );
-                                            $(
-                                                $(b).find(
-                                                    '#' +
-                                                        $(
-                                                            $(b).find(
-                                                                '.heibin'
-                                                            )[cc]
-                                                        )
-                                                            .attr('name')
-                                                            .split(',')[cc1]
-                                                )[0]
-                                            ).remove();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        let width = [];
-                        for (let c1 = 0; c1 < $(b).find('col').length; c1++) {
-                            let a = {
-                                wpx: parseFloat(
-                                    $($(b).find('col')[c1]).attr('width')
-                                ),
-                            };
-                            width.push(a);
-                        }
-                        let height = [];
-                        for (let c1 = 0; c1 < $(b).find('tr').length; c1++) {
-                            let a = {
-                                hpx: parseFloat(
-                                    $($(b).find('tr')[c1]).height()
-                                ),
-                            };
-                            height.push(a);
-                        }
-
-                        await this.delay(10);
-                        this.$emit('percentage1', 100);
-                        await this.delay(10);
-                        //   $('.report').append(b)
-                        //   $('#ParameterReport4').hide()
-                        this.$store.state.isShow = false;
-                        console.log('data1', new Date());
-                        // for(let i23 = 1;i23<10;i23++){
-                        //     await this.delay(i23)
-                        //      this.$emit('percentage1',80+parseFloat(i23*2))
-                        // }
-
-                        console.log('width', width);
-
-                        import('@/vendor/Export5Excel').then((excel) => {
-                            excel.export_table_to_excel(b, width, height);
-                            if (dc == dcnum - 1 || dcnum == 1) {
-                                this.$store.state.isShow = false;
-                                $('.btablecover').hide();
-                                console.log(
-                                    'data3',
-                                    Date.parse(new Date()),
-                                    new Date()
-                                );
-                            }
-                        });
-                    } else if (daiti.kzdirection == '横向扩展') {
-                        let adiv = this.cavantable[dc].daochutable;
-                        xzdata = Math.floor(
-                            this.cavantable[dc].data.length /
-                                this.cavantable[dc].ParameterReportItemtList.dd
-                                    .kzresourcedataitemarray.length -
-                                parseFloat(
-                                    this.cavantable[dc].ParameterReportItemtList
-                                        .dd.kzresourcedataitemarray.startx
-                                )
-                        );
-                        let a = $(this.cavantable[dc].daochutable)[0].cloneNode(
-                            true
-                        );
-                        console.log(
-                            'clone',
-                            $('#' + this.cavantable[dc].Name).find('table')[0]
-                        );
-                        let b = $(this.cavantable[dc].daochutable)[0].cloneNode(
-                            true
-                        );
-                        for (
-                            let a1 = 0;
-                            a1 < $(b).find('.heibin').length;
-                            a1++
-                        ) {
-                            if (
-                                parseFloat(
-                                    $(b).find('.heibin')[a1].id.split('-')[1]
-                                ) <
-                                    parseFloat(
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
-                                    ) &&
-                                parseFloat(
-                                    $(b).find('.heibin')[a1].id.split('-')[0]
-                                ) >
-                                    parseFloat(
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
-                                    )
-                            ) {
-                                if (
-                                    parseFloat(
-                                        $(b)
-                                            .find('.heibin')
-                                            [a1].id.split('-')[1]
-                                    ) +
-                                        parseFloat(
-                                            $($('.heibin')[a1]).attr('rowspan')
-                                        ) >
-                                    parseFloat(
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
-                                    )
-                                ) {
-                                    let c = parseFloat(
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .startpoy
-                                    );
-                                    $($(b).find('.heibin')[a1]).attr(
-                                        'rowspan',
-                                        c
-                                    );
-                                    for (
-                                        let a2 = 0;
-                                        a2 <
-                                        $($(b).find('.heibin')[a1])
-                                            .attr('name')
-                                            .split(',').length;
-                                        a2++
-                                    ) {
-                                        let c1 = $($(b).find('.heibin')[a1])
-                                            .attr('name')
-                                            .split(',')[a2];
-                                        if (c1) {
-                                            if (
-                                                this.cavantable[
-                                                    dc
-                                                ].shi5.includes(
-                                                    $('#' + c1)[0].id.split(
-                                                        '-'
-                                                    )[1]
-                                                )
-                                            ) {
-                                                $($(b).find('.heibin')[a1])
-                                                    .find('#' + c1)
-                                                    .show();
-                                            }
-                                        }
-                                    }
-                                    console.log(
-                                        'sadsadsad',
-                                        $($(b).find('.heibin')[a1])
-                                    );
-                                }
-                            }
-                        }
-                        console.log(this.cavantable[dc]);
-                        for (let cc = 0; cc < $(a).find('td').length; cc++) {
-                            if (
-                                !$($($(a).find('td')[cc])[0]).hasClass(
-                                    'datareadyhead'
-                                ) &&
-                                !$($($(a).find('td')[cc])[0]).hasClass(
-                                    'dataready'
-                                ) &&
-                                !$($($(a).find('td')[cc])[0]).hasClass(
-                                    'datareadyfoot'
-                                )
-                            ) {
-                                if (
-                                    $($(a).find('td')[cc])[0].style.display ==
-                                        'none' ||
-                                    $($(a).find('td')[cc]).attr('showtd')
-                                ) {
-                                    $($(a).find('td')[cc]).remove();
-                                    cc--;
-                                }
-                            }
-                            if ($($(a).find('td')[cc]).hasClass('item')) {
-                                if (
-                                    !$(a).find('td')[cc].style.backgroundColor
-                                ) {
-                                    $($(a).find('td')[cc]).css(
-                                        'background',
-                                        '#F9DEE0'
-                                    );
-                                }
-                                if (!$(a).find('td')[cc].style.color) {
-                                    $($(a).find('td')[cc]).css(
-                                        'color',
-                                        '#EF3460'
-                                    );
-                                }
-                            }
-                            if ($($(a).find('td')[cc]).attr('colspan') == 1) {
-                                $($(a).find('td')[cc]).removeAttr('colspan');
-                            }
-
-                            if ($($(a).find('td')[cc]).attr('rowspan') == 1) {
-                                $($(a).find('td')[cc]).removeAttr('rowspan');
-                            }
-                        }
-                        for (let cc = 0; cc < $(b).find('td').length; cc++) {
-                            if (
-                                !$($($(b).find('td')[cc])[0]).hasClass(
-                                    'datareadyhead'
-                                ) &&
-                                !$($($(b).find('td')[cc])[0]).hasClass(
-                                    'dataready'
-                                ) &&
-                                !$($($(b).find('td')[cc])[0]).hasClass(
-                                    'datareadyfoot'
-                                )
-                            ) {
-                                if (
-                                    $($(b).find('td')[cc])[0].style.display ==
-                                        'none' ||
-                                    $($(b).find('td')[cc]).attr('showtd')
-                                ) {
-                                    $($(b).find('td')[cc]).remove();
-                                    cc--;
-                                }
-                            }
-                            if ($($(b).find('td')[cc]).hasClass('item')) {
-                                if (
-                                    !$(b).find('td')[cc].style.backgroundColor
-                                ) {
-                                    $($(b).find('td')[cc]).css(
-                                        'background',
-                                        '#F9DEE0'
-                                    );
-                                }
-                                if (!$(b).find('td')[cc].style.color) {
-                                    $($(b).find('td')[cc]).css(
-                                        'color',
-                                        '#EF3460'
-                                    );
-                                }
-                            }
-                            if ($($(b).find('td')[cc]).attr('colspan') == 1) {
-                                $($(b).find('td')[cc]).removeAttr('colspan');
-                            }
-
-                            if ($($(b).find('td')[cc]).attr('rowspan') == 1) {
-                                $($(b).find('td')[cc]).removeAttr('rowspan');
-                            }
-                        }
-                        if (
-                            this.cavantable[dc].numpage !== 1 &&
-                            $('#' + this.cavantable[dc].Name + 'page')[0]
-                        ) {
-                            // console.log("sadasddsadsaasd")
-                            for (
-                                let ai = 0;
-                                ai <
-                                this.cavantable[dc].ParameterReportItemtList.dd
-                                    .cellparaarray.length;
-                                ai++
-                            ) {
-                                $(b).find(
-                                    '#' +
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .cellparaarray[ai].id
-                                )[0].innerHTML = $(
-                                    '#' + this.cavantable[dc].Name
-                                ).find(
-                                    '#' +
-                                        this.cavantable[dc]
-                                            .ParameterReportItemtList.dd
-                                            .cellparaarray[ai].id
-                                )[0].innerHTML;
-                            }
-
-                            let div = document.createElement('table');
-                            let length = $(a).find('.daochu').length;
-                            for (let i1 = 0; i1 < length; i1++) {
-                                let a1 = 0;
-                                div.append($(a).find('.daochu')[a1]);
-                            }
-                            this.deltable(div);
-                            let div1 = $(div)[0].cloneNode(true);
-                            let sumdata1 = daiti.kzsummotype.split(',');
-                            let length1 = $($(div).find('tr')[0]).find(
-                                'input'
-                            ).length;
-                            let shi5 = this.cavantable[dc].shi5;
-                            let shi6 = this.cavantable[dc].shi6;
-                            for (
-                                let num = 0;
-                                num < this.cavantable[dc].numpage - 1;
-                                num++
-                            ) {
-                                for (
-                                    let i1 = 0;
-                                    i1 <
-                                    $($(div1).find('tr')[0]).find('td').length;
-                                    i1++
-                                ) {
-                                    for (
-                                        let i2 = 0;
-                                        i2 < $(div1).find('tr').length;
-                                        i2++
-                                    ) {
-                                        let c = $(div1)[0].cloneNode(true);
-                                        $($(b).find('.daochu')[i2])
-                                            .find('.dataready')
-                                            [
-                                                $(
-                                                    $(b).find('.daochu')[i2]
-                                                ).find('.dataready').length - 1
-                                            ].after(
-                                                $($(c).find('tr')[i2]).find(
-                                                    'td'
-                                                )[i1]
-                                            );
-                                    }
-                                }
-
-                                this.$emit(
-                                    'percentage1',
-                                    parseInt(
-                                        70 /
-                                            (this.cavantable[dc].numpage -
-                                                1 -
-                                                num)
-                                    )
-                                );
-
-                                await this.delay(num);
-                            }
-                            let y1 = $(div).find('input').length;
-                            let shengxiadata =
-                                y1 * this.cavantable[dc].numpage -
-                                this.cavantable[dc].data.length;
-                            for (let i = 0; i < shengxiadata; i++) {
-                                this.cavantable[dc].data.push({
-                                    value: null,
-                                });
-                            }
-                            let nowi2 = 0;
-                            for (
-                                let col = 0;
-                                col <
-                                $($(b).find('.daochu')[0]).find('.dataready')
-                                    .length;
-                                col++
-                            ) {
-                                let row = 0;
-                                for (row = 0; row < length; row++) {
-                                    let an = nowi2;
-                                    if (
-                                        $($(b).find('.daochu')[row]).find(
-                                            'input'
-                                        )[col].id !== 'undefined'
-                                    ) {
-                                        let xnumber = '';
-                                        var de = '';
-                                        itemformat = null;
-
-                                        for (
-                                            let i1 = 0;
-                                            i1 < shi5.length;
-                                            i1++
-                                        ) {
-                                            if (
-                                                shi5[i1].id ==
-                                                row +
-                                                    parseInt(
-                                                        this.cavantable[dc]
-                                                            .ParameterReportItemtList
-                                                            .dd.startpoy
-                                                    )
-                                            ) {
-                                                //     console.log(   $(
-                                                //     $(b).find('.daochu')[row]
-                                                // ).find('input')[
-                                                //     col
-                                                // ])
-                                                xnumber = shi5[i1].xsnumber;
-                                                de = shi5[i1].defauldisplay;
-                                                break;
-                                            }
-                                        }
-                                        console.log(shi6);
-                                        for (
-                                            let i1 = 0;
-                                            i1 < shi6.length;
-                                            i1++
-                                        ) {
-                                            if (
-                                                shi6[i1].id ==
-                                                row +
-                                                    parseInt(
-                                                        this.cavantable[dc]
-                                                            .ParameterReportItemtList
-                                                            .dd.startpoy
-                                                    )
-                                            ) {
-                                                itemformat =
-                                                    shi6[i1].itemformat;
-                                                break;
-                                            }
-                                        }
-
-                                        if (xnumber !== '') {
-                                            var aaa;
-                                            if (
-                                                !this.getPointNum(
-                                                    this.cavantable[dc].data[an]
-                                                        .value,
-                                                    xnumber
-                                                ) ||
-                                                this.getPointNum(
-                                                    this.cavantable[dc].data[an]
-                                                        .value,
-                                                    xnumber
-                                                ) == 'null'
-                                            ) {
-                                                aaa = '';
-                                            } else {
-                                                console.log(
-                                                    'asddassaddsaasddsa',
-                                                    xnumber
-                                                );
-                                                console.log(shi5);
-
-                                                aaa = this.getPointNum(
-                                                    this.cavantable[dc].data[an]
-                                                        .value,
-                                                    xnumber
-                                                );
-                                            }
-
-                                            if (!aaa) {
-                                                if (de !== '') {
-                                                    if (
-                                                        de == 'null' ||
-                                                        de == 'undefine' ||
-                                                        de == null ||
-                                                        de == undefined
-                                                    ) {
-                                                        de = '';
-                                                    }
-                                                    if (col <= xzdata) {
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[row]
-                                                        ).find('input')[
-                                                            col
-                                                        ].value = de;
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[row]
-                                                        )
-                                                            .find('input')
-                                                            [col].setAttribute(
-                                                                'value',
-                                                                de
-                                                            );
-                                                    }
-                                                } else {
-                                                    $(
-                                                        $(b).find('.daochu')[
-                                                            row
-                                                        ]
-                                                    ).find('input')[
-                                                        col
-                                                    ].value = 1;
-                                                    $($(b).find('.daochu')[row])
-                                                        .find('input')
-                                                        [col].setAttribute(
-                                                            'value',
-                                                            1
-                                                        );
-                                                }
-                                            } else {
-                                                $(
-                                                    $(b).find('.daochu')[row]
-                                                ).find('input')[col].value =
-                                                    aaa;
-
-                                                $($(b).find('.daochu')[row])
-                                                    .find('input')
-                                                    [col].setAttribute(
-                                                        'value',
-                                                        aaa
-                                                    );
-                                            }
-                                        } else {
-                                            $($(b).find('.daochu')[row]).find(
-                                                'input'
-                                            )[col].value =
-                                                this.cavantable[dc].data[
-                                                    an
-                                                ].value;
-                                            $($(b).find('.daochu')[row])
-                                                .find('input')
-                                                [col].setAttribute(
-                                                    'value',
-                                                    this.cavantable[dc].data[an]
-                                                        .value
-                                                );
-                                        }
-                                    } else {
-                                        let aaa;
-                                        this.cavantable[dc].data.splice(an, 0, {
-                                            value: null,
-                                        });
-                                        if (
-                                            this.cavantable[dc].data[an]
-                                                .value == null ||
-                                            this.cavantable[dc].data[an]
-                                                .value == 'null' ||
-                                            this.cavantable[dc].data[an]
-                                                .value == ''
-                                        ) {
-                                            aaa = '';
-                                        } else {
-                                            aaa =
-                                                this.cavantable[dc].data[an]
-                                                    .value;
-                                        }
-                                        let de = '';
-                                        for (
-                                            let i1 = 0;
-                                            i1 < shi5.length;
-                                            i1++
-                                        ) {
-                                            if (
-                                                shi5[i1].id ==
-                                                row + shi5[0].id
-                                            ) {
-                                                de = shi5[i1].defauldisplay;
-                                                break;
-                                            } else {
-                                                de = '';
-                                            }
-                                        }
-                                        if (aaa == '') {
-                                            if (de !== '') {
-                                                if (
-                                                    de == 'null' ||
-                                                    de == 'undefine' ||
-                                                    de == null ||
-                                                    de == undefined
-                                                ) {
-                                                    de = '';
-                                                }
-                                                $(
-                                                    $(b).find('.daochu')[row]
-                                                ).find('input')[col].value = de;
-                                                $($(b).find('.daochu')[row])
-                                                    .find('input')
-                                                    [col].setAttribute(
-                                                        'value',
-                                                        de
-                                                    );
-                                            } else {
-                                                $(
-                                                    $(b).find('.daochu')[row]
-                                                ).find('input')[col].value =
-                                                    aaa;
-                                                $($(b).find('.daochu')[row])
-                                                    .find('input')
-                                                    [col].setAttribute(
-                                                        'value',
-                                                        aaa
-                                                    );
-                                            }
-                                        } else {
-                                            $($(b).find('.daochu')[row]).find(
-                                                'input'
-                                            )[col].value = aaa;
-                                            $($(b).find('.daochu')[row])
-                                                .find('input')
-                                                [col].setAttribute(
-                                                    'value',
-                                                    aaa
-                                                );
-                                        }
-                                    }
-                                    if (
-                                        $($(b).find('.daochu')[row]).find(
-                                            'input'
-                                        )[col].value
-                                    ) {
-                                        if (itemformat) {
-                                            let aaa1 = this.dateFormat(
-                                                itemformat,
-                                                $(
-                                                    $(b).find('.daochu')[row]
-                                                ).find('input')[col].value
-                                            );
-                                            if (aaa1) {
-                                                $(
-                                                    $(b).find('.daochu')[row]
-                                                ).find('input')[col].value =
-                                                    aaa1;
-                                                $($(b).find('.daochu')[row])
-                                                    .find('input')
-                                                    [col].setAttribute(
-                                                        'value',
-                                                        aaa1
-                                                    );
-                                            }
-                                        }
-                                    }
-                                    length;
-                                    nowi2++;
-                                    this.$emit(
-                                        'percentage1',
-                                        parseInt(
-                                            30 *
-                                                ((col * length + row) /
-                                                    ($(
-                                                        $(b).find('.daochu')[0]
-                                                    ).find('.dataready')
-                                                        .length *
-                                                        length))
-                                        ) + 70
-                                    );
-                                    await this.delay(col, 0.1);
-                                }
-
-                                //  this.$emit('percentage1',(parseInt((25/( $($(b).find('.daochu')[0]).find( '.dataready').length-col))+70)))
-                            }
-
-                            if (sumdata1.length !== 0) {
-                                for (let i1 = 0; i1 < sumdata1.length; i1++) {
-                                    if (sumdata1[i1] == 'sum') {
-                                        for (
-                                            let i = 0;
-                                            i < $(b).find('.daochu').length;
-                                            i++
-                                        ) {
-                                            let sumdao = 0;
-                                            for (
-                                                let j = 0;
-                                                j <
-                                                $($(b).find('.daochu')[i]).find(
-                                                    'input'
-                                                ).length;
-                                                j++
-                                            ) {
-                                                if (
-                                                    !isNaN(
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        )
-                                                    ) &&
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('input')[j].value !==
-                                                        null
-                                                ) {
-                                                    sumdao =
-                                                        sumdao +
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        );
-                                                }
-                                            }
-                                            if (!sumdao) {
-                                                sumdao = 0;
-                                            }
-                                            if (
-                                                $($(b).find('.daochu')[i]).find(
-                                                    '.datareadyfoot'
-                                                )[i1].innerHTML !== '' &&
-                                                $($(b).find('.daochu')[i]).find(
-                                                    '.datareadyfoot'
-                                                )[i1].innerHTML !== '\\'
-                                            ) {
-                                                for (
-                                                    let ii2 = 0;
-                                                    ii2 < shi5.length;
-                                                    ii2++
-                                                ) {
-                                                    if (
-                                                        shi5[ii2].id ==
-                                                        i +
-                                                            parseInt(
-                                                                this.cavantable[
-                                                                    dc
-                                                                ]
-                                                                    .ParameterReportItemtList
-                                                                    .dd.startpoy
-                                                            )
-                                                    ) {
-                                                        sumdao =
-                                                            this.getPointNum(
-                                                                sumdao,
-                                                                shi5[ii2]
-                                                                    .xsnumber
-                                                            );
-                                                        break;
-                                                    }
-                                                }
-                                                if (
-                                                    Number(
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[i1].innerHTML
-                                                    ) +
-                                                        '' !==
-                                                    NaN + ''
-                                                ) {
-                                                    if (!sumdao) {
-                                                        sumdao = 0;
-                                                    }
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('.datareadyfoot')[
-                                                        i1
-                                                    ].innerHTML = sumdao;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (sumdata1[i1] == 'mean') {
-                                        for (
-                                            let i = 0;
-                                            i < $(b).find('.daochu').length;
-                                            i++
-                                        ) {
-                                            let sumdao = 0;
-                                            let mean = 0;
-                                            for (
-                                                let j = 0;
-                                                j <
-                                                $($(b).find('.daochu')[i]).find(
-                                                    'input'
-                                                ).length;
-                                                j++
-                                            ) {
-                                                if (
-                                                    !isNaN(
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        )
-                                                    ) &&
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('input')[j].value !==
-                                                        null
-                                                ) {
-                                                    sumdao =
-                                                        sumdao +
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        );
-                                                    mean++;
-                                                }
-                                            }
-                                            let meandata = sumdao / mean;
-                                            for (
-                                                let ii2 = 0;
-                                                ii2 < shi5.length;
-                                                ii2++
-                                            ) {
-                                                if (
-                                                    shi5[ii2].id ==
-                                                    i +
-                                                        parseInt(
-                                                            this.cavantable[dc]
-                                                                .ParameterReportItemtList
-                                                                .dd.startpoy
-                                                        )
-                                                ) {
-                                                    meandata = this.getPointNum(
-                                                        meandata,
-                                                        shi5[ii2].xsnumber
-                                                    );
-                                                    break;
-                                                }
-                                            }
-                                            if (
-                                                $($(b).find('.daochu')[i]).find(
-                                                    '.datareadyfoot'
-                                                )[i1].innerHTML !== '' &&
-                                                $($(b).find('.daochu')[i]).find(
-                                                    '.datareadyfoot'
-                                                )[i1].innerHTML !== '\\'
-                                            ) {
-                                                if (
-                                                    isNaN(meandata) ||
-                                                    meandata == undefined
-                                                ) {
-                                                    meandata = 0;
-                                                }
-                                                if (
-                                                    Number(
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[i1].innerHTML
-                                                    ) +
-                                                        '' !==
-                                                    NaN + ''
-                                                ) {
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('.datareadyfoot')[
-                                                        i1
-                                                    ].innerHTML = meandata;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (sumdata1[i1] == 'max') {
-                                        for (
-                                            let i = 0;
-                                            i < $(b).find('.daochu').length;
-                                            i++
-                                        ) {
-                                            let max = [];
-                                            for (
-                                                let j = 0;
-                                                j <
-                                                $($(b).find('.daochu')[i]).find(
-                                                    'input'
-                                                ).length;
-                                                j++
-                                            ) {
-                                                if (
-                                                    !isNaN(
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        )
-                                                    ) &&
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('input')[j].value !==
-                                                        null
-                                                ) {
-                                                    max.push(
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        )
-                                                    );
-                                                }
-                                                max.sort(function (a, b) {
-                                                    return a - b;
-                                                });
-                                            }
-                                            if (
-                                                $($(b).find('.daochu')[i]).find(
-                                                    '.datareadyfoot'
-                                                )[i1].innerHTML !== '' &&
-                                                $($(b).find('.daochu')[i]).find(
-                                                    '.datareadyfoot'
-                                                )[i1].innerHTML !== '\\'
-                                            ) {
-                                                if (
-                                                    Number(
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[i1].innerHTML
-                                                    ) +
-                                                        '' !==
-                                                    NaN + ''
-                                                ) {
-                                                    if (
-                                                        max[max.length - 1] ==
-                                                            'undefined' ||
-                                                        max[max.length - 1] ==
-                                                            undefined ||
-                                                        isNaN(
-                                                            max[max.length - 1]
-                                                        )
-                                                    ) {
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[i1].innerHTML = 0;
-                                                    } else {
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[i1].innerHTML =
-                                                            max[max.length - 1];
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (sumdata1[i1] == 'min') {
-                                        for (
-                                            let i = 0;
-                                            i < $(b).find('.daochu').length;
-                                            i++
-                                        ) {
-                                            let max = [];
-                                            for (
-                                                let j = 0;
-                                                j <
-                                                $($(b).find('.daochu')[i]).find(
-                                                    'input'
-                                                ).length;
-                                                j++
-                                            ) {
-                                                if (
-                                                    !isNaN(
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        )
-                                                    ) &&
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('input')[j].value !==
-                                                        null
-                                                ) {
-                                                    max.push(
-                                                        parseFloat(
-                                                            $(
-                                                                $(b).find(
-                                                                    '.daochu'
-                                                                )[i]
-                                                            ).find('input')[j]
-                                                                .value
-                                                        )
-                                                    );
-                                                }
-                                                max.sort(function (a, b) {
-                                                    return a - b;
-                                                });
-                                            }
-                                            if (
-                                                Number(
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('.datareadyfoot')[i1]
-                                                        .innerHTML
-                                                ) +
-                                                    '' !==
-                                                NaN + ''
-                                            ) {
-                                                if (
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('.datareadyfoot')[i1]
-                                                        .innerHTML !== '' &&
-                                                    $(
-                                                        $(b).find('.daochu')[i]
-                                                    ).find('.datareadyfoot')[i1]
-                                                        .innerHTML !== '\\'
-                                                ) {
-                                                    if (
-                                                        max[0] == 'undefined' ||
-                                                        max[0] == undefined ||
-                                                        isNaN(max[0])
-                                                    ) {
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[i1].innerHTML = 0;
-                                                    } else {
-                                                        $(
-                                                            $(b).find(
-                                                                '.daochu'
-                                                            )[i]
-                                                        ).find(
-                                                            '.datareadyfoot'
-                                                        )[i1].innerHTML =
-                                                            max[0];
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        this.cavantable[dc] = JSON.parse(nowdai);
-                        this.cavantable[dc].daochutable = adiv;
-                        // for(let cc =0;cc<$(b).find('.heibin').length;cc++){
-                        // 		for(let cc1 =0;cc1<$($(b).find('.heibin')[cc]).attr('name').split(',').length;cc1++){
-                        // 			if($($(b).find('.heibin')[cc]).attr('name').split(',')[cc1]){
-                        // 				let bb = $(b).find('#'+$($(b).find('.heibin')[cc]).attr('name').split(',')[cc1]).length
-                        // 				for(let cc2 = 0;cc2<bb;cc2++){
-                        // 					$($(b).find('#'+$($(b).find('.heibin')[cc]).attr('name').split(',')[cc1])[0]).remove()
-                        // 				}
-                        // 			}
-                        //             }
-                        // 		}
-
-                        await this.delay(10);
-                        this.$emit('percentage1', 100);
-                        await this.delay(10);
-                        console.log('结束2');
-                        //    $('.report').append(b);
-
-                        //    $("#"+this.cavantable[dc].Name).hide();
-                        //  $("#ParameterReport22").hide();
-
-                        // for(let i23 = 1;i23<10;i23++){
-                        //             await this.delay(i23)
-                        //              this.$emit('percentage1',80+parseFloat(i23*2))
-                        //         }
-                        let width1 = [];
-                        for (
-                            let a = parseFloat(
-                                this.cavantable[dc].ParameterReportItemtList.dd
-                                    .startpox
-                            );
-                            a <= this.cavantable[dc].endpox;
-                            a++
-                        ) {
-                            let a1 = {
-                                wpx: parseFloat(
-                                    $($(b).find('col')[a]).attr('width')
-                                ),
-                            };
-                            width1.push(a1);
-                        }
-                        let width = [];
-                        for (let c1 = 0; c1 < $(b).find('col').length; c1++) {
-                            let a = {
-                                wpx: parseFloat(
-                                    $($(b).find('col')[c1]).attr('width')
-                                ),
-                            };
-                            width.push(a);
-                        }
-                        //   console.log("width1",width1)
-                        //   console.log( this.cavantable[dc])
-                        for (
-                            let ai = 0;
-                            ai < this.cavantable[dc].numpage;
-                            ai++
-                        ) {
-                            width = this.insert(
-                                width,
-                                width1,
-                                parseFloat(
-                                    this.cavantable[dc].ParameterReportItemtList
-                                        .dd.startpox
-                                )
-                            );
-                        }
-
-                        let height = [];
-                        for (let c1 = 0; c1 < $(b).find('tr').length; c1++) {
-                            let a = {
-                                hpx: parseFloat(
-                                    $($(b).find('tr')[c1]).height()
-                                ),
-                            };
-                            height.push(a);
-                        }
-                        //   console.log("width",width)
-                        //   console.log( this.cavantable[dc].numpage)
-                        import('@/vendor/Export5Excel.js').then((excel) => {
-                            excel.export_table_to_excel(b, width, height);
-                            if (dc == dcnum - 1 || dcnum == 1) {
-                                this.$store.state.isShow = false;
-                                $('.btablecover').hide();
-                            }
-                            console.log('data', new Date());
-                        });
-                    }
-
-                    // }, 1000);
-                }
+                });
             }
         },
         //搜索
@@ -4023,7 +1315,7 @@ export default {
                 }
                 this.cavantable[
                     ic
-                ].ParameterReportItemtList.dd.kopngjianarray.forEach((item) => {
+                ].ParameterReportItemtList.dd.kopngjianarray.forEach(item => {
                     if (item.kjnum) {
                         searchdata.push(item.kjnum);
                     }
@@ -4051,21 +1343,18 @@ export default {
                     a == '默认查询'
                 ) {
                     //  alert('111')
-                    let wantdata =
-                        this.cavantable[ic].ParameterReportItemtList.dd;
-                    wantnum =
-                        this.cavantable[ic].ParameterReportItemtList.dd
-                            .cellparaarray;
+                    let wantdata = this.cavantable[ic].ParameterReportItemtList
+                        .dd;
+                    wantnum = this.cavantable[ic].ParameterReportItemtList.dd
+                        .cellparaarray;
                     this.cavantable[ic].sju = this.cavantable[
                         ic
-                    ].ParameterReportItemtList.dd.cellparaarray.filter(
-                        (item) => {
-                            if (item.itemtype == '辅助项') {
-                                return item;
-                            }
+                    ].ParameterReportItemtList.dd.cellparaarray.filter(item => {
+                        if (item.itemtype == '辅助项') {
+                            return item;
                         }
-                    );
-                    wantnum = wantnum.filter((item) => {
+                    });
+                    wantnum = wantnum.filter(item => {
                         if (item.itemtype !== '辅助项') {
                             return item;
                         }
@@ -4107,8 +1396,7 @@ export default {
                         }
                         this.cavantable[
                             ic
-                        ].ParameterReportItemtList.dd.kzresourcedataitemarray =
-                            dataarry;
+                        ].ParameterReportItemtList.dd.kzresourcedataitemarray = dataarry;
                     }
                     end = {};
                     end.kzresource = wantdata.kzresource;
@@ -4213,17 +1501,17 @@ export default {
                         }
                     }
 
-                    let onenum = wantnum.filter((item) => {
+                    let onenum = wantnum.filter(item => {
                         if (item.resource == '历史归档') {
                             return item;
                         }
                     });
-                    let twonum = wantnum.filter((item) => {
+                    let twonum = wantnum.filter(item => {
                         if (item.resource == '统计归档') {
                             return item;
                         }
                     });
-                    let threenum = wantnum.filter((item) => {
+                    let threenum = wantnum.filter(item => {
                         if (item.resource == '外部数据源') {
                             return item;
                         }
@@ -4245,8 +1533,8 @@ export default {
                         await this.$axios({
                             method: 'post',
                             url: `/api/ParameterReport/SearchItemData`,
-                            data: one,
-                        }).then((res) => {
+                            data: one
+                        }).then(res => {
                             console.log('历史', res);
                             if (
                                 res.data.data == '无数据' ||
@@ -4354,8 +1642,8 @@ export default {
                             await this.$axios({
                                 method: 'post',
                                 url: `/api/ParameterReport/SearchItemData`,
-                                data: one,
-                            }).then((res) => {
+                                data: one
+                            }).then(res => {
                                 console.log('历史', res);
                                 if (
                                     res.data.data == '无数据' ||
@@ -4475,8 +1763,8 @@ export default {
                             await this.$axios({
                                 method: 'post',
                                 url: `/api/ParameterReport/SearchItemData`,
-                                data: one,
-                            }).then((res) => {
+                                data: one
+                            }).then(res => {
                                 if (
                                     res.data.data == '无数据' ||
                                     res.data.data == '[]'
@@ -4565,9 +1853,9 @@ export default {
                     await this.$axios({
                         method: 'post',
                         url: `/api/ParameterReport/SearchExtensionData`,
-                        data: end,
+                        data: end
                     })
-                        .then((res) => {
+                        .then(res => {
                             console.log('res', JSON.parse(res.data.data));
                             var a2 = [];
                             if (res.data.data !== '无数据') {
@@ -4718,14 +2006,15 @@ export default {
                                                         this.cavantable[ic].page
                                                     );
                                             }
-                                            let numd =
-                                                this.cavantable[ic].nowlength;
+                                            let numd = this.cavantable[ic]
+                                                .nowlength;
 
-                                            this.cavantable[ic].numpage =
-                                                Math.ceil(
-                                                    JSON.parse(wantdata)
-                                                        .length / numd
-                                                );
+                                            this.cavantable[
+                                                ic
+                                            ].numpage = Math.ceil(
+                                                JSON.parse(wantdata).length /
+                                                    numd
+                                            );
                                             $(
                                                 '#' +
                                                     this.cavantable[ic].Name +
@@ -4735,11 +2024,12 @@ export default {
                                                 '#' +
                                                     this.cavantable[ic].Name +
                                                     'page'
-                                            ).find('.end')[0].innerHTML =
-                                                Math.ceil(
-                                                    JSON.parse(wantdata)
-                                                        .length / numd
-                                                );
+                                            ).find(
+                                                '.end'
+                                            )[0].innerHTML = Math.ceil(
+                                                JSON.parse(wantdata).length /
+                                                    numd
+                                            );
                                         } else {
                                             if (
                                                 $(
@@ -4758,23 +2048,25 @@ export default {
                                                         this.cavantable[ic].page
                                                     );
                                             }
-                                            let numd =
-                                                this.cavantable[ic].nowlength;
+                                            let numd = this.cavantable[ic]
+                                                .nowlength;
 
-                                            this.cavantable[ic].numpage =
-                                                Math.ceil(
-                                                    JSON.parse(wantdata)
-                                                        .length / numd
-                                                );
+                                            this.cavantable[
+                                                ic
+                                            ].numpage = Math.ceil(
+                                                JSON.parse(wantdata).length /
+                                                    numd
+                                            );
                                             $(
                                                 '#' +
                                                     this.cavantable[ic].Name +
                                                     'page'
-                                            ).find('.end')[0].innerHTML =
-                                                Math.ceil(
-                                                    JSON.parse(wantdata)
-                                                        .length / numd
-                                                );
+                                            ).find(
+                                                '.end'
+                                            )[0].innerHTML = Math.ceil(
+                                                JSON.parse(wantdata).length /
+                                                    numd
+                                            );
                                         }
                                     }
                                 }
@@ -4810,7 +2102,7 @@ export default {
 
                             // }
                         })
-                        .then((re1) => {
+                        .then(re1 => {
                             this.$nextTick(() => {
                                 for (
                                     let ac = 0;
@@ -5006,7 +2298,7 @@ export default {
                                     this.cavantable[is].nowdata.push({
                                         value: null,
                                         modify: '可修改',
-                                        modifyname: null,
+                                        modifyname: null
                                     });
                                 }
                                 if (
@@ -5019,7 +2311,7 @@ export default {
                                         0,
                                         {
                                             value: null,
-                                            modifyname: null,
+                                            modifyname: null
                                         }
                                     );
                                 }
@@ -5163,8 +2455,9 @@ export default {
                                     ).find('.dataready')[
                                         this.ead
                                     ].style.fontWeight;
-                                    inp.id =
-                                        this.cavantable[is].nowdata[this.an].id;
+                                    inp.id = this.cavantable[is].nowdata[
+                                        this.an
+                                    ].id;
                                     if (this.checked == 1) {
                                         inp.readOnly = true;
                                     } else {
@@ -5182,12 +2475,10 @@ export default {
                                             this.cavantable[is].shi5.id ==
                                             this.ead
                                         ) {
-                                            xsnumber =
-                                                this.cavantable[is].shi5
-                                                    .xsnumber;
-                                            de =
-                                                this.cavantable[is].shi5
-                                                    .defauldisplay;
+                                            xsnumber = this.cavantable[is].shi5
+                                                .xsnumber;
+                                            de = this.cavantable[is].shi5
+                                                .defauldisplay;
                                             break;
                                         } else {
                                             xsnumber = '';
@@ -5203,9 +2494,8 @@ export default {
                                             this.cavantable[is].shi6.id ==
                                             this.ead
                                         ) {
-                                            itemformat =
-                                                this.cavantable[is].shi6
-                                                    .itemformat;
+                                            itemformat = this.cavantable[is]
+                                                .shi6.itemformat;
                                             break;
                                         } else {
                                             itemformat = null;
@@ -5290,16 +2580,14 @@ export default {
                                                     inp.value = de;
                                                 }
                                             } else {
-                                                inp.value =
-                                                    this.cavantable[is].nowdata[
-                                                        this.an
-                                                    ].value;
+                                                inp.value = this.cavantable[
+                                                    is
+                                                ].nowdata[this.an].value;
                                             }
                                         } else {
-                                            inp.value =
-                                                this.cavantable[is].nowdata[
-                                                    this.an
-                                                ].value;
+                                            inp.value = this.cavantable[
+                                                is
+                                            ].nowdata[this.an].value;
                                         }
                                     }
                                     if (inp.value) {
@@ -5493,8 +2781,9 @@ export default {
                                     ).find('.dataready')[
                                         this.ead
                                     ].style.fontWeight;
-                                    inp.id =
-                                        this.cavantable[is].nowdata[this.an].id;
+                                    inp.id = this.cavantable[is].nowdata[
+                                        this.an
+                                    ].id;
                                     if (this.checked == 1) {
                                         inp.readOnly = true;
                                     } else {
@@ -5513,12 +2802,11 @@ export default {
                                             this.cavantable[is].shi5[i1].id ==
                                             this.ead
                                         ) {
-                                            xsnumber =
-                                                this.cavantable[is].shi5[i1]
-                                                    .xsnumber;
-                                            de =
-                                                this.cavantable[is].shi5[i1]
-                                                    .defauldisplay;
+                                            xsnumber = this.cavantable[is].shi5[
+                                                i1
+                                            ].xsnumber;
+                                            de = this.cavantable[is].shi5[i1]
+                                                .defauldisplay;
                                             break;
                                         } else {
                                             xsnumber = '';
@@ -5534,9 +2822,8 @@ export default {
                                             this.cavantable[is].shi6[i1].id ==
                                             this.ead
                                         ) {
-                                            itemformat =
-                                                this.cavantable[is].shi6[i1]
-                                                    .itemformat;
+                                            itemformat = this.cavantable[is]
+                                                .shi6[i1].itemformat;
                                             break;
                                         } else {
                                             itemformat = null;
@@ -5616,16 +2903,14 @@ export default {
                                                     inp.value = de;
                                                 }
                                             } else {
-                                                inp.value =
-                                                    this.cavantable[is].nowdata[
-                                                        this.an
-                                                    ].value;
+                                                inp.value = this.cavantable[
+                                                    is
+                                                ].nowdata[this.an].value;
                                             }
                                         } else {
-                                            inp.value =
-                                                this.cavantable[is].nowdata[
-                                                    this.an
-                                                ].value;
+                                            inp.value = this.cavantable[
+                                                is
+                                            ].nowdata[this.an].value;
                                         }
                                     }
                                     if (inp.value) {
@@ -5676,12 +2961,9 @@ export default {
                         this.cavantable[is].ParameterReportItemtList.dd
                             .kzsummopos == '分布在后'
                     ) {
-                        let sumdata =
-                            this.cavantable[
-                                is
-                            ].ParameterReportItemtList.dd.kzsummotype.split(
-                                ','
-                            );
+                        let sumdata = this.cavantable[
+                            is
+                        ].ParameterReportItemtList.dd.kzsummotype.split(',');
                         this.snum = this.cavantable[is].nowy - sumdata.length;
                         this.enum = this.cavantable[is].nowy - sumdata.length;
                         this.roww = this.cavantable[is].endpox;
@@ -5718,7 +3000,7 @@ export default {
                                     this.cavantable[is].nowdata.push({
                                         value: null,
                                         modify: '可修改',
-                                        modifyname: null,
+                                        modifyname: null
                                     });
                                 }
                                 if (
@@ -5731,7 +3013,7 @@ export default {
                                         0,
                                         {
                                             value: null,
-                                            modifyname: null,
+                                            modifyname: null
                                         }
                                     );
                                 }
@@ -5878,8 +3160,9 @@ export default {
                                     ).find('.dataready')[
                                         this.ead
                                     ].style.fontWeight;
-                                    inp.id =
-                                        this.cavantable[is].nowdata[this.an].id;
+                                    inp.id = this.cavantable[is].nowdata[
+                                        this.an
+                                    ].id;
                                     if (this.checked == 1) {
                                         inp.readOnly = true;
                                     } else {
@@ -5898,12 +3181,10 @@ export default {
                                             this.cavantable[is].shi5.id ==
                                             this.ead
                                         ) {
-                                            xsnumber =
-                                                this.cavantable[is].shi5
-                                                    .xsnumber;
-                                            de =
-                                                this.cavantable[is].shi5
-                                                    .defauldisplay;
+                                            xsnumber = this.cavantable[is].shi5
+                                                .xsnumber;
+                                            de = this.cavantable[is].shi5
+                                                .defauldisplay;
                                             break;
                                         } else {
                                             xsnumber = '';
@@ -5919,9 +3200,8 @@ export default {
                                             this.cavantable[is].shi6.id ==
                                             this.ead
                                         ) {
-                                            itemformat =
-                                                this.cavantable[is].shi6
-                                                    .itemformat;
+                                            itemformat = this.cavantable[is]
+                                                .shi6.itemformat;
                                             break;
                                         } else {
                                             itemformat = null;
@@ -6007,16 +3287,14 @@ export default {
 
                                                 //             }
                                             } else {
-                                                inp.value =
-                                                    this.cavantable[is].nowdata[
-                                                        this.an
-                                                    ].value;
+                                                inp.value = this.cavantable[
+                                                    is
+                                                ].nowdata[this.an].value;
                                             }
                                         } else {
-                                            inp.value =
-                                                this.cavantable[is].nowdata[
-                                                    this.an
-                                                ].value;
+                                            inp.value = this.cavantable[
+                                                is
+                                            ].nowdata[this.an].value;
                                         }
                                     }
                                     if (inp.value) {
@@ -6255,8 +3533,9 @@ export default {
                                     ).find('.dataready')[
                                         this.ead
                                     ].style.fontFamily;
-                                    inp.id =
-                                        this.cavantable[is].nowdata[this.an].id;
+                                    inp.id = this.cavantable[is].nowdata[
+                                        this.an
+                                    ].id;
 
                                     if (this.checked == 1) {
                                         inp.readOnly = true;
@@ -6276,12 +3555,11 @@ export default {
                                             this.cavantable[is].shi5[i1].id ==
                                             this.ead
                                         ) {
-                                            xsnumber =
-                                                this.cavantable[is].shi5[i1]
-                                                    .xsnumber;
-                                            de =
-                                                this.cavantable[is].shi5[i1]
-                                                    .defauldisplay;
+                                            xsnumber = this.cavantable[is].shi5[
+                                                i1
+                                            ].xsnumber;
+                                            de = this.cavantable[is].shi5[i1]
+                                                .defauldisplay;
                                             break;
                                         } else {
                                             xsnumber = '';
@@ -6297,9 +3575,8 @@ export default {
                                             this.cavantable[is].shi6[i1].id ==
                                             this.ead
                                         ) {
-                                            itemformat =
-                                                this.cavantable[is].shi6[i1]
-                                                    .itemformat;
+                                            itemformat = this.cavantable[is]
+                                                .shi6[i1].itemformat;
                                             break;
                                         } else {
                                             itemformat = '';
@@ -6401,24 +3678,20 @@ export default {
                                                     inp.value = de;
                                                 }
                                             } else {
-                                                inp.value =
-                                                    this.cavantable[is].nowdata[
-                                                        this.an
-                                                    ].value;
-                                                inp.id =
-                                                    this.cavantable[is].nowdata[
-                                                        this.an
-                                                    ].id;
+                                                inp.value = this.cavantable[
+                                                    is
+                                                ].nowdata[this.an].value;
+                                                inp.id = this.cavantable[
+                                                    is
+                                                ].nowdata[this.an].id;
                                             }
                                         } else {
-                                            inp.value =
-                                                this.cavantable[is].nowdata[
-                                                    this.an
-                                                ].value;
-                                            inp.id =
-                                                this.cavantable[is].nowdata[
-                                                    this.an
-                                                ].id;
+                                            inp.value = this.cavantable[
+                                                is
+                                            ].nowdata[this.an].value;
+                                            inp.id = this.cavantable[
+                                                is
+                                            ].nowdata[this.an].id;
                                         }
                                     }
 
@@ -6516,7 +3789,7 @@ export default {
                                 for (let j = 0; j < endw; j++) {
                                     let aindex;
                                     let result = this.cavantable[is].shi5.some(
-                                        function (item, index) {
+                                        function(item, index) {
                                             if (item.id == j) {
                                                 aindex = index;
                                                 return true;
@@ -6701,15 +3974,13 @@ export default {
                                                                 .shi5[ss].id ==
                                                             j
                                                         ) {
-                                                            heji =
-                                                                this.getPointNum(
-                                                                    heji,
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].shi5[ss]
-                                                                        .xsnumber
-                                                                );
+                                                            heji = this.getPointNum(
+                                                                heji,
+                                                                this.cavantable[
+                                                                    is
+                                                                ].shi5[ss]
+                                                                    .xsnumber
+                                                            );
                                                         }
                                                     }
                                                     if (!heji) {
@@ -6780,15 +4051,16 @@ export default {
                                                 `#row-` +
                                                     parseInt(k + endh + nowsum)
                                             )[0]
-                                        ).find('.datareadyfoot')[j].innerHTML =
-                                            null;
+                                        ).find('.datareadyfoot')[
+                                            j
+                                        ].innerHTML = null;
                                     }
                                 }
                             } else if (sumdata[k] == 'min') {
                                 for (let j = 0; j < endw; j++) {
                                     let aindex;
                                     let result = this.cavantable[is].shi5.some(
-                                        function (item, index) {
+                                        function(item, index) {
                                             if (item.id == j) {
                                                 aindex = index;
                                                 return true;
@@ -6868,7 +4140,7 @@ export default {
                                         }
                                     }
 
-                                    min.sort(function (a, b) {
+                                    min.sort(function(a, b) {
                                         return a - b;
                                     });
                                     if (
@@ -7060,7 +4332,7 @@ export default {
                                 for (let j = 0; j < endw; j++) {
                                     let aindex;
                                     let result = this.cavantable[is].shi5.some(
-                                        function (item, index) {
+                                        function(item, index) {
                                             if (item.id == j) {
                                                 aindex = index;
                                                 return true;
@@ -7245,15 +4517,13 @@ export default {
                                                                 .shi5[ss].id ==
                                                             j
                                                         ) {
-                                                            mean =
-                                                                this.getPointNum(
-                                                                    mean,
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].shi5[ss]
-                                                                        .xsnumber
-                                                                );
+                                                            mean = this.getPointNum(
+                                                                mean,
+                                                                this.cavantable[
+                                                                    is
+                                                                ].shi5[ss]
+                                                                    .xsnumber
+                                                            );
                                                         }
                                                     }
                                                     if (
@@ -7361,7 +4631,7 @@ export default {
                                 for (let j = 0; j < endw; j++) {
                                     let aindex;
                                     let result = this.cavantable[is].shi5.some(
-                                        function (item, index) {
+                                        function(item, index) {
                                             if (item.id == j) {
                                                 aindex = index;
                                                 return true;
@@ -7439,7 +4709,7 @@ export default {
                                             );
                                         }
                                     }
-                                    min.sort(function (a, b) {
+                                    min.sort(function(a, b) {
                                         return a - b;
                                     });
                                     if (
@@ -7629,12 +4899,9 @@ export default {
                             .kzsummopos == '分布在前'
                     ) {
                         console.log('sssssssssssssssssssssssssssss');
-                        let sumdata =
-                            this.cavantable[
-                                is
-                            ].ParameterReportItemtList.dd.kzsummotype.split(
-                                ','
-                            );
+                        let sumdata = this.cavantable[
+                            is
+                        ].ParameterReportItemtList.dd.kzsummotype.split(',');
                         this.snum = this.cavantable[is].nowy;
                         this.enum = this.cavantable[is].nowy;
                         this.roww = this.cavantable[is].endpox;
@@ -7671,7 +4938,7 @@ export default {
                                     this.cavantable[is].nowdata.push({
                                         value: null,
                                         modify: '可修改',
-                                        modifyname: null,
+                                        modifyname: null
                                     });
                                 }
                                 if (
@@ -7684,7 +4951,7 @@ export default {
                                         0,
                                         {
                                             value: null,
-                                            modifyname: null,
+                                            modifyname: null
                                         }
                                     );
                                 }
@@ -7827,8 +5094,9 @@ export default {
                                     ).find('.dataready')[
                                         this.ead
                                     ].style.fontWeight;
-                                    inp.id =
-                                        this.cavantable[is].nowdata[this.an].id;
+                                    inp.id = this.cavantable[is].nowdata[
+                                        this.an
+                                    ].id;
                                     if (this.checked == 1) {
                                         inp.readOnly = true;
                                     } else {
@@ -7847,12 +5115,10 @@ export default {
                                             this.cavantable[is].shi5.id ==
                                             this.ead
                                         ) {
-                                            xsnumber =
-                                                this.cavantable[is].shi5
-                                                    .xsnumber;
-                                            de =
-                                                this.cavantable[is].shi5
-                                                    .defauldisplay;
+                                            xsnumber = this.cavantable[is].shi5
+                                                .xsnumber;
+                                            de = this.cavantable[is].shi5
+                                                .defauldisplay;
                                             break;
                                         } else {
                                             xsnumber = '';
@@ -7868,9 +5134,8 @@ export default {
                                             this.cavantable[is].shi6.id ==
                                             this.ead
                                         ) {
-                                            itemformat =
-                                                this.cavantable[is].shi6
-                                                    .itemformat;
+                                            itemformat = this.cavantable[is]
+                                                .shi6.itemformat;
                                             break;
                                         } else {
                                             itemformat = '';
@@ -7955,16 +5220,14 @@ export default {
                                                     inp.value = de;
                                                 }
                                             } else {
-                                                inp.value =
-                                                    this.cavantable[is].nowdata[
-                                                        this.an
-                                                    ].value;
+                                                inp.value = this.cavantable[
+                                                    is
+                                                ].nowdata[this.an].value;
                                             }
                                         } else {
-                                            inp.value =
-                                                this.cavantable[is].nowdata[
-                                                    this.an
-                                                ].value;
+                                            inp.value = this.cavantable[
+                                                is
+                                            ].nowdata[this.an].value;
                                         }
                                     }
                                     if (inp.value) {
@@ -8167,8 +5430,9 @@ export default {
                                     ).find('.dataready')[
                                         this.ead
                                     ].style.fontWeight;
-                                    inp.id =
-                                        this.cavantable[is].nowdata[this.an].id;
+                                    inp.id = this.cavantable[is].nowdata[
+                                        this.an
+                                    ].id;
                                     if (this.checked == 1) {
                                         inp.readOnly = true;
                                     } else {
@@ -8186,12 +5450,11 @@ export default {
                                             this.cavantable[is].shi5[i1].id ==
                                             this.ead
                                         ) {
-                                            xsnumber =
-                                                this.cavantable[is].shi5[i1]
-                                                    .xsnumber;
-                                            de =
-                                                this.cavantable[is].shi5[i1]
-                                                    .defauldisplay;
+                                            xsnumber = this.cavantable[is].shi5[
+                                                i1
+                                            ].xsnumber;
+                                            de = this.cavantable[is].shi5[i1]
+                                                .defauldisplay;
                                             break;
                                         } else {
                                             xsnumber = '';
@@ -8207,9 +5470,8 @@ export default {
                                             this.cavantable[is].shi6[i1].id ==
                                             this.ead
                                         ) {
-                                            itemformat =
-                                                this.cavantable[is].shi6[i1]
-                                                    .itemformat;
+                                            itemformat = this.cavantable[is]
+                                                .shi6[i1].itemformat;
                                             break;
                                         } else {
                                             itemformat = null;
@@ -8293,16 +5555,14 @@ export default {
                                                     inp.value = de;
                                                 }
                                             } else {
-                                                inp.value =
-                                                    this.cavantable[is].nowdata[
-                                                        this.an
-                                                    ].value;
+                                                inp.value = this.cavantable[
+                                                    is
+                                                ].nowdata[this.an].value;
                                             }
                                         } else {
-                                            inp.value =
-                                                this.cavantable[is].nowdata[
-                                                    this.an
-                                                ].value;
+                                            inp.value = this.cavantable[
+                                                is
+                                            ].nowdata[this.an].value;
                                         }
                                     }
                                     if (inp.value) {
@@ -8372,7 +5632,7 @@ export default {
                                     let aindex;
                                     let pdz = false;
                                     let result = this.cavantable[is].shi5.some(
-                                        function (item, index) {
+                                        function(item, index) {
                                             if (item.id == j) {
                                                 aindex = index;
                                                 return true;
@@ -8556,15 +5816,13 @@ export default {
                                                                 .shi5[ss].id ==
                                                             j
                                                         ) {
-                                                            heji =
-                                                                this.getPointNum(
-                                                                    heji,
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].shi5[ss]
-                                                                        .xsnumber
-                                                                );
+                                                            heji = this.getPointNum(
+                                                                heji,
+                                                                this.cavantable[
+                                                                    is
+                                                                ].shi5[ss]
+                                                                    .xsnumber
+                                                            );
                                                         }
                                                     }
                                                     if (!heji) {
@@ -8654,7 +5912,7 @@ export default {
                                     let aindex;
                                     let pdz = false;
                                     let result = this.cavantable[is].shi5.some(
-                                        function (item, index) {
+                                        function(item, index) {
                                             if (item.id == j) {
                                                 aindex = index;
                                                 return true;
@@ -8731,7 +5989,7 @@ export default {
                                             );
                                         }
                                     }
-                                    min.sort(function (a, b) {
+                                    min.sort(function(a, b) {
                                         return a - b;
                                     });
                                     if (
@@ -8905,7 +6163,7 @@ export default {
                                     let aindex;
                                     let pdz = false;
                                     let result = this.cavantable[is].shi5.some(
-                                        function (item, index) {
+                                        function(item, index) {
                                             if (item.id == j) {
                                                 aindex = index;
                                                 return true;
@@ -9084,15 +6342,13 @@ export default {
                                                                 .shi5[ss].id ==
                                                             j
                                                         ) {
-                                                            mean =
-                                                                this.getPointNum(
-                                                                    mean,
-                                                                    this
-                                                                        .cavantable[
-                                                                        is
-                                                                    ].shi5[ss]
-                                                                        .xsnumber
-                                                                );
+                                                            mean = this.getPointNum(
+                                                                mean,
+                                                                this.cavantable[
+                                                                    is
+                                                                ].shi5[ss]
+                                                                    .xsnumber
+                                                            );
                                                         }
                                                     }
                                                     if (
@@ -9185,7 +6441,7 @@ export default {
                                     let aindex;
                                     let pdz = false;
                                     let result = this.cavantable[is].shi5.some(
-                                        function (item, index) {
+                                        function(item, index) {
                                             if (item.id == j) {
                                                 aindex = index;
                                                 return true;
@@ -9262,7 +6518,7 @@ export default {
                                             );
                                         }
                                     }
-                                    min.sort(function (a, b) {
+                                    min.sort(function(a, b) {
                                         return a - b;
                                     });
                                     if (
@@ -9418,8 +6674,9 @@ export default {
                                             ).find(
                                                 `#row-` + parseInt(k + alength)
                                             )[0]
-                                        ).find('.datareadyfoot')[j].innerHTML =
-                                            null;
+                                        ).find('.datareadyfoot')[
+                                            j
+                                        ].innerHTML = null;
                                     }
                                 }
                             }
@@ -9488,7 +6745,7 @@ export default {
                                 ) {
                                     this.cavantable[is].nowdata.push({
                                         value: null,
-                                        modify: '辅助项',
+                                        modify: '辅助项'
                                     });
                                 }
                                 if (
@@ -9515,7 +6772,7 @@ export default {
                                             this.an,
                                             0,
                                             {
-                                                value: null,
+                                                value: null
                                             }
                                         );
                                     }
@@ -9532,12 +6789,11 @@ export default {
                                             this.cavantable[is].shi5[i1].id ==
                                             this.enum
                                         ) {
-                                            xsnumber =
-                                                this.cavantable[is].shi5[i1]
-                                                    .xsnumber;
-                                            de =
-                                                this.cavantable[is].shi5[i1]
-                                                    .defauldisplay;
+                                            xsnumber = this.cavantable[is].shi5[
+                                                i1
+                                            ].xsnumber;
+                                            de = this.cavantable[is].shi5[i1]
+                                                .defauldisplay;
                                             break;
                                         } else {
                                             xsnumber = '';
@@ -9553,9 +6809,8 @@ export default {
                                             this.cavantable[is].shi6[i1].id ==
                                             this.enum
                                         ) {
-                                            itemformat =
-                                                this.cavantable[is].shi6[i1]
-                                                    .itemformat;
+                                            itemformat = this.cavantable[is]
+                                                .shi6[i1].itemformat;
                                             break;
                                         } else {
                                             itemformat = null;
@@ -9645,16 +6900,14 @@ export default {
                                                     inp.value = de;
                                                 }
                                             } else {
-                                                inp.value =
-                                                    this.cavantable[is].nowdata[
-                                                        this.an
-                                                    ].value;
+                                                inp.value = this.cavantable[
+                                                    is
+                                                ].nowdata[this.an].value;
                                             }
                                         } else {
-                                            inp.value =
-                                                this.cavantable[is].nowdata[
-                                                    this.an
-                                                ].value;
+                                            inp.value = this.cavantable[
+                                                is
+                                            ].nowdata[this.an].value;
                                         }
                                     }
                                     if (inp.value) {
@@ -9795,8 +7048,9 @@ export default {
                                     } else {
                                         inp.readOnly = false;
                                     }
-                                    inp.id =
-                                        this.cavantable[is].nowdata[this.an].id;
+                                    inp.id = this.cavantable[is].nowdata[
+                                        this.an
+                                    ].id;
                                     inp.classList.add('inp');
                                     if (inp.id !== 'undefined') {
                                         $(
@@ -9845,7 +7099,7 @@ export default {
                                             this.an,
                                             0,
                                             {
-                                                value: null,
+                                                value: null
                                             }
                                         );
                                     }
@@ -9861,12 +7115,10 @@ export default {
                                             this.cavantable[is].shi5.id ==
                                             this.enum
                                         ) {
-                                            xsnumber =
-                                                this.cavantable[is].shi5
-                                                    .xsnumber;
-                                            de =
-                                                this.cavantable[is].shi5[i1]
-                                                    .defauldisplay;
+                                            xsnumber = this.cavantable[is].shi5
+                                                .xsnumber;
+                                            de = this.cavantable[is].shi5[i1]
+                                                .defauldisplay;
                                             break;
                                         } else {
                                             xsnumber = '';
@@ -9882,9 +7134,8 @@ export default {
                                             this.cavantable[is].shi6.id ==
                                             this.enum
                                         ) {
-                                            itemformat =
-                                                this.cavantable[is].shi6
-                                                    .itemformat;
+                                            itemformat = this.cavantable[is]
+                                                .shi6.itemformat;
                                             break;
                                         } else {
                                             itemformat = '';
@@ -9973,16 +7224,14 @@ export default {
                                                     inp.value = de;
                                                 }
                                             } else {
-                                                inp.value =
-                                                    this.cavantable[is].nowdata[
-                                                        this.an
-                                                    ].value;
+                                                inp.value = this.cavantable[
+                                                    is
+                                                ].nowdata[this.an].value;
                                             }
                                         } else {
-                                            inp.value =
-                                                this.cavantable[is].nowdata[
-                                                    this.an
-                                                ].value;
+                                            inp.value = this.cavantable[
+                                                is
+                                            ].nowdata[this.an].value;
                                         }
                                     }
                                     if (inp.value) {
@@ -10123,8 +7372,9 @@ export default {
                                     } else {
                                         inp.readOnly = false;
                                     }
-                                    inp.id =
-                                        this.cavantable[is].nowdata[this.an].id;
+                                    inp.id = this.cavantable[is].nowdata[
+                                        this.an
+                                    ].id;
                                     inp.classList.add('inp');
 
                                     if (inp.id !== 'undefined') {
@@ -10202,12 +7452,11 @@ export default {
                             this.cavantable[is].ParameterReportItemtList.dd
                                 .kzsummopos == '分布在前'
                         ) {
-                            let sumdata =
-                                this.cavantable[
-                                    is
-                                ].ParameterReportItemtList.dd.kzsummotype.split(
-                                    ','
-                                );
+                            let sumdata = this.cavantable[
+                                is
+                            ].ParameterReportItemtList.dd.kzsummotype.split(
+                                ','
+                            );
                             this.colw = this.cavantable[is].endpox;
                             let sumnum = $(
                                 $('#' + this.cavantable[is].Name).find('tr')[
@@ -10230,7 +7479,7 @@ export default {
                                         let aindex;
                                         let result = this.cavantable[
                                             is
-                                        ].shi5.some(function (item, index) {
+                                        ].shi5.some(function(item, index) {
                                             if (item.id == vy) {
                                                 aindex = index;
                                                 return true;
@@ -10419,17 +7668,14 @@ export default {
                                                                 ].shi5[ii].id ==
                                                                 vy
                                                             ) {
-                                                                sum =
-                                                                    this.getPointNum(
-                                                                        sum,
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].shi5[
-                                                                            ii
-                                                                        ]
-                                                                            .xsnumber
-                                                                    );
+                                                                sum = this.getPointNum(
+                                                                    sum,
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].shi5[ii]
+                                                                        .xsnumber
+                                                                );
                                                             }
                                                         }
                                                         if (
@@ -10458,8 +7704,9 @@ export default {
                                                                 )[0]
                                                             ).find(
                                                                 '.datareadyfoot'
-                                                            )[j].innerHTML =
-                                                                sum;
+                                                            )[
+                                                                j
+                                                            ].innerHTML = sum;
                                                         }
                                                         if (
                                                             parseFloat(
@@ -10485,8 +7732,9 @@ export default {
                                                                 )[0]
                                                             ).find(
                                                                 '.datareadyfoot'
-                                                            )[j].innerHTML =
-                                                                sum;
+                                                            )[
+                                                                j
+                                                            ].innerHTML = sum;
                                                         }
                                                     }
                                                 }
@@ -10548,7 +7796,7 @@ export default {
                                         let aindex;
                                         let result = this.cavantable[
                                             is
-                                        ].shi5.some(function (item, index) {
+                                        ].shi5.some(function(item, index) {
                                             if (item.id == vy) {
                                                 aindex = index;
                                                 return true;
@@ -10720,17 +7968,14 @@ export default {
                                                                 ].shi5[ii].id ==
                                                                 vy
                                                             ) {
-                                                                mean =
-                                                                    this.getPointNum(
-                                                                        mean,
-                                                                        this
-                                                                            .cavantable[
-                                                                            is
-                                                                        ].shi5[
-                                                                            ii
-                                                                        ]
-                                                                            .xsnumber
-                                                                    );
+                                                                mean = this.getPointNum(
+                                                                    mean,
+                                                                    this
+                                                                        .cavantable[
+                                                                        is
+                                                                    ].shi5[ii]
+                                                                        .xsnumber
+                                                                );
                                                             }
                                                         }
                                                         if (
@@ -10759,8 +8004,9 @@ export default {
                                                                 )[0]
                                                             ).find(
                                                                 '.datareadyfoot'
-                                                            )[j].innerHTML =
-                                                                mean;
+                                                            )[
+                                                                j
+                                                            ].innerHTML = mean;
                                                         }
                                                         if (
                                                             parseFloat(
@@ -10786,8 +8032,9 @@ export default {
                                                                 )[0]
                                                             ).find(
                                                                 '.datareadyfoot'
-                                                            )[j].innerHTML =
-                                                                mean;
+                                                            )[
+                                                                j
+                                                            ].innerHTML = mean;
                                                         }
                                                     }
                                                 }
@@ -10827,7 +8074,7 @@ export default {
                                         let aindex;
                                         let result = this.cavantable[
                                             is
-                                        ].shi5.some(function (item, index) {
+                                        ].shi5.some(function(item, index) {
                                             if (item.id == vy) {
                                                 aindex = index;
                                                 return true;
@@ -10981,7 +8228,7 @@ export default {
                                                                 '\\';
                                                         }
                                                     } else {
-                                                        min.sort(function (
+                                                        min.sort(function(
                                                             a,
                                                             b
                                                         ) {
@@ -11054,8 +8301,9 @@ export default {
                                                                     )[0]
                                                                 ).find(
                                                                     '.datareadyfoot'
-                                                                )[j].innerHTML =
-                                                                    mindata;
+                                                                )[
+                                                                    j
+                                                                ].innerHTML = mindata;
                                                             }
                                                             if (
                                                                 parseFloat(
@@ -11085,8 +8333,9 @@ export default {
                                                                     )[0]
                                                                 ).find(
                                                                     '.datareadyfoot'
-                                                                )[j].innerHTML =
-                                                                    mindata;
+                                                                )[
+                                                                    j
+                                                                ].innerHTML = mindata;
                                                             }
                                                         }
                                                     }
@@ -11147,7 +8396,7 @@ export default {
                                         let aindex;
                                         let result = this.cavantable[
                                             is
-                                        ].shi5.some(function (item, index) {
+                                        ].shi5.some(function(item, index) {
                                             if (item.id == vy) {
                                                 aindex = index;
                                                 return true;
@@ -11266,7 +8515,7 @@ export default {
                                                 let aindex;
                                                 let result = this.cavantable[
                                                     is
-                                                ].shi5.some(function (
+                                                ].shi5.some(function(
                                                     item,
                                                     index
                                                 ) {
@@ -11313,7 +8562,7 @@ export default {
                                                                 '\\';
                                                         }
                                                     } else {
-                                                        min.sort(function (
+                                                        min.sort(function(
                                                             a,
                                                             b
                                                         ) {
@@ -11387,8 +8636,9 @@ export default {
                                                                     )[0]
                                                                 ).find(
                                                                     '.datareadyfoot'
-                                                                )[j].innerHTML =
-                                                                    mindata;
+                                                                )[
+                                                                    j
+                                                                ].innerHTML = mindata;
                                                             }
                                                             if (
                                                                 parseFloat(
@@ -11418,8 +8668,9 @@ export default {
                                                                     )[0]
                                                                 ).find(
                                                                     '.datareadyfoot'
-                                                                )[j].innerHTML =
-                                                                    mindata;
+                                                                )[
+                                                                    j
+                                                                ].innerHTML = mindata;
                                                             }
                                                         }
                                                     }
@@ -11538,10 +8789,9 @@ export default {
                         );
                     }
                     endheight2 += 1;
-                    var aaa =
-                        this.cavantable[
-                            is
-                        ].ParameterReportItemtList.dd.kzsummotype.split(',');
+                    var aaa = this.cavantable[
+                        is
+                    ].ParameterReportItemtList.dd.kzsummotype.split(',');
                     var bbb;
                     if (aaa[0] == '') {
                         bbb = 1;
@@ -12365,16 +9615,14 @@ export default {
                             $('#' + this.cavantable[i].Name).find('tr').length -
                             1;
                         var cp = [];
-                        var sc =
-                            this.cavantable[i].ParameterReportItemtList.dd
-                                .cellparaarray.length;
+                        var sc = this.cavantable[i].ParameterReportItemtList.dd
+                            .cellparaarray.length;
                         for (let i1 = 0; i1 < sc; i1++) {
-                            var c =
-                                this.cavantable[
-                                    i
-                                ].ParameterReportItemtList.dd.cellparaarray[
-                                    i1
-                                ].id.split('-');
+                            var c = this.cavantable[
+                                i
+                            ].ParameterReportItemtList.dd.cellparaarray[
+                                i1
+                            ].id.split('-');
                             if (c[0] <= endxlength && c[1] <= endylength) {
                                 cp.push(
                                     this.cavantable[i].ParameterReportItemtList
@@ -12390,7 +9638,7 @@ export default {
                     let that = this;
                     $('#' + this.cavantable[is].Name + 'page').find(
                         '.last'
-                    )[0].onclick = function () {
+                    )[0].onclick = function() {
                         that.$store.state.report = false;
                         let reg1 = new RegExp('page', 'g');
                         let wantid = $(this)
@@ -12401,20 +9649,27 @@ export default {
                             if (that.cavantable[i].Name == wantid) {
                                 if (
                                     $(
-                                        '#' + $(this).parent().parent()[0].id
+                                        '#' +
+                                            $(this)
+                                                .parent()
+                                                .parent()[0].id
                                     ).find('.numinp')[0].value <
                                         that.cavantable[i].numpage &&
                                     !isNaN(
                                         $(
                                             '#' +
-                                                $(this).parent().parent()[0].id
+                                                $(this)
+                                                    .parent()
+                                                    .parent()[0].id
                                         ).find('.numinp')[0].value
                                     )
                                 ) {
                                     if (
                                         $(
                                             '#' +
-                                                $(this).parent().parent()[0].id
+                                                $(this)
+                                                    .parent()
+                                                    .parent()[0].id
                                         ).find('.numinp')[0].value >= 1
                                     ) {
                                         let a = JSON.stringify(
@@ -12423,13 +9678,16 @@ export default {
                                         let f = JSON.parse(a);
                                         $(
                                             '#' +
-                                                $(this).parent().parent()[0].id
+                                                $(this)
+                                                    .parent()
+                                                    .parent()[0].id
                                         ).find('.numinp')[0].value++;
                                         let b =
                                             $(
                                                 '#' +
-                                                    $(this).parent().parent()[0]
-                                                        .id
+                                                    $(this)
+                                                        .parent()
+                                                        .parent()[0].id
                                             ).find('.numinp')[0].value - 1;
                                         that.cavantable[i].nowdata = f.splice(
                                             b * that.cavantable[is].nowlength,
@@ -12445,7 +9703,7 @@ export default {
                     };
                     $('#' + this.cavantable[is].Name + 'page').find(
                         '.next'
-                    )[0].onclick = function () {
+                    )[0].onclick = function() {
                         that.$store.state.report = false;
                         let reg1 = new RegExp('page', 'g');
                         let wantid = $(this)
@@ -12456,19 +9714,26 @@ export default {
                             if (that.cavantable[i].Name == wantid) {
                                 if (
                                     $(
-                                        '#' + $(this).parent().parent()[0].id
+                                        '#' +
+                                            $(this)
+                                                .parent()
+                                                .parent()[0].id
                                     ).find('.numinp')[0].value > 1 &&
                                     !isNaN(
                                         $(
                                             '#' +
-                                                $(this).parent().parent()[0].id
+                                                $(this)
+                                                    .parent()
+                                                    .parent()[0].id
                                         ).find('.numinp')[0].value
                                     )
                                 ) {
                                     if (
                                         $(
                                             '#' +
-                                                $(this).parent().parent()[0].id
+                                                $(this)
+                                                    .parent()
+                                                    .parent()[0].id
                                         ).find('.numinp')[0].value >= 1
                                     ) {
                                         let a = JSON.stringify(
@@ -12477,13 +9742,16 @@ export default {
                                         let f = JSON.parse(a);
                                         $(
                                             '#' +
-                                                $(this).parent().parent()[0].id
+                                                $(this)
+                                                    .parent()
+                                                    .parent()[0].id
                                         ).find('.numinp')[0].value--;
                                         let b =
                                             $(
                                                 '#' +
-                                                    $(this).parent().parent()[0]
-                                                        .id
+                                                    $(this)
+                                                        .parent()
+                                                        .parent()[0].id
                                             ).find('.numinp')[0].value - 1;
                                         that.cavantable[i].nowdata = f.splice(
                                             b * that.cavantable[is].nowlength,
@@ -12499,7 +9767,7 @@ export default {
                     };
                     $('#' + this.cavantable[is].Name + 'page').find(
                         '.start'
-                    )[0].onclick = function () {
+                    )[0].onclick = function() {
                         that.$store.state.report = false;
                         let reg1 = new RegExp('page', 'g');
                         let wantid = $(this)
@@ -12510,12 +9778,18 @@ export default {
                             if (that.cavantable[i].Name == wantid) {
                                 let a = JSON.stringify(that.cavantable[i].data);
                                 let f = JSON.parse(a);
-                                $('#' + $(this).parent().parent()[0].id).find(
-                                    '.numinp'
-                                )[0].value = 1;
+                                $(
+                                    '#' +
+                                        $(this)
+                                            .parent()
+                                            .parent()[0].id
+                                ).find('.numinp')[0].value = 1;
                                 let b =
                                     $(
-                                        '#' + $(this).parent().parent()[0].id
+                                        '#' +
+                                            $(this)
+                                                .parent()
+                                                .parent()[0].id
                                     ).find('.numinp')[0].value - 1;
                                 that.cavantable[i].nowdata = f.splice(
                                     b * that.cavantable[is].nowlength,
@@ -12528,7 +9802,7 @@ export default {
                     };
                     $('#' + this.cavantable[is].Name + 'page').find(
                         '.end'
-                    )[0].onclick = function () {
+                    )[0].onclick = function() {
                         that.$store.state.report = false;
                         let reg1 = new RegExp('page', 'g');
                         let wantid = $(this)
@@ -12539,12 +9813,19 @@ export default {
                             if (that.cavantable[i].Name == wantid) {
                                 let a = JSON.stringify(that.cavantable[i].data);
                                 let f = JSON.parse(a);
-                                $('#' + $(this).parent().parent()[0].id).find(
-                                    '.numinp'
-                                )[0].value = that.cavantable[i].numpage;
+                                $(
+                                    '#' +
+                                        $(this)
+                                            .parent()
+                                            .parent()[0].id
+                                ).find('.numinp')[0].value =
+                                    that.cavantable[i].numpage;
                                 let b =
                                     $(
-                                        '#' + $(this).parent().parent()[0].id
+                                        '#' +
+                                            $(this)
+                                                .parent()
+                                                .parent()[0].id
                                     ).find('.numinp')[0].value - 1;
                                 that.cavantable[i].nowdata = f.splice(
                                     b * that.cavantable[is].nowlength,
@@ -12557,7 +9838,7 @@ export default {
                     };
                     $('#' + this.cavantable[is].Name + 'page').find(
                         '.numinp'
-                    )[0].onblur = function () {
+                    )[0].onblur = function() {
                         let reg1 = new RegExp('page', 'g');
                         let wantid = $(this)
                             .parent()
@@ -12601,7 +9882,7 @@ export default {
                             }
                         }
                     };
-                    document.onkeydown = function (e, event) {
+                    document.onkeydown = function(e, event) {
                         var theEvent = window.event || e;
                         var code =
                             theEvent.keyCode ||
@@ -12685,7 +9966,7 @@ export default {
                 var that = this;
                 $(
                     $('#' + this.cavantable[is].Name).find('.datareadyhead')
-                ).click(function () {
+                ).click(function() {
                     that.$store.state.report = false;
                     let a = $(
                         '#' +
@@ -12742,15 +10023,19 @@ export default {
                         for (
                             let i = 0;
                             i <
-                            $($(this).parent().parent()[0]).find(
-                                '.datareadyhead'
-                            ).length;
+                            $(
+                                $(this)
+                                    .parent()
+                                    .parent()[0]
+                            ).find('.datareadyhead').length;
                             i++
                         ) {
                             $(
-                                $($(this).parent().parent()[0]).find(
-                                    '.datareadyhead'
-                                )[i]
+                                $(
+                                    $(this)
+                                        .parent()
+                                        .parent()[0]
+                                ).find('.datareadyhead')[i]
                             ).addClass('nowinput');
                         }
                     }
@@ -12772,14 +10057,22 @@ export default {
                                         .dd.startpox
                                 ) - 1;
                             col =
-                                parseInt($(this).parent()[0].id.split('-')[0]) -
+                                parseInt(
+                                    $(this)
+                                        .parent()[0]
+                                        .id.split('-')[0]
+                                ) -
                                 parseInt(
                                     that.cavantable[i].ParameterReportItemtList
                                         .dd.startpox
                                 ) +
                                 1;
                             row =
-                                parseInt($(this).parent()[0].id.split('-')[1]) -
+                                parseInt(
+                                    $(this)
+                                        .parent()[0]
+                                        .id.split('-')[1]
+                                ) -
                                 parseInt(
                                     that.cavantable[i].ParameterReportItemtList
                                         .dd.startpoy
@@ -12894,8 +10187,8 @@ export default {
                     that.$axios({
                         method: 'post',
                         url: '/api/HMI/HMI_ExecuteScript',
-                        data: endtable,
-                    }).then((res) => {
+                        data: endtable
+                    }).then(res => {
                         if (res.data.code == 0 && res.data.data) {
                             for (let i = 0; i < res.data.data.length; i++) {
                                 if (res.data.data[i].Property == 'Refresh') {
@@ -12909,9 +10202,10 @@ export default {
                                             res.data.data[i].Control
                                         )
                                             var a5 = {
-                                                class: that.cavantable[j]
-                                                    .ParameterReportItemtList.dd
-                                                    .cfkongjian,
+                                                class:
+                                                    that.cavantable[j]
+                                                        .ParameterReportItemtList
+                                                        .dd.cfkongjian
                                             };
                                         let a = $('#' + tablename1).find(
                                             '.nowinput'
@@ -12932,7 +10226,7 @@ export default {
                     });
                 });
                 $($('#' + this.cavantable[is].Name).find('input')).click(
-                    function () {
+                    function() {
                         that.$store.state.report = false;
                         let a = $(
                             '#' +
@@ -12980,19 +10274,26 @@ export default {
                             for (
                                 let i = 0;
                                 i <
-                                $($(this).parent().parent()[0]).find('input')
-                                    .length;
+                                $(
+                                    $(this)
+                                        .parent()
+                                        .parent()[0]
+                                ).find('input').length;
                                 i++
                             ) {
                                 $(
-                                    $($(this).parent().parent()[0]).find(
-                                        'input'
-                                    )[i]
+                                    $(
+                                        $(this)
+                                            .parent()
+                                            .parent()[0]
+                                    ).find('input')[i]
                                 ).addClass('nowinput');
                             }
                         } else if (kz == '横向扩展') {
                             var id = parseInt(
-                                $($(this).parent()[0]).attr('id').split('-')[0]
+                                $($(this).parent()[0])
+                                    .attr('id')
+                                    .split('-')[0]
                             );
 
                             for (
@@ -13049,7 +10350,9 @@ export default {
                                     ) - 1;
                                 col =
                                     parseInt(
-                                        $(this).parent()[0].id.split('-')[0]
+                                        $(this)
+                                            .parent()[0]
+                                            .id.split('-')[0]
                                     ) -
                                     parseInt(
                                         that.cavantable[i]
@@ -13059,7 +10362,9 @@ export default {
                                     1;
                                 row =
                                     parseInt(
-                                        $(this).parent()[0].id.split('-')[1]
+                                        $(this)
+                                            .parent()[0]
+                                            .id.split('-')[1]
                                     ) -
                                     parseInt(
                                         that.cavantable[i]
@@ -13179,8 +10484,8 @@ export default {
                         that.$axios({
                             method: 'post',
                             url: '/api/HMI/HMI_ExecuteScript',
-                            data: endtable,
-                        }).then((res) => {
+                            data: endtable
+                        }).then(res => {
                             if (res.data.code == 0 && res.data.data) {
                                 for (let i = 0; i < res.data.data.length; i++) {
                                     if (
@@ -13196,9 +10501,10 @@ export default {
                                                 res.data.data[i].Control
                                             )
                                                 var a5 = {
-                                                    class: that.cavantable[j]
-                                                        .ParameterReportItemtList
-                                                        .dd.cfkongjian,
+                                                    class:
+                                                        that.cavantable[j]
+                                                            .ParameterReportItemtList
+                                                            .dd.cfkongjian
                                                 };
 
                                             that.search(a5);
@@ -13291,16 +10597,14 @@ export default {
                     let endylength =
                         $('#' + this.cavantable[i].Name).find('tr').length - 1;
                     var cp = [];
-                    var sc =
-                        this.cavantable[i].ParameterReportItemtList.dd
-                            .cellparaarray.length;
+                    var sc = this.cavantable[i].ParameterReportItemtList.dd
+                        .cellparaarray.length;
                     for (let i1 = 0; i1 < sc; i1++) {
-                        var c =
-                            this.cavantable[
-                                i
-                            ].ParameterReportItemtList.dd.cellparaarray[
-                                i1
-                            ].id.split('-');
+                        var c = this.cavantable[
+                            i
+                        ].ParameterReportItemtList.dd.cellparaarray[
+                            i1
+                        ].id.split('-');
                         if (c[0] <= endxlength && c[1] <= endylength) {
                             cp.push(
                                 this.cavantable[i].ParameterReportItemtList.dd
@@ -13340,19 +10644,16 @@ export default {
                     );
                     let wantdata = JSON.parse(cv);
 
-                    wantnum =
-                        this.cavantable[i].ParameterReportItemtList.dd
-                            .cellparaarray;
+                    wantnum = this.cavantable[i].ParameterReportItemtList.dd
+                        .cellparaarray;
                     this.cavantable[i].sju = this.cavantable[
                         i
-                    ].ParameterReportItemtList.dd.cellparaarray.filter(
-                        (item) => {
-                            if (item.itemtype == '辅助项') {
-                                return item;
-                            }
+                    ].ParameterReportItemtList.dd.cellparaarray.filter(item => {
+                        if (item.itemtype == '辅助项') {
+                            return item;
                         }
-                    );
-                    wantnum = wantnum.filter((item) => {
+                    });
+                    wantnum = wantnum.filter(item => {
                         if (item.itemtype !== '辅助项') {
                             return item;
                         }
@@ -13437,17 +10738,17 @@ export default {
                             .find('input')
                             .val();
                     }
-                    let onenum = wantnum.filter((item) => {
+                    let onenum = wantnum.filter(item => {
                         if (item.resource == '历史归档') {
                             return item;
                         }
                     });
-                    let twonum = wantnum.filter((item) => {
+                    let twonum = wantnum.filter(item => {
                         if (item.resource == '统计归档') {
                             return item;
                         }
                     });
-                    let threenum = wantnum.filter((item) => {
+                    let threenum = wantnum.filter(item => {
                         if (item.resource == '外部数据源') {
                             return item;
                         }
@@ -13468,8 +10769,8 @@ export default {
                         this.$axios({
                             method: 'post',
                             url: `/api/ParameterReport/SearchItemData`,
-                            data: one,
-                        }).then((res) => {
+                            data: one
+                        }).then(res => {
                             if (
                                 res.data.data == '无数据' ||
                                 res.data.data == '[]'
@@ -13575,8 +10876,8 @@ export default {
                             this.$axios({
                                 method: 'post',
                                 url: `/api/ParameterReport/SearchItemData`,
-                                data: one,
-                            }).then((res) => {
+                                data: one
+                            }).then(res => {
                                 if (
                                     res.data.data == '无数据' ||
                                     res.data.data == '[]'
@@ -13682,8 +10983,8 @@ export default {
                             this.$axios({
                                 method: 'post',
                                 url: `/api/ParameterReport/SearchItemData`,
-                                data: one,
-                            }).then((res) => {
+                                data: one
+                            }).then(res => {
                                 console.log('外部', res);
                                 //   console.log(JSON.parse(res.data.data))
                                 if (
@@ -13783,10 +11084,10 @@ export default {
                     this.$axios({
                         method: 'post',
                         url: `/api/ParameterReport/SearchExtensionData`,
-                        data: end,
+                        data: end
                     })
-                        .then((res) => {
-                            console.log('是123', JSON.parse(res.data.data));
+                        .then(res => {
+                            console.log('是123', res.data.data);
 
                             if (
                                 res.data.data == '无数据' ||
@@ -13845,7 +11146,7 @@ export default {
                                 }
                             }
                         })
-                        .then((re1) => {
+                        .then(re1 => {
                             this.$nextTick(() => {
                                 for (
                                     let ac = 0;
@@ -13956,9 +11257,6 @@ export default {
         //赋值
         gitValue() {
             this.cavantable = this.textblockData;
-
-            console.log('sss', this.cavantable);
-
             //加层级
             for (let j = 0; j < this.textblockData.length; j++) {
                 var ZIndexs = this.data.Data.ZIndexs;
@@ -13990,11 +11288,18 @@ export default {
                             typeof data.Data.ParameterReportItemtList[j].dd ==
                             'string'
                         ) {
-                            data.Data.ParameterReportItemtList[j].dd =
-                                JSON.parse(
-                                    data.Data.ParameterReportItemtList[j].dd
-                                );
+                            data.Data.ParameterReportItemtList[
+                                j
+                            ].dd = JSON.parse(
+                                data.Data.ParameterReportItemtList[j].dd
+                            );
                         }
+                        data.Data.ParameterReportItemtList[
+                            j
+                        ].dd.zhtml = this.zhtmlFn(
+                            data.Data.ParameterReportItemtList[j].dd.zhtml,
+                            data.Data.ParameterReportItemtList[j].ElementName
+                        );
 
                         this.cavantable[a].ParameterReportItemtList =
                             data.Data.ParameterReportItemtList[j];
@@ -14010,7 +11315,7 @@ export default {
                 }
             });
             this.cavantable = daiarr;
-            this.cavantable.forEach((item) => {
+            this.cavantable.forEach(item => {
                 if (!item.ParameterReportItemtList.dd.kzsummotype) {
                     item.ParameterReportItemtList.dd.kzsummopos = '无';
                 }
@@ -14020,12 +11325,52 @@ export default {
                 this.first();
             });
         },
-    },
+        replaceZhtml(str, name) {
+            let customMultiLanguage = JSON.parse(
+                localStorage.getItem('customMultiLanguage')
+            );
+            let _obj = customMultiLanguage.find(
+                _ => _.Field == name && _.Origin == str
+            );
+            if (_obj) {
+                let currentLang = localStorage.getItem('currentLang');
+                return _obj.DicMulitLanguages[currentLang] || str;
+            }
+            return str;
+        },
+        zhtmlFn(_str, name) {
+            let that = this;
+            let str = _str
+                .split('')
+                .reverse()
+                .join('');
+            let _x = str.replace(/\/<(.*?)>/g, function(item) {
+                let _ = item.replace('/<', '').replace('>', '');
+                console.log('====>', _);
+                if (_) {
+                    _ = that.replaceZhtml(
+                        _.split('')
+                            .reverse()
+                            .join(''),
+                        name
+                    );
+                }
+                return `/<${_.split('')
+                    .reverse()
+                    .join('')}>`;
+            });
+            let fin = _x
+                .split('')
+                .reverse()
+                .join('');
+            console.log('====>fin', fin);
+            return fin;
+        }
+    }
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>
 
 <style lang="scss" scoped>
 .DateTimePicker28a {
@@ -14035,13 +11380,16 @@ export default {
     box-sizing: border-box;
     position: relative;
 }
+
 .textimportInput {
     // border:none;
     height: 34px;
 }
+
 td {
     position: relative !important;
 }
+
 input {
     font-size: 12px;
     border: none;
@@ -14060,6 +11408,7 @@ input {
     text-overflow: ellipsis;
     text-align: center;
 }
+
 .tip12 {
     position: fixed;
     width: 380px;
@@ -14069,16 +11418,19 @@ input {
     left: 750px;
     box-shadow: 0px 0px 8px black;
     background-color: #f3f3f4;
+
     .tiptop {
         width: 380px;
         height: 40px;
         background-color: #ffbc3d;
+
         img {
             width: 20px;
             height: 20px;
             margin-top: 10px;
             margin-left: 160px;
         }
+
         span {
             color: #ffffff;
             position: relative;
@@ -14086,11 +11438,13 @@ input {
             margin-left: 7px;
         }
     }
+
     .tipword {
         width: 100%;
         text-align: center;
         margin-top: 50px;
     }
+
     .tipdetermine {
         color: #ea9328;
         cursor: pointer;
@@ -14111,6 +11465,7 @@ input {
         margin-top: 40px;
         margin-left: 25px;
         height: 30px;
+
         .one {
             cursor: pointer;
             display: inline-block;
@@ -14120,6 +11475,7 @@ input {
             background-color: #e0e0e0;
             color: #7e7e7e;
         }
+
         .two {
             cursor: pointer;
             display: inline-block;
@@ -14132,6 +11488,7 @@ input {
         }
     }
 }
+
 .yd {
     margin: auto;
     top: 0 !important;
@@ -14143,6 +11500,7 @@ input {
 <style lang="scss">
 .table-box {
     height: 100%;
+
     .jexcel-content {
         height: 100%;
         overflow: hidden;

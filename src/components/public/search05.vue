@@ -59,7 +59,7 @@
                     :placeholder="lang.AlarmRecord_Time_Keyword"
                     clearable
                     :style="[{fontSize:16*1+'px'},
-                        {width: 215*1+'px'},
+                        {width: 217*1+'px'},
                         {height: 40*1+'px'}
                     ]"
                 ></el-input>
@@ -70,36 +70,36 @@
                     {width: 100*1+'px'},
                     {marginLeft: 10*1+'px'},
                     {marginTop: 10*1+'px'},
-                    {right: 230*1+'px'}
-                ]"
+                 ]"
             >{{lang.AlarmRecord_Time_Select}}</div>
-            <div class="btn pointer export" @click="confirm" :id="qrid" 
+            <div class="btn pointer" @click="confirm" :id="qrid" 
                 :style="[
                     {fontSize:16*1+'px'},
                     {height: 40*1+'px'},
                     {width: 100*1+'px'},
                     {marginLeft: 10*1+'px'},
                     {marginTop: 10*1+'px'},
-                    {right: 120*1+'px'}
-                ]"
+                 ]"
             >{{lang.AlarmRecord_Time_Sure}}</div>
             <div class="allconfim" @click="allconfirm" :id="allqrid" 
                 :style="[
                     {fontSize:16*1+'px'},
                     {height: 40*1+'px'},
                     {width: 100*1+'px'},
-                    {right: 10*1+'px'},
+                     {marginLeft: 10*1+'px'},
+                    {marginTop: 10*1+'px'},
+                 ]"
+            >{{lang.AlarmRecord_Time_AllSure}}</div>
+            <div class="export" @click="exportFn" :id="exid" 
+                :style="[
+                    {fontSize:16*1+'px'},
+                    {height: 40*1+'px'},
+                    {width: 100*1+'px'},
                     {marginLeft: 10*1+'px'},
                     {marginTop: 10*1+'px'},
-                    {lineHeight: 40*1+'px'}
-                ]"
-            >{{lang.AlarmRecord_Time_AllSure}}</div>
+                 ]"
+            >{{lang.QualityManage_SampleChoseUserControl_Export}}</div>
         </div>
-        
-        <!-- <div class="fr">
-            <div class="import">导入</div>
-            <div class="export">导出</div>
-        </div>-->
     </div>
 </template>
 
@@ -114,8 +114,10 @@ export default {
             zoom1:1,
             qrid:'',
             allqrid:'',
+            exid:'',
             cxshow:true,
             qrshow:true,
+            exshow:'',
             allqrshow:true,
             zoom:1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
@@ -136,73 +138,8 @@ export default {
          }else if(item.RightName == '实时报警-全部确认按钮'){
            this.allqrid = item.RightID
          }
-     })
-     var userid = ''
-      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
-                userid = JSON.parse(
-                    sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserID;
-            } else {
-                userid = JSON.parse(
-                    sessionStorage.getItem('userInfo1')
-                ).SCMSUserID;
-            }
-              this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`,
-              }).then(res => {
-                  this.cxshow = res.data.data
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                 this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.qrid}`,
-              }).then(res => {
-                  this.qrshow = res.data.data
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                 this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.allqrid}`,
-              }).then(res => {
-                  this.allqrshow = res.data.data
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-        }
-    },
-    computed:{
-        VpowerData() {
-                    return this.$store.state.btnPowerData;
-        },
-    },
-    mounted(){
-        this.zoom = 1
-         this.zoom1 = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
-        setTimeout(()=>{
-            $(".search-item").css({marginLeft: 10*this.zoom, marginRight: 0, height: 40* this.zoom})
-            $(".el-input__icon").css({lineHeight: 40* this.zoom+'px'})
-            $(".search-select").css({width: 120 * this.zoom, height: 40* this.zoom})
-            $(".el-date-editor").css({width: 210 * this.zoom, height: 40* this.zoom})
-            $(".search-container>.search-container").css({paddingRight: 330 * this.zoom})
-            $(".el-input--suffix").css({fontSize: 16 * this.zoom, height: 40* this.zoom})
-            $(".el-select-dropdown__item").css({fontSize: 14 * this.zoom, height: 40* this.zoom})
-            // if(window.screen.width <= 1280 &&  localStorage.getItem('currentLang') === 'Main_Language_EN'){
-            //     $(".search-container .title").css({maxWidth:'75px', lineHeight: 1})
-            // }
-        })
-
-    this.jurisdiction = this.$store.state.btnPowerData
-     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
-     this.buttonarr.forEach((item)=>{
-         if(item.RightName == '实时报警-查询按钮'){
-          this.cxid = item.RightID
-         }else if(item.RightName == '实时报警-报警确认按钮'){
-          this.qrid = item.RightID
-         }else if(item.RightName == '实时报警-全部确认按钮'){
-           this.allqrid = item.RightID
+         else if(item.RightName == '实时报警-导出按钮'){
+           this.exid = item.RightID
          }
      })
      var userid = ''
@@ -239,8 +176,96 @@ export default {
               }).catch((err)=>{
                   console.log('err',err)
               })
+              this.$axios({
+                method: 'post',
+                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.exid}`,
+            }).then(res => {
+                this.exshow = res.data.data
+            }).catch((err) => {
+                console.log('err', err)
+            })
+        }
+    },
+    computed:{
+        VpowerData() {
+                    return this.$store.state.btnPowerData;
+        },
+    },
+    mounted(){
+        this.zoom = 1
+         this.zoom1 = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
+        setTimeout(()=>{
+            $(".search-item").css({marginLeft: 10*this.zoom, marginRight: 0, height: 40* this.zoom})
+            $(".el-input__icon").css({lineHeight: 40* this.zoom+'px'})
+            $(".search-select").css({width: 120 * this.zoom, height: 40* this.zoom})
+            $(".el-date-editor").css({width: 210 * this.zoom, height: 40* this.zoom})
+             $(".el-input--suffix").css({fontSize: 16 * this.zoom, height: 40* this.zoom})
+            $(".el-select-dropdown__item").css({fontSize: 14 * this.zoom, height: 40* this.zoom})
+            // if(window.screen.width <= 1280 &&  localStorage.getItem('currentLang') === 'Main_Language_EN'){
+            //     $(".search-container .title").css({maxWidth:'75px', lineHeight: 1})
+            // }
+        })
+
+    this.jurisdiction = this.$store.state.btnPowerData
+     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
+     this.buttonarr.forEach((item)=>{
+         if(item.RightName == '实时报警-查询按钮'){
+          this.cxid = item.RightID
+         }else if(item.RightName == '实时报警-报警确认按钮'){
+          this.qrid = item.RightID
+         }else if(item.RightName == '实时报警-全部确认按钮'){
+           this.allqrid = item.RightID
+         }else if(item.RightName == '实时报警-导出按钮'){
+           this.exid = item.RightID
+         }
+     })
+     var userid = ''
+      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+                userid = JSON.parse(
+                    sessionStorage.getItem('sightseerInfo1')
+                ).SCMSUserID;
+            } else {
+                userid = JSON.parse(
+                    sessionStorage.getItem('userInfo1')
+                ).SCMSUserID;
+            }
+              this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`,
+              }).then(res => {
+                  this.cxshow = res.data.data
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
+                 this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.qrid}`,
+              }).then(res => {
+                  this.qrshow = res.data.data
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
+                 this.$axios({
+                  method: 'post',
+                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.allqrid}`,
+              }).then(res => {
+                  this.allqrshow = res.data.data
+              }).catch((err)=>{
+                  console.log('err',err)
+              })
+              this.$axios({
+                method: 'post',
+                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.exid}`,
+            }).then(res => {
+                this.exshow = res.data.data
+            }).catch((err) => {
+                console.log('err', err)
+            })
     },
     methods: {
+        exportFn(){
+            this.$emit('exportFn', this.exshow);
+        },
                         sx(){
             let that = this
             setTimeout(()=>{
@@ -341,21 +366,16 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
 
 .search-container {
     @extend %flex;
+    width: 100%;
     justify-content: space-between;
     background-color: #ddd;
-    // width: 1690px;
-    padding-right:330px ;
     position: relative;
 }
 span {
     position: absolute;
     left: 315px;
 }
-.importtant {
-    right: 230px;
-    position: absolute;
-    // bottom: 10px;
-}
+ 
 .search-left {
     @extend %flex;
     flex-wrap: wrap;
@@ -399,12 +419,7 @@ span {
     float: left;
     color: #fda100;
 }
-.export {
-    position: absolute;
-    right: 120px;
-    // bottom: 10px;
-    background-color:#79d088 !important;
-}
+ 
 .fr {
     width: 220px;
     height: 100%;
@@ -424,10 +439,22 @@ span {
      font-weight: 600;
       border-radius: 4px;
       color: #fff;
-      position: absolute;
-    //   bottom: 10px;
-      right: 10px;;
           cursor: pointer;
+}
+.export{
+    border: 1px solid #fda100;
+    background-color: #ffffff;
+    color: #fda100;
+    width: 120px;
+    height: 38px;
+    margin-top: 11px;
+    display: block;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 38px;
+    cursor: pointer;
+    float: left;
+    margin-left: 10px;
 }
 .el-input__icon{
     line-height: unset;

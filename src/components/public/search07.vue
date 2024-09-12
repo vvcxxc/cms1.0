@@ -63,23 +63,19 @@
                 :style="[{fontSize:16*zoom+'px'},
                     {height: 40*zoom+'px'},
                     {width: 100*zoom+'px'},
-                    {right: 230*zoom+'px'},
-                    {lineHeight: 40*zoom+'px'}
+                    
                 ]"
              :id='cxid'>{{lang.AlarmStatistics_AlarmStatisticsUserControl_Query}}</div>
              <div class="import" @click="preservation" 
                 :style="[{fontSize:16*zoom+'px'},
                     {height: 40*zoom+'px'},
                     {width: 100*zoom+'px'},
-                    {right: 120*zoom+'px'},
-                    {lineHeight: 40*zoom+'px'}
+                     
                 ]" :id="bcid">{{lang.AlarmRecord_HT_AlarmPointManageUC_Save}}</div>
             <div class="export" @click="exportTable" 
                 :style="[{fontSize:16*zoom+'px'},
                     {height: 40*zoom+'px'},
                     {width: 100*zoom+'px'},
-                    {right: 10*zoom+'px'},
-                    {lineHeight: 40*zoom+'px'}
                 ]" :id="dcid">{{lang.AlarmRecord_HT_AlarmPointManageUC_Export}}</div>
 
         </div>
@@ -324,10 +320,6 @@ span {
     position: absolute;
     left: 315px;
 }
-.importtant {
-    right: 230px;
-    position: absolute;
-}
 
 .search-left {
     @extend %flex;
@@ -355,11 +347,12 @@ span {
         border-radius: 4px;
         color: #fff;
         font-weight: 600;
+        float: left;
+        margin-left: 10px;
     }
 }
 .import {
-    position: absolute;
-    border: 1px solid #4abfcd;
+     border: 1px solid #4abfcd;
     background-color: #ffffff;
     width: 120px;
     height: 38px;
@@ -368,11 +361,11 @@ span {
     text-align: center;
     line-height: 38px;
     cursor: pointer;
-    
     color: #4abfcd;
+    float: left;
+    margin-left: 10px;
 }
 .export {
-    position: absolute;
     border: 1px solid #fda100;
     background-color: #ffffff;
     width: 120px;

@@ -98,12 +98,13 @@
                    <template slot-scope="scope">
                     <div class="item">
                         <div class="itemcover" v-if="!bjshow" @click="itcover"></div>
-                        <select name="" id="" :style="{width:178*zoom+'px',height:30*zoom+'px',fontSize:15*zoom+'px',textIndent:'0.5em'}" v-model="scope.row.Level" @change="haschange(scope)">
+                        <input type="text" :style="{width:178*zoom+'px',height:30*zoom+'px',fontSize:15*zoom+'px',textIndent:'0.5em'}" v-model="scope.row.Level" @change="haschange(scope)">
+                        <!-- <select name="" id="" :style="{width:178*zoom+'px',height:30*zoom+'px',fontSize:15*zoom+'px',textIndent:'0.5em'}" v-model="scope.row.Level" @change="haschange(scope)">
                             <option value="H">H</option>
                             <option value="HH">HH</option>
                             <option value="L">L</option>
                             <option value="LL">LL</option>
-                        </select>
+                        </select> -->
                     </div>
                 </template>
              </el-table-column>

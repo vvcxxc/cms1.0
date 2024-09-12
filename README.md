@@ -1,5 +1,4 @@
 # vue-scms
-代码地址：https://gitlab.syc-cms.com:8443/fe/cms/-/tree/tongSai
 
 ## Project setup
 ```

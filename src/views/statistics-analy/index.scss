@@ -1,0 +1,69 @@
+.flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+::v-deep .el-dialog__wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  & > .el-dialog {
+    // width: 80%;
+    // height: 80%;
+    margin: 0 !important;
+    border-radius: 6px;
+    overflow: hidden;
+    // 头部
+    .el-dialog__header {
+      width: 100%;
+      height: 40px;
+      position: relative;
+      margin: 0;
+      padding: 0 20px;
+      line-height: 40px;
+      border-bottom: 1px solid #dddddd;
+      background-color: #3F81FF;
+      .el-dialog__title {
+        color: white;
+      }
+      .el-dialog__headerbtn {
+        width: 24px;
+        height: 100%;
+        top: 0;
+        right: 10px;
+        padding: 4px 0 0 0;
+        .el-icon {
+          font-size: 24px;
+          color: white;
+        }
+      }
+    }
+    // 内容
+    .el-dialog__body {
+      width: 100%;
+      height: calc(100% - 100px);
+      padding: 20px 20px;
+      // background-color: red;
+      .dialog-content {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    // 底部按钮
+    .el-dialog__footer {
+      width: 100%;
+      height: 60px;
+      padding: 0 20px 0 0;
+      // background-color: green;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  }
+}

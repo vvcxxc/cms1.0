@@ -616,6 +616,10 @@ button {
       position: absolute;
       right: 10px;
     }
+    .el-tree-node.is-current>.el-tree-node__content {
+      background-color: #4270E4;
+      color: #fff;
+    }
   }
   .selecttree{
     .el-tree-node__content{
@@ -1352,7 +1356,7 @@ video{
   .block{
     .el-date-editor.el-input, .el-date-editor.el-input__inner{
       width: 230px !important;
-      left: 6px;
+      // left: 6px;
     }
   }
 }
@@ -1521,6 +1525,11 @@ video{
 .el-tree-node:hover>.el-tree-node__content{
   background-color: #fff !important;
 }
+}
+
+.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
+  background-color: #4270E4;
+  color: #fff;
 }
 
 .el-popup-parent--hidden{

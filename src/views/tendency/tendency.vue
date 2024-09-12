@@ -135,7 +135,7 @@
                 <!-- 图表设置弹窗 -->
                 <div
                     class="Popshow"
-                    :style="{ width: 800 * zoom + 'px', height: 700 * zoom + 'px' }"
+                    :style="{ width: 800 * zoom + 'px', height: 760 * zoom + 'px' }"
                 >
                     <div
                         v-drag
@@ -421,6 +421,24 @@
                                 <input @click="inpClick('Mean')" ref="Mean" type="checkbox" />
                                 <span>{{ lang.NewTrendChart_ChartSetting_Average }}</span>
                             </div>
+
+                            <div class="show_value" :style="{ zoom }">
+                                <div class="text"><!-- 曲线缓存时间 -->{{lang.NewTrendChart_ChartSetting_CurveCacheTime}}</div>
+                                <input @click="inpClick('EnableCurveCacheTime')" ref="EnableCurveCacheTime" type="checkbox" />
+                                <input ref="timeText" :style="{fontSize: this.value4 * zoom + 'px',height: 40 * zoom + 'px'}"
+                                    class="time"
+                                    v-model="CurveCacheTime"
+                                />
+                                <span style="margin: 0 10px;font-size: 24px;" >S</span>
+                                <el-tooltip
+                                    effect="dark"
+                                    :content="lang.NewTrendChart_ClearCurveSetting_CurveCacheTimeToolTip"
+                                    placement="top"
+                                >
+                                    <i class="el-icon-question" style="curson: pointer; font-size: 20px;" ></i>
+                                </el-tooltip>
+                            </div>
+
                         </div>
                         <div class="button" :style="{ zoom }">
                             <div @click="keepFun" class="keep">{{ lang.PopupCommon_Save }}</div>
@@ -445,8 +463,7 @@
         </div>
         <div class="conter" :class="{ colortip: $store.state.color == 'grey' }">
             <!-- 切换单双多窗口 -->
-            <keep-alive>
-                <tendencyVue
+                 <tendencyVue
                     :WindowClick="windowClickValue"
                     class="oneWindow"
                     :qeShow="queryShow1"
@@ -455,12 +472,11 @@
                     :curveID="curveID"
                     :timeShow="timeShow"
                     :Showtext="Showtext"
+                    :dataType ="value"
                     ref="mychild1"
                     v-if="oneWindow"
                 ></tendencyVue>
-            </keep-alive>
-            <keep-alive>
-                <tendencytwo
+                  <tendencytwo
                     :show="showTime"
                     :curveID="curveID"
                     :timeShow="timeShow"
@@ -473,9 +489,7 @@
                     ref="mychild2"
                     v-if="twoWindow"
                 ></tendencytwo>
-            </keep-alive>
-            <keep-alive>
-                <tendencyMo
+                  <tendencyMo
                     :show1="showTime"
                     :curveID1="curveID"
                     :timeShow1="timeShow"
@@ -485,8 +499,7 @@
                     ref="mychild3"
                     v-if="moreWindow"
                 ></tendencyMo>
-            </keep-alive>
-            <tendencyMo
+             <!-- <tendencyMo
                 :show1="showTime"
                 :curveID1="curveID"
                 :timeShow1="timeShow"
@@ -496,7 +509,7 @@
                 ref="mychild4"
                 class="mychild4"
                 v-if="StaWindow"
-            ></tendencyMo>
+            ></tendencyMo> -->
             <TipsPop :popText="TipsPopText" v-if="isTipsPop" :style="{ zoom }"></TipsPop>
             <div v-if="isTipsPop" class="mask_box" :style="{ zoom }"></div>
         </div>
@@ -596,6 +609,8 @@ export default {
             Max: '',
             Min: '',
             Mean: '',
+            EnableCurveCacheTime: '',
+            CurveCacheTime: '',
             //颜色
             color1: '#fff',
             color2: '#fff',
@@ -796,7 +811,6 @@ export default {
             btnList.forEach((item) => {
                 btnObj[item.RightDesc] = item
             });
-
             this.queryId = btnObj['趋势曲线-单窗口-查询按钮'].RightID
             this.oneWindowId = btnObj['趋势曲线-单窗口'].RightID
             this.twoWindowId = btnObj['趋势曲线-双窗口'].RightID
@@ -824,7 +838,6 @@ export default {
             // this.isPower(this.changeTypeId).then(val => {
             //      this.oksh = true
             //     this.ischangeType = val 
-            //     console.log("val",val)
             // })
         },
         //该用户是否有权限
@@ -873,6 +886,17 @@ export default {
         },
         //设置保存
         keepFun() {
+            if(this.EnableCurveCacheTime) {
+                if(!this.CurveCacheTime) {
+                    this.confirm_Pop2(this, this.lang.NewTrendChart_ChartSetting_CurveCacheTimeSaveError)
+                    return
+                }
+
+                if(this.CurveCacheTime <= 0 || this.CurveCacheTime > 1800) {
+                    this.confirm_Pop2(this, this.lang.NewTrendChart_ChartSetting_CurveCacheTimeSaveError)
+                    return
+                }
+            }
 
             var arr = {
                 ChartTitle: this.titleText,
@@ -897,6 +921,8 @@ export default {
                 Max: this.Max,
                 Min: this.Min,
                 Mean: this.Mean,
+                EnableCurveCacheTime: this.EnableCurveCacheTime,
+                CurveCacheTime: this.CurveCacheTime,
             }
             this.$axios({
                 method: "post",
@@ -917,8 +943,6 @@ export default {
                 }
                 this.axiosSet()
                 //   }
-            }).catch(function (error) {
-                console.log(error);
             })
         },
         //保存弹框确认
@@ -1016,6 +1040,10 @@ export default {
                 if (this.$refs.Mean) {
                     this.Mean = this.$refs.Mean.checked
                 }
+            } else if (text === 'EnableCurveCacheTime') {
+                if (this.$refs.EnableCurveCacheTime) {
+                    this.EnableCurveCacheTime = this.$refs.EnableCurveCacheTime.checked
+                }
             }
         },
         //其他颜色选择器
@@ -1105,6 +1133,8 @@ export default {
                         this.Max = res.data.data.Max
                         this.Min = res.data.data.Min
                         this.Mean = res.data.data.Mean
+                        this.EnableCurveCacheTime = res.data.data.EnableCurveCacheTime
+                        this.CurveCacheTime = res.data.data.CurveCacheTime
                         this.XFontIsB = res.data.data.XFontIsB
                         this.XFontIsI = res.data.data.XFontIsI
                         this.YFontIsB = res.data.data.YFontIsB
@@ -1141,11 +1171,14 @@ export default {
                             this.$refs.Mean.checked = true
                         }
                     }
+                    if (this.EnableCurveCacheTime) {
+                        if(this.$refs.EnableCurveCacheTime) {
+                            this.$refs.EnableCurveCacheTime.checked = true
+                        }
+                    }
                     this.axiosSizeType()
 
                 })
-            }).catch(function (error) {
-                console.log(error);
             })
         },
         //粗细/倾斜
@@ -1206,8 +1239,6 @@ export default {
                     }
                     this.options.push(value)
                 }
-            }).catch(function (error) {
-                console.log(error);
             })
         },
         //请求曲线ID
@@ -1217,8 +1248,6 @@ export default {
                 url: "/api/NewTrendChart/QuerySeriesGroups",
             }).then((res) => {
                 this.curveID = res.data.data
-            }).catch(function (error) {
-                console.log('err', error);
             })
         },
         sx() {
@@ -1302,7 +1331,6 @@ export default {
                     let show = document.querySelectorAll('.show > div')
                     this.Showtext = text
                     this.$store.state.Showtext = text
-                    console.log(show)
                     //颜色
                     for (var i = 0; i < show.length; i++) {
                         show[i].style.backgroundColor = "#fff";
@@ -1385,7 +1413,6 @@ export default {
             //     }
             // }
             // if (document.getElementById('qscxcharttwo')) {
-            //     console.log(this.$refs.mychild2.$refs.mychild22)
             //     if (this.$refs.mychild2.$refs.mychild22.curveLineValue.length !== 0 && this.$refs.mychild2.$refs.mychild23.curveLineValue.length !== 0) {
             //         this.oksh = false
             //     }
@@ -1414,7 +1441,6 @@ export default {
             this.isPower(this.changeTypeId).then(val => {//按钮权限
 
                 // this.oksh = true
-                // console.log()
                 this.$store.state.oksh = true
                 if (val) {
                     this.showTime = !this.showTime
@@ -1638,6 +1664,7 @@ export default {
 
                 }
             }
+            var that = this
             setTimeout(() => {
 
                 let formatter = "{value}"
@@ -1684,8 +1711,7 @@ export default {
                     chart1.setOption(data, true)
                 }
                 if (document.getElementById('qscxchartone')) {
-
-                    let chart1 = this.$echarts.init(document.getElementById('qscxchartone'))
+                    let chart1 = that.$echarts.init(document.getElementById('qscxchartone'))
                     let data = chart1.getOption()
                     data.yAxis[0].axisLabel.formatter = formatter
                     chart1.setOption(data, true)
@@ -1693,7 +1719,6 @@ export default {
 
             }, 500);
 
-            console.log()
             var windowId
             if (text == this.lang.NewTrendChart_NewTrendChartUserControl_Single) {
                 windowId = this.oneWindowId
@@ -1719,11 +1744,17 @@ export default {
                 }
                 //切换组件
                 if (text == this.lang.NewTrendChart_NewTrendChartUserControl_Single) {
+                   
                     this.oneWindow = true
                     this.twoWindow = false
                     this.moreWindow = false
                     this.StaWindow = false
                     this.StaShow = false
+                    
+                    
+                    let _id=this.curveID ;
+                    this.curveID ='';
+                    this.curveID =_id;
                     if (!this.timeShow) {
                         this.$nextTick(function () {
                             if (this.$refs.mychild1) {
@@ -1752,7 +1783,6 @@ export default {
                         // //重新绘画图表大小
                         this.$refs.mychild1.echartsResize()
                         //   if(!this.showTime){
-                        //       debugger
                         //       let that = this
                         //       setTimeout(() => {
                         //              if(that.$store.state.tendencyoption){
@@ -2252,10 +2282,10 @@ export default {
 
             .show_value {
                 width: 100%;
-                height: 40px;
+                height: 42px;
                 margin-top: 15px;
                 overflow: hidden;
-                line-height: 40px;
+                line-height: 38px;
                 .text {
                     font-size: 16px;
                     float: left;

@@ -17,10 +17,7 @@ const EquipmentOverview = () =>
     import('@/views/overview/equipmentOverview.vue');
 const CustomerVue = () =>
     import('@/views/customer/customer.vue');
-const rawMaterialPreparation = () =>
-    import('@/views/rawMaterialPreparation/rawMaterialPreparation.vue');
-const BoilerVoucher = () =>
-    import('@/views/BoilerVoucher/BoilerVoucher.vue');
+
 const cuAll = () =>
     import('@/views/customer/cuAll.vue');
 
@@ -64,6 +61,8 @@ const Vulnerableparts = () =>
     import('@/views/Vulnerableparts/Vulnerableparts.vue');
 const AlarmAnalysis = () =>
     import('@/views/alarmAnalysis/alarmAnalysis.vue');
+const DailyProductionReport = () =>
+    import('@/views/DailyProductionReport/DailyProductionReport.vue');
 const Equipment = () =>
     import('@/views/equipment/equipment.vue');
 const Log = () =>
@@ -89,9 +88,13 @@ const Reportform1 = () =>
 const sparepart = () =>
     import('@/views/sparepart/sparepart.vue');
 const formula = () =>
-    import(`@/views/formula/formula.vue`);
+    import(`@/views/FormManageNew/index.vue`);
+// const formula = () =>
+//     import(`@/views/formula/formula.vue`);
 const scheduleMange = () =>
     import(`@/views/scheduleManage/scheduleMange2.vue`)
+const productStatisticDataCollect = ()=>
+    import(`@/views/productStatistic/dataCollect.vue`)
 const FormManage = () =>
     import(`@/views/FormManage/FormManage.vue`)
 const WebVideoCtrl = () =>
@@ -99,6 +102,17 @@ const WebVideoCtrl = () =>
 // const Customreport = () =>
 //     import(`@/views/Customreport/Customreport.vue`);
 const pushMessage = () => import('@/views/push-message/index.vue')
+const OrderManagement = () => import('@/views/OrderManagement/index.vue')
+const EquipmentStatusAnalysis = () => import('@/views/EquipmentStatusAnalysis/index.vue')
+const StationBulletin = () => import('@/views/StationBulletin/index.vue')
+const MaterialManagement = () => import('@/views/material-management/index.vue')
+const BOMManagement = () => import('@/views/BOM-management/index.vue')
+const TimeAnalysis = () => import('@/views/TimeAnalysis/index.vue')
+const SpcConfig = () => import('@/views/pages/SpcConfig/index.vue')
+const SpcAnalyse = () => import('@/views/pages/SpcAnalyse/index.vue')
+const UnqualifiedManagement = () => import(`@/views/pages/UnqualifiedManagement/index.vue`);
+const UnqualifiedStatistics = () => import('@/views/UnqualifiedStatistics/index.vue')
+
 
 Vue.use(VueRouter);
 const routes = [{
@@ -118,6 +132,10 @@ const routes = [{
         {
             path: '/overview',
             component: EquipmentOverview
+        },
+        {
+            path: '/ProductStatisticDataCollect',
+            component: productStatisticDataCollect
         },
         {
             path: '/FormManage',
@@ -144,22 +162,6 @@ const routes = [{
             component: TendencyVue
         },
         {
-            path: '/PreparationVoucher',
-            component: rawMaterialPreparation
-        },
-        {
-            path: '/BoilerVoucher',
-            component: BoilerVoucher
-        },
-        {
-            path: '/ProductionVoucher',
-            component: () => import('@/views/craft-manage/index.vue'),
-        },
-        {
-            path: '/ProductionVoucherHistory',
-            component: () => import('@/views/craft-manage/log.vue'),
-        },
-        {
             path: '/跳转画面',
             component: CustomerVue
         },
@@ -180,6 +182,10 @@ const routes = [{
             component: AlarmAnalysis
         },
         {
+            path: '/WuXiYiFanReport',
+            component: DailyProductionReport
+        },
+        {
             path: '/AlarmRecord',
             component: Alarm1
         },
@@ -192,8 +198,24 @@ const routes = [{
             component: Spotinspection
         },
         {
+            path: '/DevicePointInspectionManage',
+            component: Spotinspection
+        },
+        {
+            path: '/QualityPointInspectionManage',
+            component: Spotinspection
+        },
+        {
             path: '/MaintenanceManage',
             component: maintain
+        },
+        {
+            path: '/SpcConfig',
+            component: SpcConfig
+        },
+        {
+            path: '/SPCAnalysis',
+            component: SpcAnalyse
         },
         {
             path: '/RepairManage',
@@ -234,7 +256,18 @@ const routes = [{
             path: '/Formula',
             component: formula
         },
-
+        {
+            path: '/OrderManagement',
+            component: OrderManagement
+        },
+        {
+            path: '/EquipmentStatusAnalysis',
+            component: EquipmentStatusAnalysis
+        },
+        {
+            path: '/StationBoard',
+            component: StationBulletin
+        },
         {
             path: '/Journal',
             component: Log
@@ -242,6 +275,14 @@ const routes = [{
         {
             path: '/权限管理',
             redirect: '/user'
+        },
+        {
+            path: '/Unqualified',
+            component: UnqualifiedStatistics
+        },
+        {
+            path: '/CapacityReport',
+            component: () => import(`@/views/pages/Capacity/index.vue`)
         },
         {
             path: '/ReportColumnChart',
@@ -301,6 +342,14 @@ const routes = [{
             component: scheduleMange
         },
         {
+            path: '/UnqualifiedManagement',
+            component: UnqualifiedManagement
+        },
+        {
+            path: '/TimeAnalysis',
+            component: TimeAnalysis
+        },
+        {
             path: '/MsgPush',
             component: pushMessage,
             // children: [
@@ -308,6 +357,34 @@ const routes = [{
             //     { path: '/MsgPush/todo-message', component: () => import('@/views/push-message/todo-message.vue') },
             //     { path: '/MsgPush/push-log', component: () => import('@/views/push-message/push-log.vue') },
             // ]
+        },
+        // 时序分析
+        {
+            path: '/TimeSequenceAnalysisModel',
+            component: () => import('@/views/statistics-analy/sequence-analy/index.vue'),
+            children: [
+                { path: '/TimeSequenceAnalysisModel', component: () => import('@/views/statistics-analy/sequence-analy/realtime-sequence/index.vue') },
+                { path: '/HistoryTimeSequences', component: () => import('@/views/statistics-analy/sequence-analy/history-sequence/index.vue') },
+                { path: '/LineBeats', component: () => import('@/views/statistics-analy/sequence-analy/linebody-beat/index.vue') },
+            ]
+        },
+        // 动作分析
+        {
+            path: '/ActionAnalysisModel',
+            component: () => import('@/views/statistics-analy/action-analy/index.vue'),
+            children: [
+                { path: '/ActionAnalysisModel', component: () => import('@/views/statistics-analy/action-analy/action-beat-trend/index.vue') },
+                { path: '/ActionOversteps', component: () => import('@/views/statistics-analy/action-analy/action-timeout/index.vue') },
+                { path: '/ActionDistributions', component: () => import('@/views/statistics-analy/action-analy/action-distribute/index.vue') },
+            ]
+        },
+        {
+            path: '/MaterialManagement',
+            component: MaterialManagement
+        },
+        {
+            path: '/MaterialBOMManagement',
+            component: BOMManagement
         },
         // {
         //     path: '/cuAll',
@@ -317,63 +394,6 @@ const routes = [{
             path: '/*',
             component: CustomerVue
         },
-    {
-        path: "/SteamTrendCurve",
-        component: steam,
-    },
-    {
-        path: '/TapWaterTrendCurve',
-        component: tapwater
-    },
-    {
-        path: '/权限管理',
-        redirect: '/user'
-    },
-    {
-        path: '/User',
-        component: User
-    },
-    {
-        path: '/Role',
-        component: Role
-    },
-    {
-        path: '/TapWaterReportRecord',
-        component: WaterRecord
-    },
-    {
-        path: '/SteamReportRecord',
-        component: SteamMeterRecord
-    },
-    {
-        path: '/TapWaterMeasureStatistics',
-        component: WaterAnalysis
-    },
-    {
-        path: '/SteamMeasureStatistics',
-        component: SteamMeterAnalysis
-    },
-    {
-        path: '/ScheduleManage',
-        component: scheduleMange
-    },
-    {
-        path: '/MsgPush',
-        component: pushMessage,
-        // children: [
-        //     { path: '/MsgPush/alarm-message', component: () => import('@/views/push-message/alarm-message.vue') },
-        //     { path: '/MsgPush/todo-message', component: () => import('@/views/push-message/todo-message.vue') },
-        //     { path: '/MsgPush/push-log', component: () => import('@/views/push-message/push-log.vue') },
-        // ]
-    },
-    // {
-    //     path: '/cuAll',
-    //     component: cuAll
-    // },
-    {
-        path: '/*',
-        component: CustomerVue
-    },
 
     ]
 },

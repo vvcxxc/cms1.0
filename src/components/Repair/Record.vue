@@ -1026,19 +1026,15 @@ export default {
                         this.PageData = res.data.data.ParameterList;
                         let i = 0;
                         for (i in this.tableData1) {
-                            this.tableData1[i].FinishTime = this.gettime(
+                            this.tableData1[i].FinishTime =  
                                 this.tableData1[i].FinishTime
-                            );
-                            this.tableData1[i].StartTime = this.gettime(
+                             this.tableData1[i].StartTime =  
                                 this.tableData1[i].StartTime
-                            );
-                            this.tableData1[i].EndTime = this.gettime(
+                             this.tableData1[i].EndTime = 
                                 this.tableData1[i].EndTime
-                            );
-                            this.tableData1[i].MaturityTime = this.gettime(
+                             this.tableData1[i].MaturityTime = 
                                 this.tableData1[i].MaturityTime
-                            );
-                            if (this.tableData1[i].Status == 4) {
+                             if (this.tableData1[i].Status == 4) {
                                 this.tableData1[i].Status = this.lang.MaintenanceManage_Closed;
                             } else if (this.tableData1[i].Status == 5) {
                                 this.tableData1[i].Status = this.lang.MaintenanceManage_Completed;

@@ -83,7 +83,7 @@
 </div>
 
 </div> -->
-      <div class="tip" v-show="tipchange" :style="{zoom: zoomValue}">
+      <div class="tip" v-if="tipchange" :style="{zoom: zoomValue}">
             <div
                 class="tiphead"
                 style="position:absolute;width: 380px;height: 40px;"
@@ -94,7 +94,11 @@
             </div>
             <div class="tipcontanin">
                 <div class="tipword">{{tipword}}</div>
-                <div class="tipdetermine" @click="shownotip" >{{lang.PopupCommon_Sure}}</div>
+                <div class="delclass" v-if="deltrue">
+                    <div class="one" @click="shownotip">{{lang.MessageBox_NO}}</div>
+                    <div class="two" @click="issueFun">{{lang.MessageBox_YES}}</div>
+                </div>
+                <div class="tipdetermine" v-else @click="shownotip" >{{lang.PopupCommon_Sure}}</div>
             </div>
         </div>
          <div class="cover1111" v-if="tipchange" @mouseup.stop="upFun()"></div>
@@ -138,7 +142,7 @@
                     :dataId="dataId"
                     :dae="data"
                     :key="6 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
+                    @showtip="showtip" @shownotip="shownotip" @showIssueTip="showIssueTip"
                 ></CornerButton6>
                 <PressButton7
                     ref="PressButton7"
@@ -362,6 +366,12 @@
                 ></Tank>
                 <MatrixGrid @showtip="showtip" @shownotip="shownotip" ref="MatrixGrid" :dataId="dataId" :dae="data" :key="35+componentKey"/>
                 <MatrixGridSet @showtip="showtip" @shownotip="shownotip" ref="MatrixGridSet" :dataId="dataId" :dae="data" :key="36+componentKey"/>
+                <Camera
+                    :dataId="dataId"
+                    :name="name"
+                    :dae="data"
+                    :key="35 + componentKey"
+                ></Camera>
                 <Combinecombobox
                     ref="Combinecombobox"
                     :dataId="dataId"
@@ -382,6 +392,7 @@ import MatrixGridSet from './conponent/MatrixGridSet.vue';
 import RectangleVue2 from './conponent/RectangleVue2.vue';
 import EllipseVue3 from './conponent/EllipseVue3.vue';
 import StaticImage4 from './conponent/StaticImage4.vue';
+import Camera from './conponent/Camera.vue';
 import StaticTextBlock5 from './conponent/StaticTextBlock5.vue';
 import CornerButton6 from './conponent/CornerButton6.vue';
 import PressButton7 from './conponent/PressButton7.vue';
@@ -457,7 +468,8 @@ export default {
         DynamicProducts, //动态产品线
         TipsPop, //权限提示弹窗
         FlowPipe, //流动管道
-        Tank //罐体
+        Tank, //罐体
+        Camera, // 摄像头
     },
     props: ['popdata'],
     data() {
@@ -503,7 +515,10 @@ export default {
             pageHTime: '',
             nowoverflow: 'calc(100% - 110px)',
             newoverflow: 'calc(100%)',
-            tipword:''
+            tipword:'',
+            deltrue :false,
+            issueFun_url:'',
+            issueFun_commonIDarr:{}
         };
     },
     computed: {
@@ -704,6 +719,8 @@ export default {
             deep: true,
             handler: function(n, o) {
                 this.type = this.$store.state.typeNum;
+                console.log( '7789',this.$store.state.contentName , this.name);
+                console.log( 'this.$store.state.contentData',this.$store.state.contentData);
                 if (this.$store.state.contentName == this.name) {
                     this.contentData = this.$store.state.contentData;
                     this.contentName = this.$store.state.contentName;
@@ -1003,8 +1020,40 @@ window.addEventListener('scroll', this.scroll,true);
          this.tipchange = true;
          this.tipword = a;
         },
+        showIssueTip(a,issueFun_url,issueFun_commonIDarr){
+         this.tipchange = true;
+         this.tipword = a;
+         this.deltrue=true;
+         this.issueFun_url=issueFun_url;
+         this.issueFun_commonIDarr=issueFun_commonIDarr;
+        },
         shownotip(){
         this.tipchange = false
+        this.deltrue=false
+        },
+        issueFun(){
+             this.$axios({
+                method:'post',
+                url:this.issueFun_url,
+                data:this.issueFun_commonIDarr
+            }).then((res1)=>{
+                if(res1.data.code === 0){
+                    this.shownotip()
+                    this.$axios({                  
+                        method: 'post',
+                        url: '/api/Base/PostIOServiceTest',
+                        data:this.issueFun_commonIDarr
+                    }).then(res => {
+                        console.log('res',res)
+                        if(res.data.code != 0){
+                            this.showtip(res.data.msg)
+                        }
+                    })
+                }else{
+                    this.showtip(res1.data.msg)
+                }
+            })
+
         },
         scroll(e){
 
@@ -1428,7 +1477,7 @@ window.addEventListener('scroll', this.scroll,true);
         },
         //跟换JSON源
         impor(name) {
-            console.log("sadsadasdasdasdsad")
+            console.log("xxxxxxxxxxx")
             this.$store.state.isInit = true; //分辨率
             this.$store.state.report = true; //
             this.name = name;
@@ -4696,7 +4745,6 @@ window.addEventListener('scroll', this.scroll,true);
     .delclass {
         width: 330px;
         line-height: 30px;
-        margin-top: 40px;
         margin-left: 25px;
         height: 30px;
         .one {

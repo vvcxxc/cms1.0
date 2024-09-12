@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>报警统计</title>
+  <!-- Import Vue 3 -->
+  <script src="./vue3/index.js"></script>
+  <!-- Import style -->
+  <link rel="stylesheet" href="./element-plus/index.css" />
+  <!-- Import component library -->
+  <script src="./element-plus/index.js"></script>
+  <!-- 引入icons 若未使用element-plus-icon 则可以移除该引用 -->
+  <!-- <script src="./element-plus/icons.js"></script> -->
+  <!-- 引入echarts -->
+  <script src="./echartsV5/index.js"></script>
+  <link rel="stylesheet" href="./styles/rewriteElement.css" />
+  <link rel="stylesheet" href="./styles/index.css" />
+</head>
+<style>
+</style>
+
+<body>
+  <div id="app">
+    <div class="wrap">
+      <div class="charts">
+        <div id="main" v-if="show" style="width: 100%;height:100%; box-sizing: border-box;"></div>
+        <div id="child" v-if="!show" style="width: 100%;height:100%; box-sizing: border-box;"></div>
+        <div class="child-text" v-if="!show" >{{currentItem.name}}</div>
+      </div>
+      <div class="table">
+        <el-table class="custom-table" :cell-style="{borderColor:'#E4E7ED'}" :header-cell-style="{borderColor:'#E4E7ED'}" :data="tableData" height="100%" header-cell-class-name="headerCellClass" border>
+          <el-table-column type="index" label="工序名称" v-if="show" :index="indexMethod" align="center" width="110" ></el-table-column>
+          <el-table-column type="index" label="报警类型" v-if="!show" :index="indexMethod" align="center" width="110" ></el-table-column>
+          <!-- <el-table-column prop="index" label="工序名称" v-if="show" fixed align="center" width="110" ></el-table-column>
+          <el-table-column prop="index" label="报警类型" v-if="!show" fixed align="center" width="110" ></el-table-column> -->
+          <el-table-column v-for="(item,index) in columnList" show-overflow-tooltip :prop="item.prop"
+            :label="item.label" :sortable="item.sortable" :width="item.width" align="center" :fixed="item.fixed">
+
+            <!-- 表头slot -->
+            <!-- <template #header>
+              <span>{{ item.label }}</span>
+            </template> -->
+
+            <!-- 表体slot -->
+            <!-- <template #default="scope" >
+              <span>{{ scope.row[item.prop] }} 456465</span>
+            </template> -->
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+<script>
+  // vue3 部分
+  const { ref, onMounted, nextTick } = Vue
+  const tableComponent = {
+    setup() {
+      /* 图标部分 */
+      const show = ref(true)
+      const renderParentChart = () => {
+        JsObj.getAlarmProcessStatistics(data => {
+          data = JSON.parse(data)
+          columnList.value = []
+          tableData.value = []
+          let chartData = {
+            xAxis:[],
+            barData: {
+              name: '报警数量',
+              seriesData: []
+            },
+            lineData: {
+              name: '累计百分比',
+              seriesData: []
+            }
+          }
+          // 1.渲染表头，图表x轴数据
+          if (data?.ColumnList) {
+            data.ColumnList.forEach(item => {
+              chartData.xAxis.push(item.Label)
+              columnList.value.push({
+                label: item.Label,
+                prop: item.Prop,
+              })
+            })
+          }
+          
+          // 2. 渲染图表，获取表体数据
+          if (data?.TableData?.length !== 0) {
+            tableData.value = data.TableData
+            // 报警数量
+            chartData.barData.seriesData = Object.values(data.TableData[0])
+            // 累计百分比
+            chartData.lineData.seriesData = Object.values(data.TableData[2])
+          }
+          // 
+
+          let myChart = echarts.init(document.getElementById('main'))
+          let option = {
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                type: 'cross',
+              },
+              formatter:function(params) {
+                let str = `${params[0].name}</br>`
+                for(let item of params) {
+                  if (item.seriesName.includes('百分比')) {
+                    // 百分比添加%
+                    str += `${item.marker}${item.seriesName}<b style="float: right" >${item.value}%</b>&nbsp;&nbsp;</br>`
+                  } else {
+                    str += `${item.marker}${item.seriesName}<b style="float: right" >${item.value}</b>&nbsp;&nbsp;</br>`
+                  }
+                }
+                
+                return str
+              }
+            },
+            legend: {
+              data: [chartData.barData.name, chartData.lineData.name],
+              right: 10,
+              top: 10,
+            },
+            xAxis: {
+              type: 'category',
+              data: chartData.xAxis,
+              // 坐标轴刻度
+              axisTick: {
+                show: false
+              },
+              axisPointer: {
+                type: 'shadow'
+              },
+              // 坐标轴刻度标签的相关设置
+              axisLabel: {
+                interval: 0,
+                rotate: 30,
+                formatter: function (params) {
+                  // 字体换行显示
+                  var newParamsName = "";
+                  var paramsNameNumber = params.length;
+                  var provideNumber = 7;  //一行显示几个字
+                  var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+                  if (paramsNameNumber > provideNumber) {
+                    for (var p = 0; p < rowNumber; p++) {
+                      var tempStr = "";
+                      var start = p * provideNumber;
+                      var end = start + provideNumber;
+                      if (p == rowNumber - 1) {
+                        tempStr = params.substring(start, paramsNameNumber);
+                      } else {
+                        tempStr = params.substring(start, end) + "\n";
+                      }
+                      newParamsName += tempStr;
+                    }
+
+                  } else {
+                    newParamsName = params;
+                  }
+                  return newParamsName
+                },
+                margin: 15,
+              },
+            },
+            yAxis: [
+              {
+                type: 'value',
+                name: chartData.barData.name,
+              },
+              {
+                type: 'value',
+                name: chartData.lineData.name,
+                alignTicks: true,
+                axisLabel: {
+                  formatter: '{value} %'
+                }
+              }
+            ],
+            series: [
+              {
+                name: chartData.barData.name,
+                type: 'bar',
+                data: chartData.barData.seriesData,
+                itemStyle: {
+                  color: '#46A0FF'
+                },
+                //鼠标悬停时：
+                // emphasis: {
+                //   itemStyle: {
+                //     color: 'rgba(70,160,255,0.5)',
+                //   }
+                // },
+                // 显示柱形图上面的文字
+                label: {
+                  show: true,
+                  position: 'top',
+                  valueAnimation: true,
+                  fontSize: 16,
+                }
+              },
+              {
+                name: chartData.lineData.name,
+                type: 'line',
+                yAxisIndex: 1,
+                data: chartData.lineData.seriesData,
+                itemStyle: {
+                  color: '#F6722D',
+                }
+              }
+            ],
+            grid: {
+              left: '5%',
+              right: '5%',
+              bottom: '0%',
+              top: '15%',
+              containLabel: true
+            }
+          }
+
+          myChart.setOption(option);
+
+        })
+      }
+      const setResize = () => {
+        window.addEventListener('resize', () => {
+          if (show.value) {
+            // 父页面resize
+            let parentChart = echarts.init(document.getElementById('main'))
+            parentChart.resize()
+          } else {
+            // 子页面resize
+            let childChart = echarts.init(document.getElementById('child'))
+            childChart.resize()
+          }
+        })
+      }
+      onMounted(() => {
+        renderParentChart()
+        setResize()
+        nextTick(() => {
+          // 图表点击事件
+          let chart = echarts.init(document.getElementById('main'))
+          chart.on('click', chartClick)
+        })
+      })
+      const chartClick = (params) => {
+        nextTick(() => {
+          renderChildChart(params)
+        })
+      }
+      const renderChildChart = (params) => {
+        let parentId = /* Object.keys(tableData.value[params.dataIndex])[0] */ columnList.value[params.dataIndex].prop
+        JsObj.getAlarmTypeStatistics(parentId, (data) => {
+          data = JSON.parse(data)// 处理数据
+          if (data?.ColumnList?.length !== 0) {
+            currentItem.value = params
+            show.value = false
+            columnList.value = []
+            tableData.value = []
+            let chartData = {
+              xAxis: [],
+              barData: {
+                name: '报警数量',
+                seriesData: []
+              },
+              lineData: {
+                name: '累计百分比',
+                seriesData: []
+              }
+            }
+            // 1.渲染表头，图表x轴数据
+            if (data?.ColumnList) {
+              data.ColumnList.forEach(item => {
+                chartData.xAxis.push(item.Label)
+                columnList.value.push({
+                  label: item.Label,
+                  prop: item.Prop,
+                })
+              })
+            }
+            
+            // 2. 渲染图表，获取表体数据
+            if (data?.TableData?.length !== 0) {
+              tableData.value = data.TableData
+              // 报警数量
+              chartData.barData.seriesData = Object.values(data.TableData[0])
+              // 累计百分比
+              chartData.lineData.seriesData = Object.values(data.TableData[2])
+            }
+
+            nextTick(() => {
+              let childChart = echarts.init(document.getElementById('child'))
+              let option = {
+                tooltip: {
+                  trigger: 'axis',
+                  axisPointer: {
+                    type: 'cross',
+                  },
+                  formatter:function(params) {
+                    let str = `${params[0].name}</br>`
+                    for(let item of params) {
+                      if (item.seriesName.includes('百分比')) {
+                        // 百分比添加%
+                        str += `${item.marker}${item.seriesName}<b style="float: right" >${item.value}%</b>&nbsp;&nbsp;</br>`
+                      } else {
+                        str += `${item.marker}${item.seriesName}<b style="float: right" >${item.value}</b>&nbsp;&nbsp;</br>`
+                      }
+                    }
+                    return str
+                  }
+                },
+                legend: {
+                  data: [chartData.barData.name, chartData.lineData.name],
+                  right: 10,
+                  top: 10,
+                },
+                xAxis: {
+                  type: 'category',
+                  data: chartData.xAxis,
+                  // 坐标轴刻度
+                  axisTick: {
+                    show: false
+                  },
+                  axisPointer: {
+                    type: 'shadow'
+                  },
+                  // 坐标轴刻度标签的相关设置
+                  axisLabel: {
+                    interval: 0,
+                    rotate: 30,
+                    formatter: function (params) {
+                      // 字体换行显示
+                      var newParamsName = "";
+                      var paramsNameNumber = params.length;
+                      var provideNumber = 7;  //一行显示几个字
+                      var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+                      if (paramsNameNumber > provideNumber) {
+                        for (var p = 0; p < rowNumber; p++) {
+                          var tempStr = "";
+                          var start = p * provideNumber;
+                          var end = start + provideNumber;
+                          if (p == rowNumber - 1) {
+                            tempStr = params.substring(start, paramsNameNumber);
+                          } else {
+                            tempStr = params.substring(start, end) + "\n";
+                          }
+                          newParamsName += tempStr;
+                        }
+
+                      } else {
+                        newParamsName = params;
+                      }
+                      return newParamsName
+                    },
+                    margin: 15,
+                  },
+                },
+                yAxis: [
+                  {
+                    type: 'value',
+                    name: chartData.barData.name,
+                  },
+                  {
+                    type: 'value',
+                    name: chartData.lineData.name,
+                    alignTicks: true,
+                    axisLabel: {
+                      formatter: '{value} %'
+                    }
+                  }
+                ],
+                series: [
+                  {
+                    name: chartData.barData.name,
+                    type: 'bar',
+                    data: chartData.barData.seriesData,
+                    itemStyle: {
+                      color: '#46A0FF'
+                    },
+                    //鼠标悬停时：
+                    // emphasis: {
+                    //   itemStyle: {
+                    //     color: 'rgba(70,160,255,0.5)',
+                    //   }
+                    // },
+                    // 显示柱形图上面的文字
+                    label: {
+                      show: true,
+                      position: 'top',
+                      valueAnimation: true,
+                      fontSize: 16,
+                    }
+                  },
+                  {
+                    name: chartData.lineData.name,
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: chartData.lineData.seriesData,
+                    itemStyle: {
+                      color: '#F6722D',
+                    }
+                  }
+                ],
+                grid: {
+                  left: '5%',
+                  right: '5%',
+                  bottom: '0%',
+                  top: '15%',
+                  containLabel: true
+                }
+              }
+              childChart.setOption(option);
+            })
+
+          }
+        })
+        
+      }
+      /* 表格部分 */
+      /* 1. type === 'index用法'*/
+      const indexMethod = (index) => {
+        switch (index) {
+          case 0:
+            return '报警数量'
+            break
+          case 1:
+            return '百分比'
+            break
+          case 2:
+            return '累计百分比'
+            break
+        }
+      } 
+      const columnList = ref([])
+      const tableData = ref([])
+      const currentItem = ref(null)
+      
+      // 返回方法
+      const returnParent = () => {
+        show.value = true
+        currentItem.value = null
+        nextTick(() => {
+          // 这里需要给父组件重新绑定事件
+          let chart = echarts.init(document.getElementById('main'))
+          chart.on('click', chartClick)
+          renderParentChart()
+        })
+      }
+
+      // window上挂载方法
+      window.returnParent = () => {
+        returnParent()
+      }
+
+      window.searchRenderData = () => {
+        renderParentChart()
+      }
+      return {
+        columnList,
+        tableData,
+        show,
+        currentItem,
+        returnParent,
+        renderParentChart,
+        indexMethod
+      }
+    }
+  }
+  // 创建实例
+  const app = Vue.createApp(tableComponent)
+  // 引入 element-plue-icons
+  // for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  //   app.component(key, component)
+  // }
+  // 挂载
+  app.use(ElementPlus).mount("#app")
+</script>

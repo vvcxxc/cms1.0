@@ -1,0 +1,1512 @@
+﻿<!DOCTYPE html>
+<html>
+<!--saved from url=(0016)http://localhost-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="XR.css" />
+</head>
+<body id="bodyid">
+    <table style="border-collapse:collapse;width:1570px;" id="table">
+        <tbody>
+            <tr>
+                <td class="headtable" colspan="55">
+                    Average and Range (I - MR  / X bar - R) Control Chart (For Process Monitoring)
+                    <br />
+                    过程数据监控
+                </td>
+            </tr>
+            <tr>
+                <td class="headtable_td" colspan="3">Part NO:<br/>零件编号:</td>
+                <td class="headtable_ba" colspan="6"><input type="text" class="headtableinput" id="PartsNo" /></td>
+                <td class="headtable_td" colspan="3">Process:<br />工序:</td>
+                <td class="headtable_ba" colspan="6"><input type="text" class="headtableinput" id="Process" /></td>
+                <td class="headtable_td" colspan="6">Machine No.:<br />机模号:</td>
+                <td class="headtable_ba" colspan="6"><input type="text" class="headtableinput" id="MachineNo" /></td>
+                <td class="headtable_td" colspan="3">Mold/Cavity No.:<br />模/腔编号:</td>
+                <td class="headtable_ba" colspan="3"><input type="text" class="headtableinput" id="MoldCavityNo" /></td>
+                <td class="headtable_td" colspan="3">LSL规格下限:</td>
+                <td class="headtable_ba" colspan="4"><input type="number" class="headtableinput" id="LSL" /></td>
+                <td class="headtable_td" colspan="6">Location/line No.:<br />位置/线别:</td>
+                <td class="headtable_ba" colspan="6"><input type="text" class="headtableinput" id="LocationNo" /></td>
+                <td class="headtable_td" colspan="3">Control Plan #:<br />控制计划编号:</td>
+                <td class="headtable_ba" colspan="6"><input type="text" class="headtableinput" id="ControlPlan" /></td>
+            </tr>
+            <tr>
+                <td class="headtable_td" colspan="3">Control limits eff. date:<br/>控制限生效时间:</td>
+                <td class="headtable_ba" colspan="6"><input type="text" class="headtableinput" id="ControlTime" /></td>
+                <td class="headtable_td" colspan="3">Characteristic<br />测量项目:</td>
+                <td class="headtable_ba" colspan="6"><input type="text" class="headtableinput" id="Characteristic" /></td>
+                <td class="headtable_td" colspan="6">Sample Frequency:<br/>抽样频率:</td>
+                <td class="headtable_ba" colspan="6"><input type="text" class="headtableinput" id="SampleFulent" /></td>
+                <!--<td class="headtable_td" colspan="6">线号:</td>
+                <td class="headtable_ba" colspan="6"><input type="text" class="headtableinput" id="LineNo" /></td>-->
+                <td class="headtable_td" colspan="3">Sample  size:<br/>样本数:</td>
+                <td class="headtable_ba" colspan="3"><input type="number" class="headtableinput" id="SampleSize" /></td>
+                <td class="headtable_td" colspan="3">USL规格上限:</td>
+                <td class="headtable_ba" colspan="4"><input type="number" class="headtableinput" id="USL" /></td>
+                <td class="headtable_td" colspan="6">Gage No.:<br />量具编号:</td>
+                <td class="headtable_ba" colspan="6"><input type="text" class="headtableinput" id="GageNo" /></td>
+                <td class="headtable_td" colspan="3">MSA Results:<br />测量系统分析结果:</td>
+                <td class="headtable_ba" colspan="6"><input type="text" class="headtableinput" id="MSAResults" /></td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="main" style="width:1570px;height:300px"></div>
+    <div id="main1" style="width:1570px;height:300px"></div>
+    <p></p>
+    <div style="width:1570px; border:1pt solid #cccccc; background-color:#e8e8e8;height:1175px;overflow: auto;">
+        <div style="width:1570px; background-color:#e8e8e8;">
+            <table style="width:866px;" id="table6">
+                <tbody>
+                    <tr>
+                        <td>
+                            Calculation of Index<span>&nbsp;</span>#<span>&nbsp;</span>:<br />
+                            计算指数:
+                        </td>
+                        <td style="width:133px;background-color:#f2f2f2">X=<span id="xx"></span></td>
+                        <td style="width:133px;background-color:#f2f2f2">R=<span id="rr"></span></td>
+                        <td style="width:133px;background-color:#f2f2f2">Cp=<span id="cp"></span></td>
+                        <td style="width:133px;background-color:#f2f2f2">Cpk=<span id="cpk"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="width:1550px;position:relative;float:left;left:10px;top:20px">
+            <table style="width:1550px;border:1pt solid #9eb8f9;" id="table2" cellpadding="0" cellspacing="0" border="1">
+                <tbody>
+                    <tr id="biaoti" style="background-color:#dcf0f9;color:#4270e4">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">
+                            Subgroup # :<br/>子组编号:
+                        </td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>9</td>
+                        <td>10</td>
+                        <td>11</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>14</td>
+                        <td>15</td>
+                        <td>16</td>
+                        <td>17</td>
+                        <td>18</td>
+                        <td>19</td>
+                        <td>20</td>
+                        <td>21</td>
+                        <td>22</td>
+                        <td>23</td>
+                        <td>24</td>
+                        <td>25</td>
+                        <td>26</td>
+                        <td>27</td>
+                        <td>28</td>
+                        <td>29</td>
+                        <td>30</td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="data1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Date 日期:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="time1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Time 时间:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading1 读数1:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading2 读数2:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading3 读数3:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading4 读数4:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading5 读数5:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Mean均值:</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Range 极差:</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="people1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Inspector:<br/>检察员:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;"  name="people1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Revien:<br />审核员:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+
+                    <tr style="background-color:#dcf0f9;color:#4270e4" id="biaoti2">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">
+                            Subgroup # :<br />子组编号
+                        </td>
+                        <td>31</td>
+                        <td>32</td>
+                        <td>33</td>
+                        <td>34</td>
+                        <td>35</td>
+                        <td>36</td>
+                        <td>37</td>
+                        <td>38</td>
+                        <td>39</td>
+                        <td>40</td>
+                        <td>41</td>
+                        <td>42</td>
+                        <td>43</td>
+                        <td>44</td>
+                        <td>45</td>
+                        <td>46</td>
+                        <td>47</td>
+                        <td>48</td>
+                        <td>49</td>
+                        <td>50</td>
+                        <td>51</td>
+                        <td>52</td>
+                        <td>53</td>
+                        <td>54</td>
+                        <td>55</td>
+                        <td>56</td>
+                        <td>57</td>
+                        <td>58</td>
+                        <td>59</td>
+                        <td>60</td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="data1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Date 日期:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="time1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Time 时间:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array2">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading1 读数1:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array2">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading2 读数2:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array2">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading3 读数3:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array2">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading4 读数4:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array2">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading5 读数5:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Mean 均值:</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Range 极差:</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;"  name="people1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Inspector:<br/>检察员:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;"  name="people1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Revien:<br/>审核员:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+
+                    <tr style="background-color:#dcf0f9;color:#4270e4" id="biaoti3">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">
+                            Subgroup # :<br />子组编号
+                        </td>
+                        <td>61</td>
+                        <td>62</td>
+                        <td>63</td>
+                        <td>64</td>
+                        <td>65</td>
+                        <td>66</td>
+                        <td>67</td>
+                        <td>68</td>
+                        <td>69</td>
+                        <td>70</td>
+                        <td>71</td>
+                        <td>72</td>
+                        <td>73</td>
+                        <td>74</td>
+                        <td>75</td>
+                        <td>76</td>
+                        <td>77</td>
+                        <td>78</td>
+                        <td>79</td>
+                        <td>80</td>
+                        <td>81</td>
+                        <td>82</td>
+                        <td>83</td>
+                        <td>84</td>
+                        <td>85</td>
+                        <td>86</td>
+                        <td>87</td>
+                        <td>88</td>
+                        <td>89</td>
+                        <td>90</td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="data1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Date 日期:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="time1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Time 时间:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array3">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading1 读数1:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array3">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading2 读数2</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array3">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading3 读数3:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array3">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading4 读数4:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;" name="array3">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Reading5 读数5:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Mean 均值:</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Range 极差:</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;"  name="people1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Inspector:<br/>检察员:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                    <tr style="background-color:#ffffff;"  name="people1">
+                        <td style="background-color: #c7d5e8;color:#4270e4;">Revien:<br />审核员:</td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                        <td contentEditable="true"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <p></p>
+    <p></p>
+    <div id="log" style="width:1570px;height:240px;border:1pt solid #cccccc;background-color:#f2f2f2">
+            <p align="center" style="margin-top:20px; background-color:#ced4d4;font-size: 14pt;">Event Log Sheet 事件记录表</p>
+        <div style="width:50%;position:relative;float:left;font-size:14px" id="rule">
+        <div style="left:45px;float:left; position:relative;">
+            <span>当一个工序的控制图中出现以下一个或多个现象时，将被视为超出控制。</span><br />
+            <span>A process is considered to be out-of-control when any one or more of the following symptoms occur.</span><br />
+            <span>&nbsp;</span>
+        </div>
+            <br />
+            <div style="float:left; position:relative;">
+                <ul style="list-style-type:none">
+                    <li><input type="checkbox" id="check1"><span>1) Any individual data outside of the specification limits. 任何超出规格限以外的单值</span></li>
+                    <li><input type="checkbox" id="check2"><span>2) Any point outside of the control limits. 任何超出控制限以外的点</span></li>
+                    <li><input type="checkbox" id="check3"><span>3) 7 points in a row on same side of centreline. 连续7点位于中心线的同一侧</span></li>
+                    <li><input type="checkbox" id="check4"><span>4) 6 points in a row, all increasing or all decreasing. 连续6点上升或下降</span></li>
+                    <li><input type="checkbox" id="check5"><span>5) 14 points in a row, alternating up and down. 连续14点交替上下变化</span></li>
+                </ul>
+            </div>
+            </div>
+            <div style="width:35%; position:relative;float:right;  right:3%" id="result" >
+                <span>The following formula is only for re-calculation of control limit:</span><br />
+                <span>以下公式仅供重新计算控制限时使用:</span><br />
+                <table id="table3" border="1" cellspacing="0" style="border-color:#cccccc" >
+                    <tbody>
+                        <tr>
+                            <td ><span>X</span></td>
+                            <td ><span id="LX"></span></td>
+                            <td ><span>R</span></td>
+                            <td><span id="LR"></span></td>
+                        </tr>
+                        <tr>
+                            <td><span>ULCX</span></td>
+                            <td><span id="ULCX"></span></td>
+                            <td><span>ULCR</span></td>
+                            <td><span id="ULCR"></span></td>
+                        </tr>
+                        <tr>
+                            <td><span>LLCX</span></td>
+                            <td><span id="LLCX"></span></td>
+                            <td><span>LLCR</span></td>
+                            <td><span id="LLCR"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    <div style="width:1570px;height:460px;top:20px;position:relative" >
+           <div style="width:60%;position:relative;float:left;background-color:#f2f2f2;height:438px">
+                <div id="chart" style="width:80%;position:relative;float:left;height:300px"></div>
+                <div style="position:absolute;width:200px;right:1%;top:0; border:1pt solid #cccccc; height:251px;" >
+                    <p align="center" style="margin-top:20px; background-color:#ced4d4;font-size: 14pt;display:inline">Process Data</p>
+                    <table id="tablec1" border="0" cellspacing="0" style="border-color:#cccccc;">
+                        <tbody>
+                            <tr>
+                                <th><span>LSL</span></th>
+                                <td><span id="Clsl">000</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>Target</span></th>
+                                <td><span id="Cgoal">*</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>USL</span></th>
+                                <td><span id="Cusl">000</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>Sample Mean</span></th>
+                                <td><span id="Cmean">000</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>Sample N</span></th>
+                                <td><span id="Csamplenumber">000</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>StDev(with)</span></th>
+                                <td><span id="CStDevWith">000</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>StDev(Overall)</span></th>
+                                <td><span id="CStDevOverall">000</span></td>
+                            </tr>
+                            <tr></tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div style="position:absolute;float:right;right:3%; top:265px;border:1pt solid #cccccc;">
+                    <p align="center" style="margin-top:10px; background-color:#ced4d4;font-size: 14pt;display:inline">Potential Capability</p>
+                    <table id="tablec1" border="0" cellspacing="0" style="border-color:#cccccc;">
+                        <tbody>
+                            <tr>
+                                <th><span>Cp</span></th>
+                                <td><span id="Ccp">000</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>CPL</span></th>
+                                <td><span id="Ccpl">000</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>CPU</span></th>
+                                <td><span id="Ccpu">000</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>Cpk</span></th>
+                                <td><span id="Ccpk">000</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div style="position:absolute;float:left;left:0px;top:300px;border:1pt solid #cccccc;">
+                    <p align="center" style="margin-top:10px; background-color:#ced4d4;font-size: 14pt;display:inline">Observed Performance</p>
+                    <table id="tablec1" border="0" cellspacing="0" style="border-color:#cccccc;">
+                        <tbody>
+                            <tr>
+                                <th><span>PPM<span>&nbsp;</span><<span>&nbsp;</span>LSL</span></th>
+                                <td><span id="COppmlsl">000</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>PPM<span>&nbsp;</span>><span>&nbsp;</span>USL</span></th>
+                                <td><span id="COppmusl">000</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>PPM Total</span></th>
+                                <td><span id="COppmtotal">000</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div style="position:absolute;float:left;left:220px; top:300px;border:1pt solid #cccccc;">
+                    <p align="center" style="margin-top:10px; background-color:#ced4d4;font-size: 14pt;display:inline">Exp.Within Performance</p>
+                    <table id="tablec1" border="0" cellspacing="0" style="border-color:#cccccc;">
+                        <tbody>
+                            <tr>
+                                <th><span>PPM<span>&nbsp;</span><<span>&nbsp;</span>LSL</span></th>
+                                <td><span id="CEppmlsl">000</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>PPM<span>&nbsp;</span>><span>&nbsp;</span>USL</span></th>
+                                <td><span id="CEppmusl">000</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>PPM Total</span></th>
+                                <td><span id="CEppmtotal">000</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div style="position:absolute;float:left;left:450px; top:300px;border:1pt solid #cccccc;">
+                    <p align="center" style="margin-top:10px; background-color:#ced4d4;font-size: 14pt;display:inline">Exp.Overall Performance</p>
+                    <table id="tablec1" border="0" cellspacing="0" style="border-color:#cccccc;">
+                        <tbody>
+                            <tr>
+                                <th><span>PPM<span>&nbsp;</span><<span>&nbsp;</span>LSL</span></th>
+                                <td><span id="CWppmlsl">000</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>PPM<span>&nbsp;</span>><span>&nbsp;</span>USL</span></th>
+                                <td><span id="CWppmusl">000</span></td>
+                            </tr>
+                            <tr>
+                                <th><span>PPM Total</span></th>
+                                <td><span id="CWppmtotal">000</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+                   
+           <div style="width:38%;position:relative;float:right;background-color:#f2f2f2;height:320px;">
+                    <p align="left" style="margin-top:10px; background-color:#ced4d4;font-size: 14pt;">Computing result 计算结果</p>
+                    <table id="table4" border="1" cellspacing="0" style="border-color:#cccccc;position:relative;left:15%" >
+                        <tbody>
+                            <tr>
+                                <td><span>N</span></td>
+                                <td><span id="XN"></span></td>
+                                <td><span>Mean</span></td>
+                                <td><span id="XMean"></span></td>
+                           </tr>                           
+                            <tr>
+                                <td><span>Max</span></td>
+                                <td><span id="XMax"></span></td>
+                                <td><span>Min</span></td>
+                                <td><span id="XMin"></span></td>
+                            </tr>
+                            <tr>
+                                <td><span>Range</span></td>
+                                <td><span id="XRange"></span></td>
+                                <td><span>StDev</span></td>
+                                <td><span id="XStDev"></span></td>
+                            </tr>
+                            <tr>
+                               
+                            </tr>                               
+                              <tr>
+                                  <td><span>CPK</span></td>
+                                  <td><span id="XCPK"></span></td>
+                                  <td><span></span></td>
+                                  <td></td>
+                              </tr>                           
+                            <tr>    
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+        </div>
+
+    <!--<button id="c" onclick="daochu()">zixing</button><br>
+    <a id="down_qr" href="#" style="display: none">haha</a>
+    <button id="b">button to get image</button><br>-->
+    <img id="myIMG" crossorigin="anonymous" style="display:none" /> 
+
+    <!--<button id="re" onclick="daochu2()">导出</button><br>-->
+
+        <script src="jquery-1.10.2.min.js"></script>
+        <script src="json3.js"></script>
+        <script src="echarts.js"></script>
+        <script src="ecStat.js"></script>
+        <script src="html2canvas.js"></script>
+        <script src="XR.js"></script>
+        <!--<script src="CPK.js"></script>-->
+</body>
+</html>

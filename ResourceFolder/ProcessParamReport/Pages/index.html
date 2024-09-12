@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>过程参数查询</title>
+  <!-- Import Vue 3 -->
+  <script src="./vue3/index.js"></script>
+  <!-- Import style -->
+  <link rel="stylesheet" href="./element-plus/index.css" />
+  <!-- Import component library -->
+  <script src="./element-plus/index.js"></script>
+  <!-- 设置elementplus 组件中文 -->
+  <script src="./element-plus/languages/zh-cn.js"></script>
+  <!-- 引入icons 若未使用element-plus-icon 则可以移除该引用 -->
+  <script src="./element-plus/icons.js"></script>
+  <link rel="stylesheet" href="./styles/rewriteElement.css" />
+  <link rel="stylesheet" href="./styles/index.css" />
+</head>
+<style>
+</style>
+ 
+<body>
+  <div id="app">
+    <div class="wrap">
+      <div class="left" >
+        <div class="left-items" v-for="item in btnList" :class="{ 
+            normalItem: item.Type === 'normal',
+            passItem: item.Type === 'green',
+            ngItem: item.Type === 'red',
+            currentItem: currentItem?.Id === item.Id
+          }"
+          @click="setCurrentItem(item)"
+        >
+          <div class="item" :class="{ dot: item.HasDot }" >{{item.Name}}</div>
+        </div>
+      </div>
+      <div class="right" >
+        <div class="right-main" >
+          <div class="right-block" >
+            <div class="block-items" >
+              <div class="item-inner" >
+                <div class="block-item-label" >{{langData.output}}：</div>
+                <div class="block-item-value" >
+                  <el-input class="right-block-input" :disabled="true" v-model="blockData.output"  />
+                </div>
+              </div>
+              <div class="item-inner" >
+                <div class="block-item-label" >{{langData.passCount}}：</div>
+                <div class="block-item-value" >
+                  <el-input class="right-block-input" :disabled="true" v-model="blockData.passCount" />
+                </div>
+              </div>
+              <div class="item-inner" >
+                <div class="block-item-label" >{{langData.passRate}}：</div>
+                <div class="block-item-value" >
+                  <el-input class="right-block-input" :disabled="true" v-model="blockData.passRate" />
+                </div>
+              </div>
+              <div class="item-inner" >
+                <div class="block-item-label" >{{langData.ngCount}}：</div>
+                <div class="block-item-value" >
+                  <el-input class="right-block-input red-text-input" :disabled="true" v-model="blockData.ngCount" />
+                </div>
+              </div>
+              <div class="item-inner" >
+                <div class="block-item-label" >{{langData.ngRate}}：</div>
+                <div class="block-item-value" >
+                  <el-input class="right-block-input red-text-input" :disabled="true" v-model="blockData.ngRate" />
+                </div>
+              </div>
+            </div>
+          <!-- <div class="left-block"  >
+            <div class="item-inner" >
+              <div class="block-item-label" >物料识别码：</div>
+              <div class="block-item-value" >
+                <el-input class="left-block-input" placeholder="请输入" v-model="blockData.idenCode" @blur="searchIdenCode" suffix-icon="Search" >
+                </el-input>
+              </div>
+            </div>
+          </div> -->
+          </div>
+          <div class="right-table" >
+            <el-table class="custom-table" :data="tableData" height="100%" header-cell-class-name="headerCellClass" border>
+              <el-table-column 
+                v-for="(item,index) in columnList"
+                :key="index"
+                show-overflow-tooltip
+                :prop="item.Prop"
+                :label="item.Label"
+                :sortable="item.Sortable"
+                :width="item.Width"
+                :fixed="item.Fixed">
+                  <el-table-column 
+                    v-if="item.Children && item.Children.length > 0"
+                    v-for="(child, childIndex) in item.Children"
+                    :key=`child${childIndex}`
+                    :prop="child.Prop"
+                    :label="child.Label"
+                    :sortable="item.Sortable"
+                    :width="child.Width"
+                    :fixed="item.Fixed"
+                  >
+                  </el-table-column>
+
+                  <!-- 表体slot -->
+                  <template #default="scope" v-if="item.Prop === 'static7'" >
+                    <span :class="{ textGreen: scope.row[item.Prop].toLowerCase() === 'ok', textRed: scope.row[item.Prop].toLowerCase() === 'ng' }">{{ scope.row[item.Prop] }}</span>
+                  </template>
+              </el-table-column>
+
+            </el-table>
+          </div>
+        </div>
+        <!-- 分页部分 -->
+        <div class="right-footer " >
+          <div>
+            <!-- 共 -->{{langData.total}}{{pageData.totalCount}}
+            <!-- 条记录 当前第 -->{{langData.totlaRecordAndCurrent}}{{pageData.currentPage}}
+            <!-- 页 共 -->{{langData.pageTotal}}{{pageData.totalPage}}
+            <!-- 页 每页 -->{{langData.pageEvery}}{{pageData.pageSize}}
+            <!-- 条记录 --> {{langData.pageRecord}}
+          </div>
+          <el-pagination
+            v-model:currentPage="pageData.currentPage"
+            v-model:page-size="pageData.pageSize"
+            background
+            layout="prev, pager, next, jumper"
+            :total="pageData.totalCount"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          >
+          </el-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+ 
+</html>
+<script>
+  // vue3 部分
+  const { ref, onMounted } = Vue
+  const tableComponent = {
+    setup() {
+      /* 1.左侧动态按钮 */
+      const currentItem = ref(null)
+      const btnList = ref([])
+      const setCurrentItem = (itemData) => {
+        currentItem.value = itemData
+        console.log('setCurrentItem', itemData)
+        JsObj.setProcess(itemData.Id, (data) => {
+          // 测试数据
+          // let data = {
+          //   "Data": {
+          //     "ColumnList": [{
+          //       "Label": "序号",
+          //       "Prop": "static1"
+          //     }, {
+          //       "Label": "产品识别码",
+          //       "Prop": "static2"
+          //     }, {
+          //       "Label": "产品型号",
+          //       "Prop": "static3"
+          //     }, {
+          //       "Label": "产线名称",
+          //       "Prop": "static4"
+          //     }, {
+          //       "Label": "工位名称",
+          //       "Prop": "static5"
+          //     }, {
+          //       "Label": "记录时间",
+          //       "Prop": "static6"
+          //     }, {
+          //       "Label": "是否合格",
+          //       "Prop": "static7"
+          //     }, {
+          //       "Label": "p1(string)",
+          //       "Prop": "dynamic1"
+          //     }, {
+          //       "Label": "p2(string)",
+          //       "Prop": "dynamic2"
+          //     }, {
+          //       "Label": "不合格原因",
+          //       "Prop": "dynamic3"
+          //     }],
+          //     "TableData": [{
+          //       "static1": 1,
+          //       "static2": "001",
+          //       "static3": "",
+          //       "static4": "文件夹1",
+          //       "static5": "工序1",
+          //       "static6": "2022-11-09 17:25:12",
+          //       "static7": "Ng",
+          //       "dynamic1": "1",
+          //       "dynamic2": "2",
+          //       "dynamic3": "原因1,原因2"
+          //     }, {
+          //       "static1": 1,
+          //       "static2": "002",
+          //       "static3": "",
+          //       "static4": "文件夹1",
+          //       "static5": "工序1",
+          //       "static6": "2022-11-10 12:30:33",
+          //       "static7": "Ng",
+          //       "dynamic1": "1",
+          //       "dynamic2": "2",
+          //       "dynamic3": "原因1,原因2"
+          //     }, {
+          //       "static1": 1,
+          //       "static2": "003",
+          //       "static3": "",
+          //       "static4": "文件夹1",
+          //       "static5": "工序1",
+          //       "static6": "2022-11-14 14:10:19",
+          //       "static7": "Ok",
+          //       "dynamic1": "",
+          //       "dynamic2": "",
+          //       "dynamic3": ""
+          //     }, {
+          //       "static1": 1,
+          //       "static2": "004",
+          //       "static3": "",
+          //       "static4": "文件夹1",
+          //       "static5": "工序1",
+          //       "static6": "2022-11-14 14:19:52",
+          //       "static7": "Ng",
+          //       "dynamic1": "1",
+          //       "dynamic2": "2",
+          //       "dynamic3": "原因1,原因2"
+          //     }, {
+          //       "static1": 1,
+          //       "static2": "005",
+          //       "static3": "",
+          //       "static4": "文件夹1",
+          //       "static5": "工序1",
+          //       "static6": "2022-11-14 14:22:05",
+          //       "static7": "Ng",
+          //       "dynamic1": "1",
+          //       "dynamic2": "2",
+          //       "dynamic3": "原因1,原因2"
+          //     }, {
+          //       "static1": 1,
+          //       "static2": "006",
+          //       "static3": "",
+          //       "static4": "文件夹1",
+          //       "static5": "工序1",
+          //       "static6": "2022-11-14 14:22:08",
+          //       "static7": "Ng",
+          //       "dynamic1": "1",
+          //       "dynamic2": "2",
+          //       "dynamic3": "原因1,原因2"
+          //     }]
+          //   },
+          //   "Qas": [{
+          //     "Id": "cb0ae049-de23-48eb-b634-325b851e310a",
+          //     "HasDot": false,
+          //     "Name": "工序1",
+          //     "Type": "normal"
+          //   }, {
+          //     "Id": "481b9e10-6178-42cf-977b-c844e6d5adb5",
+          //     "HasDot": false,
+          //     "Name": "工序2",
+          //     "Type": "normal"
+          //   }, {
+          //     "Id": "acc7be10-27e7-48f1-9718-6dab8901ffa4",
+          //     "HasDot": false,
+          //     "Name": "多工位工序",
+          //     "Type": "normal"
+          //   }],
+          //   "Total": 6,
+          //   "Ok": 0,
+          //   "OkRate": 16.67,
+          //   "Ng": 5,
+          //   "NgRate": '83.33',
+          //   "TotalPage": 1
+          // }
+          // 输入框内容
+          blockData.value.output = data.Total
+          blockData.value.passCount = data.Ok
+          blockData.value.passRate = data.OkRate
+          blockData.value.ngCount = data.Ng
+          blockData.value.ngRate = data.NgRate
+          btnList.value = data.Qas
+          pageData.value.totalCount = data.Total
+          pageData.value.totalPage =  data.TotalPage
+          pageData.value.currentPage = 1
+          // 表格
+          columnList.value = data.Data.ColumnList
+          tableData.value = data.Data.TableData
+        })
+      }
+      /* 2.右侧部分部分 */
+      const blockData = ref({
+        output: 0,
+        passCount: 0,
+        passRate: '0',
+        ngCount: 0,
+        ngRate: '0',
+      })
+      const searchData = () => {
+        if (currentItem.value === null) {
+          alert(langData.value.pleChooseProcess)
+          return
+        }
+        JsObj.search(currentItem.value.Id, pageData.value.currentPage, (data) => {
+            // 输入框内容
+          blockData.value.output = data.Total
+          blockData.value.passCount = data.Ok
+          blockData.value.passRate = data.OkRate
+          blockData.value.ngCount = data.Ng
+          blockData.value.ngRate = data.NgRate
+          btnList.value = data.Qas
+          pageData.value.totalCount = data.Total
+          pageData.value.totalPage =  data.TotalPage
+          // 表格
+          columnList.value = data.Data.ColumnList
+          tableData.value = data.Data.TableData
+        })
+      }
+      /** 表格部分 */
+      const columnList = ref([])
+      const tableData = ref([])
+      /* 分页部分 */
+      const pageData = ref({
+        currentPage: 1,
+        pageSize: 50,
+        totalPage: 1,
+        totalCount: 0
+      })
+      const handleSizeChange = (val) => {
+        // debugger
+        // console.log(pageData.value)
+        // pageData.value.currentPage = val
+        pageData.value.currentPage = val
+        searchData()
+      }
+      const handleCurrentChange = (val) => {
+        // debugger
+        // console.log(pageData.value)
+        // pageData.value.currentPage = val
+        pageData.value.currentPage = val
+        searchData()
+      }
+      const getLeftBtnData = () => {
+        JsObj.refresh((data) => {
+          // 测试数据
+          // let data = [{
+          //   "Id": "cb0ae049-de23-48eb-b634-325b851e310a",
+          //   "HasDot": false,
+          //   "Name": "工序1",
+          //   "Type": "normal"
+          // }, {
+          //   "Id": "481b9e10-6178-42cf-977b-c844e6d5adb5",
+          //   "HasDot": true,
+          //   "Name": "工序2",
+          //   "Type": "normal"
+          // }, {
+          //   "Id": "acc7be10-27e7-48f1-9718-6dab8901ffa4",
+          //   "HasDot": false,
+          //   "Name": "多工位工序",
+          //   "Type": "normal"
+          // }]
+          console.log('refresh', data)
+          if (data?.length >= 1) {
+            btnList.value = data
+            setCurrentItem(data[0])
+          } else {
+            btnList.value = []
+            currentItem.value = null
+          }
+        })
+      }
+
+      // 多语言处理
+      const langData = ref({})
+      const getLanguage = () => {
+        langData.value = {  
+          output: '产量',
+          passCount: '合格数',
+          passRate: '合格率',
+          ngCount: '不合格数',
+          ngRate: '不合格率',
+          pleChooseProcess: '请先选择工序！',
+
+          // 分页
+          total: '共',
+          totlaRecordAndCurrent: '条记录 当前第',
+          pageTotal: '页 共',
+          pageEvery: '页 每页',
+          pageRecord: '条记录',
+        }
+      }
+
+      // window上挂载方法
+      window.getRefreshData = () => {
+        getLeftBtnData()
+      }
+
+      window.getSearchData = () => {
+        searchData()
+      }
+
+      onMounted(() => {
+        getLanguage()
+        getLeftBtnData()
+      })
+      return {
+        currentItem,
+        btnList,
+        columnList,
+        tableData,
+        blockData,
+        pageData,
+        langData,
+        getLanguage,
+        searchData,
+        setCurrentItem,
+        handleSizeChange,
+        handleCurrentChange,
+        getLeftBtnData
+      }
+    }  
+  }
+  // 创建实例
+  const app = Vue.createApp(tableComponent)
+  // 引入 element-plue-icons
+  for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component)
+  }
+  // 挂载
+  app.use(ElementPlus, { locale: ElementPlusLocaleZhCn }).mount("#app")
+</script>

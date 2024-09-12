@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>产量统计</title>
+  <!-- Import Vue 3 -->
+  <script src="./vue3/index.js"></script>
+  <!-- Import style -->
+  <link rel="stylesheet" href="./element-plus/index.css" />
+  <!-- Import component library -->
+  <script src="./element-plus/index.js"></script>
+  <!-- 引入icons 若未使用element-plus-icon 则可以移除该引用 -->
+  <!-- <script src="./element-plus/icons.js"></script> -->
+  <!-- 引入echarts -->
+  <script src="./echartsV5/index.js"></script>
+  <link rel="stylesheet" href="./styles/rewriteElement.css" />
+  <link rel="stylesheet" href="./styles/index.css" />
+</head>
+<style>
+</style>
+
+<body>
+  <div id="app">
+    <!-- 父页面 -->
+    <div class="wrap" v-if="show">
+      <div class="charts">
+        <div id="main"  style="width: 100%;height:100%; box-sizing: border-box;"></div>
+        
+      </div>
+      <div class="table">
+        <el-table class="custom-table" @sort-change="sortChange" :cell-style="{borderColor:'#E4E7ED'}" :header-cell-style="{borderColor:'#E4E7ED'}" :data="tableData" height="100%" header-cell-class-name="headerCellClass" border>
+          <el-table-column type="index" :label="langData.No" fixed align="center" width="110" ></el-table-column>
+          <el-table-column v-for="(item,index) in columnList" show-overflow-tooltip :prop="item.prop"
+            :label="item.label" :sortable="item.sortable" :width="item.width" align="center" :fixed="item.fixed">
+
+            <!-- 表头slot -->
+            <!-- <template #header>
+              <span>{{ item.label }}</span>
+            </template> -->
+
+            <!-- 表体slot -->
+            <!-- <template #default="scope" >
+              <span>{{ scope.row[item.prop] }} 456465</span>
+            </template> -->
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
+
+    <!-- 子页面 -->
+    <div class="wrap" v-if="!show">
+      <div class="charts">
+        <div id="child" class="child-chart" style="width: 100%;height:100%; box-sizing: border-box;"></div>
+        <div class="child-text">{{currentItem.name}}</div>
+      </div>
+      <div class="table">
+        <el-table class="custom-table" show-summary :sum-text="langData.Summary" :cell-style="{borderColor:'#E4E7ED'}" :header-cell-style="{borderColor:'#E4E7ED'}" :data="childTableData" height="100%" header-cell-class-name="headerCellClass" border>
+          <el-table-column type="index"  :label="langData.No" fixed align="center" width="110" ></el-table-column>
+          <el-table-column v-for="(item,index) in childColumnList" show-overflow-tooltip :prop="item.prop"
+            :label="item.label" :sortable="item.sortable" :width="item.width" align="center" :fixed="item.fixed">
+
+            <template #default="scope" >
+              <span v-if="item.prop === 'Date'" class="date-text" @click="openPop(scope.row)" >
+                {{ scope.row[item.prop] }}
+              </span>
+              <span v-else >{{ scope.row[item.prop] }}</span>
+            </template> 
+
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+<script>
+  // vue3 部分
+  const { ref, onMounted, nextTick } = Vue
+  const tableComponent = {
+    setup() {
+      /* 图标部分 */
+      const show = ref(true)
+      const renderParentChart = () => {
+        JsObj.getProductionData(data => {
+          data = JSON.parse(data)
+          // let data = {
+          //   ColumnList: [
+          //     {
+          //       Label: '工序名称',
+          //       Prop: 'Name',
+          //     },
+          //     {
+          //       Label: '产量',
+          //       Prop: 'Total',
+          //       sortable: 'custom',
+          //     },
+          //     {
+          //       Label: '合格数',
+          //       Prop: 'Ok',
+          //       sortable: 'custom',
+          //     },
+          //     {
+          //       Label: '不合格数',
+          //       Prop: 'Ng',
+          //       sortable: 'custom',
+          //     }
+          //   ],
+          //   TableData: [
+          //   { 
+          //     Id: '_1111111111',
+          //     Name: '工序1',
+          //     Total: '80',
+          //     Ok: '78',
+          //     Ng: '2'
+          //   },
+          //   { 
+          //     Id: '_2222222222',
+          //     Name: '工序2',
+          //     Total: '99',
+          //     Ok: '99',
+          //     Ng: '99'
+          //   },
+          //   { 
+          //     Id: '_333333333',
+          //     Name: '工序3',
+          //     Total: '70',
+          //     Ok: '68',
+          //     Ng: '2'
+          //   },
+          //   { 
+          //     Id: '_444444444',
+          //     Name: '工序4',
+          //     Total: '68',
+          //     Ok: '60',
+          //     Ng: '8'
+          //   },
+          //   { 
+          //     Id: '_555555555',
+          //     Name: '工序5',
+          //     Total: '60',
+          //     Ok: '58',
+          //     Ng: '2'
+          //   },
+          // ]
+          // }
+          columnList.value = []
+          tableData.value = []
+          let chartData = {
+            xAxis: [],
+            passBarData: {
+              name: langData.Pass,
+              seriesData: []
+            },
+            ngBarData: {
+              name: langData.Ng,
+              seriesData: []
+            }
+          }
+          // 1.渲染表头
+          if (data?.ColumnList) {
+            columnList.value = data.ColumnList.map(item => ({
+              label: item.Label,
+              prop: item.Prop,
+              // 添加排序
+              sortable: ['Total', 'Ok', 'Ng'].includes(item.Prop) ? true : false
+            }))
+          }
+          
+
+          // 2.渲染图表和表体数据
+          if (data?.TableData) {
+            tableData.value = data?.TableData
+            cloneTableData.value = JSON.parse(JSON.stringify(data?.TableData))
+            setParentChart(tableData.value)
+          }
+        })
+      }
+
+      const setResize = () => {
+        window.addEventListener('resize', () => {
+          if (show.value) {
+            // 父页面resize
+            let parentChart = echarts.init(document.getElementById('main'))
+            parentChart.resize()
+          } else {
+            // 子页面resize
+            let childChart = echarts.init(document.getElementById('child'))
+            childChart.resize()
+          }
+        })
+      }
+      onMounted(() => {
+        renderParentChart()
+        setResize()
+        getLanguage()
+        nextTick(() => {
+          // 图表点击事件
+          let chart = echarts.init(document.getElementById('main'))
+          chart.on('click', chartClick)
+        })
+      })
+      const renderChildChart = (params) => {
+        JsObj.getProductionDayData(tableData.value[params.dataIndex].Id, (data) => {
+          data = JSON.parse(data)
+          // let data = {
+          //   ColumnList: [
+          //     {
+          //       Label: '日期',
+          //       Prop: 'Date',
+          //       Sortable: true,
+          //     },
+          //     {
+          //       Label: '产量',
+          //       Prop: 'Total',
+          //       Sortable: true,
+          //     },
+          //     {
+          //       Label: '合格数',
+          //       Prop: 'Ok',
+          //       Sortable: true,
+          //     },
+          //     {
+          //       Label: '不合格数',
+          //       Prop: 'Ng',
+          //       Sortable: true,
+          //     }
+          //   ],
+          //   TableData: [
+          //     { 
+          //       Date: '2022-05-03',
+          //       Total: '240',
+          //       Ok: '240',
+          //       Ng: '0'
+          //     },
+          //     { 
+          //       Date: '2022-05-04',
+          //       Total: '100',
+          //       Ok: '98',
+          //       Ng: '2'
+          //     },
+          //     { 
+          //       Date: '2022-05-05',
+          //       Total: '100',
+          //       Ok: '99',
+          //       Ng: '1'
+          //     },
+          //     { 
+          //       Date: '2022-05-06',
+          //       Total: '100',
+          //       Ok: '100',
+          //       Ng: '0'
+          //     },
+          //     { 
+          //       Date: '2022-05-07',
+          //       Total: '100',
+          //       Ok: '90',
+          //       Ng: '10'
+          //     },
+          //     { 
+          //       Date: '2022-05-08',
+          //       Total: '100',
+          //       Ok: '80',
+          //       Ng: '20'
+          //     },
+          //     { 
+          //       Date: '2022-05-09',
+          //       Total: '100',
+          //       Ok: '100',
+          //       Ng: '0'
+          //     }
+          //   ]
+          // }
+          childColumnList.value = []
+          childTableData.value = []
+          if (data?.ColumnList?.length) {
+            currentItem.value = params
+            show.value = false
+            // 1.渲染表格
+            childColumnList.value = data?.ColumnList.map(item => ({
+              label: item.Label,
+              prop: item.Prop,
+              // 添加排序
+              sortable: ['Date', 'Total', 'Ok', 'Ng'].includes(item.Prop) ? true : false
+            }))
+            childTableData.value = data?.TableData
+            // 2.渲染图表
+            /* 获取表格数据 */
+            let chartData = {
+              xAxis: [],
+              countLineData: {
+                name: langData.Output,
+                seriesData: []
+              },
+              passLineData: {
+                name: langData.Pass,
+                seriesData: []
+              },
+              ngLineData: {
+                name: langData.Ng,
+                seriesData: []
+              }
+            }
+            data?.TableData.forEach(item => {
+              chartData.xAxis.push(item.Date)
+              chartData.countLineData.seriesData.push(item.Total)
+              chartData.passLineData.seriesData.push(item.Ok)
+              chartData.ngLineData.seriesData.push(item.Ng)
+            })
+            nextTick(() => {
+              let childChart = echarts.init(document.getElementById('child'))
+              let option = {
+                tooltip: {
+                  trigger: "axis",
+                },
+                legend: {
+                  data: [chartData.countLineData.name, chartData.passLineData.name, chartData.ngLineData.name],
+                  right: 10,
+                  top: 10,
+                },
+                xAxis: {
+                  type: 'category',
+                  boundaryGap: false,
+                  data: chartData.xAxis,
+                  // 坐标轴刻度
+                  axisTick: {
+                    show: false
+                  },
+                  // 坐标轴刻度标签的相关设置
+                  axisLabel: {
+                    interval: 0,
+                    rotate: 30,
+                    formatter: function (params) {
+                      // 字体换行显示
+                      var newParamsName = "";
+                      var paramsNameNumber = params.length;
+                      var provideNumber = 12;  //一行显示几个字
+                      var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+                      if (paramsNameNumber > provideNumber) {
+                        for (var p = 0; p < rowNumber; p++) {
+                          var tempStr = "";
+                          var start = p * provideNumber;
+                          var end = start + provideNumber;
+                          if (p == rowNumber - 1) {
+                            tempStr = params.substring(start, paramsNameNumber);
+                          } else {
+                            tempStr = params.substring(start, end) + "\n";
+                          }
+                          newParamsName += tempStr;
+                        }
+
+                      } else {
+                        newParamsName = params;
+                      }
+                      return newParamsName
+                    },
+                    margin: 15,
+                  },
+                },
+                yAxis: [
+                  {
+                    type: 'value',
+                  }
+                ],
+                series: [
+                  {
+                    name: chartData.countLineData.name,
+                    type: 'line',
+                    data: chartData.countLineData.seriesData,
+                    showSymbol: false,
+                    itemStyle: {
+                      color: '#46B3FC'
+                    },
+                  },
+                  {
+                    name: chartData.passLineData.name,
+                    type: 'line',
+                    data: chartData.passLineData.seriesData,
+                    showSymbol: false,
+                    itemStyle: {
+                      color: '#42B856',
+                    }
+                  },
+                  {
+                    name: chartData.ngLineData.name,
+                    type: 'line',
+                    data: chartData.ngLineData.seriesData,
+                    showSymbol: false,
+                    itemStyle: {
+                      color: '#FF6E57',
+                    },
+                  }
+                ],
+                grid: {
+                  left: '5%',
+                  right: '5%',
+                  bottom: '0%',
+                  top: '15%',
+                  containLabel: true
+                }
+              }
+              childChart.setOption(option);
+            })
+            
+          }
+        })
+      }
+      const chartClick = (params) => {
+        nextTick(() => {
+          renderChildChart(params)
+        })
+      }
+      /* 表格部分 */
+      /* 1. type === 'index用法'*/
+      // const indexMethod = (index) => {
+      //   switch (index) {
+      //     case 0:
+      //       return '原因数量'
+      //       break
+      //     case 1:
+      //       return '百分比'
+      //       break
+      //     case 2:
+      //       return '累计百分比'
+      //       break
+      //   }
+      // } 
+      /* 父页面数据 */
+      const columnList = ref ([])
+      const tableData = ref([])
+      // 克隆一份表格数据用来排序还原
+      const cloneTableData = ref([])
+      const currentItem = ref(null)
+      const sortChange = ({ column, prop, order }) => {
+        if (order === 'descending') {
+          // 降序
+          tableData.value.sort((a, b) => b[prop] - a[prop])
+        } else if(order === 'ascending'){
+          // 升序
+          tableData.value.sort((a, b) => a[prop] - b[prop])
+        } else {
+          // 还原
+          tableData.value = JSON.parse(JSON.stringify(cloneTableData.value))
+        }
+        setParentChart(tableData.value)
+      }
+      const setParentChart = (tableData) => {
+        let chartData = {
+          xAxis: [],
+          passBarData: {
+            name: '合格数',
+            seriesData: []
+          },
+          ngBarData: {
+            name: '不合格数',
+            seriesData: []
+          }
+        }
+        tableData.forEach(item => {
+          chartData.xAxis.push(item.Name)
+          chartData.passBarData.seriesData.push(item.Ok)
+          chartData.ngBarData.seriesData.push(item.Ng)
+        })
+        let myChart = echarts.init(document.getElementById('main'))
+        let option = {
+          tooltip: {
+            trigger: 'axis',
+          },
+          legend: {
+            data: [chartData.passBarData.name, chartData.ngBarData.name],
+            right: 10,
+            top: 10,
+          },
+          xAxis: {
+            type: 'category',
+            data: chartData.xAxis,
+            // 坐标轴刻度
+            axisTick: {
+              show: false
+            },
+            axisPointer: {
+              type: 'shadow'
+            },
+            // 坐标轴刻度标签的相关设置
+            axisLabel: {
+              interval: 0,
+              rotate: 30,
+              formatter: function (params) {
+                // 字体换行显示
+                var newParamsName = "";
+                var paramsNameNumber = params.length;
+                var provideNumber = 7;  //一行显示几个字
+                var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+                if (paramsNameNumber > provideNumber) {
+                  for (var p = 0; p < rowNumber; p++) {
+                    var tempStr = "";
+                    var start = p * provideNumber;
+                    var end = start + provideNumber;
+                    if (p == rowNumber - 1) {
+                      tempStr = params.substring(start, paramsNameNumber);
+                    } else {
+                      tempStr = params.substring(start, end) + "\n";
+                    }
+                    newParamsName += tempStr;
+                  }
+
+                } else {
+                  newParamsName = params;
+                }
+                return newParamsName
+              },
+              margin: 15,
+            },
+          },
+          yAxis: [
+            {
+              type: 'value',
+            }
+          ],
+          series: [
+            {
+              name: chartData.passBarData.name,
+              type: 'bar',
+              stack: 'one',
+              data: chartData.passBarData.seriesData,
+              itemStyle: {
+                color: '#46A0FF'
+              },
+            },
+            {
+              name: chartData.ngBarData.name,
+              type: 'bar',
+              stack: 'one',
+              data: chartData.ngBarData.seriesData,
+              itemStyle: {
+                color: '#F6722D',
+              },
+              label: {
+                show: true,
+                position: 'top',
+                valueAnimation: true,
+                fontSize: 16,
+                formatter: function (params) {
+                  let value = +params.value +  +chartData.passBarData.seriesData[params.dataIndex]
+                  return value
+                }
+              }
+            }
+          ],
+          grid: {
+            left: '5%',
+            right: '5%',
+            bottom: '0%',
+            top: '15%',
+            containLabel: true
+          }
+        }
+
+        myChart.setOption(option);
+      }
+      /* 子页面数据 */
+      const childColumnList = ref([])
+      const childTableData = ref([
+      ])
+
+      // 打开日期弹窗
+      const openPop = (data) => {
+        JsObj.getProductionHourData(tableData.value[currentItem.value.dataIndex].Id, data.Date)
+      }
+
+      // 返回方法
+      const returnParent = () => {
+        show.value = true
+        currentItem.value = null
+        nextTick(() => {
+          // 这里需要给父组件重新绑定事件
+          let chart = echarts.init(document.getElementById('main'))
+          chart.on('click', chartClick)
+          renderParentChart()
+        })
+      }
+
+      // 多语言处理
+      const langData = ref({})
+      const getLanguage = () => {
+        langData.value = {  
+          No: '序号',
+          Summary: '合计',
+          Pass: '合格数',
+          Ng: '不合格数',
+          Output: '产量',
+        }
+      }
+
+      // window上挂载方法
+      window.returnParent = () => {
+        returnParent()
+      }
+
+      window.searchRenderData = () => {
+        renderParentChart()
+      }
+
+      return {
+        columnList,
+        tableData,
+        cloneTableData,
+        show,
+        childColumnList,
+        childTableData,
+        currentItem,
+        langData,
+        sortChange,
+        returnParent,
+        renderParentChart,
+        setParentChart,
+        openPop,
+        getLanguage
+        // indexMethod
+      }
+    }
+  }
+  // 创建实例
+  const app = Vue.createApp(tableComponent)
+  // 引入 element-plue-icons
+  // for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  //   app.component(key, component)
+  // }
+  // 挂载
+  app.use(ElementPlus).mount("#app")
+</script>

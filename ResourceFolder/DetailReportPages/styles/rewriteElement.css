@@ -1,0 +1,35 @@
+
+/* element 样式重写部分 ------- input */
+.right-block-input.el-input {
+    width: 110px;
+    height: 100%;
+}
+
+.left-block-input.el-input {
+    width: 190px;
+    height: 100%;
+}
+
+.right-block-input.el-input .el-input__wrapper, .left-block-input.el-input .el-input__wrapper {
+    border-radius: 0px;
+}
+
+.red-text-input.el-input .el-input__inner {
+    color: #F92525;
+}
+
+/* 分页 */
+.el-pagination.is-background .el-pager li:not(.is-disabled).is-active {
+    background: #D5DFFF;
+    color: #2F71EE
+}
+
+.el-pagination.is-background .el-pager li:not(.is-disabled):hover {
+    background: #2F71EE;
+    color: #fff;
+}
+
+.el-pagination.is-background .btn-next:hover:not([disabled]), .el-pagination.is-background .btn-prev:hover:not([disabled]) {
+    background: #2F71EE;
+    color: #fff;
+}

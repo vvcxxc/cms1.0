@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工序管理-tree</title>
+  <!-- Import Vue 3 -->
+  <script src="./vue3/index.js"></script>
+  <!-- Import style -->
+  <link rel="stylesheet" href="./element-plus/index.css" />
+  <!-- Import component library -->
+  <script src="./element-plus/index.js"></script>
+  <!-- 引入icons 若未使用element-plus-icon 则可以移除该引用 -->
+  <script src="./element-plus/icons.js"></script>
+  <link rel="stylesheet" href="./styles/rewriteElement.css" />
+  <link rel="stylesheet" href="./styles/index.css" />
+</head>
+<style>
+</style>
+ 
+<body>
+  <div id="app">
+    <div class="wrap">
+      <div class="header" >
+        <div>{{ rootData }}</div>
+        <i class="header-edit" @click="editRootName" ></i>
+      </div>
+      <div class="tree-search" >
+        <div class="search-input" >
+          <el-input 
+            v-model="filterText"
+            suffix-icon="Search"
+          />
+        </div>
+        <div class="tools" >
+          <!-- 添加工位 -->
+          <el-dropdown trigger="click" @command="processCommand">
+            <i class="add-process"></i>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="item in processList" :key="item.value" :command="item">
+                  {{ item.label }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <!-- 添加文件 -->
+          <div class="add-file" @click="addFile"></div> 
+        </div>
+      </div>
+      <div class="tree-container" >
+        <el-tree
+          ref="treeRef"
+          class="custom-tree"
+          node-key="Id"
+          :draggable="treeDrag"
+          :data="treeData"
+          :props="defaultProps"
+          :allow-drop="allowDrop"
+          :allow-drag="allowDrag"
+          :expand-on-click-node="false"
+          highlight-current
+          @node-click="handleNodeClick($event)"
+          @node-drop="handleDragDrop"
+          default-expand-all
+          :filter-node-method="filterNode"
+        >
+          <template #default="{ node, data }">
+            <div class="custom-tree-node" >
+              <div class="parent-node" v-if="[0, 1].includes(data.NodeType)" ></div>
+              <div class="child-node" v-else-if="[2, 3].includes(data.NodeType)" ></div>
+              <div class="custom_node_label" @dblclick="handleDblClick(data)">
+                <div class="input-field" v-if="data.NodeType !== 0 && setNodeEdit(data)" >
+                  <el-input 
+                    ref="treeInputRef"
+                    class="tree-input"
+                    @blur="treeInputBlur(data)"
+                    v-model="data.Name"
+                  />
+                </div>
+                <span v-else :class="data.NodeType === 4 ? 'floor-node': ''">{{ data.Name }}</span>
+              </div>
+
+              <div class="more">
+                <el-dropdown trigger="hover" @command="setCommand($event, node, data)">
+                  <span>
+                    <div class="more-content" > · · · </div>
+                  </span>
+                  <template #dropdown>
+                    <!-- 根文件夹 -->
+                    <el-dropdown-menu v-if="data.NodeType === 0" >
+                      <el-dropdown-item v-for="item in dropList.filter(f => f.value === 'edit')" :key="item.value" :command="item">
+                        {{ item.label }}
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                    <!-- 文件夹 -->
+                    <el-dropdown-menu v-if="data.NodeType === 1" >
+                      <el-dropdown-item v-for="item in dropList.filter(f => ['rename', 'delete'].includes(f.value))" :key="item.value" :command="item">
+                        {{ item.label }}
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                    <!-- 单工位/工序 -->
+                    <el-dropdown-menu v-if="[2,4].includes(data.NodeType)" >
+                      <el-dropdown-item v-for="item in dropList.filter(f => ['rename', 'create', 'delete'].includes(f.value))" :key="item.value" :command="item">
+                        {{ item.label }}
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                    <!-- 多工位-->
+                    <el-dropdown-menu v-if="data.NodeType === 3" >
+                      <el-dropdown-item v-for="item in dropList.filter(f => ['rename', 'create', 'delete', 'addChildStation'].includes(f.value))" :key="item.value" :command="item">
+                        {{ item.label }}
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+              </div>
+              
+            </div>
+          </template>
+        </el-tree>
+      </div>
+    </div>
+  </div>
+</body>
+ 
+</html>
+<script>
+  // vue3 部分
+  const { ref, watch, nextTick, onMounted } = Vue
+  const { ElMessage } = ElementPlus
+  const treeComponent = {
+    setup() {
+      const rootData = ref('')
+      const treeData = ref([])
+      const treeDrag = ref(true)
+      const customNodeClass = (data, node) => {
+        if (data.NodeType === 4) {
+          return 'floor-node-content'
+        }
+        return null
+      }
+      const defaultProps = {
+        children: 'Children',
+        label: 'name',
+        class: customNodeClass
+      }
+      const editesId = ref(null)
+      const filterText = ref('')
+      const renderTree = (data, node, changeCurrentNode = false) => {
+        treeData.value = data
+        if (node) {
+          nextTick(() => {
+            treeRef.value.setCurrentKey(node.Id)
+            handleNodeClick(node, changeCurrentNode)
+          })
+        }
+      }
+      const currentNode = ref(null)
+      const treeRef = ref('')
+      let timeId = null
+      const handleNodeClick = (node, changeCurrentNode) => {
+        if (node.CustomType) { 
+          // 自定义节点不能调用JsObj方法
+          treeRef.value.setCurrentKey(currentNode.value.Id)
+          return 
+        }
+        // 2.接收传参 设置定时器防止双击事件调用两次click事件
+        clearTimeout(timeId)
+        timeId = setTimeout(function () {
+          if (changeCurrentNode) {
+            currentNode.value = treeRef.value.getNode(currentNode.value.Id).data
+          } else {
+            currentNode.value = node
+          }
+          console.log(currentNode.value)
+          JsObj.treeNodeClick(currentNode.value)
+        }, 250)
+      }
+      const treeInputRef = ref('')
+      watch(treeInputRef, (val) => {
+        if (val) {
+          treeInputRef.value.focus()
+          treeInputRef.value.select()
+          treeDrag.value = false
+        } else {
+          treeDrag.value = true
+        }
+      })
+      const treeInputBlur = (data) => {
+        editesId.value = null
+        if (data.CustomType && data.CustomType === 'multipleStation-child') {
+          // 创建子工位
+          JsObj.creatStation(data.CustomParentId, data.Name, (allData) => {
+            renderTree(allData, currentNode.value)
+          })
+        } else if (data.CustomType && data.CustomType === 'root') {
+          // 创建文件夹
+          JsObj.creatFolders(data.Name, (allData) => {
+            renderTree(allData, currentNode.value)
+          })
+        } else if (data.CustomType && data.CustomType === 'single') {
+          // 新建单工位
+          JsObj.creatProcess(currentNode.value.Id, true, data.Name, (allData) => {
+            // 新建工位需要重新給currenetNode賦值， 所以添加了一個true傳參
+            renderTree(allData, currentNode.value, true)
+          })
+        } else if (data.CustomType && data.CustomType === 'multiple') {
+          // 新建多工位
+          JsObj.creatProcess(currentNode.value.Id, false, data.Name, (allData) => {
+            // 新建工位需要重新給currenetNode賦值， 所以添加了一個true傳參
+            renderTree(allData, currentNode.value, true)
+          })
+        } else {
+          // 重命名
+          JsObj.replaceNameNode(data.Id, data.NodeType, data.Name)
+        }
+        // window.parent.renderChildData([])
+      }
+      const setNodeEdit = (data) => {
+        return editesId.value === data.Id
+      }
+      const handleDblClick = (data) => {
+        // debugger
+        // editsTemp = data
+        editesId.value = data.Id
+      }
+      const setCommand = (item, node, data) => {
+        if (item.value === 'edit') {
+          editData(node, data)
+        }
+        if (item.value === 'rename') {
+          renameData(node, data)
+        }
+        if (item.value === 'create') {
+          createData(node, data)
+        }
+        if (item.value === 'delete') {
+          delData(node, data)
+        }
+        if (item.value === 'addChildStation') {
+          addChildData(node, data)
+        }
+      }
+      const processCommand = (item) => {
+        if (!currentNode.value || currentNode.value.NodeType !== 1) {
+          // ElMessage.warning('请在文件夹下创建工位！')
+          JsObj.showMessage(langData.value.pleCreateStationInFiles)
+          return
+        }
+        if (item.value === 'single') {
+          addSingleStation()
+        }
+        if (item.value === 'multiple') {
+          addMultipleStation()
+        }
+      }
+      const addSingleStation = () => {
+        let Id = Math.random().toString().slice(-4)
+        const newChild = { 
+          Id,
+          Name: /* langData.value.singleStation */`${langData.value.processName}${Id}`,
+          NodeType: 2,
+          CustomType: 'single',
+          Children: []
+        }
+        if (!currentNode.value.Children) {
+          currentNode.value.Children = []
+        }
+        currentNode.value.Children.push(newChild)
+        treeData.value = [...treeData.value]
+        nextTick(() => {
+          treeRef.value.setCurrentKey(currentNode.value.Id)
+        })
+        inputAutoFocus(Id)
+      }
+      const addMultipleStation = () => {
+        let Id = Math.random().toString().slice(-4)
+        const newChild = { 
+          Id,
+          Name: /* langData.value.multipleStation */`${langData.value.processName}${Id}`,
+          NodeType: 3,
+          CustomType: 'multiple',
+          Children: []
+        }
+        if (!currentNode.value.Children) {
+          currentNode.value.Children = []
+        }
+        currentNode.value.Children.push(newChild)
+        treeData.value = [...treeData.value]
+        nextTick(() => {
+          treeRef.value.setCurrentKey(currentNode.value.Id)
+        })
+        inputAutoFocus(Id)
+      }
+      const addFile = () => {
+        let Id = Math.random().toString().slice(-4)
+        const newChild = { Id, Name: `${langData.value.addFile}${Id}`, NodeType: 1, CustomType: 'root',  Children: []}
+        // if (!treeData.value[0].Children) {
+        //   treeData.value[0].Children = []
+        // }
+        // treeData.value[0].Children.push(newChild)
+        // 数据结构改变，根目录没有了，所以直接在treeData上面push newChild即可
+        treeData.value.push(newChild)
+        treeData.value = [...treeData.value]
+        nextTick(() => {
+          treeRef.value.setCurrentKey(currentNode.value.Id)
+        })
+        inputAutoFocus(Id)
+      }
+      const editData = (node, data) => {}
+      const renameData = (node, data) => {
+        inputAutoFocus(data.Id)
+      }
+
+      const inputAutoFocus = (id) => {
+        setTimeout(() => {
+          editesId.value = id
+          nextTick(() => {
+            if (treeInputRef.value) {
+              treeInputRef.value.focus()
+              treeInputRef.value.select()
+            }
+          })
+        }, 500)
+      }
+      const createData = (node, data) => {}
+      const delData = (node, data) => {
+        JsObj.deleteNode(data.Id, data.NodeType, currentNode.value, (allData, nodeData, bool) => {
+          // allData： 树的数据
+          // nodeData：树选中的节点
+          // bool: 是否确认删除 true: 是 false: 否 
+          if (bool) {
+           renderTree(allData, nodeData)
+          }
+        })
+      }
+      const addChildData = (node, data) => {
+        let Id = Math.random().toString().slice(-4)
+        const newChild = { Id, Name: `${langData.value.childStation}${Id}`, NodeType: 4, CustomParentId: data.Id, CustomType: 'multipleStation-child',  Children: []}
+        if (!data.Children) {
+          data.Children = []
+        }
+        data.Children.push(newChild)
+        treeData.value = [...treeData.value]
+        nextTick(() => {
+          treeRef.value.setCurrentKey(currentNode.value.Id)
+        })
+        inputAutoFocus(Id)
+      }
+      const editRootName = () => {
+        JsObj.lineNameLoaded((rootName) => {
+          rootData.value = rootName
+        })
+      }
+      /* 节点拖拽 */
+      const allowDrag = (draggingNode) => {
+        if (draggingNode.data.NodeType === 0) return false
+        return true
+      }
+      const allowDrop = (draggingNode, dropNode, type) => {
+        // 工位拖拽
+        // if ([2, 3].includes(draggingNode.data.NodeType) && [2, 3].includes(dropNode.data.NodeType) && type !== 'inner') {
+        //   return true
+        // }
+        // 工位下子节点拖拽
+        // if(draggingNode.data.NodeType === 4 && [2, 3].includes(dropNode.data.NodeType) && type === 'inner') {
+        //   return true
+        // }
+        // 文件夹拖拽
+        if (draggingNode.data.NodeType === 1 && dropNode.data.NodeType === 1 && type !== 'inner') {
+          return true
+        }
+        // 同级拖拽
+        if (draggingNode.level === dropNode.level) {
+          if (draggingNode.parent.id === dropNode.parent.id) {
+            // 向上拖拽 || 向下拖拽
+            return type === "prev" || type === "next"
+          }
+
+        } else {
+          return false
+        }
+      }
+      const handleDragDrop = (draggingNode, dropNode, type) => {
+        treeRef.value.getNode(dropNode.data.ParentId)
+        let parentNode = null
+        if (treeRef.value.getNode(dropNode.data.ParentId) === undefined || treeRef.value.getNode(dropNode.data.ParentId) === null) {
+          // 文件夹拖拽，因为没有根节点，所以会返回undefined或null
+          parentNode = treeData.value
+          JsObj.sort(parentNode, (allData) => {
+            renderTree(allData, currentNode.value)
+          })
+        } else {
+          parentNode = treeRef.value.getNode(dropNode.data.ParentId)
+          JsObj.sort(parentNode.data.Children, (allData) => {
+            renderTree(allData, currentNode.value)
+          })
+        }
+      }
+      watch(filterText, (val) => {
+        treeRef.value.filter(val)
+      })
+      
+      // 多语言处理
+      const dropList = ref([])
+      const processList = ref([])
+      const langData = ref({})
+      const getLanguage = () => {
+        langData.value = {  
+          childStation: '子工位',
+          edit: '编辑',
+          rename: '重命名',
+          delete: '删除',
+          addChildStation: '添加子工位',
+          addFile: '新建文件夹',
+          singleStation: '单工位',
+          multipleStation: '多工位',
+          processName: '工序',
+          pleCreateStationInFiles: '请在文件夹下创建工位!',
+        }
+        // 下拉框内容赋值
+        dropList.value = [
+          {
+            label: langData.value.edit,
+            value: 'edit'
+          },
+          {
+            label: langData.value.rename,
+            value: 'rename'
+          },
+          // {
+          //   label: '创建副本',
+          //   value: 'create'
+          // },
+          {
+            label: langData.value.delete,
+            value: 'delete'
+          },
+          {
+            label: langData.value.addChildStation,
+            value: 'addChildStation'
+          }
+        ]
+        processList.value = [
+          {
+            label: langData.value.singleStation,
+            value: 'single'
+          },
+          {
+            label: langData.value.multipleStation,
+            value: 'multiple'
+          }
+        ]
+      }
+
+      const filterNode = (value, data) => {
+        if (!value) return true
+        return data.Name.includes(value)
+      }
+      const getTreeData = () => {
+        JsObj.treeLoaded((allData, nodeData, rootName) => {
+          renderTree(allData, nodeData)
+          rootData.value = rootName
+        })
+      }
+      onMounted(() => {
+        getLanguage()
+        getTreeData()
+      })
+      /* 方法挂载 */
+      // 1. 渲染树
+      // window.renderTree = (data, node) => {
+      //   renderTree(data, node)
+      // }
+
+      return {
+        filterText,
+        treeRef,
+        defaultProps,
+        treeData,
+        dropList,
+        processList,
+        editesId,
+        treeInputRef,
+        rootData,
+        treeDrag,
+        langData,
+        editRootName,
+        customNodeClass,
+        renderTree,
+        setNodeEdit,
+        processCommand,
+        handleNodeClick,
+        handleDblClick,
+        setCommand,
+        editData,
+        renameData,
+        createData,
+        delData,
+        addChildData,
+        filterNode,
+        treeInputBlur,
+        addFile,
+        allowDrop,
+        allowDrag,
+        handleDragDrop,
+        getLanguage
+      }
+    },
+  }
+  // 创建实例
+  const app = Vue.createApp(treeComponent)
+  // 引入 element-plue-icons
+  for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component)
+  }
+  // 挂载
+  app.use(ElementPlus).mount("#app")
+</script>

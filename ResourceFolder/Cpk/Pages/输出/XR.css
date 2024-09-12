@@ -1,0 +1,180 @@
+input,textarea,select,a:focus {
+        outline: none;
+}
+
+/* 去除输入框type===number时的默认样式 */
+input[type=number] {
+   -moz-appearance:textfield;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
+}
+
+
+.headtable{
+    color:#000000;
+    font-size:16.0pt;
+    font-weight:700;
+    font-style:normal;
+    text-decoration:none;
+    text-align:center;
+    vertical-align:middle;
+}
+
+
+.headtable_td{
+    color:#4270e4;
+    font-size:12.0pt;
+    font-weight:400;
+    font-style:normal;
+    text-decoration:none;
+    text-align:left;
+    vertical-align:middle;
+    border:.5pt solid #000000;
+    background:#dcf0f9;
+}
+
+
+.headtable_ba{
+    color:#000000;
+    font-size:12.0pt;
+    font-weight:400;
+    font-style:normal;
+    text-decoration:none;
+    text-align:center;
+    vertical-align:middle;
+    border:.5pt solid #000000;
+    background:#eaf2f6;
+}
+
+
+
+.headtableinput{
+    border:none;
+    background-color:#eaf2f6;
+    height:30px;
+    width:50px;
+}
+
+
+.middletablefirst{
+   color:#000000;
+   font-size:10.0pt;
+   font-weight:400;
+   font-style:normal;
+   text-decoration:none;
+   text-align:left;
+   vertical-align:middle;
+   border:.5pt solid #000000;
+}
+
+.middletablesecond {
+   color:#000000;
+   font-size:9.0pt;
+   font-weight:400;
+   font-style:normal;
+   text-decoration:none;
+   text-align:center;
+   vertical-align:middle;
+   border:.5pt solid #000000;
+   background:#F2F2F2;
+}
+
+
+#table2 td{
+   color:#000000;
+   font-size:13.0pt;
+   font-weight:400;
+   font-style:normal;
+   text-decoration:none;
+   text-align:center;
+   vertical-align:middle;
+}
+
+#rule span{
+   font-size:14px;
+}
+
+
+#table3 td{
+   color:#000000;
+   font-size:12.0pt;
+   font-weight:400;
+   font-style:normal;
+   text-decoration:none;
+   text-align:left;
+   vertical-align:middle;
+   width: 100px;
+   height:38px;
+   background-color: #ffffff;
+}
+
+
+#table4 td{
+   color:#000000;
+   font-size:12.0pt;
+   font-weight:400;
+   font-style:normal;
+   text-decoration:none;
+   text-align:left;
+   vertical-align:middle;
+   width: 100px;
+   height: 50px;
+}
+
+#table6 td{
+   color:#000000;
+   font-size:12.0pt;
+   font-weight:400;
+   font-style:normal;
+   text-decoration:none;
+   text-align:left;
+   vertical-align:middle;
+   width: 200px;
+   height: 50px;
+   border-right:1pt solid #cccccc;
+}
+
+#biaoti td{
+   color:#4270e4;
+}
+
+#biaoti2 td{
+   color:#4270e4;
+}
+
+#biaoti3 td{
+   color:#4270e4;
+}
+
+ html, body {
+            font-family: MicrosoftYaHei;
+        }
+
+
+
+ #tablec1 td{
+   color:#000000;
+   font-size:12.0pt;
+   font-weight:400;
+   font-style:normal;
+   text-decoration:none;
+   text-align:right;
+   vertical-align:middle;
+   width: 70px;
+   height: 30px;
+}
+
+  #tablec1 th{
+   color:#000000;
+   font-size:12.0pt;
+   font-weight:400;
+   font-style:normal;
+   text-decoration:none;
+   text-align:left;
+   vertical-align:middle;
+   width: 70px;
+   height: 30px;
+}

@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>参数报表</title>
+  <!-- Import Vue 3 -->
+  <script src="./vue3/index.js"></script>
+  <!-- Import style -->
+  <link rel="stylesheet" href="./element-plus/index.css" />
+  <!-- Import component library -->
+  <script src="./element-plus/index.js"></script>
+  <!-- 引入echarts -->
+  <script src="./echartsV5/index.js"></script>
+</head>
+<style>
+  /* 滚动条样式 */
+  ::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    border-style: dashed;
+    background-color: #757575;
+    border-color: transparent;
+    border-width: 2px;
+    background-clip: padding-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-clip: border-box;
+
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background-color: #326CF3;
+
+  }
+
+  /*定义水平和垂直滚动条两者的交界处（拐角）*/
+  ::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+
+  .el-scrollbar .el-scrollbar__thumb {
+    background: #000;
+  }
+
+  /* page部分 */
+  * {
+    padding: 0;
+    margin: 0;
+  }
+
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    transition: color 0.5s, background-color 0.5s;
+    box-sizing: border-box;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+      Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #app {
+    width: 100%;
+    height: 100%;
+  }
+
+  .report-page {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .charts {
+    width: 100%;
+    height: 350px;
+    padding-bottom: 16px;
+    box-sizing: border-box;
+    border: 1px solid #EEF0F5;
+    position: relative;
+    border-top-left-radius: 8px;
+    overflow: hidden;
+  }
+
+  .chart-label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 8px 60px 8px 16px;
+    font-size: 16px;
+    color: #4270E4;
+    background-color: #E7EDF6;
+    font-weight: bolder;
+    display: flex;
+    align-items: center;
+  }
+
+  .c-w {
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    background: #B5C7F1;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .c-i {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background: #4270E4;
+  }
+
+  .mychart {
+    width: 100%;
+    height: 100%;
+  }
+
+  .table {
+    width: 100%;
+    height: calc(100% - 370px);
+    margin-top: 20px;
+    display: flex;
+  }
+
+  .table-l {
+    height: 100%;
+    width: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-right: 10px;
+    box-sizing: border-box;
+  }
+
+  .l-item {
+    width: 160px;
+    height: 40px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .l-item:hover .l-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    background-color: #326CF3;
+    position: absolute;
+    top: 50%;
+    left: -5px;
+    transform: translate(-100%, -50%);
+  }
+
+  /* 表格样式 */
+  .table-r {
+    height: 100%;
+    width: calc(100% - 200px);
+    overflow: auto;
+    position: relative;
+  }
+
+  .table-box {
+    width: fit-content;
+    height: fit-content;
+  }
+
+  table {
+    height: 100%;
+    table-layout: fixed;
+    width: 100%;
+    display: block;
+  }
+
+  table thead tr th {
+    background-color: #7ABD7A;
+    color: #fff;
+    position: sticky;
+    top: 0;
+  }
+
+  table thead tr:nth-child(2) th {
+    top: 30px;
+  }
+
+  table thead tr:nth-child(3) th {
+    top: 60px;
+  }
+
+  table thead tr:nth-child(4) th {
+    top: 90px;
+  }
+
+  .blue-th {
+    background-color: #4270E4;
+  }
+
+  th,
+  td {
+    height: 30px;
+    min-width: 100px;
+    word-break: keep-all;
+    border: 1px solid #E2E2E2;
+    box-sizing: border-box;
+    text-align: center;
+    background-color: #fff;
+  }
+
+  th {
+    border: 1px solid #fff;
+  }
+
+  .no1 {
+    min-width: 80px;
+    /* position: sticky;
+    z-index: 10;
+    left: 0; */
+  }
+
+  .no2 {
+    min-width: 110px;
+  }
+
+  .no3 {
+    min-width: 207px;
+  }
+
+  .no4 {
+    min-width: 123px;
+  }
+
+  .no5 {
+    min-width: 190px;
+    max-width: 860px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .no6 {
+    min-width: 160px;
+  }
+
+  .hover-border:hover {
+    border: 1px solid #326CF3;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+
+  .blue-Border {
+    background-color: #F8AD3D;
+  }
+</style>
+
+<body>
+  <div id="app">
+    <div class="report-page">
+      <div class="charts">
+        <div class="chart-label">
+          <div class="c-w">
+            <div class="c-i"></div>
+          </div>
+          {{tableData.chartTitle}}
+        </div>
+        <div class="mychart" ref="mychart"></div>
+      </div>
+      <div class="table">
+        <div class="table-l">
+          <div class="l-item" v-for="item in tableData.leftarr" :key="item.WID" @click="changeLeft(item)" :style="
+          leftItemStyle(tableData.curLeft && item.WID==tableData.curLeft.WID,item.displayColor)">{{item.WorkName }}
+            <div class="l-icon"></div>
+          </div>
+        </div>
+        <div class="table-r" v-if="tableData.curLeft">
+          <div class="table-box">
+            <!-- 拒绝el-table,从你我做起，eltable加载七八百条数据就卡的飞起 -->
+            <table cellspacing="0" cellpadding="1">
+              <thead>
+                <!-- <tr>
+                  <th colspan="5" rowspan="1" class="blue-th">{{langData.Info}}</th>
+                  <th :colspan="tableData.curLeft.WorkSteps.reduce((sum, w) => { return w.Projects.length + sum },1)"
+                    rowspan="1">
+                    {{tableData.curLeft.WorkName}}</th>
+                </tr> -->
+                <tr>
+                  <th colspan="1" rowspan="2" class="blue-th no1">{{langData.No}}</th>
+                  <th colspan="1" rowspan="2" class="blue-th no2">{{langData.DateTime}}</th>
+                  <th colspan="1" rowspan="2" class="blue-th no3">{{langData.ProductId}}</th>
+                  <th colspan="1" rowspan="2" class="blue-th no4">{{langData.IsQual}}</th>
+                  <th colspan="1" rowspan="2" class="blue-th no5">{{langData.Reason}}</th>
+                  <th colspan="1" rowspan="2" class="no6">{{langData.RecordTime}}</th>
+                  <th :colspan="item.Projects.length" rowspan="1" v-for="item in tableData.curLeft.WorkSteps"
+                    :key="item.SID+'S1'">{{item.StepName}}</th>
+                </tr>
+                <tr>
+                  <template v-for="item in tableData.curLeft.WorkSteps" :key="item.SID+'S2'">
+                    <th colspan="1" rowspan="1" v-for="item2 in item.Projects " :key="item.PID+'P1'"
+                      :class="{'hover-border':true, 'blue-Border': tableData.curPid == item2.PID  }"
+                      @click="clickHeader(item2.PID)">
+                      {{item2.ProjectName}}
+                    </th>
+                  </template>
+                </tr>
+                <tr>
+                  <th colspan="1" rowspan="1" class="blue-th no1">//</th>
+                  <th colspan="1" rowspan="1" class="blue-th no2">//</th>
+                  <th colspan="1" rowspan="1" class="blue-th no3">//</th>
+                  <th colspan="1" rowspan="1" class="blue-th no4">//</th>
+                  <th colspan="1" rowspan="1" class="blue-th no5">//</th>
+                  <th colspan="1" rowspan="1" class="no6">//</th>
+                  <template v-for="item in tableData.curLeft.WorkSteps" :key="item.SID+'S2'">
+                    <th colspan="1" rowspan="1" v-for="item2 in item.Projects " :key="item.PID+'P2'">
+                      {{item2.Unit}}
+                    </th>
+                  </template>
+                <tr>
+                </tr>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in tableData.dataList" :key="item.Number+'data'">
+                  <td class="no1">{{item.Number }}</td>
+                  <td class="no2">{{item.Date }}</td>
+                  <td class="no3">{{item.ProductID }}</td>
+                  <td class="no4" :style="{ color: !item.IsQualified?'#f56c6c':'#000'}">{{item.IsQualifiedText }}</td>
+                  <td class="no5" :style="{  color: !item.IsQualified?'#f56c6c':'#000'}">
+                    <el-tooltip effect="dark" :content="item.Reason" placement="top">
+                      {{ item.Reason }}
+                    </el-tooltip>
+                  </td>
+                  <td class="no6">{{item.RecordTime }}</td>
+                  <template v-for="item2 in tableData.curLeft.WorkSteps" :key="item2.SID+'S3'">
+                    <td colspan="1" rowspan="1" v-for="item3 in item2.Projects " :key="item2.PID+'P3'"
+                      :style="{  color:returnProject( item ,item3.PID ).Red?'#f56c6c':'#000'}">
+                      {{ returnProject( item,item3.PID ).Value }}
+                    </td>
+                  </template>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+<script>
+  // vue3 部分
+  const { ref, onMounted, nextTick, watch, reactive, getCurrentInstance } = Vue
+  const tableComponent = {
+    setup() {
+      // 左侧项目样式
+      const leftItemStyle = (selected, displayColor) => {
+        if (selected) {
+          return {
+            backgroundColor: displayColor || '#808080',
+            color: '#fff',
+            border: 'none',
+          }
+        }
+        return {
+          backgroundColor: '#fff',
+          color: displayColor || '#808080',
+          border: displayColor ? `1px solid ${displayColor}` : '1px solid #808080',
+        }
+      }
+
+      // 点击表格工位
+      const clickHeader = (id) => {
+        tableData.curPid = id
+        drawLine()
+      }
+
+      const returnProject = (row, pid) => {
+        let _obj = row.ProjectDatas.find(item => item.PID == pid)
+        return _obj || {}
+      }
+
+      //翻译
+      const langData = ref([])
+      // 数据
+      const tableData = reactive({
+        leftarr: [],
+        curLeft: null,
+        dataList: [],
+        pageIndex: 1,
+        curPid: '',
+        chartTitle: ''
+      })
+
+      //切换工序
+      const changeLeft = (curLeft) => {
+        tableData.curLeft = ''
+        tableData.curLeft = curLeft
+      }
+
+      //查询所有参数报表组
+      //后端改了工序会主动调用allConfigure，加个入参，有入参证明是前端调的，避免注册多个监听事件
+      const allConfigure = (me) => {
+        jsObj.getConfig(data => {
+          console.log('getConfig', data)
+          tableData.leftarr = data.data;
+          langData.value = data.title;
+          // 默认选中第一个
+          tableData.curLeft = tableData.leftarr[0];
+          if (me) {
+            nextTick(() => {
+              tableScroll()
+            })
+          }
+        })
+      }
+
+      //重置查询（后端用这个）
+      const Search = () => {
+        tableData.pageIndex = 1;
+        tableData.dataList = [];
+        QueryReportData();
+      }
+      //叠加查询
+      const QueryReportData = () => {
+        jsObj.setWID(tableData.curLeft.WID);
+        jsObj.search(data => {
+          console.log('search', data)
+          let temp = tableData.leftarr;
+          //工序变色
+          if (data.color && data.color.length) {
+            temp.forEach((item, idx) => {
+              item.displayColor = data.color[idx] == 1 ? '#7ABD7A' : data.color[idx] == 2 ? '#F96363' : '#808080'
+            })
+          } else {
+            temp.forEach((item, idx) => {
+              item.displayColor = '#808080'
+            })
+          }
+          // 更新数据
+          tableData.leftarr = temp;
+          tableData.dataList = tableData.dataList.concat(data.data || []);
+          //重置曲线查询
+          tableData.curPid = '';
+          if (tableData.curLeft.WorkSteps.length && tableData.curLeft.WorkSteps[0].Projects.length) {
+            tableData.curPid = tableData.curLeft.WorkSteps[0].Projects[0].PID
+          }
+          drawLine()
+        })
+      }
+      //请求下一页
+      const loadTimer = ref(false)
+      loadMorePage = () => {
+        if (loadTimer.value) {
+          return
+        }
+        loadTimer.value = true
+        tableData.pageIndex = tableData.pageIndex + 1
+        jsObj.getPageIndex(tableData.pageIndex);
+        jsObj.getPageData(data => {
+          console.log("loadMorePage", data)
+          tableData.dataList = tableData.dataList.concat(data.data || []);
+        })
+        setTimeout(() => { loadTimer.value = false }, 1000)
+      }
+
+      // 监听滚动条触发更新下一页
+      const vm = getCurrentInstance()
+      const tableScroll = () => {
+        let _dom = document.getElementsByClassName('table-r')[0]
+        //记录初始滚动条高度
+        let beforeScrollTop = _dom.scrollTop;
+        _dom.addEventListener('scroll', () => {
+          // 滚动距离
+          let scrollTop = _dom.scrollTop
+          // 变量windowHeight是可视区的高度
+          let windowHeight = _dom.clientHeight || _dom.clientHeight
+          // 变量scrollHeight是滚动条的总高度
+          let scrollHeight = _dom.scrollHeight || _dom.scrollHeight
+          //滚动高度差，向下滚动才触发加载更多，横向滚动不触发
+          let delta = scrollTop - beforeScrollTop;
+          //更新记录初始滚动条高度
+          beforeScrollTop = scrollTop
+          if (delta > 0 && (scrollTop + windowHeight === scrollHeight)) {
+            // 获取到的不是全部数据 当滚动到底部 继续获取新的数据
+            console.log("loadMorePageListener")
+            loadMorePage()
+          }
+        })
+      }
+
+      /* echart部分 */
+      const setResize = () => {
+        // window.addEventListener('resize', () => {
+        //   let myChart = echarts.init(vm.ctx.$refs.myChart)
+        //   myChart.resize()
+        // })
+      }
+
+      // 画图
+      const drawLine = () => {
+        console.log("drawLine", tableData.curPid)
+        let temp = [], xList = [], stepName = '';
+        let Upper = 100, Lower = 0, proName = '';
+        jsObj.getPId(Number(tableData.curPid))
+        jsObj.getProjectDatas(data => {
+          temp = data.data.map(item => Number(item.Value))
+          xList = data.data.map(item => item.Key)
+          // 去工序信息里找工位和上下限信息
+          tableData.curLeft.WorkSteps.forEach(item => {
+            let _obj = item.Projects.find(item3 => item3.PID == tableData.curPid)
+            if (_obj) {
+              Upper = _obj.Upper
+              Lower = _obj.Lower
+              proName = _obj.ProjectName;
+              stepName = item.StepName
+            }
+          })
+          tableData.chartTitle = `${tableData.curLeft.WorkName}-${stepName}-${proName}曲线图`
+          // 上下限画线数据
+          let uList = temp.map(_ => Upper)
+          let lList = temp.map(_ => Lower)
+          let option = {
+            title: {
+              text: ' '
+            },
+            tooltip: {
+              trigger: 'axis'
+            },
+            color: ['#7ABD7A', '#FF7474', '#FF7474'],
+            legend: {
+              right: '4%',
+              data: [proName, langData.value.UpperLimit, langData.value.LowerLimit]
+            },
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+            },
+            xAxis: {
+              type: 'category',
+              boundaryGap: false,
+              data: xList
+            },
+            yAxis: {
+              type: 'value'
+            },
+            visualMap: [{
+              type: 'piecewise',
+              show: false,
+              dimension: 1,
+              seriesIndex: 1, //第一部分数据  
+              pieces: [
+                {
+                  max: Lower, // 没有设置最小值，表明当前范围 [-Infinity, max] 变色
+                  color: '#FF8484'
+                },
+                {
+                  min: Upper, // 没有设置最大值，表明当前范围 [min, Infinity] 变色
+                  color: '#FF8484'
+                }
+              ],
+              outOfRange: { // 在选中范围外  
+                color: '#7ABD7A',
+              }
+            }],
+            series: [
+              {
+                name: langData.value.UpperLimit,
+                type: 'line',
+                symbol: 'none',
+                data: uList,
+                lineStyle: {
+                  normal: {
+                    color: '#FF7474',
+                    width: 1,
+                  }
+                },
+                itemStyle: {
+                  normal: {
+                    color: '#FF7474',
+                  }
+                },
+              },
+              {
+                name: proName,
+                type: 'line',
+                symbol: 'none',
+                data: temp,
+              },
+              {
+                name: langData.value.LowerLimit,
+                type: 'line',
+                symbol: 'none',
+                data: lList,
+                lineStyle: {
+                  normal: {
+                    color: '#FF7474',
+                    width: 1,
+                  }
+                },
+                itemStyle: {
+                  normal: {
+                    color: '#FF7474',
+                  }
+                },
+              },
+            ]
+          };
+          let _dom = vm.ctx.$refs.mychart
+          let myChart = echarts.init(_dom);
+          myChart.clear()
+          myChart.setOption(option, true);
+        })
+      }
+
+      watch(
+        () => tableData.curLeft,
+        (val) => {
+          if (!val || !val.WID) {
+            return
+          }
+          console.log('watch', tableData.curPid)
+          Search()
+        },
+        {
+          deep: true,
+        }
+      )
+
+
+
+      onMounted(() => {
+        allConfigure(true)
+        setResize()
+
+        // nextTick(() => {
+        //   // 图表点击事件
+        //   let chart = echarts.init(document.getElementById('main'))
+        //   chart.on('click', chartClick)
+        // })
+      })
+      window.allConfigure = () => {
+        allConfigure()
+      }
+      window.QueryReportData = () => {
+        QueryReportData()
+      }
+      window.Search = () => {
+        Search()
+      }
+
+      return {
+        langData,
+        tableData,
+        leftItemStyle,
+        changeLeft,
+        setResize,
+        allConfigure,
+        QueryReportData,
+        Search,
+        returnProject,
+        clickHeader,
+        drawLine,
+        tableScroll
+      }
+    }
+  }
+  // 创建实例
+  const app = Vue.createApp(tableComponent)
+  // 挂载
+  app.use(ElementPlus).mount("#app")
+</script>

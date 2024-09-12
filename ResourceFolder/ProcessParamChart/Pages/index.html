@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>过程参数曲线</title>
+  <!-- Import Vue 3 -->
+  <script src="./vue3/index.js"></script>
+  <!-- Import style -->
+  <link rel="stylesheet" href="./element-plus/index.css" />
+  <!-- Import component library -->
+  <script src="./element-plus/index.js"></script>
+  <!-- 设置elementplus 组件中文 -->
+  <script src="./element-plus/languages/zh-cn.js"></script>
+  <!-- 引入icons 若未使用element-plus-icon 则可以移除该引用 -->
+  <!-- <script src="./element-plus/icons.js"></script> -->
+  <script src="./echartsV5/index.js"></script>
+  <link rel="stylesheet" href="./styles/rewriteElement.css" />
+  <link rel="stylesheet" href="./styles/index.css" />
+</head>
+<body>
+  <div id="app" >
+    <div class="wrap">
+      <div id='main' style="width: 100%;height:100%; box-sizing: border-box;"></div>
+      <div class="btns" >
+        <el-button @click="chartRestore(item, index)">还原</el-button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+<script>
+  // vue3 部分
+  const { ref, nextTick, onMounted } = Vue
+  const tableComponent = {
+    setup() {
+      const initChart = () => {
+        JsObj.search(data => {
+          // 测试数据
+          // data = {
+          //   "UpperValue": 100.0,
+          //   "LowerValue": 10.0,
+          //   "XAxisData": ["001", "002", "004", "005", "006", "007"],
+          //   "SeriesData": [100.0, 110.0, 100.0, 100.0, 100.0, 100.0]
+          // }
+          let chartData = {
+            upperValue: data.UpperValue,
+            lowerValue: data.LowerValue,
+            xAxisData: data.XAxisData,
+            seriesData: data.SeriesData
+          }
+
+          let myChart = echarts.init(document.getElementById('main'))
+          let option = {
+              tooltip: {
+                trigger: "axis",
+              },
+              toolbox: {
+                top: 3,
+                right: 90,
+                feature: {
+                  dataZoom: {
+                    yAxisIndex: 'none'
+                  },
+                  // restore: {},
+                }
+              },
+              dataZoom: [
+                {
+                  show: false,
+                  realtime: true,
+                  bottom: '18'
+                },
+                {
+                  type: 'inside',
+                  realtime: true,
+                  // zoomOnMouseWheel: 'ctrl',
+                }
+              ],
+              legend: [
+                {
+                  right: 150,
+                  top: 10,
+                  itemHeight: 2,
+                  data: [
+                    {
+                      icon: 'rect',
+                      name: '下限值'
+                    },
+                  ],
+                },
+                {
+                  right: 225,
+                  top: 10,
+                  itemHeight: 8,
+                  data: [
+                    {
+                      name: '数值'
+                    },
+                  ],
+                },
+                {
+                  right: 290,
+                  top: 10,
+                  itemHeight: 2,
+                  data: [
+                    {
+                      icon: 'rect',
+                      name: '上限值'
+                    },
+                  ],
+                },
+              ],
+              xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: chartData.xAxisData,
+                // 坐标轴刻度
+                axisTick: {
+                  show: false
+                },
+                // 坐标轴刻度标签的相关设置
+                axisLabel: {
+                  interval: 0,
+                  rotate: 40,
+                  formatter: function (params) {
+                    // 字体换行显示
+                    var newParamsName = "";
+                    var paramsNameNumber = params.length;
+                    var provideNumber = 7;  //一行显示几个字
+                    var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+                    if (paramsNameNumber > provideNumber) {
+                      for (var p = 0; p < rowNumber; p++) {
+                        var tempStr = "";
+                        var start = p * provideNumber;
+                        var end = start + provideNumber;
+                        if (p == rowNumber - 1) {
+                          tempStr = params.substring(start, paramsNameNumber);
+                        } else {
+                          tempStr = params.substring(start, end) + "\n";
+                        }
+                        newParamsName += tempStr;
+                      }
+
+                    } else {
+                      newParamsName = params;
+                    }
+                    return newParamsName
+                  },
+                  margin: 15,
+                },
+              },
+              yAxis: [
+                {
+                  type: 'value',
+                  name: '数值',
+                  nameGap: 30,
+                  max: Number(Math.max(...chartData.seriesData)) < Number(chartData.upperValue) ? chartData.upperValue : Math.max(...chartData.seriesData),
+                  min: Number(Math.min(...chartData.seriesData)) > Number(chartData.lowerValue) ? chartData.lowerValue : Math.min(...chartData.seriesData),
+                  nameTextStyle: {
+                    fontSize: 14,
+                  }
+                }
+              ],
+              series: [
+                {
+                  name: '数值',
+                  type: 'line',
+                  data: chartData.seriesData,
+                  showSymbol: false,
+                  itemStyle: {
+                    color: '#46A0FF'
+                  },
+                  lineStyle: {
+                    shadowColor: "#46A0FF",
+                    width: 2,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                    opacity: 1,
+                    shadowBlur: 8,
+                    type: "solid"
+                  },
+                },
+                {
+                  name: '上限值',
+                  type: 'line',
+                  itemStyle: {
+                    color: '#FFA033'
+                  },
+                  markLine: {
+                    symbol:"none", // 是否去掉标线前后的箭头
+                    data:[
+                      {
+                        name: '上限值',
+                        yAxis: chartData.upperValue,
+                        lineStyle: {
+                          type: 'solid',
+                          width: 2,
+                        },
+                      }
+                    ]
+                  }
+                },
+                {
+                  name: '下限值',
+                  type: 'line',
+                  itemStyle: {
+                    color: '#18D4E2'
+                  },
+                  markLine: {
+                    symbol:"none", // 是否去掉标线前后的箭头
+                    data:[
+                    {
+                        name: '下限值',
+                        yAxis: chartData.lowerValue,
+                        lineStyle: {
+                          type: 'solid',
+                          width: 2,
+                        },
+                      },
+                    ]
+                  }
+                }
+              ],
+              grid: {
+                left: '5%',
+                right: '5%',
+                bottom: '0%',
+                top: 90,
+                containLabel: true
+              }
+            }
+          myChart.setOption(option);
+        })
+      }
+      const setResize = () => {
+        window.addEventListener('resize', () => {
+          let chart = echarts.init(document.getElementById('main'))
+          chart.resize()
+        })
+      }
+      const chartRestore = (item, index) => {
+        let chart = echarts.getInstanceByDom(document.getElementById(`main`))
+        chart.dispatchAction({
+          type: 'restore'
+        })
+      }
+
+      // window上挂载方法
+      window.getSearchData = () => {
+        initChart()
+      }
+
+      
+      onMounted(() => {
+        initChart()
+        setResize()
+      })
+      return {
+        chartRestore
+      }
+    }  
+  }
+  // 创建实例
+  const app = Vue.createApp(tableComponent)
+  // 引入 element-plue-icons
+  // for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  //   app.component(key, component)
+  // }
+  // 挂载
+  app.use(ElementPlus, { locale: ElementPlusLocaleZhCn }).mount("#app")
+</script>

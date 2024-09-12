@@ -1,0 +1,56 @@
+<!--
+ * @Description: 这是***页面（组件）
+ * @Date: 2020-06-09 16:07:33
+ * @Author: Tao
+ * @LastEditors: Tao
+ * @LastEditTime: 2020-06-12 10:09:08
+--> 
+<!DOCTYPE html>
+<html>
+<!--saved from url=(0016)http://localhost-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="XR.css" />
+    <style type="text/css">
+        @font-face {
+            font-family: 'SiYuanHei';
+            src: url('本墨悠圆.ttf') format('truetype');
+        }
+    </style>
+	<script type="text/javascript" src="math.js">
+		
+	</script>
+</head>
+<body style="background-color:transparent;margin:0px; padding:0px;position: relative;">
+    <div id="main" style="width:calc(100%);height:calc(100vh);padding:0; background-color:transparent;pointer-events:none"></div>
+     <div style="position:absolute;right:90px;top: 5px;font-size:12px;color:#606266;display: flex;align-items: center;width:165px; z-index: 99">
+        <div style="min-width: 105px; display: flex; align-items: center;" >
+            <span title="点击重置滑块" style="width: 20px;height: 20px;margin-right: 3px;background: url('./imgs/reset.png');background-size: 100% 100%;cursor:pointer;" ></span>
+            <input type="checkbox" disabled="disabled" value="SCheckbox" id="sliderCheckbox" ></input>
+            <label for="SCheckbox" style="margin-right: 5px;">滑块模式</label>
+        </div>
+        <div style="width: 60px;display: flex;align-items: center;" id="sliderData">
+           
+            <input style="width:30px; text-align:center" min="1" disabled="disabled" id="sliderInput" ></input>
+            <span title="图表显示的数据条数" style="width: 20px;height: 20px;margin-left: 3px;background: url('./imgs/prompt.png');background-size: 100% 100%;" ></span>
+        </div>
+    </div>
+
+    <!--<button onclick="testshua();" style="font-family:'SiYuanHei'">赋值</button>
+    <button onclick="testshua1();" style="font-family:'SiYuanHei'">赋值</button>-->
+    <!--<button onclick="setValue();">赋值</button>
+    <button onclick="setLabelfontSize();">赋值</button>
+    <button onclick="setLegendorient();">赋值</button>
+    <button onclick="setLegendLeft();">赋值</button>
+    <button onclick="setLegendTop();">赋值</button>
+    <button onclick="setSplitNumber();">赋值</button>-->
+    <script src="jquery-1.10.2.min.js"></script>
+    <script src="json3.js"></script>
+    <script src="echarts.js"></script>
+    <script src="ecStat.js"></script>
+    <script src="LineChart.js"></script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>elementPlus-table</title>
+  <!-- Import Vue 3 -->
+  <script src="./vue3/index.js"></script>
+  <!-- Import style -->
+  <link rel="stylesheet" href="./element-plus/index.css" />
+  <!-- Import component library -->
+  <script src="./element-plus/index.js"></script>
+  <!-- 设置elementplus 组件中文 -->
+  <script src="./element-plus/languages/zh-cn.js"></script>
+  <!-- 引入icons 若未使用element-plus-icon 则可以移除该引用 -->
+  <!-- <script src="./element-plus/icons.js"></script> -->
+  <script src="./echartsV5/index.js"></script>
+  <link rel="stylesheet" href="./styles/rewriteElement.css" />
+  <link rel="stylesheet" href="./styles/index.css" />
+</head>
+<style>
+</style>
+ 
+<body>
+  <div id="app">
+    <div class="wrap">
+      <div class="left" >
+        <!-- normalItem: item.type === 'normal',
+        passItem: item.type === 'pass',
+        ngItem: item.type === 'ng', -->
+        <div class="left-items normalItem" v-for="(item, index) in btnList" :key="index" :class="{ currentItem: currentItem && currentItem.id === item.id }"
+          @click="setCurrentItem(item)"
+        >
+          <div class="item">{{item.name}}</div>
+        </div>
+      </div>
+      <div class="right" >
+        <div class="box" v-for="(item, index) in itemData" :key="index"  >
+          <div class="box-header" >
+            <div class="box-header-title" >
+              <span>{{item.title}}</span>
+            </div>
+            <div>
+              <el-button type="primary" color="#2F71EE" @click="openList(item, index)">列表</el-button>
+              <el-button type="primary" color="#2F71EE" @click="chartRestore(item, index)">还原</el-button>
+            </div>
+          </div>
+          <div class="box-chart" >
+            <div :id=`main${index}` style="width: 100%;height:100%; box-sizing: border-box;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+ 
+</html>
+<script>
+  // vue3 部分
+  const { ref, nextTick, onMounted} = Vue
+  const tableComponent = {
+    setup() {
+      /* 左侧动态按钮 */
+      const currentItem = ref(null)
+      const btnList = ref([])
+      const renderleftBtns = (data) => {
+        if (data && data.length > 0) {
+          btnList.value = data
+          currentItem.value = data[0]
+          // console.log('666666')
+          // itemData.value = [{"title":"123123","chartData":{"xAxis":[1233.0,123123.0],"seriesData":[{"name":"123","color":"#586EF2","data":[234.0]}]}}]
+          // renderCharts()
+          JsObj.loadpChartProcessId(data[0].id, (chartData) => {
+            itemData.value = chartData
+            renderCharts()
+          })
+        } else {
+          btnList.value = []
+          currentItem.value = null
+          itemData.value = []
+        }
+      }
+      const setCurrentItem = (item) => {
+        currentItem.value = item
+        JsObj.loadpChartProcessId(item.id, (chartData) => {
+          itemData.value = chartData
+          renderCharts()
+        })
+      }
+      /* 右侧部分部分 */
+      const itemData = ref([
+        // {
+        //   title: '温度1、温度2',
+        //   chartData: {
+        //     xAxis:['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        //     seriesData: [
+        //       {
+        //         name: '温度1',
+        //         color: '#586EF2',
+        //         data: [150, 230, 224, 218, 135, 147, 260]
+        //       },
+        //       {
+        //         name: '温度2',
+        //         color: '#58CFFF',
+        //         data: [180, 210, 204, 178, 165, 197, 260]
+        //       },
+        //       {
+        //         name: '温度3',
+        //         color: '#D56985',
+        //         data: [190, 200, 194, 188, 175, 187, 240]
+        //       }
+        //     ]
+        //   },
+        // },
+        // {
+        //   title: '温度1、温度2',
+        //   chartData: {
+        //     xAxis:['Mon2', 'Tue2', 'Wed2', 'Thu2', 'Fri2', 'Sat2', 'Sun2'],
+        //     seriesData: [
+        //       {
+        //         name: '温度1',
+        //         color: '#586EF2',
+        //         data: [150, 230, 224, 218, 135, 147, 260]
+        //       },
+        //       {
+        //         name: '温度2',
+        //         color: '#58CFFF',
+        //         data: [180, 210, 204, 178, 165, 197, 260]
+        //       }
+        //     ]
+        //   },
+        // },
+        // {
+        //   title: '温度1、温度2',
+        //   chartData: {
+        //     xAxis:['Mon3', 'Tue3', 'Wed3', 'Thu3', 'Fri3', 'Sat3', 'Sun3'],
+        //     seriesData: [
+        //       {
+        //         name: '温度1',
+        //         color: '#586EF2',
+        //         data: [150, 230, 224, 218, 135, 147, 260]
+        //       }
+        //     ]
+        //   },
+        // }
+      ])
+      const renderCharts = () => {
+        nextTick(() => {
+          itemData.value.forEach((item, index) => {
+            let oldChart = echarts.getInstanceByDom(document.getElementById(`main${index}`))
+            if (oldChart) {
+              // 若存在echarts 实例则销毁 销毁echarts实例
+              oldChart.dispose()
+            }
+            let myChart = echarts.init(document.getElementById(`main${index}`)) 
+            let series = []
+            // 遍历获取sercies数据
+            item.chartData.seriesData.forEach(child => {
+              series.push({
+                data: child.data,
+                type: 'line',
+                name: child.name,
+                smooth: true,
+                showSymbol: false,
+                itemStyle: {
+                  color: child.color,
+                  shadowBlur: 50
+                },
+                lineStyle: {
+                  shadowColor: child.color,
+                  width: 2,
+                  opacity: 1,
+                  shadowBlur: 8,
+                  type: "solid"
+                },
+                areaStyle: {
+                  color: child.color,
+                  opacity: 0.1
+                },
+              })
+            })
+            let option = {
+              toolbox: {
+                feature: {
+                  dataZoom: {
+                    yAxisIndex: 'none'
+                  },
+                  // restore: {},
+                }
+              },
+              tooltip: {
+                show: true,
+                trigger: "axis",
+                axisPointer: {
+                  type: "line",
+                },
+                backgroundColor: 'rgba(143, 143, 143, 0.9)',
+                borderWidth: 0,
+                textStyle: {
+                  color: '#fff',
+                },
+              },
+              dataZoom: [
+                {
+                  show: true,
+                  realtime: true,
+                  bottom: '18'
+                },
+                {
+                  type: 'inside',
+                  realtime: true,
+                  // zoomOnMouseWheel: 'ctrl',
+                }
+              ],
+              xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: item.chartData.xAxis,
+                name: item.chartData.xAxisName,
+                nameGap: 10,
+                splitLine: {
+                  lineStyle: {
+                    type: 'dashed'
+                  }
+                },
+                nameTextStyle: {
+                  fontSize: 14,
+                }
+              },
+              yAxis: {
+                type: 'value',
+                name: item.chartData.yAxisName,
+                nameGap: 30,
+                splitLine: {
+                  lineStyle: {
+                    type: 'dashed'
+                  }
+                },
+                nameTextStyle: {
+                  fontSize: 14,
+                }
+              },
+              series,
+              grid: {
+                left: '50',
+                right: '90',
+                bottom: '65',
+                top: '60',
+                containLabel: true
+              }
+            }
+            myChart.setOption(option, true);
+          })
+        })
+      }
+      const setResize = () => {
+        window.addEventListener('resize', () => {
+          itemData.value.forEach((item, index) => {
+            let chart = echarts.init(document.getElementById(`main${index}`))
+            chart.resize()
+          })
+        })
+      }
+      const chartRestore = (item, index) => {
+        let chart = echarts.getInstanceByDom(document.getElementById(`main${index}`))
+        chart.dispatchAction({
+          type: 'restore'
+        })
+      }
+      const openList = (item, index) => {
+        JsObj.showDetailParamList(item.id, currentItem.value.id, item.title)
+      }
+      
+      onMounted(() => {
+        setResize()
+      })
+       /* 方法挂载 */
+      window.renderleftBtns = () => {
+        JsObj.loadpRrocess((btnData) => {
+          console.log('传过来的btnData', btnData)
+          renderleftBtns(btnData)
+        })
+      }
+      window.searchRenderCharts = () => {
+        if (currentItem.value !== null) {
+          console.log('查询渲染图表的方法 ===> id', currentItem.value.id)
+          JsObj.loadpChartProcessId(currentItem.value.id, (chartData) => {
+            itemData.value = chartData
+            renderCharts()
+          })
+        } else {
+          JsObj.showMessage('请先选择工序!')
+        }
+      }
+      return {
+        currentItem,
+        btnList,
+        itemData,
+        renderleftBtns,
+        chartRestore,
+        openList,
+        renderCharts,
+        setResize,
+        setCurrentItem,
+      }
+    }  
+  }
+  // 创建实例
+  const app = Vue.createApp(tableComponent)
+  // 引入 element-plue-icons
+  // for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  //   app.component(key, component)
+  // }
+  // 挂载
+  app.use(ElementPlus, { locale: ElementPlusLocaleZhCn }).mount("#app")
+</script>

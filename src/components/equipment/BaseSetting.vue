@@ -262,16 +262,9 @@ export default {
         };
     },
     mounted() {
-        this.a11 = Number(parseFloat(window.screen.width / 1920).toFixed(2));
-        if (this.a11 < 1) {
-            this.a11 = 0.8;
-        }
         setTimeout(() => {
             let a = this.a11 * 50 + 10 + 'px';
             let b = this.a11 * 630 + 20 + 'px';
-            $('.container').css({
-                height: `calc(100% - ${a})`
-            });
             $('.data').css({
                 width: `calc(100% - ${b})`
             });

@@ -304,7 +304,7 @@ export default {
             outputs: [],
             handleRow: {},
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
-            zoomValue: 0,
+            zoomValue: 1,
         };
     },
     methods: {
@@ -2411,13 +2411,6 @@ this.tipchange1 = true;
         getMoreLog() {}
     },
     mounted() {
-        this.$nextTick(() => {
-            this.zoomValue = Number(parseFloat(window.screen.width/2000).toFixed(2)) <= 0.66 ? 0.66 : Number(parseFloat(window.screen.width/1920).toFixed(2))
-            this.$refs.search.style.zoom = this.zoomValue
-            // console.log(this.$refs.btns)
-            // this.$refs.btns.style.zoom = this.zoomValue
-        })
-
         this.getLangData()
         this.data = JSON.parse(this.$route.query.id)
         this.PrMethod = this.data.PrMethod;

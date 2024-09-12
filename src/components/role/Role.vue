@@ -170,6 +170,7 @@ export default {
             deldata: '',
             PowerBtnArr:[],  //权限按钮数据
             AllPowerBtnArr:[],
+            a11: 1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
@@ -180,7 +181,6 @@ export default {
         this.bigmnue();
     },
     mounted(){
-        this.zoom = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
     },
     methods: {
         getLangData() {

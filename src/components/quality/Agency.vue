@@ -6,38 +6,51 @@
  * @LastEditTime: 2020-08-06 18:09:35
  -->
 <template>
-    <div class="public-table" >
-          			<div class="loadcover" element-loading-spinner="el-icon-loading"
-            element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;"></div>
-        <div class="search-container" ref="search" >
+    <div class="public-table">
+        <div
+            class="loadcover"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.4)"
+            v-loading="this.$store.state.isShow"
+            v-show="this.$store.state.isShow"
+            style="
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+            "
+        ></div>
+        <div class="search-container" ref="search">
             <my-search
                 @setParams="setParams"
                 @change="change"
                 @confirm="confirm"
-                @feixi="feixi"
+                @feixi="beforeFeixi"
                 @deldata="deldata"
             ></my-search>
         </div>
-        <div class="look lookq" ref="kongtiao5" v-show="offdecive1" :style="{zoom: zoomValue}" >
-            <div
-                class="looktop"
-               
-            ></div>
+        <div
+            class="look lookq"
+            ref="kongtiao5"
+            v-show="offdecive1"
+            :style="{ zoom: zoomValue }"
+        >
+            <div class="looktop"></div>
             <div
                 class="lookhead"
-                :class="[{colordiv:$store.state.color=='grey'},{fcolor:$store.state.color=='grey'}]"
+                :class="[
+                    { colordiv: $store.state.color == 'grey' },
+                    { fcolor: $store.state.color == 'grey' },
+                ]"
             >
-                {{lang.QualityManage_ItemEditWindow_RuleOfDiscrimination}}
+                {{ lang.QualityManage_ItemEditWindow_RuleOfDiscrimination }}
                 <img
                     :src="no2"
                     alt
                     class="no"
                     @click="cancel11"
-                    v-if="$store.state.color=='grey'"
+                    v-if="$store.state.color == 'grey'"
                 />
                 <img :src="no" alt class="no" @click="cancel11" v-else />
             </div>
@@ -53,49 +66,111 @@
                             @select="select"
                             ref="www"
                             @select-all="selectall"
-                            :header-cell-style="[{background:(($store.state.color=='grey')?'#D9DBDE':'#dcf0f9')},{color:(($store.state.color=='grey')?'#000':'#5883e7')}, {'border-left':'1px solid #cccccc',height:'50px',padding:'0'}]"
+                            :header-cell-style="[
+                                {
+                                    background:
+                                        $store.state.color == 'grey'
+                                            ? '#D9DBDE'
+                                            : '#dcf0f9',
+                                },
+                                {
+                                    color:
+                                        $store.state.color == 'grey'
+                                            ? '#000'
+                                            : '#5883e7',
+                                },
+                                {
+                                    'border-left': '1px solid #cccccc',
+                                    height: '50px',
+                                    padding: '0',
+                                },
+                            ]"
                         >
                             <template slot="empty">
-                                <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
+                                <span>{{
+                                    lang.SCMSConsoleWebApiMySql_NoData
+                                }}</span>
                             </template>
-                            <el-table-column type="selection" :width="60*zoomValue" fixed></el-table-column>
-                            <el-table-column prop="RuleName" :label="lang.QualityManage_RuleChoseWindow_DataGrid_RuleNumber" :show-overflow-tooltip="true" width="200"></el-table-column>
-                            <el-table-column prop="RuleChose" :label="lang.QualityManage_RuleChoseWindow_DataGrid_CurrentRules" :show-overflow-tooltip="true" width="400"></el-table-column>
-                            <el-table-column prop="RuleDec" :label="lang.QualityManage_RuleChoseWindow_DataGrid_RuleBasis" :show-overflow-tooltip="true" width="400"></el-table-column>
+                            <el-table-column
+                                type="selection"
+                                :width="60 * zoomValue"
+                                fixed
+                            ></el-table-column>
+                            <el-table-column
+                                prop="RuleName"
+                                :label="
+                                    lang.QualityManage_RuleChoseWindow_DataGrid_RuleNumber
+                                "
+                                :show-overflow-tooltip="true"
+                                width="200"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="RuleChose"
+                                :label="
+                                    lang.QualityManage_RuleChoseWindow_DataGrid_CurrentRules
+                                "
+                                :show-overflow-tooltip="true"
+                                width="400"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="RuleDec"
+                                :label="
+                                    lang.QualityManage_RuleChoseWindow_DataGrid_RuleBasis
+                                "
+                                :show-overflow-tooltip="true"
+                                width="400"
+                            ></el-table-column>
                         </el-table>
                     </div>
                 </div>
             </div>
-            <div class="wechange" @click="pdchnage">{{lang.QualityManage_RuleChoseWindow_Modify}}</div>
-            <div class="cancel" @click="cancel11">{{lang.PopupCommon_Cancel}}</div>
-            <div class="pre" @click="pre11">{{lang.PopupCommon_Sure}}</div>
+            <div class="wechange" @click="pdchnage">
+                {{ lang.QualityManage_RuleChoseWindow_Modify }}
+            </div>
+            <div class="cancel" @click="cancel11">
+                {{ lang.PopupCommon_Cancel }}
+            </div>
+            <div class="pre" @click="pre11">{{ lang.PopupCommon_Sure }}</div>
         </div>
         <div class="cover5" v-if="offdecive"></div>
-        <div class="look lookw" ref="kongtiao5" v-show="offdecive"  :style="{zoom: zoomValue}" >
-            <div
-                class="looktop"
-
-            ></div>
+        <div
+            class="look lookw"
+            ref="kongtiao5"
+            v-show="offdecive"
+            :style="{ zoom: zoomValue }"
+        >
+            <div class="looktop"></div>
             <div
                 class="lookhead"
-                :class="[{colordiv:$store.state.color=='grey'},{fcolor:$store.state.color=='grey'}]"
+                :class="[
+                    { colordiv: $store.state.color == 'grey' },
+                    { fcolor: $store.state.color == 'grey' },
+                ]"
             >
-                {{lang.QualityManage_ChoseProcessItem_SelectItem}}
-                 <img
+                {{ lang.QualityManage_ChoseProcessItem_SelectItem }}
+                <img
                     :src="no2"
                     alt
                     class="no"
                     @click="cancel11"
-                    v-if="$store.state.color=='grey'"
+                    v-if="$store.state.color == 'grey'"
                 />
                 <img :src="no" alt class="no" @click="cancel11" v-else />
             </div>
             <div class="lookcontent">
                 <div class="lookselect">
                     <div class="search">
-                        <span class="keyword">{{lang.FormulaManage_AddProject_Keyword}}</span>
-                        <input type="text" :placeholder="lang.FormulaManage_AddProject_Keyword" v-model="projectkeyword" />
-                        <span class="lookfor1" @click="lookforsearch">{{lang.FormulaManage_AddProject_Select}}</span>
+                        <span class="keyword">{{
+                            lang.FormulaManage_AddProject_Keyword
+                        }}</span>
+                        <input
+                            type="text"
+                            :placeholder="lang.FormulaManage_AddProject_Keyword"
+                            v-model="projectkeyword"
+                        />
+                        <span class="lookfor1" @click="lookforsearch">{{
+                            lang.FormulaManage_AddProject_Select
+                        }}</span>
                     </div>
                     <div class="table">
                         <el-table
@@ -105,93 +180,188 @@
                             style="width: 100%"
                             @row-click="handleRowChange1"
                             highlight-current-row
-                            :header-cell-style="[{background:(($store.state.color=='grey')?'#D9DBDE':'#dcf0f9')},{color:(($store.state.color=='grey')?'#000':'#5883e7')}, {'border-left':'1px solid #cccccc',height:'50px',padding:'0'}]"
+                            :header-cell-style="[
+                                {
+                                    background:
+                                        $store.state.color == 'grey'
+                                            ? '#D9DBDE'
+                                            : '#dcf0f9',
+                                },
+                                {
+                                    color:
+                                        $store.state.color == 'grey'
+                                            ? '#000'
+                                            : '#5883e7',
+                                },
+                                {
+                                    'border-left': '1px solid #cccccc',
+                                    height: '50px',
+                                    padding: '0',
+                                },
+                            ]"
                         >
                             <template slot="empty">
-                                <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
+                                <span>{{
+                                    lang.SCMSConsoleWebApiMySql_NoData
+                                }}</span>
                             </template>
-                            <el-table-column prop="ProjectName" :label="lang.QualityManage_ChoseProcessItem_ProjectName" :show-overflow-tooltip="true"></el-table-column>
-                            <el-table-column prop="ProjectValueTagName" :label="lang.QualityManage_ChoseProcessItem_Name" :show-overflow-tooltip="true"></el-table-column>
+                            <el-table-column
+                                prop="ProjectName"
+                                :label="
+                                    lang.QualityManage_ChoseProcessItem_ProjectName
+                                "
+                                :show-overflow-tooltip="true"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="ProjectValueTagName"
+                                :label="
+                                    lang.QualityManage_ChoseProcessItem_Name
+                                "
+                                :show-overflow-tooltip="true"
+                            ></el-table-column>
                         </el-table>
                     </div>
                     <div class="pages-container">
-                        <div class="page" style="font-size: 13px" >
+                        <div class="page" style="font-size: 13px">
                             <div class="pageword">
-                                {{lang.DataGrid_Reaction_HT_ATotalOf}}
-                                <span>{{pageDate1.togesize}}</span>{{lang.DataGrid_Reaction_HT_RecordsAndTheCurrent}}
-                                <span>{{pageDate1.pageIndex}}</span>{{lang.DataGrid_Reaction_HT_Page}}
-                                <span>{{pageDate1.togeIndex}}</span>{{lang.DataGrid_Reaction_HT_RecordsAnd}}
-                                <span>{{pageDate1.pagesize}}</span>{{lang.DataGrid_Reaction_HT_PerPage}}
+                                {{ lang.DataGrid_Reaction_HT_ATotalOf }}
+                                <span>{{ pageDate1.togesize }}</span
+                                >{{
+                                    lang.DataGrid_Reaction_HT_RecordsAndTheCurrent
+                                }}
+                                <span>{{ pageDate1.pageIndex }}</span
+                                >{{ lang.DataGrid_Reaction_HT_Page }}
+                                <span>{{ pageDate1.togeIndex }}</span
+                                >{{ lang.DataGrid_Reaction_HT_RecordsAnd }}
+                                <span>{{ pageDate1.pagesize }}</span
+                                >{{ lang.DataGrid_Reaction_HT_PerPage }}
                             </div>
                             <div class="pageoperation">
-                                <span class="btn" @click="start1">{{lang.DataGrid_Reaction_FirstPage}}</span>
-                                <span class="btn" :class="{nopage:aaa1}" @click="abck1">{{lang.DataGrid_Reaction_LastPage}}</span>
-                                <span class="btn" :class="{nopage:bbb1}" @click="next1">{{lang.DataGrid_Reaction_NextPage}}</span>
-                                <span class="btn" @click="end1">{{lang.DataGrid_Reaction_EndPage}}</span>
+                                <span class="btn" @click="start1">{{
+                                    lang.DataGrid_Reaction_FirstPage
+                                }}</span>
+                                <span
+                                    class="btn"
+                                    :class="{ nopage: aaa1 }"
+                                    @click="abck1"
+                                    >{{ lang.DataGrid_Reaction_LastPage }}</span
+                                >
+                                <span
+                                    class="btn"
+                                    :class="{ nopage: bbb1 }"
+                                    @click="next1"
+                                    >{{ lang.DataGrid_Reaction_NextPage }}</span
+                                >
+                                <span class="btn" @click="end1">{{
+                                    lang.DataGrid_Reaction_EndPage
+                                }}</span>
                                 <div class="inputnumber">
-                                    {{lang.DataGrid_Reaction_The}}
-                                    <input type="text" v-model="nowpage1" /> {{lang.DataGrid_Reaction_Page}}
+                                    {{ lang.DataGrid_Reaction_The }}
+                                    <input type="text" v-model="nowpage1" />
+                                    {{ lang.DataGrid_Reaction_Page }}
                                 </div>
 
-                                <span class="btn" @click="jump1">{{lang.DataGrid_Reaction_TurnPage}}</span>
+                                <span class="btn" @click="jump1">{{
+                                    lang.DataGrid_Reaction_TurnPage
+                                }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="cancel" @click="cancel11">{{lang.PopupCommon_Cancel}}</div>
-            <div class="pre" @click="pre1">{{lang.PopupCommon_Sure}}</div>
+            <div class="cancel" @click="cancel11">
+                {{ lang.PopupCommon_Cancel }}
+            </div>
+            <div class="pre" @click="pre1">{{ lang.PopupCommon_Sure }}</div>
         </div>
         <div class="cover4" v-if="changetrue"></div>
-        <div class="sestion sestion1" ref="kongtiao1" v-show="changetrue"  :style="{zoom: zoomValue}" >
-            <div class="sestionheader" :class="{colordiv:$store.state.color=='grey'}">
-                <div
-                    class="sestionheader1"
-                 
-                ></div>
+        <div
+            class="sestion sestion1"
+            ref="kongtiao1"
+            v-show="changetrue"
+            :style="{ zoom: zoomValue }"
+        >
+            <div
+                class="sestionheader"
+                :class="{ colordiv: $store.state.color == 'grey' }"
+            >
+                <div class="sestionheader1"></div>
                 <span
                     class="head"
                     v-if="sestion == 1"
-                    :class="{fcolor:$store.state.color=='grey'}"
-                >{{lang.QualityManage_QualityManageUserControl_Add}}</span>
+                    :class="{ fcolor: $store.state.color == 'grey' }"
+                    >{{ lang.QualityManage_QualityManageUserControl_Add }}</span
+                >
                 <span
                     class="head"
                     v-else-if="sestion == 2"
-                    :class="{fcolor:$store.state.color=='grey'}"
-                >{{lang.QualityManage_QualityManageUserControl_Modify}}</span>
+                    :class="{ fcolor: $store.state.color == 'grey' }"
+                    >{{
+                        lang.QualityManage_QualityManageUserControl_Modify
+                    }}</span
+                >
                 <span
                     class="head"
                     v-else-if="sestion == 3"
-                    :class="{fcolor:$store.state.color=='grey'}"
-                >{{lang.QualityManage_QualityManageUserControl_Modify}}</span>
+                    :class="{ fcolor: $store.state.color == 'grey' }"
+                    >{{
+                        lang.QualityManage_QualityManageUserControl_Modify
+                    }}</span
+                >
                 <img
                     :src="no2"
                     alt
                     class="no"
                     @click.stop="cancel"
-                    v-if="$store.state.color=='grey'"
+                    v-if="$store.state.color == 'grey'"
                 />
                 <img :src="no" alt class="no" @click.stop="cancel" v-else />
             </div>
             <div class="sestioncontain">
                 <div class="view">
-                    <span>{{lang.QualityManage_ItemEditWindow_SamplingMode}}</span>
+                    <span>{{
+                        lang.QualityManage_ItemEditWindow_SamplingMode
+                    }}</span>
                     <template>
-                        <el-radio v-model="radio" label="1">{{lang.QualityManage_ItemEditWindow_Manual}}</el-radio>
-                        <el-radio v-model="radio" label="2">{{lang.QualityManage_ItemEditWindow_Automatic}}</el-radio>
+                        <el-radio v-model="radio" label="1">{{
+                            lang.QualityManage_ItemEditWindow_Manual
+                        }}</el-radio>
+                        <el-radio v-model="radio" label="2">{{
+                            lang.QualityManage_ItemEditWindow_Automatic
+                        }}</el-radio>
                     </template>
                 </div>
                 <div class="overflow">
                     <div class="fl">
                         <div class="margin">
-                            <span>{{lang.QualityManage_ItemEditWindow_TestingItems}}</span>
-                            <input type="text" v-if="sestion == 1" v-model="meaddtable.PrName" />
-                            <input type="text" v-else-if="sestion == 2" v-model="meaddtable.PrName" />
-                            <input type="text" v-else-if="sestion == 3" v-model="meaddtable.PrName" />
+                            <span>{{
+                                lang.QualityManage_ItemEditWindow_TestingItems
+                            }}</span>
+                            <input
+                                type="text"
+                                v-if="sestion == 1"
+                                v-model="meaddtable.PrName"
+                            />
+                            <input
+                                type="text"
+                                v-else-if="sestion == 2"
+                                v-model="meaddtable.PrName"
+                            />
+                            <input
+                                type="text"
+                                v-else-if="sestion == 3"
+                                v-model="meaddtable.PrName"
+                            />
                         </div>
                         <div class="margin">
-                            <span>{{lang.QualityManage_ItemEditWindow_SpecificationUpper}}</span>
-                            <input type="text" v-if="sestion == 1" v-model="meaddtable.PrUpLimit" />
+                            <span>{{
+                                lang.QualityManage_ItemEditWindow_SpecificationUpper
+                            }}</span>
+                            <input
+                                type="text"
+                                v-if="sestion == 1"
+                                v-model="meaddtable.PrUpLimit"
+                            />
                             <input
                                 type="text"
                                 v-else-if="sestion == 2"
@@ -204,8 +374,14 @@
                             />
                         </div>
                         <div class="margin">
-                            <span>{{lang.QualityManage_ItemEditWindow_SpecificationLower}}</span>
-                            <input type="text" v-if="sestion == 1" v-model="meaddtable.PrDownLimit" />
+                            <span>{{
+                                lang.QualityManage_ItemEditWindow_SpecificationLower
+                            }}</span>
+                            <input
+                                type="text"
+                                v-if="sestion == 1"
+                                v-model="meaddtable.PrDownLimit"
+                            />
                             <input
                                 type="text"
                                 v-else-if="sestion == 2"
@@ -218,8 +394,14 @@
                             />
                         </div>
                         <div class="margin">
-                            <span class="me">{{lang.QualityManage_ItemEditWindow_TargetValue}}</span>
-                            <input type="text" v-if="sestion == 1" v-model="meaddtable.PrgoalValue" />
+                            <span class="me">{{
+                                lang.QualityManage_ItemEditWindow_TargetValue
+                            }}</span>
+                            <input
+                                type="text"
+                                v-if="sestion == 1"
+                                v-model="meaddtable.PrgoalValue"
+                            />
                             <input
                                 type="text"
                                 v-else-if="sestion == 2"
@@ -235,34 +417,58 @@
                     </div>
                     <div class="zr">
                         <div class="margin">
-                            <span class="me">{{lang.QualityManage_ItemEditWindow_GraphClass}}</span>
-                            <select name id v-model="dt " v-if="sestion == 1">
+                            <span class="me">{{
+                                lang.QualityManage_ItemEditWindow_GraphClass
+                            }}</span>
+                            <select name id v-model="dt" v-if="sestion == 1">
                                 <option
                                     :value="item"
-                                    v-for="(item,index) in supermin"
+                                    v-for="(item, index) in supermin"
                                     :key="index"
-                                >{{item}}</option>
+                                >
+                                    {{ item }}
+                                </option>
                             </select>
-                            <select name id v-model="dt " v-else-if="sestion == 2">
+                            <select
+                                name
+                                id
+                                v-model="dt"
+                                v-else-if="sestion == 2"
+                            >
                                 <option
                                     :value="item"
-                                    v-for="(item,index) in supermin"
+                                    v-for="(item, index) in supermin"
                                     :key="index"
-                                >{{item}}</option>
+                                >
+                                    {{ item }}
+                                </option>
                             </select>
-                            <select name id v-model="dt " v-else-if="sestion == 3">
+                            <select
+                                name
+                                id
+                                v-model="dt"
+                                v-else-if="sestion == 3"
+                            >
                                 <option
                                     :value="item"
-                                    v-for="(item,index) in supermin"
+                                    v-for="(item, index) in supermin"
                                     :key="index"
-                                >{{item}}</option>
+                                >
+                                    {{ item }}
+                                </option>
                             </select>
                         </div>
                         <div class="margin">
-                            <span>{{lang.QualityManage_ItemEditWindow_VariableAssociation}}</span>
+                            <span>{{
+                                lang.QualityManage_ItemEditWindow_VariableAssociation
+                            }}</span>
                             <div v-if="sestion == 1" class="input1">
-                                <span>{{meaddtable.PrVariableName}}</span>
-                                <div class="inputimg" @click="getdevice" v-if="radio == '2'">
+                                <span>{{ meaddtable.PrVariableName }}</span>
+                                <div
+                                    class="inputimg"
+                                    @click="getdevice"
+                                    v-if="radio == '2'"
+                                >
                                     <img :src="diji" alt />
                                 </div>
                                 <div class="inputimg" v-if="radio == '1'">
@@ -271,34 +477,45 @@
                                 </div>
                             </div>
                             <div v-else-if="sestion == 2" class="input1">
-                                <span>{{meaddtable.PrVariableName}}</span>
+                                <span>{{ meaddtable.PrVariableName }}</span>
                                 <div class="inputimg" v-if="radio == '2'">
                                     <img :src="diji" alt />
                                 </div>
-                                 <div class="inputimg" v-if="radio == '1'">
+                                <div class="inputimg" v-if="radio == '1'">
                                     <img :src="diji" alt />
                                     <div class="zimg"></div>
                                 </div>
                             </div>
                             <div v-else-if="sestion == 3" class="input1">
-                                <span>{{meaddtable.PrVariableName}}</span>
-                                <div class="inputimg" @click="getdevice" v-if="radio == '2'">
+                                <span>{{ meaddtable.PrVariableName }}</span>
+                                <div
+                                    class="inputimg"
+                                    @click="getdevice"
+                                    v-if="radio == '2'"
+                                >
                                     <img :src="diji" alt />
                                 </div>
-                                 <div class="inputimg" v-if="radio == '1'">
+                                <div class="inputimg" v-if="radio == '1'">
                                     <img :src="diji" alt />
                                     <div class="zimg"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="margin">
-                            <span>{{lang.QualityManage_ItemEditWindow_SubgroupCapacity}}</span>
-                            <select v-model="meaddtable.PrSampleNumber" v-if="sestion == 1">
+                            <span>{{
+                                lang.QualityManage_ItemEditWindow_SubgroupCapacity
+                            }}</span>
+                            <select
+                                v-model="meaddtable.PrSampleNumber"
+                                v-if="sestion == 1"
+                            >
                                 <option
-                                    v-for="(item,index) in person1"
+                                    v-for="(item, index) in person1"
                                     :key="index"
                                     :value="item"
-                                >{{item}}</option>
+                                >
+                                    {{ item }}
+                                </option>
                             </select>
                             <select
                                 v-model="meaddtable.PrSampleNumber"
@@ -306,35 +523,44 @@
                                 disabled
                             >
                                 <option
-                                    v-for="(item,index) in person1"
+                                    v-for="(item, index) in person1"
                                     :key="index"
                                     :value="item"
-                                >{{item}}</option>
+                                >
+                                    {{ item }}
+                                </option>
                             </select>
-                            <select v-model="meaddtable.PrSampleNumber" v-if="sestion == 3">
+                            <select
+                                v-model="meaddtable.PrSampleNumber"
+                                v-if="sestion == 3"
+                            >
                                 <option
-                                    v-for="(item,index) in person1"
+                                    v-for="(item, index) in person1"
                                     :key="index"
                                     :value="item"
-                                >{{item}}</option>
+                                >
+                                    {{ item }}
+                                </option>
                             </select>
                         </div>
                         <div class="margin">
-                            <span>{{lang.QualityManage_ItemEditWindow_RuleOfDiscrimination}}</span>
+                            <span>{{
+                                lang.QualityManage_ItemEditWindow_RuleOfDiscrimination
+                            }}</span>
                             <div v-if="sestion == 1" class="input1">
-                                <span>{{meaddtable.PrRule}}</span>
+                                <span>{{ meaddtable.PrRule }}</span>
                                 <div class="inputimg" @click="getdevice1">
                                     <img :src="diji" alt />
                                 </div>
                             </div>
                             <div v-else-if="sestion == 2" class="input1">
-                                <span>{{meaddtable.PrRule}}</span>
+                                <span>{{ meaddtable.PrRule }}</span>
                                 <div class="inputimg">
                                     <img :src="diji" alt />
                                 </div>
                             </div>
                             <div v-else-if="sestion == 3" class="input1">
-                                <span>{{meaddtable.PrRule}}</span>
+                                <span>{{ meaddtable.PrRule }}</span>
                                 <div class="inputimg" @click="getdevice1">
                                     <img :src="diji" alt />
                                 </div>
@@ -343,14 +569,25 @@
                     </div>
                 </div>
 
-                <div class="Preservation" v-if="sestion == 1 || sestion == 3" @click="nopre">{{lang.PopupCommon_Save}}</div>
+                <div
+                    class="Preservation"
+                    v-if="sestion == 1 || sestion == 3"
+                    @click="nopre"
+                >
+                    {{ lang.PopupCommon_Save }}
+                </div>
 
-                <div class="cancel" @click="cancel" v-if="sestion == 1 || sestion == 3">{{lang.PopupCommon_Cancel}}</div>
+                <div
+                    class="cancel"
+                    @click="cancel"
+                    v-if="sestion == 1 || sestion == 3"
+                >
+                    {{ lang.PopupCommon_Cancel }}
+                </div>
             </div>
         </div>
         <div class="table-container table-container1">
             <el-table
-                
                 ref="multipleTable"
                 :data="table"
                 stripe
@@ -364,51 +601,156 @@
                 @row-click="handleRowChange11"
                 highlight-current-row
                 :row-style="{ height: 50 * zoomValue + 'px' }"
-                :header-cell-style="{background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',color:($store.state.color=='grey')?'#000':'#fff','border-left':'1px solid #cccccc',height:'50px',padding:'0',height: 50 * zoomValue + 'px'}"
+                :header-cell-style="{
+                    background:
+                        $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
+                    color: $store.state.color == 'grey' ? '#000' : '#fff',
+                    'border-left': '1px solid #cccccc',
+                    height: '50px',
+                    padding: '0',
+                    height: 50 * zoomValue + 'px',
+                }"
             >
                 <template slot="empty">
-                    <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
+                    <span>{{ lang.SCMSConsoleWebApiMySql_NoData }}</span>
                 </template>
-                <el-table-column :label="lang.QualityManage_QualityManageUserControl_DataGrid_IdNumber" :width="150*zoom" prop="item.PrNumber" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="item.PrName" :label="lang.QualityManage_QualityManageUserControl_DataGrid_TestingItems" :width="200*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="item.PrMethod" :label="lang.QualityManage_QualityManageUserControl_DataGrid_SamplingMode"  :width="200*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="item.PrType" :label="lang.QualityManage_QualityManageUserControl_DataGrid_ControlChartType"  :width="200*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="item.PrSampleNumber" :label="lang.QualityManage_QualityManageUserControl_DataGrid_SubgroupQuantity"  :width="200*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="item.PrUpLimit" :label="lang.QualityManage_QualityManageUserControl_DataGrid_SpecificationUpper"  :width="200*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="item.PrgoalValue" :label="lang.QualityManage_QualityManageUserControl_DataGrid_TargetValue"  :width="300*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="item.PrDownLimit" :label="lang.QualityManage_QualityManageUserControl_DataGrid_SpecificationLower"  :width="300*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="item.PrRule" :label="lang.QualityManage_QualityManageUserControl_DataGrid_RuleOfDiscrimination"  :width="300*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="item.UpdateUser" :label="lang.QualityManage_QualityManageUserControl_DataGrid_UpdateUser"  :width="300*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="item.UpdateTime" :label="lang.QualityManage_QualityManageUserControl_DataGrid_UpdateTime"  :width="300*zoom" :show-overflow-tooltip="true"></el-table-column>
+                <el-table-column
+                    :label="
+                        lang.QualityManage_QualityManageUserControl_DataGrid_IdNumber
+                    "
+                    :width="150 * zoom"
+                    prop="item.PrNumber"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="item.PrName"
+                    :label="
+                        lang.QualityManage_QualityManageUserControl_DataGrid_TestingItems
+                    "
+                    :width="200 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="item.PrMethod"
+                    :label="
+                        lang.QualityManage_QualityManageUserControl_DataGrid_SamplingMode
+                    "
+                    :width="200 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="item.PrType"
+                    :label="
+                        lang.QualityManage_QualityManageUserControl_DataGrid_ControlChartType
+                    "
+                    :width="200 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="item.PrSampleNumber"
+                    :label="
+                        lang.QualityManage_QualityManageUserControl_DataGrid_SubgroupQuantity
+                    "
+                    :width="200 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="item.PrUpLimit"
+                    :label="
+                        lang.QualityManage_QualityManageUserControl_DataGrid_SpecificationUpper
+                    "
+                    :width="200 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="item.PrgoalValue"
+                    :label="
+                        lang.QualityManage_QualityManageUserControl_DataGrid_TargetValue
+                    "
+                    :width="300 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="item.PrDownLimit"
+                    :label="
+                        lang.QualityManage_QualityManageUserControl_DataGrid_SpecificationLower
+                    "
+                    :width="300 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="item.PrRule"
+                    :label="
+                        lang.QualityManage_QualityManageUserControl_DataGrid_RuleOfDiscrimination
+                    "
+                    :width="300 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="item.UpdateUser"
+                    :label="
+                        lang.QualityManage_QualityManageUserControl_DataGrid_UpdateUser
+                    "
+                    :width="300 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="item.UpdateTime"
+                    :label="
+                        lang.QualityManage_QualityManageUserControl_DataGrid_UpdateTime
+                    "
+                    :width="300 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
             </el-table>
         </div>
-        <div class="pages-container" ref="page" >
+        <div class="pages-container" ref="page">
             <div class="page">
                 <div class="pageword">
-                    {{lang.DataGrid_Reaction_HT_ATotalOf}}
-                    <span>{{pageDate.togesize}}</span>{{lang.DataGrid_Reaction_HT_RecordsAndTheCurrent}}
-                    <span>{{pageDate.pageIndex}}</span>{{lang.DataGrid_Reaction_HT_Page}}
-                    <span>{{pageDate.togeIndex}}</span>{{lang.DataGrid_Reaction_HT_RecordsAnd}}
-                    <span>{{pageDate.pagesize}}</span>{{lang.DataGrid_Reaction_HT_PerPage}}
+                    {{ lang.DataGrid_Reaction_HT_ATotalOf }}
+                    <span>{{ pageDate.togesize }}</span
+                    >{{ lang.DataGrid_Reaction_HT_RecordsAndTheCurrent }}
+                    <span>{{ pageDate.pageIndex }}</span
+                    >{{ lang.DataGrid_Reaction_HT_Page }}
+                    <span>{{ pageDate.togeIndex }}</span
+                    >{{ lang.DataGrid_Reaction_HT_RecordsAnd }}
+                    <span>{{ pageDate.pagesize }}</span
+                    >{{ lang.DataGrid_Reaction_HT_PerPage }}
                 </div>
                 <div class="pageoperation">
-                    <span class="btn" @click="start">{{lang.DataGrid_Reaction_FirstPage}}</span>
-                    <span class="btn" :class="{nopage:aaa}" @click="abck">{{lang.DataGrid_Reaction_LastPage}}</span>
-                    <span class="btn" :class="{nopage:bbb}" @click="next">{{lang.DataGrid_Reaction_NextPage}}</span>
-                    <span class="btn" @click="end">{{lang.DataGrid_Reaction_EndPage}}</span>
+                    <span class="btn" @click="start">{{
+                        lang.DataGrid_Reaction_FirstPage
+                    }}</span>
+                    <span class="btn" :class="{ nopage: aaa }" @click="abck">{{
+                        lang.DataGrid_Reaction_LastPage
+                    }}</span>
+                    <span class="btn" :class="{ nopage: bbb }" @click="next">{{
+                        lang.DataGrid_Reaction_NextPage
+                    }}</span>
+                    <span class="btn" @click="end">{{
+                        lang.DataGrid_Reaction_EndPage
+                    }}</span>
                     <div class="inputnumber">
-                        {{lang.DataGrid_Reaction_The}}
-                        <input type="text" v-model="nowpage" /> {{lang.DataGrid_Reaction_Page}}
+                        {{ lang.DataGrid_Reaction_The }}
+                        <input type="text" v-model="nowpage" />
+                        {{ lang.DataGrid_Reaction_Page }}
                     </div>
 
-                    <span class="btn" @click="jump">{{lang.DataGrid_Reaction_TurnPage}}</span>
+                    <span class="btn" @click="jump">{{
+                        lang.DataGrid_Reaction_TurnPage
+                    }}</span>
                 </div>
             </div>
         </div>
-        <div class="tip" ref="kongtiao2" v-show="tipchange"  :style="{zoom: zoomValue}">
-           <div
+        <div
+            class="tip"
+            ref="kongtiao2"
+            v-show="tipchange"
+            :style="{ zoom: zoomValue }"
+        >
+            <div
                 class="tiphead"
-                style="position:absolute;width: 380px;height: 40px;"
+                style="position: absolute; width: 380px; height: 40px"
             ></div>
             <div
                 class="tiptop"
@@ -416,45 +758,92 @@
                 @mouseup="mouseUpHandleelse2($event)"
             >
                 <img :src="gth" alt />
-                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
+                <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
             </div>
             <div class="tipcontanin">
-                <div class="tipword" :class="w2" v-if="deltrue">{{tipword}}</div>
-                <div class="w" v-if="w1">{{tipword}}</div>
-                <div class="tipdetermine" @click="tip1" v-if="deltrue">{{lang.MessageBox_Confrim}}</div>
+                <div class="tipword" :class="w2" v-if="deltrue">
+                    {{ tipword }}
+                </div>
+                <div class="w" v-if="w1">{{ tipword }}</div>
+                <div class="tipdetermine" @click="tip1" v-if="deltrue">
+                    {{ lang.MessageBox_Confrim }}
+                </div>
                 <div class="delclass" v-if="!deltrue">
-                    <div class="one" @click="no1">{{lang.MessageBox_NO}}</div>
-                    <div class="two" @click="yes1">{{lang.MessageBox_YES}}</div>
+                    <div class="one" @click="no1">{{ lang.MessageBox_NO }}</div>
+                    <div class="two" @click="yes1">
+                        {{ lang.MessageBox_YES }}
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="pychange" ref="kongtiao22" v-show="py" :style="{zoom: zoomValue}">
+        <div
+            class="pychange"
+            ref="kongtiao22"
+            v-show="py"
+            :style="{ zoom: zoomValue }"
+        >
+            <div class="pytop"></div>
             <div
-                class="pytop"
-            ></div>
-            <div class="pyhead" :class="{colordiv:$store.state.color=='grey'}">
-                <img :src="no2" alt class="no" @click="cancelq" v-if="$store.state.color=='grey'" />
+                class="pyhead"
+                :class="{ colordiv: $store.state.color == 'grey' }"
+            >
+                <img
+                    :src="no2"
+                    alt
+                    class="no"
+                    @click="cancelq"
+                    v-if="$store.state.color == 'grey'"
+                />
                 <img :src="no" alt class="no" @click="cancelq" v-else />
-                <span :class="{fcolor:$store.state.color=='grey'}">{{lang.QualityManage_ModifyRuleWindow_ModifyInterface}}</span>
+                <span :class="{ fcolor: $store.state.color == 'grey' }">{{
+                    lang.QualityManage_ModifyRuleWindow_ModifyInterface
+                }}</span>
             </div>
             <div class="pycontent">
                 <div class="mt">
                     <span v-if="arr.length >= 1">[m]</span>
-                    <input type="text" v-model="arr[0]" v-if="arr.length >= 1" />
+                    <input
+                        type="text"
+                        v-model="arr[0]"
+                        v-if="arr.length >= 1"
+                    />
                 </div>
                 <div class="mt">
                     <span v-if="arr.length >= 2">[n]</span>
-                    <input type="text" v-model="arr[1]" v-if="arr.length >= 2" />
+                    <input
+                        type="text"
+                        v-model="arr[1]"
+                        v-if="arr.length >= 2"
+                    />
                 </div>
                 <div class="mt">
                     <span v-if="arr.length >= 3">[k]</span>
-                    <input type="text" v-model="arr[2]" v-if="arr.length >= 3" />
-                    <div class="Preservationq" @click="Preservationq">{{lang.PopupCommon_Sure}}</div>
-                    <div class="cancelq" @click="cancelq">{{lang.PopupCommon_Cancel}}</div>
+                    <input
+                        type="text"
+                        v-model="arr[2]"
+                        v-if="arr.length >= 3"
+                    />
+                    <div class="Preservationq" @click="Preservationq">
+                        {{ lang.PopupCommon_Sure }}
+                    </div>
+                    <div class="cancelq" @click="cancelq">
+                        {{ lang.PopupCommon_Cancel }}
+                    </div>
                 </div>
             </div>
         </div>
         <div class="cover2" v-if="tipchange"></div>
+
+        <checkAccount
+            @cancelFn="cancelFn"
+            @sumbitFn="feixi"
+            @tipShow="tipShow"
+            :doubleSign="doubleSign"
+            :elementName="elementName"
+            :argChildMenuID="$route.query.id"
+            :checkAccountSecond="checkAccountSecond"
+            v-if="checkAccountShow"
+        />
     </div>
 </template>
 
@@ -462,29 +851,26 @@
 import MySearch from '../public/plansearch10.vue';
 import MyTable from '../public/table012.vue';
 import MyPage from '../public/Pages.vue';
+import checkAccount from '../checkAccount/checkAccount.vue';
 export default {
     props: ['table', 'd'],
     components: {
-        MySearch
+        MySearch,
+        checkAccount,
         // MyPage
     },
     data() {
         return {
+            checkAccountShow: false,
+            checkAccountSecond:60,
+            doubleSign: false,
+            elementName: '',
             py: false,
             arr: ['1', '2', '3'],
             wantchange: '',
             wantword: '',
             wantword1: '',
-            person1: [
-                2,
-                3,
-                4,
-                5,
-                6,
-                7,
-                8,
-                9,
-            ],
+            person1: [2, 3, 4, 5, 6, 7, 8, 9],
             deltrue: true,
             pdyd1: true,
             pdyd2: true,
@@ -511,7 +897,7 @@ export default {
                 argEndTime: '',
                 argKeyword: '',
                 argPageSize: 50,
-                argPageIndex: 1
+                argPageIndex: 1,
             },
             tableHead: {
                 AlarmTime: '编号',
@@ -524,7 +910,7 @@ export default {
                 AlarmGroup1: '规格下限',
                 AlarmGroup2: '判异规则',
                 AlarmGroup3: '更新用户',
-                AlarmGroup4: '更新时间'
+                AlarmGroup4: '更新时间',
             },
             data: [],
             radio: '2',
@@ -535,14 +921,14 @@ export default {
                 TotalPage: 0,
                 PageIndex: 1,
                 LastEnabled: false,
-                NextEnabled: false
+                NextEnabled: false,
             },
             nowIndex1: 1,
             pageDate1: {
                 pageIndex: 1,
                 pagesize: 50,
                 togeIndex: 0,
-                togesize: 0
+                togesize: 0,
             },
             aaa1: false,
             bbb1: false,
@@ -560,12 +946,12 @@ export default {
                 pageIndex: 1,
                 pagesize: 50,
                 togeIndex: 0,
-                togesize: 0
+                togesize: 0,
             },
 
             aaa: false,
             bbb: false,
-            supermin: ['XR','IMR','XS'],
+            supermin: ['XR', 'IMR', 'XS'],
             nowpage: 1,
             sestion: 1,
             projectlistdata: '',
@@ -573,7 +959,7 @@ export default {
             projectkeyword: '',
             no: require('../../assets/images/no.png'),
             no2: require('../../assets/images/no2.png'),
-            dt:'XR',
+            dt: 'XR',
             meaddtable: {
                 PrDownLimit: '1',
                 PrId: '0ae4ac52-88ee-44de-94fa-e433ffda1562',
@@ -590,105 +976,114 @@ export default {
                 PrWorkshopId: null,
                 PrgoalValue: '12',
                 UpdateTime: '2020-02-12 14:00:05',
-                UpdateUser: 'Guest'
+                UpdateUser: 'Guest',
             },
+            argChildMenuID: '',
             offdecive1: false,
             wantchange3: '',
             changetrue: false,
             diji: require('../../assets/images/icon_diji.png'),
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
+            lang: JSON.parse(localStorage.getItem('languages'))[
+                localStorage.getItem('currentLang')
+            ],
             zoomValue: 0,
-            zoom: 0
+            zoom: 0,
         };
     },
-    watch:{
-        dt(val){
-            if(val == 'IMR'){
+    watch: {
+        dt(val) {
+            if (val == 'IMR') {
                 this.meaddtable.PrSampleNumber = 1;
-                this.person1 = [1]
-            }else if(val == 'XR'){
-                this.person1 = [2,
-                3,
-                4,
-                5,
-                6,
-                7,
-                8,
-                9];
-                    this.meaddtable.PrSampleNumber = 2;
-            }else if(val == 'XS'){
-                  this.person1 = [ 10,
-                11,
-                12,
-                13,
-                14,
-                15,
-                16,
-                17,
-                18,
-                19,
-                20,
-                21,
-                22,
-                23,
-                24,
-                25];
-                    this.meaddtable.PrSampleNumber = 10;
+                this.person1 = [1];
+            } else if (val == 'XR') {
+                this.person1 = [2, 3, 4, 5, 6, 7, 8, 9];
+                this.meaddtable.PrSampleNumber = 2;
+            } else if (val == 'XS') {
+                this.person1 = [
+                    10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+                    25,
+                ];
+                this.meaddtable.PrSampleNumber = 10;
             }
-        }
+        },
     },
     created() {
         this.$nextTick(() => {
-            this.zoomValue = Number(parseFloat(window.screen.width/1920).toFixed(2)) <= 0.8 ? 0.8 : Number(parseFloat(window.screen.width/1920).toFixed(2))
-            this.$refs.search.style.zoom = this.zoomValue
-            this.$refs.page.style.zoom = this.zoomValue
-        })
-        this.getLangData()
+            this.zoomValue =
+                Number(parseFloat(window.screen.width / 1920).toFixed(2)) <= 0.8
+                    ? 0.8
+                    : Number(parseFloat(window.screen.width / 1920).toFixed(2));
+            this.$refs.search.style.zoom = this.zoomValue;
+            this.$refs.page.style.zoom = this.zoomValue;
+        });
+        this.getLangData();
         console.log('sadas');
     },
     methods: {
         getLangData() {
-            this.tableHead =  {
-                AlarmTime: this.lang.QualityManage_QualityManageUserControl_DataGrid_IdNumber,
-                AlarmTime1: this.lang.QualityManage_QualityManageUserControl_DataGrid_TestingItems,
-                AlarmTagName: this.lang.QualityManage_QualityManageUserControl_DataGrid_SamplingMode,
-                AlarmTagAddress: this.lang.QualityManage_QualityManageUserControl_DataGrid_ControlChartType,
-                AlarmDevice: this.lang.QualityManage_QualityManageUserControl_DataGrid_SubgroupQuantity,
-                AlarmType: this.lang.QualityManage_QualityManageUserControl_DataGrid_SpecificationUpper,
-                AlarmGroup: this.lang.QualityManage_QualityManageUserControl_DataGrid_TargetValue,
-                AlarmGroup1: this.lang.QualityManage_QualityManageUserControl_DataGrid_SpecificationLower,
-                AlarmGroup2: this.lang.QualityManage_QualityManageUserControl_DataGrid_RuleOfDiscrimination,
-                AlarmGroup3: this.lang.QualityManage_QualityManageUserControl_DataGrid_UpdateUser,
-                AlarmGroup4: this.lang.QualityManage_QualityManageUserControl_DataGrid_UpdateTime
-            }
+            this.tableHead = {
+                AlarmTime:
+                    this.lang
+                        .QualityManage_QualityManageUserControl_DataGrid_IdNumber,
+                AlarmTime1:
+                    this.lang
+                        .QualityManage_QualityManageUserControl_DataGrid_TestingItems,
+                AlarmTagName:
+                    this.lang
+                        .QualityManage_QualityManageUserControl_DataGrid_SamplingMode,
+                AlarmTagAddress:
+                    this.lang
+                        .QualityManage_QualityManageUserControl_DataGrid_ControlChartType,
+                AlarmDevice:
+                    this.lang
+                        .QualityManage_QualityManageUserControl_DataGrid_SubgroupQuantity,
+                AlarmType:
+                    this.lang
+                        .QualityManage_QualityManageUserControl_DataGrid_SpecificationUpper,
+                AlarmGroup:
+                    this.lang
+                        .QualityManage_QualityManageUserControl_DataGrid_TargetValue,
+                AlarmGroup1:
+                    this.lang
+                        .QualityManage_QualityManageUserControl_DataGrid_SpecificationLower,
+                AlarmGroup2:
+                    this.lang
+                        .QualityManage_QualityManageUserControl_DataGrid_RuleOfDiscrimination,
+                AlarmGroup3:
+                    this.lang
+                        .QualityManage_QualityManageUserControl_DataGrid_UpdateUser,
+                AlarmGroup4:
+                    this.lang
+                        .QualityManage_QualityManageUserControl_DataGrid_UpdateTime,
+            };
         },
         deldata(a) {
-            
-            console.log(this.wantchange)
-              if(!a){
-                   setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+            console.log(this.wantchange);
+            if (!a) {
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
                 this.tipword = this.lang.NoOperationAuthority;
-                return
+                return;
             }
             if (!this.wantchange) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_QualityManageUserControlViewModel_PSItemDelete;
+                this.tipword =
+                    this.lang.QualityManage_HT_QualityManageUserControlViewModel_PSItemDelete;
             } else {
                 this.$axios
                     .post(
                         `/api/QualityManage/tecpkItem?prid=${this.wantchange.item.PrId}`
                     )
-                    .then(res => {
+                    .then((res) => {
                         console.log(res);
-                        this.wantchange = ''
+                        this.wantchange = '';
                         this.getonedata1();
                     });
             }
@@ -700,90 +1095,88 @@ this.tipchange = true;
             if (this.arr.length == 3) {
                 console.log(this.arr);
                 this.$axios({
-                    url:'/api/QualityManage/ModifyRuleList',
-                    method:'post',
-                    data:{
-                        name:this.pydata[0].RuleName,
-                        type:this.pydata[0].RuleType,
-                        m_Nvalue:this.arr[1],
-                        m_Kvalue:this.arr[2]
+                    url: '/api/QualityManage/ModifyRuleList',
+                    method: 'post',
+                    data: {
+                        name: this.pydata[0].RuleName,
+                        type: this.pydata[0].RuleType,
+                        m_Nvalue: this.arr[1],
+                        m_Kvalue: this.arr[2],
+                    },
+                }).then((res) => {
+                    console.log(res);
+                    if (res.data.code === 1) {
+                        setTimeout(() => {
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                        this.tipword = res.data.msg;
+                    } else {
+                        this.py = false;
+                        this.getdevice3();
                     }
-                }).then(res => {
-                       
-                        console.log(res);
-                        if(res.data.code === 1){
-                             setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
-                            this.tipword = res.data.msg
-                        }else{
-                            this.py = false;
-                            this.getdevice3();
-                        }
-                    });
+                });
             } else if (this.arr.length == 2) {
                 this.$axios({
-                      url:'/api/QualityManage/ModifyRuleList',
-                      method:'post',
-                    data:{
-                        name:this.pydata[0].RuleName,
-                        type:this.pydata[0].RuleType,
-                        m_Mvalue:this.arr[0],
-                        m_Nvalue:this.arr[1],
-                        m_Kvalue:'1'
+                    url: '/api/QualityManage/ModifyRuleList',
+                    method: 'post',
+                    data: {
+                        name: this.pydata[0].RuleName,
+                        type: this.pydata[0].RuleType,
+                        m_Mvalue: this.arr[0],
+                        m_Nvalue: this.arr[1],
+                        m_Kvalue: '1',
+                    },
+                }).then((res) => {
+                    console.log(res);
+                    if (res.data.code === 1) {
+                        setTimeout(() => {
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                        this.tipword = res.data.msg;
+                    } else {
+                        this.py = false;
+                        this.getdevice3();
                     }
-                }).then(res => {
-                        console.log(res);
-                        if(res.data.code === 1){
-                             setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
-                            this.tipword = res.data.msg
-                        }else{
-                            this.py = false;
-                            this.getdevice3();
-                        }
-                    });
+                });
                 console.log(this.pydata[0]);
             } else {
                 this.$axios({
-                      url:'/api/QualityManage/ModifyRuleList',
-                      method:'post',
-                    data:{
-                        name:this.pydata[0].RuleName,
-                        type:this.pydata[0].RuleType,
-                        m_Mvalue:this.arr[0],
-                        m_Nvalue:'1',
-                        m_Kvalue:'1'
+                    url: '/api/QualityManage/ModifyRuleList',
+                    method: 'post',
+                    data: {
+                        name: this.pydata[0].RuleName,
+                        type: this.pydata[0].RuleType,
+                        m_Mvalue: this.arr[0],
+                        m_Nvalue: '1',
+                        m_Kvalue: '1',
+                    },
+                }).then((res) => {
+                    console.log(res);
+                    if (res.data.code === 1) {
+                        setTimeout(() => {
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                        this.tipword = res.data.msg;
+                    } else {
+                        this.py = false;
+                        this.getdevice3();
                     }
-                }).then(res => {
-                        console.log(res);
-                        if(res.data.code === 1){
-                             setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
-                            this.tipword = res.data.msg
-                        }else{
-                            this.py = false;
-                            this.getdevice3();
-                        }
-                    });
+                });
             }
         },
-           move(name, namehead) {
-          //  $(`.${name}`).addClass('center')
-           let left = ($(`.${name}`).width())/2+'px'
-           let top = ($(`.${name}`).height())/2+'px'
-             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
-            $(`.${name}`)[0].addEventListener('mousedown', function(e) {
-                
+        move(name, namehead) {
+            //  $(`.${name}`).addClass('center')
+            let left = $(`.${name}`).width() / 2 + 'px';
+            let top = $(`.${name}`).height() / 2 + 'px';
+            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+            $(`.${name}`)[0].addEventListener('mousedown', function (e) {
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
-                    $(`.${name}`).removeClass('center')
+                    $(`.${name}`).removeClass('center');
                     window.event.stopPropagation();
                     var x = 0;
                     var y = 0;
@@ -799,11 +1192,10 @@ this.tipchange = true;
                     isDown = true;
                     var pdmove = false;
 
-                     
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
-                    $('body')[0].addEventListener('mousemove', function(e) {
+                    $('body')[0].addEventListener('mousemove', function (e) {
                         pdmove = true;
                         if (isDown == false) {
                             return;
@@ -815,13 +1207,13 @@ this.tipchange = true;
                         //计算移动后的左偏移量和顶部的偏移量
                         var nl = nx - (x - l);
                         var nt = ny - (y - t);
-                        console.log(nx)
-                        console.log(x)
-                        console.log(l)
+                        console.log(nx);
+                        console.log(x);
+                        console.log(l);
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
-                    $('body')[0].addEventListener('mouseup', function(e) {
+                    $('body')[0].addEventListener('mouseup', function (e) {
                         //开关关闭
                         isDown = false;
                         $('body')[0].style.cursor = 'default';
@@ -847,53 +1239,105 @@ this.tipchange = true;
                 date.getFullYear() + mm + dd + ' ' + hh + ':' + ii + ':' + ss
             );
         },
-        feixi(a) {
-              if(!a){
-                   setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+        beforeFeixi(a) {
+            if (!a) {
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
                 this.tipword = this.lang.NoOperationAuthority;
-                return
+                return;
             }
-            if (!this.wantchange) {
-                this.tipword = this.lang.QualityManage_HT_QualityManageUserControlViewModel_PSCurveItemToView;
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
-                this.pdyd3 = true;
+            // if (!this.wantchange) {
+            //     this.tipword =
+            //         this.lang.QualityManage_HT_QualityManageUserControlViewModel_PSCurveItemToView;
+            //     setTimeout(() => {
+            //         this.tipchange = true;
+            //         this.move('tip', 'tiphead');
+            //     });
+            //     this.pdyd3 = true;
+            //     return;
+            // }
+            let userinfoID;
+            if (JSON.parse(sessionStorage.getItem('userInfo1')) == null) {
+                userinfoID = JSON.parse(
+                    sessionStorage.getItem('sightseerInfo1')
+                ).SCMSUserID;
             } else {
-                if (this.wantchange.item.PrMethod == this.lang.QualityManage_HT_ItemEditWindowViewModel_Manual) {
-                    this.w2 = true;
-                    this.pdyd3 = true;
-                     setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
-                    this.tipword = this.lang.QualityManage_HT_SampleChoseUserControlViewModel_ManualModeImportPoints;
-                } else {
-                    this.wantchange3 = JSON.stringify(this.wantchange.item);
-                    this.$store.state.change = 1;
-                    if(this.$store.state.changeid == this.wantchange.item.PrId){
-                      this.$store.state.pdid = true;
-                    }else{
-                        this.$store.state.pdid = false;
+                userinfoID = JSON.parse(
+                    sessionStorage.getItem('userInfo1')
+                ).SCMSUserID;
+            }
+            this.elementName = '质量管理-CPK分析';
+            this.$axios({
+                method: 'post',
+                url: `/api/UserManage/UserManage_CanExcuteSignatureControl?argUserID=${userinfoID}&argChildMenuID=${this.argChildMenuID}&argElementName=${this.elementName}`,
+            }).then((res) => {
+                if (res.data.code == 0) {
+                    console.log('res.data.data', res.data.data);
+                    if (res.data.data.CanExcute == 0) {
+                        //需再校验
+                        this.checkAccountShow = true;
+                        this.checkAccountSecond = res.data.data.Second;
+                        this.doubleSign =
+                            res.data.data.SignatureType == 2 ? true : false;
+                    } else {
+                        //无需再校验
+                        this.feixi();
                     }
-                    this.$store.state.changeid = this.wantchange.item.PrId;
-               
-                    this.$router.push({
-                        path: '/cpk',
-                        query: { id: this.wantchange3 }
-                    });
+                } else {
+                    this.tipchange = true;
+                    this.tipword = res.data.msg;
                 }
+            });
+        },
+        cancelFn() {
+            this.checkAccountShow = false;
+        },
+        tipShow(msg) {
+            console.log('9999', msg);
+            setTimeout(() => {
+                this.tipchange = true;
+                this.move('tip', 'tiphead');
+            });
+            this.pdyd3 = true;
+            this.tipword = msg;
+        },
+        feixi() {
+            this.cancelFn();
+            if (
+                this.wantchange.item.PrMethod ==
+                this.lang.QualityManage_HT_ItemEditWindowViewModel_Manual
+            ) {
+                this.w2 = true;
+                this.pdyd3 = true;
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.tipword =
+                    this.lang.QualityManage_HT_SampleChoseUserControlViewModel_ManualModeImportPoints;
+            } else {
+                this.wantchange3 = JSON.stringify(this.wantchange.item);
+                this.$store.state.change = 1;
+                if (this.$store.state.changeid == this.wantchange.item.PrId) {
+                    this.$store.state.pdid = true;
+                } else {
+                    this.$store.state.pdid = false;
+                }
+                this.$store.state.changeid = this.wantchange.item.PrId;
+
+                this.$router.push({
+                    path: '/cpk',
+                    query: { id: this.wantchange3 },
+                });
             }
         },
         lookforsearch() {
             this.$axios
                 .post(`/api/QualityManage/QueryProcessItem`)
-                .then(res => {
+                .then((res) => {
                     this.projectlistdata1 = res.data.data;
                     let i = this.projectlistdata1;
                     let a = 0;
@@ -954,7 +1398,7 @@ this.tipchange = true;
             console.log(this.wantchange);
         },
         select(row, event, column) {
-            console.log(row, event, column)
+            console.log(row, event, column);
             this.pydata = row;
             let a = 0;
             let b = [];
@@ -972,14 +1416,15 @@ this.tipchange = true;
             this.pydata = row;
         },
         pre1() {
-            if(this.wantword == ''){
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+            if (this.wantword == '') {
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.CruxParameterConfigure_SelectVariableView_PleaseSelectVariable
-                return
+                this.tipword =
+                    this.lang.CruxParameterConfigure_SelectVariableView_PleaseSelectVariable;
+                return;
             }
             this.meaddtable.PrVariableName = this.wantword.ProjectValueTagName;
             this.meaddtable.PrVariableId = this.wantword.SID;
@@ -988,15 +1433,16 @@ this.tipchange = true;
         pre11() {
             let i = 0;
             let c = '';
-            console.log(this.pydata)
-            if(this.pydata.length === 0){
-                this.tipword = this.lang.QualityManage_HT_RuleChoseWindowViewModel_PsRuleOfJudgment
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+            console.log(this.pydata);
+            if (this.pydata.length === 0) {
+                this.tipword =
+                    this.lang.QualityManage_HT_RuleChoseWindowViewModel_PsRuleOfJudgment;
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                return 
+                return;
             }
             if (!this.meaddtable.PrRule) {
                 for (i in this.pydata) {
@@ -1026,13 +1472,13 @@ this.tipchange = true;
         getdevice() {
             this.$axios
                 .post(`/api/QualityManage/QueryProcessItem`)
-                .then(res => {
+                .then((res) => {
                     console.log(res);
                     this.projectlistdata1 = res.data.data;
                     this.projectlistdata = res.data.data;
-                     setTimeout(() => {
-this.offdecive = true;
-    this.move('lookw', 'looktop');
+                    setTimeout(() => {
+                        this.offdecive = true;
+                        this.move('lookw', 'looktop');
                     });
                     this.pdyd2 = true;
                     this.selectword3 = false;
@@ -1070,14 +1516,14 @@ this.offdecive = true;
                 });
         },
         getdevice3() {
-            this.$axios.post(`/api/QualityManage/LoadRuleList`).then(res => {
+            this.$axios.post(`/api/QualityManage/LoadRuleList`).then((res) => {
                 console.log(res);
                 this.projectlistdata = res.data.data;
                 this.projectlistdata1 = res.data.data;
-                 setTimeout(() => {
-this.offdecive1 = true;
-    this.move('lookq', 'looktop');
-                    });
+                setTimeout(() => {
+                    this.offdecive1 = true;
+                    this.move('lookq', 'looktop');
+                });
                 this.pdyd2 = true;
                 this.selectword3 = false;
                 this.projectkeyword = '';
@@ -1088,8 +1534,8 @@ this.offdecive1 = true;
                     a.push(this.pydata[j].RuleName);
                 }
                 this.pydata = [];
-                this.$nextTick(function() {
-                    this.projectlistdata.forEach(row => {
+                this.$nextTick(function () {
+                    this.projectlistdata.forEach((row) => {
                         for (i in a) {
                             if (a[i] == row.RuleName) {
                                 console.log(row);
@@ -1102,22 +1548,22 @@ this.offdecive1 = true;
             });
         },
         getdevice1() {
-            this.$axios.post(`/api/QualityManage/LoadRuleList`).then(res => {
+            this.$axios.post(`/api/QualityManage/LoadRuleList`).then((res) => {
                 console.log(res);
                 this.projectlistdata = res.data.data;
                 this.projectlistdata1 = res.data.data;
-                 setTimeout(() => {
-this.offdecive1 = true;
-    this.move('lookq', 'looktop');
-                    });
+                setTimeout(() => {
+                    this.offdecive1 = true;
+                    this.move('lookq', 'looktop');
+                });
                 this.pdyd2 = true;
                 this.selectword3 = false;
                 this.projectkeyword = '';
                 let a = this.meaddtable.PrRule.split(',');
 
                 let i = 0;
-                this.$nextTick(function() {
-                    this.projectlistdata.forEach(row => {
+                this.$nextTick(function () {
+                    this.projectlistdata.forEach((row) => {
                         for (i in a) {
                             if (a[i] == row.RuleName) {
                                 console.log(row);
@@ -1130,39 +1576,44 @@ this.offdecive1 = true;
             });
         },
         confirm(a) {
-            if(!a){
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+            if (!a) {
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
                 this.tipword = this.lang.NoOperationAuthority;
-                return
+                return;
             }
             if (!this.wantchange) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_QualityManageUserControlViewModel_PSItemThatNeedsToBeModified;
+                this.tipword =
+                    this.lang.QualityManage_HT_QualityManageUserControlViewModel_PSItemThatNeedsToBeModified;
             } else {
-                this.meaddtable = {...this.wantchange.item};
+                this.meaddtable = { ...this.wantchange.item };
                 // this.meaddtable.OriginalPrName = this.wantchange.OriginalPrName
-                this.meaddtable.PrName = this.wantchange.OriginalPrName
+                this.meaddtable.PrName = this.wantchange.OriginalPrName;
                 //重置参数值
                 this.dt = this.wantchange.item.PrType;
-                this.meaddtable.PrSampleNumber = this.wantchange.item.PrSampleNumber;
-                if (this.meaddtable.PrMethod == this.lang.QualityManage_HT_ItemEditWindowViewModel_Automatic) {
+                this.meaddtable.PrSampleNumber =
+                    this.wantchange.item.PrSampleNumber;
+                if (
+                    this.meaddtable.PrMethod ==
+                    this.lang.QualityManage_HT_ItemEditWindowViewModel_Automatic
+                ) {
                     this.radio = '2';
                 } else {
                     this.radio = '1';
                 }
-                 setTimeout(() => {
-this.changetrue = true;
-    this.move('sestion1', 'sestionheader1');
-                    });
-                console.log(this.wantchange.item)
+                setTimeout(() => {
+                    this.changetrue = true;
+                    this.move('sestion1', 'sestionheader1');
+                });
+                console.log(this.wantchange.item);
                 this.pdyd1 = true;
                 this.sestion = 3;
             }
@@ -1182,18 +1633,18 @@ this.changetrue = true;
                 this.nowIndex = this.nowpage;
                 this.getonedata1();
             } else {
-                if (!this.isPositiveInteger(this.nowpage)) { 
-                     setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
+                if (!this.isPositiveInteger(this.nowpage)) {
+                    setTimeout(() => {
+                        this.tipchange = true;
+                        this.move('tip', 'tiphead');
                     });
                     this.tipword = this.lang.RoleManage_HT_PEAPositiveInteger;
-                    return
+                    return;
                 }
-                  setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.tipword = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
                 return;
             }
@@ -1228,18 +1679,18 @@ this.tipchange = true;
                 this.nowIndex1 = this.nowpage1;
                 this.getdevice();
             } else {
-                if (!this.isPositiveInteger(this.nowpage1)) { 
-                   setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
+                if (!this.isPositiveInteger(this.nowpage1)) {
+                    setTimeout(() => {
+                        this.tipchange = true;
+                        this.move('tip', 'tiphead');
                     });
                     this.tipword = this.lang.RoleManage_HT_PEAPositiveInteger;
-                    return
+                    return;
                 }
-                  setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.tipword = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
                 return;
             }
@@ -1287,56 +1738,59 @@ this.tipchange = true;
             this.length = [];
             if (this.w2) {
                 this.wantchange3 = JSON.stringify(this.wantchange.item);
-                    this.$store.state.change = 1;
-                    if(this.$store.state.changeid == this.wantchange.item.PrId){
-                      this.$store.state.pdid = true;
-                    }else{
-                        this.$store.state.pdid = false;
-                    }
-                    this.$store.state.changeid = this.wantchange.item.PrId;
+                this.$store.state.change = 1;
+                if (this.$store.state.changeid == this.wantchange.item.PrId) {
+                    this.$store.state.pdid = true;
+                } else {
+                    this.$store.state.pdid = false;
+                }
+                this.$store.state.changeid = this.wantchange.item.PrId;
                 this.$router.push({
                     path: '/cpk',
-                    query: { id: this.wantchange3 }
+                    query: { id: this.wantchange3 },
                 });
             }
             this.w2 = false;
         },
         pdchnage() {
             if (this.pydata.length == 0) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_RuleChoseWindowViewModel_PSRuleModified;
+                this.tipword =
+                    this.lang.QualityManage_HT_RuleChoseWindowViewModel_PSRuleModified;
             }
             if (this.pydata.length > 1) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_RuleChoseWindowViewModel_CanOnlySelectASingleRuleToModify;
+                this.tipword =
+                    this.lang.QualityManage_HT_RuleChoseWindowViewModel_CanOnlySelectASingleRuleToModify;
             } else if (this.pydata[0].RuleType == 0) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
                 // this.tipword = `${this.pydata[0].RuleName}规则不能改`;
-                this.tipword = this.lang.QualityManage_HT_RuleChoseWindowViewModel_R0RulesCannotBeModified
+                this.tipword =
+                    this.lang.QualityManage_HT_RuleChoseWindowViewModel_R0RulesCannotBeModified;
             } else {
-                 setTimeout(() => {
-this.py = true;
-    this.move('pychange', 'pytop');
-                    });
+                setTimeout(() => {
+                    this.py = true;
+                    this.move('pychange', 'pytop');
+                });
                 this.arr = this.pydata[0].RuleValue.split(',');
             }
         },
         cancel11() {
             this.offdecive = false;
             this.offdecive1 = false;
-            this.pydata = []
+            this.pydata = [];
         },
         mouseDownHandleelse5(event) {
             event.currentTarget.style.cursor = 'move';
@@ -1424,41 +1878,44 @@ this.py = true;
             console.log(this.table);
         },
         setParams(a) {
-            if(!a){
-                   setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+            if (!a) {
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
                 this.tipword = this.lang.NoOperationAuthority;
-                return
+                return;
             }
-            
-            console.log("-----------")
+
+            console.log('-----------');
             console.log('this.table');
             console.log(this.table);
             console.log(this.d);
             if (this.d.hasOwnProperty('idd')) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_QualityManageUserControlViewModel_NoAddRecordsUnderRootNode;
+                this.tipword =
+                    this.lang.QualityManage_HT_QualityManageUserControlViewModel_NoAddRecordsUnderRootNode;
             } else {
-                this.wantword = ''
-                 setTimeout(() => {
-this.changetrue = true;
-    this.move('sestion1', 'sestionheader1');
-                    });
+                this.wantword = '';
+                setTimeout(() => {
+                    this.changetrue = true;
+                    this.move('sestion1', 'sestionheader1');
+                });
                 this.pdyd1 = true;
                 this.sestion = 1;
-                this.meaddtable.PrSampleNumber = '2'
+                this.meaddtable.PrSampleNumber = '2';
                 this.meaddtable = {
                     PrDownLimit: '',
                     PrId: '',
                     PrLineId: '',
-                    PrMethod: this.lang.QualityManage_HT_ItemEditWindowViewModel_Automatic,
+                    PrMethod:
+                        this.lang
+                            .QualityManage_HT_ItemEditWindowViewModel_Automatic,
                     PrName: '',
                     PrNumber: '',
                     PrRule: '',
@@ -1470,12 +1927,12 @@ this.changetrue = true;
                     PrWorkshopId: null,
                     PrgoalValue: '',
                     UpdateTime: '',
-                    UpdateUser: ''
+                    UpdateUser: '',
                 };
             }
         },
         getonedata() {
-            this.$axios.post(`/api/QualityManage/InsertRoot`).then(res => {
+            this.$axios.post(`/api/QualityManage/InsertRoot`).then((res) => {
                 console.log(res.data.data);
                 res.data.data[0].idd = '';
                 this.d = res.data.data[0];
@@ -1483,7 +1940,7 @@ this.changetrue = true;
                     .post(
                         `/api/QualityManage/loadInspectItemGrid?prid=${res.data.data[0].ID}&type=${res.data.data[0].ItemType}`
                     )
-                    .then(res => {
+                    .then((res) => {
                         console.log('issssssssssssssssssssssssssssss', res);
                         this.table = res.data.data;
                         let i = 0;
@@ -1521,71 +1978,80 @@ this.changetrue = true;
             });
         },
         nopre() {
-            console.log("this.meaddtable",this.meaddtable)
+            console.log('this.meaddtable', this.meaddtable);
             if (!this.meaddtable.PrName) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_ItemEditWindowViewModel_TestItemNotEmpty;
+                this.tipword =
+                    this.lang.QualityManage_HT_ItemEditWindowViewModel_TestItemNotEmpty;
             } else if (!this.meaddtable.PrUpLimit) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_ItemEditWindowViewModel_UpperLimitNoEmpty;
+                this.tipword =
+                    this.lang.QualityManage_HT_ItemEditWindowViewModel_UpperLimitNoEmpty;
             } else if (!this.meaddtable.PrDownLimit) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_ItemEditWindowViewModel_LowerLimitNoEmpty;
+                this.tipword =
+                    this.lang.QualityManage_HT_ItemEditWindowViewModel_LowerLimitNoEmpty;
             } else if (!this.meaddtable.PrgoalValue) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_ItemEditWindowViewModel_TargetValueNoEmpty;
+                this.tipword =
+                    this.lang.QualityManage_HT_ItemEditWindowViewModel_TargetValueNoEmpty;
             } else if (this.radio !== '1' && !this.meaddtable.PrVariableName) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_ItemEditWindowViewModel_AutomaticVariableNoEmpty;
+                this.tipword =
+                    this.lang.QualityManage_HT_ItemEditWindowViewModel_AutomaticVariableNoEmpty;
             } else if (!this.meaddtable.PrRule) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_ItemEditWindowViewModel_JudgmentRuleNoEmpty;
+                this.tipword =
+                    this.lang.QualityManage_HT_ItemEditWindowViewModel_JudgmentRuleNoEmpty;
             } else if (isNaN(this.meaddtable.PrUpLimit)) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_ItemEditWindowViewModel_UpperLimitFormatIncorrect;
+                this.tipword =
+                    this.lang.QualityManage_HT_ItemEditWindowViewModel_UpperLimitFormatIncorrect;
             } else if (isNaN(this.meaddtable.PrDownLimit)) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_ItemEditWindowViewModel_LowerFormatIncorrect;
+                this.tipword =
+                    this.lang.QualityManage_HT_ItemEditWindowViewModel_LowerFormatIncorrect;
             } else if (isNaN(this.meaddtable.PrgoalValue)) {
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_ItemEditWindowViewModel_TargetValueFormatIncorrect;
-            }else if (
+                this.tipword =
+                    this.lang.QualityManage_HT_ItemEditWindowViewModel_TargetValueFormatIncorrect;
+            } else if (
                 parseFloat(this.meaddtable.PrDownLimit) >=
                     parseFloat(this.meaddtable.PrUpLimit) ||
                 parseFloat(this.meaddtable.PrDownLimit) >=
@@ -1593,25 +2059,28 @@ this.tipchange = true;
                 parseFloat(this.meaddtable.PrgoalValue) >=
                     parseFloat(this.meaddtable.PrUpLimit)
             ) {
-                
-                 setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.QualityManage_HT_ItemEditWindowViewModel_UpperGreaterTargetGreaterLower;
+                this.tipword =
+                    this.lang.QualityManage_HT_ItemEditWindowViewModel_UpperGreaterTargetGreaterLower;
             } else {
                 if (this.sestion == 1) {
                     this.meaddtable.PrId = this.d.ID;
                     this.meaddtable.PrLineId = this.d.ID;
-                    this.meaddtable.PrWorkshopId  = this.d.ID;
-                    this.meaddtable.type = this.lang.QualityManage_HT_ItemEditWindowViewModel_New;
+                    this.meaddtable.PrWorkshopId = this.d.ID;
+                    this.meaddtable.type =
+                        this.lang.QualityManage_HT_ItemEditWindowViewModel_New;
                     if (this.radio == '1') {
-                        this.meaddtable.PrMethod = this.lang.QualityManage_HT_ItemEditWindowViewModel_Manual;
+                        this.meaddtable.PrMethod =
+                            this.lang.QualityManage_HT_ItemEditWindowViewModel_Manual;
                     } else {
-                        this.meaddtable.PrMethod = this.lang.QualityManage_HT_ItemEditWindowViewModel_Automatic;
+                        this.meaddtable.PrMethod =
+                            this.lang.QualityManage_HT_ItemEditWindowViewModel_Automatic;
                     }
-                    if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+                    if (!JSON.parse(sessionStorage.getItem('userInfo'))) {
                         this.meaddtable.loginUserID = JSON.parse(
                             sessionStorage.getItem('sightseerInfo1')
                         ).SCMSUserID;
@@ -1633,32 +2102,34 @@ this.tipchange = true;
                     this.$axios({
                         method: 'post',
                         url: `/api/QualityManage/addnewcpkitem`,
-                        data: this.meaddtable
-                    }).then(res => {
-                        if(res.data.code == 0){
-                       console.log(res);
-                        console.log(this.meaddtable);
-                        this.changetrue = false;
-                        this.getonedata1();
-                        }else{
-                              setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
-                this.pdyd3 = true;
-                this.tipword = res.data.msg;
+                        data: this.meaddtable,
+                    }).then((res) => {
+                        if (res.data.code == 0) {
+                            console.log(res);
+                            console.log(this.meaddtable);
+                            this.changetrue = false;
+                            this.getonedata1();
+                        } else {
+                            setTimeout(() => {
+                                this.tipchange = true;
+                                this.move('tip', 'tiphead');
+                            });
+                            this.pdyd3 = true;
+                            this.tipword = res.data.msg;
                         }
-                    
                     });
                 } else {
                     // this.meaddtable.PrId = this.d.ID;
                     this.meaddtable.PrLineId = this.d.ID;
-                    this.meaddtable.type = this.lang.QualityManage_HT_ItemEditWindowViewModel_Modify;
+                    this.meaddtable.type =
+                        this.lang.QualityManage_HT_ItemEditWindowViewModel_Modify;
 
                     if (this.radio == 1) {
-                        this.meaddtable.PrMethod = this.lang.QualityManage_HT_ItemEditWindowViewModel_Manual;
+                        this.meaddtable.PrMethod =
+                            this.lang.QualityManage_HT_ItemEditWindowViewModel_Manual;
                     } else {
-                        this.meaddtable.PrMethod = this.lang.QualityManage_HT_ItemEditWindowViewModel_Automatic;
+                        this.meaddtable.PrMethod =
+                            this.lang.QualityManage_HT_ItemEditWindowViewModel_Automatic;
                     }
                     if (!JSON.parse(sessionStorage.getItem('userInfo'))) {
                         this.meaddtable.loginUserID = JSON.parse(
@@ -1676,39 +2147,37 @@ this.tipchange = true;
                         ).SCMSUserName;
                     }
                     console.log(this.meaddtable);
-                     this.meaddtable.PrType = this.dt;
+                    this.meaddtable.PrType = this.dt;
                     this.meaddtable.UpdateTime = this.getNowTime();
                     this.$axios({
                         method: 'post',
                         url: `/api/QualityManage/addnewcpkitem`,
-                        data: this.meaddtable
-                    }).then(res => {
-                              if(res.data.code == 0){
-                      console.log(res);
-                        this.changetrue = false;
-                        this.getonedata1();
-                        }else{
-                              setTimeout(() => {
-this.tipchange = true;
-    this.move('tip', 'tiphead');
-                    });
-                this.pdyd3 = true;
-                this.tipword = res.data.msg;
+                        data: this.meaddtable,
+                    }).then((res) => {
+                        if (res.data.code == 0) {
+                            console.log(res);
+                            this.changetrue = false;
+                            this.getonedata1();
+                        } else {
+                            setTimeout(() => {
+                                this.tipchange = true;
+                                this.move('tip', 'tiphead');
+                            });
+                            this.pdyd3 = true;
+                            this.tipword = res.data.msg;
                         }
-                    
-                     
                     });
                 }
             }
-            this.wantchange.item.PrRule = this.meaddtable.PrRule
+            this.wantchange.item.PrRule = this.meaddtable.PrRule;
         },
         getonedata1() {
-            console.log(this.d.ID, this.d.ItemType)
+            console.log(this.d.ID, this.d.ItemType);
             this.$axios
                 .post(
                     `/api/QualityManage/loadInspectItemGrid?prid=${this.d.ID}&type=${this.d.ItemType}`
                 )
-                .then(res => {
+                .then((res) => {
                     console.log(res);
                     let i = 0;
                     for (i in res.data.data) {
@@ -1745,14 +2214,28 @@ this.tipchange = true;
                     }
                     this.nowpage = 1;
                 });
-        }
+        },
     },
     mounted() {
         this.getonedata();
         this.$nextTick(() => {
             this.$refs.www.doLayout(); //解决表格错位
         });
-    }
+        let menuInfo = JSON.parse(window.sessionStorage.getItem('MenuInfo'))
+        menuInfo.forEach(item=>{
+            if(item.children){
+                item.children.forEach(child=>{
+                    if('/'+ child.permission === this.$route.path){
+                        this.argChildMenuID = child.id
+                        return
+                    }
+                })
+            }else if('/'+ item.permission === this.$route.path){
+                this.argChildMenuID = item.id
+                return
+            }
+        })
+    },
 };
 </script>
 
@@ -2506,7 +2989,7 @@ select {
             display: none;
         }
     }
-    >span {
+    > span {
         font-size: 20px;
     }
     .lookfor1 {
@@ -2755,7 +3238,7 @@ img {
 img {
     cursor: pointer;
 }
-.zimg{
+.zimg {
     position: absolute;
     top: 0;
     right: -7px;

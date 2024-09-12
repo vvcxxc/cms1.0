@@ -6,8 +6,8 @@
  * @LastEditTime: 2019-11-29 16:34:35
  -->
 <template>
-    <div class="search-container" :class="{colordiv:$store.state.color=='grey'}" :style="{lineHeight: 40*zoom+'px',height: 60*zoom+'px'}">
-        <div class="search-left" :style="[{fontSize:16*zoom+'px'}]">
+    <div class="search-container" :class="{colordiv:$store.state.color=='grey'}" :style="{lineHeight: 40+'px',height: 60+'px'}">
+        <div class="search-left" :style="[{fontSize:16+'px'}]">
             <div class="search-item" v-for="(item, index) in searchList" :key="index">
                 <div
                     class="title"
@@ -23,7 +23,6 @@
                     class="search-select"
                     :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                     @change="change(item.model, $event)"
-                    @focus="getZoom()"
                 >
                     <!-- <el-option label="全部" value="全部"></el-option> -->
                     <el-option
@@ -56,30 +55,30 @@
                     v-model="searchData[item.model]"
                     :placeholder="item.placeholder || lang.AlarmRecord_History_Keyword"
                     clearable
-                    :style="{width: 215 * zoom +'px'}"
+                    :style="{width: 215 +'px'}"
                 ></el-input>
             </div>
             <div class="btn pointer importtant" @click="search"
-                :style="[{fontSize:16*zoom+'px'},
-                    {height: 40*zoom+'px'},
-                    {width: 100*zoom+'px'},
-                    {right: 230*zoom+'px'},
-                    {lineHeight: 40*zoom+'px'}
+                :style="[{fontSize:16+'px'},
+                    {height: 40+'px'},
+                    {width: 100+'px'},
+                    {right: 230+'px'},
+                    {lineHeight: 40+'px'}
                 ]"
              :id='cxid'>{{lang.AlarmStatistics_AlarmStatisticsUserControl_Query}}</div>
              <div class="import" @click="preservation" 
-                :style="[{fontSize:16*zoom+'px'},
-                    {height: 40*zoom+'px'},
-                    {width: 100*zoom+'px'},
-                    {right: 120*zoom+'px'},
-                    {lineHeight: 40*zoom+'px'}
+                :style="[{fontSize:16+'px'},
+                    {height: 40+'px'},
+                    {width: 100+'px'},
+                    {right: 120+'px'},
+                    {lineHeight: 40+'px'}
                 ]" :id="bcid">{{lang.AlarmRecord_HT_AlarmPointManageUC_Save}}</div>
             <div class="export" @click="exportTable" 
-                :style="[{fontSize:16*zoom+'px'},
-                    {height: 40*zoom+'px'},
-                    {width: 100*zoom+'px'},
-                    {right: 10*zoom+'px'},
-                    {lineHeight: 40*zoom+'px'}
+                :style="[{fontSize:16+'px'},
+                    {height: 40+'px'},
+                    {width: 100+'px'},
+                    {right: 10+'px'},
+                    {lineHeight: 40+'px'}
                 ]" :id="dcid">{{lang.AlarmRecord_HT_AlarmPointManageUC_Export}}</div>
 
         </div>
@@ -104,8 +103,6 @@ export default {
             cxshow:true,
             bcshow:true,
             dcshow:true,
-            zoom: 1,
-             zoom1: 1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
@@ -113,7 +110,6 @@ export default {
         VpowerData(val){
           this.jurisdiction = this.$store.state.btnPowerData
      this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
-     console.log("butt",this.buttonarr)
      this.buttonarr.forEach((item)=>{
          if(item.RightName == "报警点管理-查询按钮"){
           this.cxid = item.RightID
@@ -167,31 +163,19 @@ export default {
         },
     },
     mounted(){
-        this.zoom = 1;
-        this.zoom1 = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
-        setTimeout(()=>{
-            $(".search-item").css({marginLeft: 10*this.zoom, height: 40* this.zoom})
-            $(".search-select").css({width: 160 * this.zoom, height: 40* this.zoom})
-            $(".el-input--suffix").css({fontSize: 16 * this.zoom, height: 40* this.zoom})
-            
-            if(window.screen.width <= 1280){
-                $(".search-item .title").css({maxWidth:'80px', lineHeight: 1})
+        this.jurisdiction = this.$store.state.btnPowerData
+        this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
+        this.buttonarr.forEach((item)=>{
+            if(item.RightName == "报警点管理-查询按钮"){
+            this.cxid = item.RightID
+            }else if(item.RightName == "报警点管理-保存按钮"){
+            this.bcid = item.RightID
+            }else if(item.RightName == "报警点管理-导出按钮"){
+            this.dcid = item.RightID
             }
         })
-    this.jurisdiction = this.$store.state.btnPowerData
-     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
-     console.log("butt",this.buttonarr)
-     this.buttonarr.forEach((item)=>{
-         if(item.RightName == "报警点管理-查询按钮"){
-          this.cxid = item.RightID
-         }else if(item.RightName == "报警点管理-保存按钮"){
-          this.bcid = item.RightID
-         }else if(item.RightName == "报警点管理-导出按钮"){
-           this.dcid = item.RightID
-         }
-     })
-     var userid = ''
-      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+        var userid = ''
+        if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
                 userid = JSON.parse(
                     sessionStorage.getItem('sightseerInfo1')
                 ).SCMSUserID;
@@ -227,18 +211,6 @@ export default {
               })
     },
     methods: {
-        getZoom() {
-                     let that = this
-            setTimeout(()=>{
-for(let i=0;i<$('.el-picker-panel').length;i++){
-                $('.el-picker-panel')[i].style.zoom = that.zoom1
-            }
-            for(let i=0;i<$('.el-select-dropdown').length;i++){
-                $('.el-select-dropdown')[i].style.zoom = that.zoom1
-            }
-            })
-            
-        },
           findPathByLeafId(id,node,path){
         if(!path){
              path = []
@@ -277,11 +249,10 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         }
           },
         search() {
-     
             this.searchData.argAlarmGroupId =   this.searchData.aArrayName;
             this.$emit('setParams', this.searchData,this.cxshow);
-          if(this.cxshow){
-             this.$parent.req(1);
+            if(this.cxshow){
+                this.$parent.req(1);
             }
         },
         exportTable() {
@@ -291,9 +262,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
              this.$emit('preservation',this.bcshow);
         },
         change(item, e) {
-            console.log(this.searchData);
-            console.log(item);
-            console.log(e);
              this.searchData.argAlarmGroupId =   this.searchData.aArrayName;
             if (
                 item.model === 'argAlarmArray' ||
@@ -334,9 +302,13 @@ span {
     flex-wrap: wrap;
     .search-item {
         @extend %flex;
-        // margin: 10px;
+        margin: 0 10px;
         // margin-bottom: 0;
         .mr10 {
+            margin-right: 10px;
+        }
+        ::v-deep .el-input__inner{
+            height: 40px;
             margin-right: 10px;
         }
 

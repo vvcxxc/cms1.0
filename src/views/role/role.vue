@@ -33,10 +33,6 @@ export default {
 	mounted(){
 	setTimeout(()=>{
 	let a1 = $('.v-toolbar').height()*$('.v-toolbar')[0].style.zoom+10+$('.v-footer').height()*$('.v-footer')[0].style.zoom+'px'
-	$('.alarm-container').css({
-        marginTop:$('.v-toolbar').height()*$('.v-toolbar')[0].style.zoom+10+'px',
-		height:`calc(100% - ${a1})`
-		});
 		let a = $('.left-container').width()+'px'
 		$('.content-container').css({
 			width:`calc(100% - ${a})`
@@ -51,7 +47,7 @@ export default {
 .alarm-container {
 	width: 100%;
 	// height: 100%;
-	height: 86vh;
+	height: calc(100% - 130px);
 	color: #000;
 	margin-top: 100px;
 	display: flex;

@@ -1,9 +1,16 @@
 /*
- * @Description  : 打包配置
- * @Date         : 2019-11-12 17:31:23
- * @Author       : Tao
- * @LastEditors  : conghui li
- * @LastEditTime : 2022-10-24 09:42:22
+ * @Description: 这是***页面（组件）
+ * @Date: 2019-11-12 17:31:23
+ * @Author: Tao
+ * @LastEditors: Tao
+ * @LastEditTime: 2021-03-17 15:09:27
+ */
+/**
+ * @description: vue-cli配置文件
+ * @since: 2019-11-07 20:55:55
+ * @Author: jawnwa22
+ * @LastEditors: jawnwa22
+ * @LastEditTime: 2019-11-07 21:18:34
  */
 // http://192.168.1.142:8802/api/Base/PostRediusTest?varNameString=S7_TCP
 const webpack = require('webpack');
@@ -16,7 +23,10 @@ module.exports = {
         proxy: {
             '/api': {
                 //这里最好有一个 /
-                target: 'http://192.168.4.63:8802/', // 后台接口域名
+                // 'http://192.168.1.123:8807'
+                // 192.168.6.64:8806
+                target: 'http://192.168.2.110:8804/', // 后台接口域名
+                // target: 'http://192.168.2.73:8802',
                 ws: true, //如果要代理 websockets，配置这个参数
                 secure: false, // 如果是https接口，需要配置这个参数
                 changeOrigin: true, //是否跨域
@@ -24,6 +34,16 @@ module.exports = {
                     '^/api': '/api'
                 }
             }
+            // '/api': {
+            //     //这里最好有一个 /
+            //     target: 'http://192.168.1.237:8802', // 后台接口域名
+            //     ws: true, //如果要代理 websockets，配置这个参数
+            //     secure: false, // 如果是https接口，需要配置这个参数
+            //     changeOrigin: true, //是否跨域
+            //     pathRewrite: {
+            //         '^/api': '/api'
+            //     }
+            // }
         }
     },
     css: {
@@ -37,22 +57,18 @@ module.exports = {
     chainWebpack: config => {
         config.module
             .rule('flv')
-            .test(/\.(flv|avi|pdf)$/)
+            .test(/\.(flv|avi)$/)
             .use('file-loader')
             .loader('file-loader')
             .end();
     },
     configureWebpack: {
-        // devtool: 'source-map',
-        externals: [
-            {
-                './cptable': 'var cptable'
-            }
-        ],
         plugins: [
             new webpack.ProvidePlugin({
                 $: 'jquery',
+
                 jQuery: 'jquery',
+
                 'windows.jQuery': 'jquery'
             })
         ]

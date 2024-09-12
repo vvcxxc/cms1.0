@@ -12,7 +12,6 @@
         <div
             class="head"
             :class="{ colortip: $store.state.color == 'grey' }"
-            :style="{ zoom: zoom1 }"
         >
             <!-- 头部内容 -->
             <div :style="{ width: '100%', height: 70 * zoom + 'px', background: '#DDDDDD' }">
@@ -43,7 +42,6 @@
                                 :disabled="showTime"
                                 v-model="Stime"
                                 type="datetime"
-                                @focus="sx"
                                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                                 default-time="12:00:00"
                             ></el-date-picker>
@@ -56,7 +54,6 @@
                             >{{ lang.NewTrendChart_NewTrendChartUserControl_EndTime }}</span>
                             <el-date-picker
                                 :disabled="showTime"
-                                @focus="sx"
                                 v-model="Etime"
                                 type="datetime"
                                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -118,7 +115,6 @@
                             @click.native="sh()"
                             v-model="value"
                             :active-text="swichValue"
-
                             active-color="#FFA12E"
                             inactive-color="#7E92A2"
                             :style="setStyle()"
@@ -193,7 +189,6 @@
                                 :style="{ width: 110 * zoom + 'px', minWidth: 110 * zoom + 'px', marginLeft: 20 * zoom + 'px', marginRight: 36 * zoom + 'px' }"
                             ></div>
                             <el-select
-                                @focus="sx"
                                 @change="textFontSelect"
                                 class="text"
                                 v-model="value1"
@@ -217,7 +212,6 @@
                                 ></el-color-picker>
                             </div>
                             <el-select
-                                @focus="sx"
                                 class="num"
                                 @change="SizeNum"
                                 v-model="value4"
@@ -321,7 +315,6 @@
                                     :style="{ fontSize: 16 * zoom + 'px' }"
                                 >{{ lang.NewTrendChart_ChartSetting_AbscissaText }}</div>
                                 <el-select
-                                    @focus="sx"
                                     @change="textFontSelect1('2')"
                                     class="text"
                                     v-model="value2"
@@ -342,7 +335,6 @@
                                     ></el-color-picker>
                                 </div>
                                 <el-select
-                                    @focus="sx"
                                     @change="SizeNum1('5')"
                                     class="num"
                                     v-model="value5"
@@ -371,7 +363,6 @@
                                     :style="{ fontSize: 16 * zoom + 'px' }"
                                 >{{ lang.NewTrendChart_ChartSetting_OrdinateText }}</div>
                                 <el-select
-                                    @focus="sx"
                                     @change="textFontSelect1('3')"
                                     class="text"
                                     v-model="value3"
@@ -392,7 +383,6 @@
                                     ></el-color-picker>
                                 </div>
                                 <el-select
-                                    @focus="sx"
                                     @change="SizeNum1('6')"
                                     class="num"
                                     v-model="value6"
@@ -716,7 +706,6 @@ export default {
     },
 
     mounted() {
-        this.zoom1 = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
         let a = this.zoom1 * 30 + 'px'
         this.calcheight = `calc(100% - ${a})`
         setTimeout(() => {
@@ -1209,19 +1198,6 @@ export default {
             }).catch(function (error) {
                 console.log('err', error);
             })
-        },
-        sx() {
-
-            let that = this
-            setTimeout(() => {
-                for (let i = 0; i < $('.el-picker-panel').length; i++) {
-                    $('.el-picker-panel')[i].style.zoom = that.zoom1
-                }
-                for (let i = 0; i < $('.el-select-dropdown').length; i++) {
-                    $('.el-select-dropdown')[i].style.zoom = that.zoom1
-                }
-            })
-
         },
         //查询
         queryFun() {

@@ -2,12 +2,12 @@
   <div class="alarm-container flex" :style="{zoom:zoomValue}">
     <!-- 导航 -->
     <div class="tabs">
-      <div 
+      <div
         v-for="(item,i) in menuList"
         :key="i"
         @click="linkPage(item.path)"
-        class="itme flex" 
-        :class="$route.path === item.path ? 'select-itme' : ''" 
+        class="itme flex"
+        :class="$route.path === item.path ? 'select-itme' : ''"
       >
         <div class="block"></div>
         <div class="text font-1">{{item.name}}</div>
@@ -28,13 +28,21 @@ export default {
       lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
       menuList: [
         {
-          name: '消息推送',
+          name: '报警消息',
           path: '/MsgPush/alarm-message'
+        },
+        {
+          name: '代办消息',
+          path: '/MsgPush/todo-message'
         },
         {
           name: '推送日志',
           path: '/MsgPush/push-log'
-        }
+        },
+        {
+          name: '报警消息(旧)',
+          path: '/MsgPush/alarm-message1'
+        },
       ],
       zoomValue: 0,
       activeName: 'second',
@@ -66,7 +74,7 @@ export default {
     },
     init() {
       this.menuList[0].name = this.lang['报警消息'];
-      this.menuList[1].name = this.lang.PushMessage_PushLog;
+      this.menuList[2].name = this.lang.PushMessage_PushLog;
       this.initContainerSize()
       // console.log('比例', this.zoomValue);
       this.linkPage(this.menuList[0].path)
@@ -122,7 +130,7 @@ export default {
   }
 
   .container {
-    width: 100%;
+    width: calc(100% - 188px);
     height: 100%;
     background: white;
   }

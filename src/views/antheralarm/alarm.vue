@@ -7,7 +7,7 @@
  -->
 <template>
 	<div class="alarm-container">
-	<aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200*(width/1920)+'px'}]">
+	<aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200+'px'}]">
 			<left-nav @tabComponent="tabComponent"></left-nav>
 		</aside>
 		<section class="content-container">
@@ -39,16 +39,6 @@ export default {
 	created() {},
 	mounted(){
 		this.width = window.screen.width
-		this.zoom = this.width / 1920 < 0.8 ? 0.8 : this.width / 1920
-		setTimeout(()=>{
-			$('.alarm-container').css({
-				marginTop: $('.v-toolbar').height() * $('.v-toolbar')[0].style.zoom + 10 +'px',
-			});
-			let a = 200* this.zoom +'px'
-			$('.content-container').css({
-				width:`calc(100% - ${a})`
-			})
-		})
 		this.color = this.$store.state.color;
 	},
 	methods: {
@@ -69,13 +59,13 @@ export default {
 	// width: 100%;
 	// height: 100%;
 	// flex: 1;
-	height: 86vh;
+	height: calc(100% - 90px);
 	overflow: hidden;
 	color: #000;
 	margin-top: 100px;
 	display: flex;
 	background-color: #eee;
-	padding: 20px 10px;
+	padding: 20px 10px 30px 10px;
 	box-sizing: border-box;
 
 }
@@ -93,7 +83,7 @@ aside {
 	background-color: #fff;
 	border: 1px solid #e4e4e4;
 	border-left: none;
-		width: calc(100% - 189px);
+    width: calc(100% - 200px);
 }
 .colordiv{
  background-color: #D9DBDE;

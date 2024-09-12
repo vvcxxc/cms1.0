@@ -15,13 +15,13 @@
             row-class-name="high-light"
             height="100%"
             width="100%"
-            :style="{'font-size': 14*zoom + 'px'}"
+            :style="{'font-size': 14 + 'px'}"
              :header-cell-style="{
                  background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',
                  color:($store.state.color=='grey')?'#000':'#fff',
                  'border-left':'1px solid #cccccc',
-                 height:50*zoom +'px',
-                'font-size': 14*zoom + 'px',
+                 height:50 +'px',
+                'font-size': 14 + 'px',
                  padding:'0'
                 }"
         >
@@ -30,19 +30,19 @@
                 <span v-else-if="tip === 'nodata'">暂无数据</span>-->
                 <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
             </template>
-            <el-table-column prop="name" :label="lang.AlarmRecord_History_Search" :width="200*zoom">
+            <el-table-column prop="name" :label="lang.AlarmRecord_History_Search" :width="200">
                 <template slot-scope="scope">
                     <!-- <i class="el-icon-share"></i> -->
-                    <div class="img look" @click="handleEdit(scope.$index, scope.row)" :style="{zoom}">
+                    <div class="img look" @click="handleEdit(scope.$index, scope.row)">
                         <img :src="look" alt />
                         {{scope.row.phone}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="name" :label="lang.AlarmRecord_History_Entry" :width="200*zoom">
+            <el-table-column prop="name" :label="lang.AlarmRecord_History_Entry" :width="200">
                 <template slot-scope="scope">
                     <!-- <i class="el-icon-share"></i> -->
-                    <div class="img pensoil" @click="handleEdit1(scope.$index, scope.row)" :style="{zoom}">
+                    <div class="img pensoil" @click="handleEdit1(scope.$index, scope.row)">
                         <img :src="pensoil" alt />
                         {{scope.row.phone}}
                     </div>
@@ -53,7 +53,7 @@
                 :key="key"
                 :label="value"
                 align="left"
-                 :width="180 * zoom"
+                 :width="190"
             >
                 <template slot-scope="scope">
                     <div class="item">
@@ -90,7 +90,6 @@ export default {
             ckshow:true,
             bjid:"",
             bjshow:'',
-            zoom: 1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
@@ -139,7 +138,6 @@ export default {
         }
     },
     mounted(){
-        this.zoom = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
         this.jurisdiction = this.$store.state.btnPowerData
      this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
      this.buttonarr.forEach((item)=>{

@@ -16,12 +16,12 @@
             ></div>
             <div
                 class="tiptop"
-                :style="{zoom}"
+               
             >
                 <img :src="gth" alt />
                 <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
             </div>
-            <div class="tipcontanin" :style="{zoom}">
+            <div class="tipcontanin">
                 <div class="tipword"><span>{{tipword}}</span></div>
                 <div class="tipdetermine" @click="tip1">{{lang.MessageBox_Confrim}}</div>
             </div>
@@ -37,7 +37,6 @@
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item 
                     @click.native="curveName(index)"
-                    @focus='sx'
                     v-for="(item,index) in curveIDTo" :key="index">
                     {{item.Name}}</el-dropdown-item>
                 </el-dropdown-menu>
@@ -45,7 +44,6 @@
 		</div>
 		<div class="staTime">
             <el-date-picker
-            @focus='sx'
                 :disabled="showTime"
 				v-model="Sstime"
 				type="datetime"
@@ -55,7 +53,6 @@
 		</div>
 		<div class="endTime">
 			<el-date-picker
-             @focus='sx'
             :disabled="showTime"
 				v-model="Eetime"
 				type="datetime"
@@ -305,11 +302,6 @@ export default {
                 fool[i].style.background = '#fff'
             }
         }
-		this.zoom = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
-         setTimeout(()=>{
-         
- $('.bottom_fool').find('.el-input').css('zoom',this.zoom)
-         })
         
      
           //图表自适应大小
@@ -324,25 +316,9 @@ export default {
     // })
 	},
     methods: {
-             tip1(){
- this.tipchange = false;
- this.loading1 = false
-      },
-                                          sx(){
-                                        
-            let that = this
-            setTimeout(()=>{
-for(let i=0;i<$('.el-picker-panel').length;i++){
-                $('.el-picker-panel')[i].style.zoom = that.zoom
-            }
-            for(let i=0;i<$('.el-select-dropdown').length;i++){
-                $('.el-select-dropdown')[i].style.zoom = that.zoom
-            }
-             for(let i=0;i<$('.el-dropdown-menu ').length;i++){
-                $('.el-dropdown-menu ')[i].style.zoom = that.zoom
-            }
-            })
-            
+        tip1(){
+            this.tipchange = false;
+            this.loading1 = false
         },
         time2Fun(){
             if(this.timeShowTo){
@@ -394,9 +370,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             size="mini"
             class="timeLast"
             v-model={this.Newtime}
-             onFocus={this.sx}
             type="datetime"
-             focus={this.sx()}
             change={this.aaa()}
             placeholder="选择日期时间">
         </el-date-picker>
@@ -795,8 +769,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         },
     //点击曲线组
     curveName(index){
-        
-        this.sx()
         if(this.curveIDTo.length==0){
             document.querySelector('.drotext').innerHTML = ''
             this.curveLineColor = ['red','blue','green']

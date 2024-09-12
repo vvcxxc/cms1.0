@@ -1,4 +1,3 @@
-
 <!--
  * @Description: 点巡检管理点巡检计划界面
  * @Date: 2019-11-25 19:07:09
@@ -7,18 +6,29 @@
  * @LastEditTime: 2020-12-21 11:26:04
  -->
 <template>
-    <div class="public-table ysj search-containersb" @click="changeselect = false">
-          			<div class="loadcover" element-loading-spinner="el-icon-loading"
-            element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
+    <div
+        class="public-table ysj search-containersb"
+        @click="changeselect = false"
+    >
+        <div
+            class="loadcover"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.4)"
+            v-loading="this.$store.state.isShow"
+            v-show="this.$store.state.isShow"
+            style="position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
-    left: 0;"></div>
-        <div class="search-container"
+    left: 0;"
+        ></div>
+        <div
+            class="search-container"
             :style="{
-          zoom
-        }">
-            <span class="title sblx" >{{lang.EquipmentAccount_EquipmentType1}}</span>
+                zoom
+            }"
+        >
+            <!-- <span class="title sblx" >{{lang.EquipmentAccount_EquipmentType1}}</span>
              <div class="seleword seleword3" @click.stop="selectword1" >
              <div class="seleword1">
                   {{Meter}}
@@ -41,16 +51,18 @@
                         </span>
                     </span>
                 </el-tree>
-            </div>
+            </div> -->
 
-            <span class="sp4 tinput title" >{{lang.MaintenanceManage_ThisTimeStartTime1}}</span>
+            <span class="sp4 tinput title">{{
+                lang.MaintenanceManage_ThisTimeStartTime1
+            }}</span>
 
             <el-date-picker
                 v-model="value1"
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                 value-format="yyyy-MM-dd HH:mm:ss"
-                @focus='sx'
+                @focus="sx"
             ></el-date-picker>
             <span class="demonstration title">-</span>
             <el-date-picker
@@ -58,142 +70,368 @@
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                 value-format="yyyy-MM-dd HH:mm:ss"
-                 @focus='sx'
+                @focus="sx"
             ></el-date-picker>
-            <input type="text" :placeholder="lang.AlarmRecord_Time_Keyword" v-model="keyword" />
-            <div class="sad" @click="sad" >{{lang.RoleManage_Query}}</div>
-            <div class="addBtn" @click="addPopFun" >{{lang.RoleManage_Add}}</div>
-            <div class="deleteBtn" @click="deldata1" >{{lang.RoleManage_Delete}}</div>
+            <input
+                type="text"
+                :placeholder="lang.AlarmRecord_Time_Keyword"
+                v-model="keyword"
+            />
+            <div class="sad" @click="sad">{{ lang.RoleManage_Query }}</div>
+            <div class="addBtn" @click="addPopFun">
+                {{ lang.RoleManage_Add }}
+            </div>
+            <div class="deleteBtn" @click="deldata1">
+                {{ lang.RoleManage_Delete }}
+            </div>
+            <div class="importBtnCont">
+                <el-upload
+                    action="#"
+                    accept=".xls, .xlsx"
+                    :show-file-list="false"
+                    :http-request="uploadFn"
+                >
+                    <div class="importBtn">
+                        导入
+                    </div>
+                </el-upload>
+            </div>
         </div>
         <div class="table-container table-container1">
             <el-table
                 ref="multipleTable"
-        
                 :data="tableData1"
                 stripe
                 height="100%"
                 tooltip-effect="dark"
-                :style="{width: 1700*zoom+'px', fontSize: 14*zoom+'px'}"
+                :style="{
+                    width: 1700 * zoom + 'px',
+                    fontSize: 14 * zoom + 'px'
+                }"
                 @select="select3"
                 @select-all="select2"
                 border
                 highlight-current-row
-                :header-cell-style="{background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',
-                    color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left':'1px solid #cccccc',
-                    height:50*zoom+'px',
-                    fontSize: 14*zoom+'px',
-                    padding:'0'}"
+                :header-cell-style="{
+                    background:
+                        $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
+                    color: $store.state.color == 'grey' ? '#000' : '#fff',
+                    'border-left': '1px solid #cccccc',
+                    height: 50 * zoom + 'px',
+                    fontSize: 14 * zoom + 'px',
+                    padding: '0'
+                }"
             >
                 <template slot="empty">
-                    <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
+                    <span>{{ lang.SCMSConsoleWebApiMySql_NoData }}</span>
                 </template>
-                <el-table-column type="selection" :width="60*zoom" :show-overflow-tooltip="true" fixed></el-table-column>
-                <el-table-column :label="lang.RoleManage_NO" :width="100*zoom" prop="Number"  :show-overflow-tooltip="true" fixed>
-                    <template slot-scope="scope">{{ scope.row.Number }}</template>
+                <el-table-column
+                    type="selection"
+                    :width="60 * zoom"
+                    :show-overflow-tooltip="true"
+                    fixed
+                ></el-table-column>
+                <el-table-column
+                    :label="lang.RoleManage_NO"
+                    :width="100 * zoom"
+                    prop="Number"
+                    :show-overflow-tooltip="true"
+                    fixed
+                >
+                    <template slot-scope="scope">{{
+                        scope.row.Number
+                    }}</template>
                 </el-table-column>
-                <el-table-column prop="name" :label="lang.RoleManage_Operation" :width="200*zoom"  fixed>
+                <el-table-column
+                    prop="name"
+                    :label="lang.RoleManage_Operation"
+                    :width="200 * zoom"
+                    fixed
+                >
                     <template slot-scope="scope">
                         <!-- <i class="el-icon-share"></i> -->
-                        <div class="img" @click="handleEdit(scope.$index, scope.row)" :style="{width:60*zoom+'px',height: 30*zoom+'px',lineHeight: 30*zoom+'px',marginLeft: 10*zoom+'px'}">
-                            <img :src="look" alt :style="{width: 24*zoom+'px',height: 24*zoom+'px'}"/>
-                            {{scope.row.phone}}
+                        <div
+                            class="img"
+                            @click="handleEdit(scope.$index, scope.row)"
+                            :style="{
+                                width: 60 * zoom + 'px',
+                                height: 30 * zoom + 'px',
+                                lineHeight: 30 * zoom + 'px',
+                                marginLeft: 10 * zoom + 'px'
+                            }"
+                        >
+                            <img
+                                :src="look"
+                                alt
+                                :style="{
+                                    width: 24 * zoom + 'px',
+                                    height: 24 * zoom + 'px'
+                                }"
+                            />
+                            {{ scope.row.phone }}
                         </div>
-                        <div class="img" @click="handleEdit2(scope.$index, scope.row)" :style="{width:60*zoom+'px',height: 30*zoom+'px',lineHeight: 30*zoom+'px',marginLeft: 10*zoom+'px'}">
-                            <img :src="pensoil" alt :style="{width: 24*zoom+'px',height: 24*zoom+'px'}"/>
-                            {{scope.row.phone}}
+                        <div
+                            class="img"
+                            @click="handleEdit2(scope.$index, scope.row)"
+                            :style="{
+                                width: 60 * zoom + 'px',
+                                height: 30 * zoom + 'px',
+                                lineHeight: 30 * zoom + 'px',
+                                marginLeft: 10 * zoom + 'px'
+                            }"
+                        >
+                            <img
+                                :src="pensoil"
+                                alt
+                                :style="{
+                                    width: 24 * zoom + 'px',
+                                    height: 24 * zoom + 'px'
+                                }"
+                            />
+                            {{ scope.row.phone }}
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="Name" :label="lang.MaintenanceManage_PlanName" :width="200*zoom" :show-overflow-tooltip="true" fixed></el-table-column>
-                <el-table-column prop="PeriodStr" :label="lang.MaintenanceManage_RepeatTaskCycle" :width="200*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="CurrentStartTime" :label="lang.MaintenanceManage_ThisTimeStartTime" :width="300*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="CurrentEndTime" :label="lang.MaintenanceManage_ThisTimeEndTime" :width="300*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="IsEnabled" :label="lang.MaintenanceManage_PlanExecutionStatus"  :width="200*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="NextStartTime" :label="lang.MaintenanceManage_NextTimeStartTime" :width="300*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="NextEndTime" :label="lang.MaintenanceManage_NextTimeEndTime" :width="300*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="DevicesStr" :label="lang.EquipmentAccount_EquipmentName" :width="200*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="Executor" :label="lang.PointInspectionManage_Executor" :width="200*zoom" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="Remarks" :label="lang.MaintenanceManage_TaskExecutionContent" :width="200*zoom" :show-overflow-tooltip="true"></el-table-column>
+                <el-table-column
+                    prop="Name"
+                    :label="lang.MaintenanceManage_PlanName"
+                    :width="200 * zoom"
+                    :show-overflow-tooltip="true"
+                    fixed
+                ></el-table-column>
+                <el-table-column
+                    prop="PlanTypeDesc"
+                    label="计划类型"
+                    :width="200 * zoom"
+                    :show-overflow-tooltip="true"
+                    fixed
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="PeriodStr"
+                    :label="lang.MaintenanceManage_RepeatTaskCycle"
+                    :width="200 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="CurrentStartTime"
+                    :label="lang.MaintenanceManage_ThisTimeStartTime"
+                    :width="300 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="CurrentEndTime"
+                    :label="lang.MaintenanceManage_ThisTimeEndTime"
+                    :width="300 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="IsEnabled"
+                    :label="lang.MaintenanceManage_PlanExecutionStatus"
+                    :width="200 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="NextStartTime"
+                    :label="lang.MaintenanceManage_NextTimeStartTime"
+                    :width="300 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="NextEndTime"
+                    :label="lang.MaintenanceManage_NextTimeEndTime"
+                    :width="300 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="DevicesStr"
+                    :label="lang.EquipmentAccount_EquipmentName"
+                    :width="200 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="Executor"
+                    :label="lang.PointInspectionManage_Executor"
+                    :width="200 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
+                <el-table-column
+                    prop="Remarks"
+                    :label="lang.MaintenanceManage_TaskExecutionContent"
+                    :width="200 * zoom"
+                    :show-overflow-tooltip="true"
+                ></el-table-column>
             </el-table>
         </div>
-        <div class="pages-container" :style="{zoom}">
+        <div class="pages-container">
             <div class="page">
                 <div class="pageword">
-                    {{lang.DataGrid_Reaction_HT_ATotalOf}}
-                    <span>{{PageData.TotalCount}}</span>{{lang.DataGrid_Reaction_HT_RecordsAndTheCurrent}}
-                    <span>{{PageData.PageIndex}}</span>{{lang.DataGrid_Reaction_HT_Page}}
-                    <span>{{PageData.TotalPage}}</span>{{lang.DataGrid_Reaction_HT_RecordsAnd}}
-                    <span>{{PageData.PageSize}}</span>{{lang.DataGrid_Reaction_HT_PerPage}}
+                    {{ lang.DataGrid_Reaction_HT_ATotalOf }}
+                    <span>{{ PageData.TotalCount }}</span
+                    >{{ lang.DataGrid_Reaction_HT_RecordsAndTheCurrent }}
+                    <span>{{ PageData.PageIndex }}</span
+                    >{{ lang.DataGrid_Reaction_HT_Page }}
+                    <span>{{ PageData.TotalPage }}</span
+                    >{{ lang.DataGrid_Reaction_HT_RecordsAnd }}
+                    <span>{{ PageData.PageSize }}</span
+                    >{{ lang.DataGrid_Reaction_HT_PerPage }}
                 </div>
                 <div class="pageoperation">
-                    <span class="btn" @click="start">{{lang.DataGrid_Reaction_FirstPage}}</span>
-                    <span class="btn" :class="{nopage:!PageData.LastEnabled}" @click="abck">{{lang.DataGrid_Reaction_LastPage}}</span>
-                    <span class="btn" :class="{nopage:!PageData.NextEnabled}" @click="next">{{lang.DataGrid_Reaction_NextPage}}</span>
-                    <span class="btn" @click="end">{{lang.DataGrid_Reaction_EndPage}}</span>
+                    <span class="btn" @click="start">{{
+                        lang.DataGrid_Reaction_FirstPage
+                    }}</span>
+                    <span
+                        class="btn"
+                        :class="{ nopage: !PageData.LastEnabled }"
+                        @click="abck"
+                        >{{ lang.DataGrid_Reaction_LastPage }}</span
+                    >
+                    <span
+                        class="btn"
+                        :class="{ nopage: !PageData.NextEnabled }"
+                        @click="next"
+                        >{{ lang.DataGrid_Reaction_NextPage }}</span
+                    >
+                    <span class="btn" @click="end">{{
+                        lang.DataGrid_Reaction_EndPage
+                    }}</span>
                     <div class="inputnumber">
-                        {{lang.DataGrid_Reaction_The}}
-                        <input type="text" v-model="nowpage" /> {{lang.DataGrid_Reaction_Page}}
+                        {{ lang.DataGrid_Reaction_The }}
+                        <input type="text" v-model="nowpage" />
+                        {{ lang.DataGrid_Reaction_Page }}
                     </div>
 
-                    <span class="btn" @click="jump">{{lang.DataGrid_Reaction_TurnPage}}</span>
+                    <span class="btn" @click="jump">{{
+                        lang.DataGrid_Reaction_TurnPage
+                    }}</span>
                 </div>
             </div>
         </div>
-        <div class="tip" ref="kongtiao2" v-show="tipchange" :style="{zoom}">
-                <div
+        <div class="tip" ref="kongtiao2" v-show="tipchange">
+            <div
                 class="tiphead"
                 style="position:absolute;width: 380px;height: 40px;"
             ></div>
-            <div
-                class="tiptop"
-        
-            >
+            <div class="tiptop">
                 <img :src="gth" alt />
-                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
+                <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
             </div>
             <div class="tipcontanin">
-                <div class="tipword">{{tipword}}</div>
-                <div class="tipdetermine" @click="tip1" v-if="deltrue">{{lang.MessageBox_Confrim}}</div>
+                <div class="tipword">{{ tipword }}</div>
+                <div class="tipdetermine" @click="tip1" v-if="deltrue">
+                    {{ lang.MessageBox_Confrim }}
+                </div>
                 <div class="delclass" v-if="!deltrue">
-                    <div class="one" @click="no1">{{lang.MessageBox_NO}}</div>
-                    <div class="two" @click="yes1">{{lang.MessageBox_YES}}</div>
+                    <div class="one" @click="no1">{{ lang.MessageBox_NO }}</div>
+                    <div class="two" @click="yes1">
+                        {{ lang.MessageBox_YES }}
+                    </div>
                 </div>
             </div>
         </div>
         <!-- <div class="cover1" v-if="setionchange"></div> -->
-        <div class="cover3" v-if="cancel1" :style="{zoom}"></div>
-        <div class="cover2" v-if="tipchange" :style="{zoom}"></div>
-        <div v-show="addShow" class="addPop" ref="kongtiao5"  :style="{height:760*1+'px',width: 1000*1+'px',zoom}">
-            <div   
-                
-                class="looktop"
-            
-              
-            ></div>
-            <span @click.stop="addPopcancel" class="i-c el-icon-close" :class="{a:$store.state.color=='grey'}" :style="{}"></span>
-            <div class="head"    :class="{colordiv:$store.state.color=='grey'}" :style="{}">
-                <span class="text" v-if="sestion == 3"    :class="{fcolor:$store.state.color=='grey'}">{{lang.PointInspectionManage_AddInspectionPlan}}</span>
-                <span class="text" v-if="sestion == 1"    :class="{fcolor:$store.state.color=='grey'}">{{lang.PointInspectionManage_ViewInspectionPlan}}</span>
-                <span class="text" v-if="sestion == 2"    :class="{fcolor:$store.state.color=='grey'}">{{lang.PointInspectionManage_EditInspectionPlan}}</span>
+        <div class="cover3" v-if="cancel1"></div>
+        <div class="cover2" v-if="tipchange"></div>
+        <div
+            v-show="addShow"
+            class="addPop"
+            ref="kongtiao5"
+            :style="{ height: 820 * 1 + 'px', width: 1155 * 1 + 'px', zoom }"
+        >
+            <div class="looktop"></div>
+            <span
+                @click.stop="addPopcancel"
+                class="i-c el-icon-close"
+                :class="{ a: $store.state.color == 'grey' }"
+                :style="{}"
+            ></span>
+            <div
+                class="head"
+                :class="{ colordiv: $store.state.color == 'grey' }"
+                :style="{}"
+            >
+                <span
+                    class="text"
+                    v-if="sestion == 3"
+                    :class="{ fcolor: $store.state.color == 'grey' }"
+                    >{{ lang.PointInspectionManage_AddInspectionPlan }}</span
+                >
+                <span
+                    class="text"
+                    v-if="sestion == 1"
+                    :class="{ fcolor: $store.state.color == 'grey' }"
+                    >{{ lang.PointInspectionManage_ViewInspectionPlan }}</span
+                >
+                <span
+                    class="text"
+                    v-if="sestion == 2"
+                    :class="{ fcolor: $store.state.color == 'grey' }"
+                    >{{ lang.PointInspectionManage_EditInspectionPlan }}</span
+                >
             </div>
-            <div class="addPop_table" :style="{height:346+'px'}">
-                <div class="table_name table_name1" :style="{marginTop: 35+'px',height: 35+'px'}">
-                    <div class="form-block" >
-                        <span class="name_text" :style="{fontSize: 16+'px',marginRight: 15+'px',width: 100+'px'}">{{lang.MaintenanceManage_PlanName}}</span>
-                        <input class="name_ipt" v-model="planName" type="text" v-if="sestion == 3" :style="{width: 280*1+'px', height: 32*1+'px', lineHeight: 32*1+'px', fontSize: 16*1+'px'}" />
+            <div class="addPop_table">
+                <div
+                    class="table_name table_name1"
+                    :style="{ marginTop: 35 + 'px', height: 35 + 'px' }"
+                >
+                    <div class="form-block">
+                        <span
+                            class="name_text"
+                            :style="{
+                                fontSize: 16 + 'px',
+                                marginRight: 15 + 'px',
+                                width: 100 + 'px'
+                            }"
+                            >{{ lang.MaintenanceManage_PlanName }}</span
+                        >
+                        <input
+                            class="name_ipt"
+                            v-model="planName"
+                            type="text"
+                            v-if="sestion == 3"
+                            :style="{
+                                width: 280 * 1 + 'px',
+                                height: 32 * 1 + 'px',
+                                lineHeight: 32 * 1 + 'px',
+                                fontSize: 16 * 1 + 'px'
+                            }"
+                        />
                         <input
                             class="name_ipt"
                             v-model="sesstion.Name"
                             type="text"
                             v-if="sestion == 1"
                             disabled
-                            :style="{width: 280*1+'px', height: 32*1+'px', lineHeight: 32*1+'px', fontSize: 16*1+'px'}"
+                            :style="{
+                                width: 280 * 1 + 'px',
+                                height: 32 * 1 + 'px',
+                                lineHeight: 32 * 1 + 'px',
+                                fontSize: 16 * 1 + 'px'
+                            }"
                         />
-                        <input class="name_ipt" v-model="sesstion.Name" type="text" v-if="sestion == 2" :style="{width: 280*1+'px', height: 32*1+'px', lineHeight: 32*1+'px', fontSize: 16*1+'px'}" />
+                        <input
+                            class="name_ipt"
+                            v-model="sesstion.Name"
+                            type="text"
+                            v-if="sestion == 2"
+                            :style="{
+                                width: 280 * 1 + 'px',
+                                height: 32 * 1 + 'px',
+                                lineHeight: 32 * 1 + 'px',
+                                fontSize: 16 * 1 + 'px'
+                            }"
+                        />
                     </div>
-                    <div class="form-block" >
-                        <span class="porper_text" :style="{fontSize: 16*1+'px',marginRight: 15*1+'px',width: 115*1+'px'}">{{lang.PointInspectionManage_Inspector}}</span>
+                    <div class="form-block">
+                        <span
+                            class="porper_text"
+                            :style="{
+                                fontSize: 16 * 1 + 'px',
+                                marginRight: 15 * 1 + 'px',
+                                width: 115 * 1 + 'px'
+                            }"
+                            >{{ lang.PointInspectionManage_Inspector }}</span
+                        >
 
                         <el-select
                             class="porper_ipt"
@@ -201,7 +439,7 @@
                             @focus="sx"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                             v-if="sestion == 3"
-                            :style="{width: 280+'px', height: 32+'px',}"
+                            :style="{ width: 280 + 'px', height: 32 + 'px' }"
                         >
                             <el-option
                                 v-for="item in useroptions"
@@ -213,11 +451,11 @@
                         <el-select
                             class="porper_ipt"
                             v-model="userValue"
-                             @focus="sx"
+                            @focus="sx"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                             v-if="sestion == 1"
                             disabled
-                             :style="{width: 280+'px', height: 32+'px',}"
+                            :style="{ width: 280 + 'px', height: 32 + 'px' }"
                         >
                             <el-option
                                 v-for="item in useroptions"
@@ -228,11 +466,11 @@
                         </el-select>
                         <el-select
                             class="porper_ipt"
-                             @focus="sx"
+                            @focus="sx"
                             v-model="sesstion.Executor"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                             v-if="sestion == 2"
-                           :style="{width: 280+'px', height: 32+'px',  }"
+                            :style="{ width: 280 + 'px', height: 32 + 'px' }"
                         >
                             <el-option
                                 v-for="item in useroptions"
@@ -243,16 +481,29 @@
                         </el-select>
                     </div>
                 </div>
-                <div class="table_name" :style="{marginTop: 15*1+'px',height: 35*1+'px'}">
-                    <div class="form-block" >
-                        <span class="name_text" :style="{fontSize: 16*1+'px',marginRight: 15*1+'px',width:100*1+'px'}">{{lang.RepairManage_TaskStartTime}}</span>
+                <div
+                    class="table_inspection"
+                    :style="{ marginTop: 15 * 1 + 'px', height: 35 * 1 + 'px' }"
+                >
+                    <div class="inspection_left">
+                        <span
+                            class="name_text"
+                            :style="{
+                                fontSize: 16 * 1 + 'px',
+                                marginRight: 15 * 1 + 'px',
+                                width: 100 * 1 + 'px'
+                            }"
+                            >{{ lang.RepairManage_TaskStartTime }}</span
+                        >
                         <el-date-picker
                             @change="starFun"
                             v-model="startime"
                             type="datetime"
                             v-if="sestion == 3"
-                            :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                      :style="{width:'280px'}"
+                            :placeholder="
+                                lang.SCMSConsoleWebApiMySql_PleChooseDate
+                            "
+                            :style="{ width: '280px' }"
                         ></el-date-picker>
                         <el-date-picker
                             @change="starFun"
@@ -260,125 +511,301 @@
                             type="datetime"
                             v-if="sestion == 1"
                             disabled
-                            :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                    :style="{width:'280px'}"
+                            :placeholder="
+                                lang.SCMSConsoleWebApiMySql_PleChooseDate
+                            "
+                            :style="{ width: '280px' }"
                         ></el-date-picker>
                         <el-date-picker
                             @change="starFun"
                             v-model="sesstion.CurrentStartTime"
                             type="datetime"
                             v-if="sestion == 2"
-                            :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                           :style="{width:'280px'}"
+                            :placeholder="
+                                lang.SCMSConsoleWebApiMySql_PleChooseDate
+                            "
+                            :style="{ width: '280px' }"
                         ></el-date-picker>
                     </div>
-                    <div class="form-block" >
-                    <span class="time_text" :style="{fontSize: 16*1+'px',marginRight: 15*1+'px',width:115*1+'px'}">{{lang.MaintenanceManage_TaskExecutionDuration}}</span>
-                    
-                            <div class="is1" :style="{width: 300*1+'px'}">
-                                <input type="text" @input="endValue()" v-if="sestion == 1" v-model="sesstion.rwtime" disabled :style="{width: 180*1+'px', height: 32*1+'px', lineHeight: 32*1+'px', fontSize:16*1+'px'}"/>
-                                <input type="text" @input="endValue()" v-if="sestion == 2" v-model="sesstion.rwtime" :style="{width: 180*1+'px', height: 32*1+'px', lineHeight: 32*1+'px', fontSize:16*1+'px'}"/>
-                                <input type="text" @input="endValue()" v-if="sestion == 3" v-model="rwtime" :style="{width: 180*1+'px', height: 32*1+'px', lineHeight: 32*1+'px', fontSize:16*1+'px'}" />
-                                  <el-select
-                                   @focus="sx"
-                            class="sl1"
-                            :style="{width: 100+'px',height: 32+'px'}"
-                            v-model="sesstion.rwselect"
-                            :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
+                    <div class="inspection_right">
+                        <span
+                            class="time_text"
+                            :style="{
+                                fontSize: 16 * 1 + 'px',
+                                marginRight: 15 * 1 + 'px',
+                                width: 115 * 1 + 'px'
+                            }"
+                            >{{ lang.MaintenanceManage_PlanEndTime }}</span
+                        >
+                        <el-date-picker
+                            @change="expireFun"
+                            v-if="sestion == 3"
+                            v-model="Expiretime"
+                            type="datetime"
+                            :placeholder="
+                                lang.SCMSConsoleWebApiMySql_PleChooseDate
+                            "
+                            :style="{ width: '280px' }"
+                        ></el-date-picker>
+                        <el-date-picker
+                            @change="expireFun"
                             v-if="sestion == 1"
-                    disabled
-                        >
-                            <el-option
-                            
-                                v-for="item in TimeOptions1"
-                                :key="item.value"
-                              :label="item.label"
-                                :value="item.value"
-                            ></el-option>
-                        </el-select>
-                             <el-select
-                            class="sl1"
-                        @focus="sx"
-                          :style="{width: 100+'px',height: 32+'px'}"
-                            v-model="sesstion.rwselect"
-                            :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
+                            v-model="sesstion.MaturityTime"
+                            type="datetime"
+                            disabled
+                            :placeholder="
+                                lang.SCMSConsoleWebApiMySql_PleChooseDate
+                            "
+                            :style="{ width: '280px' }"
+                        ></el-date-picker>
+                        <el-date-picker
+                            @change="expireFun"
                             v-if="sestion == 2"
-                            @change="changerwselect"
-                        
+                            v-model="sesstion.MaturityTime"
+                            type="datetime"
+                            :placeholder="
+                                lang.SCMSConsoleWebApiMySql_PleChooseDate
+                            "
+                            :style="{ width: '280px' }"
+                        ></el-date-picker>
+                    </div>
+                </div>
+
+                <div
+                    class="table_inspection"
+                    :style="{ marginTop: 15 * 1 + 'px', height: 35 * 1 + 'px' }"
+                >
+                    <div class="inspection_left">
+                        <span
+                            class="name_text"
+                            :style="{
+                                fontSize: 16 * 1 + 'px',
+                                marginRight: 15 * 1 + 'px',
+                                width: 100 * 1 + 'px'
+                            }"
+                            >{{
+                                lang.MaintenanceManage_TaskExecutionDuration
+                            }}</span
                         >
-                            <el-option
-                              
-                                v-for="item in TimeOptions1"
-                                :key="item.value"
-                               :label="item.label"
-                                :value="item.value"
-                            ></el-option>
-                        </el-select>
-                             <el-select
-                            class="sl1"
-                           @focus="sx"
-                            v-model="rwselect"
-                           :style="{width: 100+'px',height: 32+'px'}"
+
+                        <div class="is1" :style="{ width: 300 * 1 + 'px' }">
+                            <input
+                                type="text"
+                                @input="endValue()"
+                                v-if="sestion == 1"
+                                v-model="sesstion.rwtime"
+                                disabled
+                                :style="{
+                                    width: 180 * 1 + 'px',
+                                    height: 32 * 1 + 'px',
+                                    lineHeight: 32 * 1 + 'px',
+                                    fontSize: 16 * 1 + 'px'
+                                }"
+                            />
+                            <input
+                                type="text"
+                                @input="endValue()"
+                                v-if="sestion == 2"
+                                v-model="sesstion.rwtime"
+                                :style="{
+                                    width: 180 * 1 + 'px',
+                                    height: 32 * 1 + 'px',
+                                    lineHeight: 32 * 1 + 'px',
+                                    fontSize: 16 * 1 + 'px'
+                                }"
+                            />
+                            <input
+                                type="text"
+                                @input="endValue()"
+                                v-if="sestion == 3"
+                                v-model="rwtime"
+                                :style="{
+                                    width: 180 * 1 + 'px',
+                                    height: 32 * 1 + 'px',
+                                    lineHeight: 32 * 1 + 'px',
+                                    fontSize: 16 * 1 + 'px'
+                                }"
+                            />
+                            <el-select
+                                @focus="sx"
+                                class="sl1"
+                                :style="{
+                                    width: 100 + 'px',
+                                    height: 32 + 'px'
+                                }"
+                                v-model="sesstion.rwselect"
+                                :placeholder="
+                                    lang.SCMSConsoleWebApiMySql_PleChoose
+                                "
+                                v-if="sestion == 1"
+                                disabled
+                            >
+                                <el-option
+                                    v-for="item in TimeOptions1"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                ></el-option>
+                            </el-select>
+                            <el-select
+                                class="sl1"
+                                @focus="sx"
+                                :style="{
+                                    width: 100 + 'px',
+                                    height: 32 + 'px'
+                                }"
+                                v-model="sesstion.rwselect"
+                                :placeholder="
+                                    lang.SCMSConsoleWebApiMySql_PleChoose
+                                "
+                                v-if="sestion == 2"
+                                @change="changerwselect"
+                            >
+                                <el-option
+                                    v-for="item in TimeOptions1"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                ></el-option>
+                            </el-select>
+                            <el-select
+                                class="sl1"
+                                @focus="sx"
+                                v-model="rwselect"
+                                :style="{
+                                    width: 100 + 'px',
+                                    height: 32 + 'px'
+                                }"
+                                :placeholder="
+                                    lang.SCMSConsoleWebApiMySql_PleChoose
+                                "
+                                v-if="sestion == 3"
+                            >
+                                <el-option
+                                    v-for="item in TimeOptions1"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                ></el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    <div class="inspection_right">
+                        <span
+                            class="name-text"
+                            :style="{
+                                fontSize: 16 * 1 + 'px',
+                                marginRight: 15 * 1 + 'px',
+                                width: 115 * 1 + 'px'
+                            }"
+                            >{{
+                                lang.MaintenanceManage_PlanExecutionStatus
+                            }}</span
+                        >
+                        <el-select
+                            @focus="sx"
+                            v-model="hsavalue"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                             v-if="sestion == 3"
-                    
+                            :style="{ width: 280 + 'px' }"
                         >
                             <el-option
-                                v-for="item in TimeOptions1"
+                                v-for="item in hasoptions"
                                 :key="item.value"
-                               :label="item.label"
+                                :label="item.label"
                                 :value="item.value"
                             ></el-option>
                         </el-select>
-                                <!-- <select name id @change="endValue()" v-model="sesstion.endTimeUnit" v-if="sestion == 1">
-                                    <option v-for="(item,index) in sametimearr" :key="index" :value="item">{{item}}</option>
-                                </select>
-                                <select name id @change="endValue()" v-model="sesstion.endTimeUnit" v-if="sestion == 2" disabled>
-                                    <option v-for="(item,index) in sametimearr" :key="index" :value="item">{{item}}</option>
-                                </select>
-                                <select name id @change="endValue()" v-model="sesstion.endTimeUnit" v-if="sestion == 3">
-                                    <option v-for="(item,index) in sametimearr" :key="index" :value="item">{{item}}</option>
-                                </select> -->
-                            </div>
-                            </div>
-                    <!-- <el-date-picker
-                        @change="endFun"
-                        v-model="endtime"
-                        type="datetime"
-                        v-if="sestion == 3"
-                        placeholder="选择日期时间"
-                    ></el-date-picker>
-                    <el-date-picker
-                        @change="endFun"
-                        v-model="sesstion.CurrentEndTime"
-                        type="datetime"
-                        v-if="sestion == 1"
-                        disabled
-                        placeholder="选择日期时间"
-                    ></el-date-picker>
-                    <el-date-picker
-                        @change="endFun"
-                        v-model="sesstion.CurrentEndTime"
-                        type="datetime"
-                        v-if="sestion == 2"
-                        placeholder="选择日期时间"
-                    ></el-date-picker> -->
+                        <el-select
+                            @focus="sx"
+                            v-model="sesstion.IsEnabled"
+                            :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
+                            v-if="sestion == 1"
+                            disabled
+                            :style="{ width: 280 + 'px' }"
+                        >
+                            <el-option
+                                v-for="item in hasoptions"
+                                :key="item.value"
+                                :label="sesstion.IsEnabled"
+                                :value="sesstion.IsEnabled"
+                            ></el-option>
+                        </el-select>
+                        <el-select
+                            @focus="sx"
+                            v-model="sesstion.IsEnabled"
+                            :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
+                            v-if="sestion == 2"
+                            :style="{ width: 280 + 'px' }"
+                        >
+                            <el-option
+                                v-for="item in hasoptions"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            ></el-option>
+                        </el-select>
+                    </div>
                 </div>
-                   <el-tooltip   popper-class="atooltip" effect="dark" :content="lang.MaintenanceManage_TaskStartTimeToolTip" placement="bottom" >
-                                <div class="showtext1" :style="{top:150*1+'px',left:475*1+'px',height:16*1+'px',width:16*1+'px'}">
-                                  <i class="el-icon-question" :style="{}"></i>
-                                </div>
-                            </el-tooltip>
-                <div class="table_inspection" :style="{marginTop: 15*1+'px',height: 35*1+'px'}">
+                <div class="table_radio" v-if="sestion == 3">
+                    <span class="name_text">计划类型 </span>
+                    <el-radio-group
+                        v-model="PlanType"
+                        @change="changePlanType3"
+                    >
+                        <el-radio :value="0" size="large" :label="0"
+                            >按班次</el-radio
+                        >
+                        <el-radio :value="1" size="large" :label="1"
+                            >其它重复任务周期</el-radio
+                        >
+                    </el-radio-group>
+                </div>
+                <div class="table_radio" v-else>
+                    <span class="name_text">计划类型</span>
+                    <el-radio-group
+                        v-model="sesstion.PlanType"
+                        @change="changePlanType"
+                        :disabled="sestion == 1"
+                    >
+                        <el-radio :value="0" size="large" :label="0"
+                            >按班次</el-radio
+                        >
+                        <el-radio :value="1" size="large" :label="1"
+                            >其它重复任务周期</el-radio
+                        >
+                    </el-radio-group>
+                </div>
+                <div
+                    class="table_inspection"
+                    :style="{ marginTop: 15 * 1 + 'px', height: 35 * 1 + 'px' }"
+                >
                     <div class="inspection_left">
-                        <span class="name_text" :style="{fontSize: 16*1+'px',marginRight: 15*1+'px',width:100*1+'px'}">{{lang.MaintenanceManage_RepeatTaskCycle}}</span>
+                        <span
+                            class="name_text"
+                            :style="{
+                                fontSize: 16 * 1 + 'px',
+                                marginRight: 15 * 1 + 'px',
+                                width: 100 * 1 + 'px'
+                            }"
+                            >{{ lang.MaintenanceManage_RepeatTaskCycle }}</span
+                        >
                         <input
                             class="name_ipt"
                             v-model="inspecionNum"
                             type="number"
                             v-if="sestion == 3"
-                            @blur="inspecionNum = inspecionNum === '' ? 1 :inspecionNum"
-                            :style="{width: 180*1+'px',height: 32*1+'px', lineHeight: 32*1+'px',fontSize: 16*1+'px'}"
+                            @blur="
+                                inspecionNum =
+                                    inspecionNum === '' ? 1 : inspecionNum
+                            "
+                            :disabled="PlanType != 1"
+                            :style="{
+                                width: 180 * 1 + 'px',
+                                height: 32 * 1 + 'px',
+                                lineHeight: 32 * 1 + 'px',
+                                fontSize: 16 * 1 + 'px'
+                            }"
                         />
                         <input
                             class="name_ipt"
@@ -386,8 +813,15 @@
                             type="number"
                             v-if="sestion == 1"
                             disabled
-                            @blur="sesstion.a = sesstion.a === '' ? 0 :sesstion.a"
-                            :style="{width: 180*1+'px',height: 32*1+'px', lineHeight: 32*1+'px',fontSize: 16*1+'px'}"
+                            @blur="
+                                sesstion.a = sesstion.a === '' ? 0 : sesstion.a
+                            "
+                            :style="{
+                                width: 180 * 1 + 'px',
+                                height: 32 * 1 + 'px',
+                                lineHeight: 32 * 1 + 'px',
+                                fontSize: 16 * 1 + 'px'
+                            }"
                         />
                         <input
                             class="name_ipt"
@@ -395,16 +829,23 @@
                             type="number"
                             @blur="blurData($event, 'a')"
                             v-if="sestion == 2"
-                            :style="{width: 180*1+'px',height: 32*1+'px', lineHeight: 32*1+'px',fontSize: 16*1+'px'}"
+                            :disabled="sesstion.PlanType != 1"
+                            :style="{
+                                width: 180 * 1 + 'px',
+                                height: 32 * 1 + 'px',
+                                lineHeight: 32 * 1 + 'px',
+                                fontSize: 16 * 1 + 'px'
+                            }"
                         />
                         <el-select
-                         @focus="sx"
+                            @focus="sx"
                             class="porper_ipt"
                             @change="timeValueFun"
                             v-model="timeValue"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                             v-if="sestion == 3"
-                           :style="{width: 100+'px',height: 32+'px'}"
+                            :disabled="PlanType != 1"
+                            :style="{ width: 100 + 'px', height: 32 + 'px' }"
                         >
                             <el-option
                                 @change="timeValueFun"
@@ -415,14 +856,14 @@
                             ></el-option>
                         </el-select>
                         <el-select
-                         @focus="sx"
+                            @focus="sx"
                             class="porper_ipt"
                             @change="timeValueFun"
                             v-model="sesstion.PeriodUnit"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                             v-if="sestion == 1"
                             disabled
-                           :style="{width: 100+'px',height: 32+'px'}"
+                            :style="{ width: 100 + 'px', height: 32 + 'px' }"
                         >
                             <el-option
                                 @change="timeValueFun"
@@ -433,13 +874,14 @@
                             ></el-option>
                         </el-select>
                         <el-select
-                         @focus="sx"
+                            @focus="sx"
                             class="porper_ipt"
                             @change="timeValueFun"
                             v-model="sesstion.PeriodUnit"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                             v-if="sestion == 2"
-                         :style="{width: 100+'px',height: 32+'px'}"
+                            :disabled="sesstion.PlanType != 1"
+                            :style="{ width: 100 + 'px', height: 32 + 'px' }"
                         >
                             <el-option
                                 @change="timeValueFun"
@@ -452,49 +894,33 @@
                     </div>
 
                     <div class="inspection_right">
-                        <span class="time_text" :style="{fontSize: 16*1+'px',marginRight: 15*1+'px',width:115*1+'px'}">{{lang.MaintenanceManage_PlanEndTime}}</span>
-                        <el-date-picker
-                            @change="expireFun"
-                            v-if="sestion == 3"
-                            v-model="Expiretime"
-                            type="datetime"
-                            :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                           :style="{width:'280px'}"
-                        ></el-date-picker>
-                        <el-date-picker
-                            @change="expireFun"
-                            v-if="sestion == 1"
-                            v-model="sesstion.MaturityTime"
-                            type="datetime"
-                            disabled
-                            :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                            :style="{width:'280px'}"
-                        ></el-date-picker>
-                        <el-date-picker
-                            @change="expireFun"
-                            v-if="sestion == 2"
-                            v-model="sesstion.MaturityTime"
-                            type="datetime"
-                            :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                            :style="{width:'280px'}"
-                        ></el-date-picker>
-                    </div>
-                </div>
-                <el-tooltip   popper-class="atooltip" effect="dark" :content="lang.MaintenanceManage_RepeatTaskCycleToolTip" placement="bottom">
-                                <div class="showtext" :style="{top: 200*1+'px',left:475*1+'px'}">
-                                  <i class="el-icon-question" ></i>
-                                </div>
-                            </el-tooltip>
-                <div class="table_inspection" :style="{marginTop: 15*1+'px',height: 35*1+'px'}">
-                    <div class="inspection_left">
-                        <span class="name_text" :style="{fontSize: 16*1+'px',marginRight: 15*1+'px',width:100*1+'px'}">{{lang.MaintenanceManage_TaskAdvanceReminder}}</span>
+                        <span
+                            class="name_text"
+                            :style="{
+                                fontSize: 16 * 1 + 'px',
+                                marginRight: 15 * 1 + 'px',
+                                width: 115 * 1 + 'px'
+                            }"
+                            >{{
+                                lang.MaintenanceManage_TaskAdvanceReminder
+                            }}</span
+                        >
                         <input
                             class="name_ipt"
                             v-model="inspectionNum2"
                             type="number"
                             v-if="sestion == 3"
-                            @blur="inspectionNum2 = inspectionNum2=== '' ? 1 : inspectionNum2"
-                            :style="{width: 180*1+'px',height: 32*1+'px', lineHeight: 32*1+'px',fontSize: 16*1+'px'}"
+                            @blur="
+                                inspectionNum2 =
+                                    inspectionNum2 === '' ? 1 : inspectionNum2
+                            "
+                            :disabled="PlanType != 1"
+                            :style="{
+                                width: 180 * 1 + 'px',
+                                height: 32 * 1 + 'px',
+                                lineHeight: 32 * 1 + 'px',
+                                fontSize: 16 * 1 + 'px'
+                            }"
                         />
                         <input
                             class="name_ipt"
@@ -502,8 +928,15 @@
                             type="number"
                             disabled
                             v-if="sestion == 1"
-                            @blur="sesstion.b = sesstion.b=== '' ? 0 : sesstion.b"
-                            :style="{width: 180*1+'px',height: 32*1+'px', lineHeight: 32*1+'px',fontSize: 16*1+'px'}"
+                            @blur="
+                                sesstion.b = sesstion.b === '' ? 0 : sesstion.b
+                            "
+                            :style="{
+                                width: 180 * 1 + 'px',
+                                height: 32 * 1 + 'px',
+                                lineHeight: 32 * 1 + 'px',
+                                fontSize: 16 * 1 + 'px'
+                            }"
                         />
                         <input
                             class="name_ipt"
@@ -511,16 +944,21 @@
                             type="number"
                             v-if="sestion == 2"
                             @blur="blurData($event, 'b')"
-                            :style="{width: 180*1+'px',height: 32*1+'px',fontSize: 16*1+'px'}"
+                            :disabled="sesstion.PlanType != 1"
+                            :style="{
+                                width: 180 * 1 + 'px',
+                                height: 32 * 1 + 'px',
+                                fontSize: 16 * 1 + 'px'
+                            }"
                         />
                         <el-select
-                         @focus="sx"
+                            @focus="sx"
                             class="porper_ipt"
                             v-model="sesstion.ReminderTimeUnit"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                             v-if="sestion == 1"
                             disabled
-                             :style="{width: 100+'px',height: 32+'px'}"
+                            :style="{ width: 100 + 'px', height: 32 + 'px' }"
                         >
                             <el-option
                                 @change="timeValueeFun()"
@@ -531,12 +969,13 @@
                             ></el-option>
                         </el-select>
                         <el-select
-                         @focus="sx"
+                            @focus="sx"
                             class="porper_ipt"
                             v-model="sesstion.ReminderTimeUnit"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                             v-if="sestion == 2"
-                             :style="{width: 100+'px',height: 32+'px'}"
+                            :style="{ width: 100 + 'px', height: 32 + 'px' }"
+                            :disabled="sesstion.PlanType != 1"
                         >
                             <el-option
                                 @change="timeValueeFun()"
@@ -547,56 +986,17 @@
                             ></el-option>
                         </el-select>
                         <el-select
-                         @focus="sx"
+                            @focus="sx"
                             class="porper_ipt"
                             v-model="timeValuee"
                             :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                             v-if="sestion == 3"
-                            :style="{width: 100+'px',height: 32+'px'}"
+                            :style="{ width: 100 + 'px', height: 32 + 'px' }"
+                            :disabled="PlanType != 1"
                         >
                             <el-option
                                 @change="timeValueeFun()"
                                 v-for="item in TimeeOptions"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            ></el-option>
-                        </el-select>
-                    </div>
-                    <div class="inspection_right">
-                        <span class="name-text" :style="{fontSize: 16*1+'px',marginRight: 15*1+'px',width:115*1+'px'}">{{lang.MaintenanceManage_PlanExecutionStatus}}</span>
-                        <el-select  @focus="sx" v-model="hsavalue" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose" v-if="sestion == 3" :style="{width: 280+'px'}">
-                            <el-option
-                                v-for="item in hasoptions"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            ></el-option>
-                        </el-select>
-                        <el-select
-                         @focus="sx"
-                            v-model="sesstion.IsEnabled"
-                            :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
-                            v-if="sestion == 1"
-                            disabled
-                          :style="{width: 280+'px'}"
-                        >
-                            <el-option
-                                v-for="item in hasoptions"
-                                :key="item.value"
-                                :label="sesstion.IsEnabled"
-                                :value="sesstion.IsEnabled"
-                            ></el-option>
-                        </el-select>
-                        <el-select
-                         @focus="sx"
-                            v-model="sesstion.IsEnabled"
-                            :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
-                            v-if="sestion == 2"
-                           :style="{width: 280+'px'}"
-                        >
-                            <el-option
-                                v-for="item in hasoptions"
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value"
@@ -604,10 +1004,27 @@
                         </el-select>
                     </div>
                 </div>
+
                 <!-- 任务执行内容 -->
-                <div class="inspection_ipt" :style="{height: 90*1+'px',marginTop: 15*1+'px'}">
-                    <div class="inspection_left" :style="{width:80*1+'px',height: 90*1+'px'}">
-                        <span class="name_text" :style="{fontSize: 16*1+'px',marginRight: 15*1+'px',width:100*1+'px'}">{{lang.MaintenanceManage_TaskExecutionContent}}</span>
+                <div
+                    class="inspection_ipt"
+                    :style="{ height: 90 * 1 + 'px', marginTop: 15 * 1 + 'px' }"
+                >
+                    <div
+                        class="inspection_left"
+                        :style="{ width: 80 * 1 + 'px', height: 90 * 1 + 'px' }"
+                    >
+                        <span
+                            class="name_text"
+                            :style="{
+                                fontSize: 16 * 1 + 'px',
+                                marginRight: 15 * 1 + 'px',
+                                width: 100 * 1 + 'px'
+                            }"
+                            >{{
+                                lang.MaintenanceManage_TaskExecutionContent
+                            }}</span
+                        >
                     </div>
                     <div class="inspection_right">
                         <input
@@ -616,71 +1033,161 @@
                             class="inspecion_ipt"
                             v-if="sestion == 1"
                             disabled
-                            :style="{width: 720*1+'px',height:90*1+'px',left:36*1+'px',fontSize:16*1+'px'}"
+                            :style="{
+                                width: 785 * 1 + 'px',
+                                height: 90 * 1 + 'px',
+                                left: 36 * 1 + 'px',
+                                fontSize: 16 * 1 + 'px'
+                            }"
                         />
                         <input
                             type="text"
                             v-model="sesstion.Remarks"
                             class="inspecion_ipt"
                             v-if="sestion == 2"
-                            :style="{width: 720*1+'px',height:90*1+'px',left:36*1+'px',fontSize:16*1+'px'}"
+                            :style="{
+                                width: 785 * 1 + 'px',
+                                height: 90 * 1 + 'px',
+                                left: 36 * 1 + 'px',
+                                fontSize: 16 * 1 + 'px'
+                            }"
                         />
                         <input
                             type="text"
                             v-model="RemarksText"
                             class="inspecion_ipt"
                             v-if="sestion == 3"
-                            :style="{width: 720*1+'px',height:90*1+'px',left:36*1+'px',fontSize:16*1+'px'}"
+                            :style="{
+                                width: 785 * 1 + 'px',
+                                height: 90 * 1 + 'px',
+                                left: 36 * 1 + 'px',
+                                fontSize: 16 * 1 + 'px'
+                            }"
                         />
                     </div>
                 </div>
 
-                <div class="inspection_btn" >
-                    <span class="name_text">{{lang.PointInspectionManage_PatrolInspectionEquipment}}</span>
-                    <div class="addBtn" @click="inspectionAddFun" v-if="sestion !== 1">{{lang.RoleManage_Add}}</div>
-                    <div @click="inspectionDeleteFun" class="deleteBtn" v-if="sestion !== 1">{{lang.RoleManage_Delete}}</div>
-                    <div class="topBtn" v-if="sestion !== 1" @click="shang">{{lang.PointInspectionManage_MoveUp}}</div>
-                    <div class="bottomBtn" v-if="sestion !== 1" @click="xia">{{lang.PointInspectionManage_MoveDown}}</div>
+                <div class="inspection_btn">
+                    <span class="name_text">
+                        {{
+                            lang.PointInspectionManage_PatrolInspectionEquipment
+                        }}</span
+                    >
+                    <div
+                        class="addBtn"
+                        @click="inspectionAddFun"
+                        v-if="sestion !== 1"
+                    >
+                        {{ lang.RoleManage_Add }}
+                    </div>
+                    <div
+                        @click="inspectionDeleteFun"
+                        class="deleteBtn"
+                        v-if="sestion !== 1"
+                    >
+                        {{ lang.RoleManage_Delete }}
+                    </div>
+                    <div class="topBtn" v-if="sestion !== 1" @click="shang">
+                        {{ lang.PointInspectionManage_MoveUp }}
+                    </div>
+                    <div class="bottomBtn" v-if="sestion !== 1" @click="xia">
+                        {{ lang.PointInspectionManage_MoveDown }}
+                    </div>
                 </div>
             </div>
-            <div class="addPop_list" >
+            <div class="addPop_list">
                 <div class="list_title">
                     <div class="ipt">
-                        <input @click="checkAllFun1" ref="checkiptAll1" type="checkbox" />
+                        <input
+                            @click="checkAllFun1"
+                            ref="checkiptAll1"
+                            type="checkbox"
+                        />
                     </div>
-                    <div class="id">{{lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber}}</div>
-                    <div class="name">{{lang.EquipmentAccount_EquipmentName}}</div>
-                    <div class="num">{{lang.EquipmentAccount_EquipmentNumber}}</div>
-                    <div class="setType">{{lang.EquipmentAccount_EquipmentType}}</div>
-                    <div class="typeNum">{{lang.EquipmentAccount_EquipmentModel}}</div>
-                    <div class="type">{{lang.NewTrendChart_SeriesGroupsSetting_DataGrid_Type}}</div>
+                    <div class="id">
+                        {{
+                            lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber
+                        }}
+                    </div>
+                    <div class="name">
+                        {{ lang.EquipmentAccount_EquipmentName }}
+                    </div>
+                    <div class="num">
+                        {{ lang.EquipmentAccount_EquipmentNumber }}
+                    </div>
+                    <div class="setType">
+                        {{ lang.EquipmentAccount_EquipmentType }}
+                    </div>
+                    <div class="typeNum">
+                        {{ lang.EquipmentAccount_EquipmentModel }}
+                    </div>
+                    <div class="type">
+                        {{
+                            lang.NewTrendChart_SeriesGroupsSetting_DataGrid_Type
+                        }}
+                    </div>
+                    <div class="action">
+                        操作
+                    </div>
                 </div>
                 <div v-if="sestion == 3">
-                    <div v-for="(i,ind) in checkArr" :key="ind" @click="checkArrdata(i,3,ind)">
+                    <div
+                        v-for="(i, ind) in checkArr"
+                        :key="ind"
+                        @click="checkArrdata(i, 3, ind)"
+                    >
                         <div class="list_conter">
-                            <div class="ipt" :class="{nowcheck:nowcheck == i.Number}">
-                                <input @click="checkFun1(i,ind)" ref="checkipt1" type="checkbox" />
+                            <div
+                                class="ipt"
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                <input
+                                    @click="checkFun1(i, ind)"
+                                    ref="checkipt1"
+                                    type="checkbox"
+                                />
                             </div>
-                            <div class="id" :class="{nowcheck:nowcheck == i.Number}">{{ind + 1}}</div>
+                            <div
+                                class="id"
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ ind + 1 }}
+                            </div>
                             <div
                                 class="name"
-                                :class="{nowcheck:nowcheck == i.Number}"
-                            >{{i.DeviceName}}</div>
-                            <div class="num" :class="{nowcheck:nowcheck == i.Number}">{{i.DeviceNo}}</div>
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ i.DeviceName }}
+                            </div>
+                            <div
+                                class="num"
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ i.DeviceNo }}
+                            </div>
                             <div
                                 class="setType"
-                                :class="{nowcheck:nowcheck == i.Number}"
-                            >{{i.DeviceType}}</div>
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ i.DeviceType }}
+                            </div>
                             <div
                                 class="typeNum"
-                                :class="{nowcheck:nowcheck == i.Number}"
-                            >{{i.DeviceModel}}</div>
-                            <div class="type" :class="{nowcheck:nowcheck == i.Number}">
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ i.DeviceModel }}
+                            </div>
+                            <div
+                                class="type"
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
                                 <el-select
-                                 @focus="sx"
-                                    @change="typeFun(i,ind)"
+                                    @focus="sx"
+                                    @change="typeFun(i, ind)"
                                     v-model="i.value"
-                                    :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
+                                    :placeholder="
+                                        lang.SCMSConsoleWebApiMySql_PleChoose
+                                    "
                                 >
                                     <el-option
                                         v-for="item in i.type"
@@ -690,35 +1197,76 @@
                                     ></el-option>
                                 </el-select>
                             </div>
+
+                            <div
+                                class="action"
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                <div
+                                    class="checkSopBtn"
+                                    @click="openSopListPop(i)"
+                                >
+                                    查看文件
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div v-if="sestion == 1">
-                    <div v-for="(i,ind) in checkArr" :key="ind" @click="checkArrdata(i,1,ind)">
+                    <div
+                        v-for="(i, ind) in checkArr"
+                        :key="ind"
+                        @click="checkArrdata(i, 1, ind)"
+                    >
                         <div class="list_conter">
-                            <div class="ipt" :class="{nowcheck:nowcheck == i.Number}">
-                                <input @click="checkFun1(i,ind)" ref="checkipt1" type="checkbox" />
+                            <div
+                                class="ipt"
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                <input
+                                    @click="checkFun1(i, ind)"
+                                    ref="checkipt1"
+                                    type="checkbox"
+                                />
                             </div>
-                            <div class="id" :class="{nowcheck:nowcheck == i.Number}">{{ind + 1}}</div>
+                            <div
+                                class="id"
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ ind + 1 }}
+                            </div>
                             <div
                                 class="name"
-                                :class="{nowcheck:nowcheck == i.Number}"
-                            >{{i.DeviceName}}</div>
-                            <div class="num" :class="{nowcheck:nowcheck == i.Number}">{{i.DeviceNo}}</div>
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ i.DeviceName }}
+                            </div>
+                            <div
+                                class="num"
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ i.DeviceNo }}
+                            </div>
                             <div
                                 class="setType"
-                                :class="{nowcheck:nowcheck == i.Number}"
-                            >{{i.DeviceType}}</div>
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ i.DeviceType }}
+                            </div>
                             <div
                                 class="typeNum"
-                                :class="{nowcheck:nowcheck == i.Number}"
-                            >{{i.DeviceModel}}</div>
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ i.DeviceModel }}
+                            </div>
                             <div class="type">
                                 <el-select
-                                 @focus="sx"
-                                    @change="typeFun(i,ind)"
+                                    @focus="sx"
+                                    @change="typeFun(i, ind)"
                                     v-model="i.Name"
-                                    :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
+                                    :placeholder="
+                                        lang.SCMSConsoleWebApiMySql_PleChoose
+                                    "
                                     disabled
                                 >
                                     <el-option
@@ -729,35 +1277,78 @@
                                     ></el-option>
                                 </el-select>
                             </div>
+                            <div
+                                class="action"
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                <div
+                                    class="checkSopBtn"
+                                    @click="openSopListPop(i)"
+                                >
+                                    查看文件
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div v-if="sestion == 2">
-                    <div v-for="(i,ind) in checkArr" :key="ind" @click="checkArrdata(i,2,ind)">
+                    <div
+                        v-for="(i, ind) in checkArr"
+                        :key="ind"
+                        @click="checkArrdata(i, 2, ind)"
+                    >
                         <div class="list_conter">
-                            <div class="ipt" :class="{nowcheck:nowcheck == i.Number}">
-                                <input @click="checkFun1(i,ind)" ref="checkipt1" type="checkbox" />
+                            <div
+                                class="ipt"
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                <input
+                                    @click="checkFun1(i, ind)"
+                                    ref="checkipt1"
+                                    type="checkbox"
+                                />
                             </div>
-                            <div class="id" :class="{nowcheck:nowcheck == i.Number}">{{ind + 1}}</div>
+                            <div
+                                class="id"
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ ind + 1 }}
+                            </div>
                             <div
                                 class="name"
-                                :class="{nowcheck:nowcheck == i.Number}"
-                            >{{i.DeviceName}}</div>
-                            <div class="num" :class="{nowcheck:nowcheck == i.Number}">{{i.DeviceNo}}</div>
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ i.DeviceName }}
+                            </div>
+                            <div
+                                class="num"
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ i.DeviceNo }}
+                            </div>
                             <div
                                 class="setType"
-                                :class="{nowcheck:nowcheck == i.Number}"
-                            >{{i.DeviceType}}</div>
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ i.DeviceType }}
+                            </div>
                             <div
                                 class="typeNum"
-                                :class="{nowcheck:nowcheck == i.Number}"
-                            >{{i.DeviceModel}}</div>
-                            <div class="type" :class="{nowcheck:nowcheck == i.Number}">
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                {{ i.DeviceModel }}
+                            </div>
+                            <div
+                                class="type"
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
                                 <el-select
-                                 @focus="sx"
+                                    @focus="sx"
                                     v-model="i.Name"
                                     @change="currStationChange(i)"
-                                    :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
+                                    :placeholder="
+                                        lang.SCMSConsoleWebApiMySql_PleChoose
+                                    "
                                 >
                                     <el-option
                                         v-for="item in i.type"
@@ -767,13 +1358,28 @@
                                     ></el-option>
                                 </el-select>
                             </div>
+                            <div
+                                class="action"
+                                :class="{ nowcheck: nowcheck == i.Number }"
+                            >
+                                <div
+                                    class="checkSopBtn"
+                                    @click="openSopListPop(i)"
+                                >
+                                    查看文件
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="addPop_fool" v-if="sestion !== 1">
-                <div @click="addQuerFun" class="fool_quer">{{lang.PopupCommon_Sure}}</div>
-                <div class="fool_cancel" @click="addPopcancel">{{lang.PopupCommon_Cancel}}</div>
+                <div @click="addQuerFun" class="fool_quer">
+                    {{ lang.PopupCommon_Sure }}
+                </div>
+                <div class="fool_cancel" @click="addPopcancel">
+                    {{ lang.PopupCommon_Cancel }}
+                </div>
             </div>
             <!-- <div v-if="tipchange" class="TipsPop">
                 <div class="head">{{lang.HT_MessageBoxCaption_Tips}}</div>
@@ -786,25 +1392,39 @@
             </div> -->
         </div>
 
-        <div v-show="equipmentShow" class="addEquipment" ref="kongtiao6" @click="treetrue = false"  :style="{zoom}">
+        <div
+            v-show="equipmentShow"
+            class="addEquipment"
+            ref="kongtiao6"
+            @click="treetrue = false"
+        >
+            <div class="looktop1"></div>
+            <span
+                @click.stop="offPopEquipment"
+                class="i-c el-icon-close"
+                :class="{ a: $store.state.color == 'grey' }"
+            ></span>
             <div
-                class="looktop1"
-         
-                
-            ></div>
-            <span @click.stop="offPopEquipment" class="i-c el-icon-close" :class="{a:$store.state.color=='grey'}"></span>
-            <div class="head" :class="{colordiv:$store.state.color=='grey'}">
-                <span class="text"   :class="{fcolor:$store.state.color=='grey'}">{{lang.FileManage_AddAssociatedEquipment}}</span>
+                class="head"
+                :class="{ colordiv: $store.state.color == 'grey' }"
+            >
+                <span
+                    class="text"
+                    :class="{ fcolor: $store.state.color == 'grey' }"
+                    >{{ lang.FileManage_AddAssociatedEquipment }}</span
+                >
             </div>
             <div class="conter" v-if="equipmentShow">
                 <div class="conter_title">
-                    <span class="name_text">{{lang.EquipmentAccount_EquipmentType}}</span>
-                            <div class="seleword2" @click.stop="treechange">
-             <div class="seleword1">
-                  {{Meter3}}
-               <img :src="xiala" alt />
-             </div>
-            </div>
+                    <span class="name_text">{{
+                        lang.EquipmentAccount_EquipmentType
+                    }}</span>
+                    <div class="seleword2" @click.stop="treechange">
+                        <div class="seleword1">
+                            {{ Meter3 }}
+                            <img :src="xiala" alt />
+                        </div>
+                    </div>
 
                     <div class="selectword selectword2" v-if="treetrue">
                         <el-tree
@@ -814,9 +1434,17 @@
                             default-expand-all
                             icon-class="el-icon-arrow-up"
                         >
-                            <span class="custom-tree-node" slot-scope="{ node, data }">
+                            <span
+                                class="custom-tree-node"
+                                slot-scope="{ node, data }"
+                            >
                                 <span>
-                                    <img v-show="data.file" :src="data.file" alt class="img11" />
+                                    <img
+                                        v-show="data.file"
+                                        :src="data.file"
+                                        alt
+                                        class="img11"
+                                    />
                                     <i :class="data.icon"></i>
                                     {{ node.label }}
                                 </span>
@@ -824,58 +1452,110 @@
                         </el-tree>
                     </div>
 
-                    <input class="conter_ipt tinput1" type="text" v-model="keyWord" :placeholder="lang.AlarmRecord_Time_Keyword" />
-                    <div @click="queryBtnFun" class="conter_btn">{{lang.AlarmRecord_Time_Select}}</div>
+                    <input
+                        class="conter_ipt tinput1"
+                        type="text"
+                        v-model="keyWord"
+                        :placeholder="lang.AlarmRecord_Time_Keyword"
+                    />
+                    <div @click="queryBtnFun" class="conter_btn">
+                        {{ lang.AlarmRecord_Time_Select }}
+                    </div>
                 </div>
                 <div class="conter_middle">
                     <div class="middle_title">
                         <div class="ipt">
-                            <input @click="checkAllFun" ref="checkiptAll" type="checkbox" />
+                            <input
+                                @click="checkAllFun"
+                                ref="checkiptAll"
+                                type="checkbox"
+                            />
                         </div>
-                        <div class="name">{{lang.EquipmentAccount_EquipmentName}}</div>
-                        <div class="id">{{lang.EquipmentAccount_EquipmentNumber}}</div>
-                        <div class="type">{{lang.EquipmentAccount_EquipmentType}}</div>
-                        <div class="typeNum">{{lang.EquipmentAccount_EquipmentModel}}</div>
+                        <div class="name">
+                            {{ lang.EquipmentAccount_EquipmentName }}
+                        </div>
+                        <div class="id">
+                            {{ lang.EquipmentAccount_EquipmentNumber }}
+                        </div>
+                        <div class="type">
+                            {{ lang.EquipmentAccount_EquipmentType }}
+                        </div>
+                        <div class="typeNum">
+                            {{ lang.EquipmentAccount_EquipmentModel }}
+                        </div>
                     </div>
 
-                    <div v-for="(item,index) in EquipmentTypeAll" :key="index">
+                    <div v-for="(item, index) in EquipmentTypeAll" :key="index">
                         <div class="middle_conter">
                             <div class="ipt">
-                                <input @click="checkFun(item,index)" ref="checkipt" type="checkbox" />
+                                <input
+                                    @click="checkFun(item, index)"
+                                    ref="checkipt"
+                                    type="checkbox"
+                                />
                             </div>
-                            <div class="name">{{item.DeviceName}}</div>
-                            <div class="id">{{item.DeviceNo}}</div>
-                            <div class="type">{{item.DeviceType}}</div>
-                            <div class="typeNum">{{item.DeviceModel}}</div>
+                            <div class="name">{{ item.DeviceName }}</div>
+                            <div class="id">{{ item.DeviceNo }}</div>
+                            <div class="type">{{ item.DeviceType }}</div>
+                            <div class="typeNum">{{ item.DeviceModel }}</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="fool">
-                <div @click="EquipmentQuerFun" class="fool_quer">{{lang.PopupCommon_Sure}}</div>
-                <div @click="EquipmentCancelFun" class="fool_cancel">{{lang.PopupCommon_Cancel}}</div>
+                <div @click="EquipmentQuerFun" class="fool_quer">
+                    {{ lang.PopupCommon_Sure }}
+                </div>
+                <div @click="EquipmentCancelFun" class="fool_cancel">
+                    {{ lang.PopupCommon_Cancel }}
+                </div>
             </div>
         </div>
-        <div class="cover6" v-if="addShow" :style="{zoom}"></div>
-        <div class="cover7" v-if="equipmentShow" @click="treetrue =false" :style="{zoom}"></div>
+        <div class="cover6" v-if="addShow"></div>
+        <div
+            class="cover7"
+            v-if="equipmentShow"
+            @click="treetrue = false"
+        ></div>
+        <SopListPop
+            v-if="SopListPopShow"
+            title="查看附件"
+            SopListPopType="查看文件"
+            :hiddenBtn="sestion == 1"
+            :SopListPopItem="SopListPopItem"
+            @callback="sopListPopCallback"
+        ></SopListPop>
+        <tip-pop
+            v-if="isTipShow"
+            :tipText="tipText"
+            :noCancel="noCancel"
+            @tipCallBack="tipCallBack"
+        ></tip-pop>
     </div>
 </template>
 
 <script>
-import MySearch from '../public/search01.vue';
-import moment from 'moment'
-// import MyPage from '../public/Pages.vue';
+import moment from 'moment';
 import XLSX from 'xlsx';
+import SopListPop from './SopListPop.vue';
+import TipPop from '../public/tipPop.vue';
+
 export default {
-    components: {
-        // MySearch,
-        // MyPage
-    },
+    components: { TipPop, SopListPop },
     data() {
         return {
-               pdyd1:true,
-            pdyd2:true,
-            pdyd3:true,
+            isTipShow: false,
+            tipText: '',
+            noCancel: true,
+            lang: JSON.parse(localStorage.getItem('languages'))[
+                localStorage.getItem('currentLang')
+            ],
+            SopListPopItem: null,
+            SopListPopShow: false,
+            useroptions: [],
+            pdyd1: true,
+            pdyd2: true,
+            pdyd3: true,
             nowcheck: '',
             pddata: 1,
             value1: new Date(new Date().toLocaleDateString()),
@@ -925,7 +1605,7 @@ export default {
             nowpage: 1,
             outputs: [],
             tableData: [],
-            alcheckArr:[],
+            alcheckArr: [],
             multipleSelection: [],
             excelData: [],
             selectname: [],
@@ -983,7 +1663,7 @@ export default {
                     label: '停止'
                 }
             ],
-    TimeOptions1: [
+            TimeOptions1: [
                 {
                     value: '小时',
                     label: '小时'
@@ -1039,7 +1719,7 @@ export default {
                     label: '月'
                 }
             ],
-                 xiala:require('../../assets/images/ziyuan4.png'),
+            xiala: require('../../assets/images/ziyuan4.png'),
             hsavalue: '启用',
             addShow: false, //弹窗是否显示
             equipmentShow: false,
@@ -1055,7 +1735,7 @@ export default {
             startimeS: '', //时间戳,
             treetrue: false,
             planName: '',
-            rwselect:'小时',
+            rwselect: '小时',
             inspecionNum: 2,
             inspectionNum2: 1,
             reduceTime: '',
@@ -1063,104 +1743,109 @@ export default {
             deviceType: '',
             keyWord: '',
             checkArr: [],
-            checkArr2:[],
+            checkArr2: [],
             checkDeleArr: [],
             RemarksText: '',
             ValueSID: '',
             SID: '',
             yidata: '',
-            jurisdiction:[],
-            buttonarr:[],
-            cxid:'',
-            cxshow:true,
-            tjid:"",
-            tjshow:true,
-            scid:'',
-            scshow:true,
-            ckid:'',
-            ckshow:true,
-            bjid:'',
-            bjshow:true,
-            zxtime:1,
-            rwtime:1,
-            zoom:1,
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
+            jurisdiction: [],
+            buttonarr: [],
+            cxid: '',
+            cxshow: true,
+            tjid: '',
+            tjshow: true,
+            scid: '',
+            scshow: true,
+            ckid: '',
+            ckshow: true,
+            bjid: '',
+            bjshow: true,
+            zxtime: 1,
+            rwtime: 1,
+            zoom: 1,
+            PlanType: 0
         };
     },
 
     created() {
-        this.getLangData()
-              this.jurisdiction = this.$store.state.btnPowerData
-     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
-     console.log("dsad",this.buttonarr)
-         this.buttonarr.forEach((item)=>{
-         if(item.RightName == "点巡检计划-查询按钮"){
-          this.cxid = item.RightID
-         }else if(item.RightName == "点巡检计划-添加按钮"){
-          this.tjid = item.RightID
-         }else if(item.RightName == "点巡检计划-删除按钮"){
-          this.scid = item.RightID
-         }else if(item.RightName == "点巡检计划-查看按钮"){
-          this.ckid = item.RightID
-         }else if(item.RightName == "点巡检计划-编辑按钮"){
-          this.bjid = item.RightID
-         }
-     })
-      var userid = ''
-      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
-                userid = JSON.parse(
-                    sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserID;
-            } else {
-                userid = JSON.parse(
-                    sessionStorage.getItem('userInfo1')
-                ).SCMSUserID;
+        this.getLangData();
+        this.jurisdiction = this.$store.state.btnPowerData;
+        this.buttonarr = this.findPathByLeafId(
+            this.GetUrlParam('id'),
+            this.jurisdiction
+        )[0].Children;
+        console.log('dsad', this.buttonarr);
+        this.buttonarr.forEach(item => {
+            if (item.RightName == '点巡检计划-查询按钮') {
+                this.cxid = item.RightID;
+            } else if (item.RightName == '点巡检计划-添加按钮') {
+                this.tjid = item.RightID;
+            } else if (item.RightName == '点巡检计划-删除按钮') {
+                this.scid = item.RightID;
+            } else if (item.RightName == '点巡检计划-查看按钮') {
+                this.ckid = item.RightID;
+            } else if (item.RightName == '点巡检计划-编辑按钮') {
+                this.bjid = item.RightID;
             }
-             this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`,
-              }).then(res => {
-                  this.cxshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-               this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.tjid}`,
-              }).then(res => {
-                  this.tjshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-               this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.scid}`,
-              }).then(res => {
-                  this.scshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-               this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ckid}`,
-              }).then(res => {
-                  this.ckshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-               this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.bjid}`,
-              }).then(res => {
-                  this.bjshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
+        });
+        var userid = '';
+        if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+            userid = JSON.parse(sessionStorage.getItem('sightseerInfo1'))
+                .SCMSUserID;
+        } else {
+            userid = JSON.parse(sessionStorage.getItem('userInfo1')).SCMSUserID;
+        }
+        this.$axios({
+            method: 'post',
+            url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`
+        })
+            .then(res => {
+                this.cxshow = res.data.data;
+            })
+            .catch(err => {
+                console.log('err', err);
+            });
+        this.$axios({
+            method: 'post',
+            url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.tjid}`
+        })
+            .then(res => {
+                this.tjshow = res.data.data;
+            })
+            .catch(err => {
+                console.log('err', err);
+            });
+        this.$axios({
+            method: 'post',
+            url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.scid}`
+        })
+            .then(res => {
+                this.scshow = res.data.data;
+            })
+            .catch(err => {
+                console.log('err', err);
+            });
+        this.$axios({
+            method: 'post',
+            url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ckid}`
+        })
+            .then(res => {
+                this.ckshow = res.data.data;
+            })
+            .catch(err => {
+                console.log('err', err);
+            });
+        this.$axios({
+            method: 'post',
+            url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.bjid}`
+        })
+            .then(res => {
+                this.bjshow = res.data.data;
+            })
+            .catch(err => {
+                console.log('err', err);
+            });
         this.getEquipmentType();
         this.req(1);
         this.time4 = this.getNowTime();
@@ -1169,20 +1854,75 @@ export default {
         this.initTime();
     },
     methods: {
-        blurData(e, type) {
-            e.target.value = e.target.value === '' ? 1 : e.target.value 
-            this.sesstion[type] = Number(e.target.value)
+        tipCallBack(str) {
+            this.isTipShow = false;
         },
-        getLangData () {
-            this.sametimearr = [this.lang.HMI_HT_LineChartWindowViewModel_Hour, this.lang.MaintenanceManage_Day, this.lang.HMI_HT_LineChartWindowViewModel_Week, this.lang.HMI_HT_LineChartWindowViewModel_Month]
-            this.warrantystatus = [this.lang.EquipmentAccount_Inside, this.lang.EquipmentAccount_Outside]
-            this.devicestatus = [this.lang.EquipmentAccount_Used, this.lang.EquipmentAccount_Stopped, this.lang.EquipmentAccount_Abandoned]
-            this.warry = this.lang.EquipmentAccount_Inside
-            this.device = this.lang.EquipmentAccount_Used
-            this.Meter1 = this.lang.AlarmRecord_HT_Unlimited
-            this.Meter2 = this.lang.AlarmRecord_HT_Unlimited
-            this.ztarr = [this.lang.AlarmRecord_HT_Unlimited, this.lang.MaintenanceManage_Closed, this.lang.MaintenanceManage_Completed, this.lang.MaintenanceManage_TimeoutCompleted, this.lang.MaintenanceManage_Expired]
-            this.leixinarr = [this.lang.AlarmRecord_HT_Unlimited, this.lang.RepairManage_PlanRepair, this.lang.RepairManage_FaultRepair]
+        openSopListPop(item) {
+            this.SopListPopItem = item;
+            this.SopListPopShow = true;
+        },
+        sopListPopCallback() {
+            this.SopListPopItem = null;
+            this.SopListPopShow = false;
+        },
+        blurData(e, type) {
+            e.target.value = e.target.value === '' ? 1 : e.target.value;
+            this.sesstion[type] = Number(e.target.value);
+        },
+        uploadFn(file) {
+            let formData = new FormData();
+            console.log('file', file);
+            formData.append('file', file.file);
+            this.$axios({
+                method: 'post',
+                url: `/api/PointInspectionManage/PointInspectionManage_ImportPlan`,
+                data: formData
+            }).then(res => {
+                if (res.data.code == 0) {
+                    this.isTipShow = true;
+                    this.tipText = `导入成功！`;
+                    this.onetable();
+                } else {
+                    this.isTipShow = true;
+                    this.tipText = res.data.msg;
+                }
+            });
+        },
+        getLangData() {
+            this.lang = JSON.parse(localStorage.getItem('languages'))[
+                localStorage.getItem('currentLang')
+            ];
+            this.sametimearr = [
+                this.lang.HMI_HT_LineChartWindowViewModel_Hour,
+                this.lang.MaintenanceManage_Day,
+                this.lang.HMI_HT_LineChartWindowViewModel_Week,
+                this.lang.HMI_HT_LineChartWindowViewModel_Month
+            ];
+            this.warrantystatus = [
+                this.lang.EquipmentAccount_Inside,
+                this.lang.EquipmentAccount_Outside
+            ];
+            this.devicestatus = [
+                this.lang.EquipmentAccount_Used,
+                this.lang.EquipmentAccount_Stopped,
+                this.lang.EquipmentAccount_Abandoned
+            ];
+            this.warry = this.lang.EquipmentAccount_Inside;
+            this.device = this.lang.EquipmentAccount_Used;
+            this.Meter1 = this.lang.AlarmRecord_HT_Unlimited;
+            this.Meter2 = this.lang.AlarmRecord_HT_Unlimited;
+            this.ztarr = [
+                this.lang.AlarmRecord_HT_Unlimited,
+                this.lang.MaintenanceManage_Closed,
+                this.lang.MaintenanceManage_Completed,
+                this.lang.MaintenanceManage_TimeoutCompleted,
+                this.lang.MaintenanceManage_Expired
+            ];
+            this.leixinarr = [
+                this.lang.AlarmRecord_HT_Unlimited,
+                this.lang.RepairManage_PlanRepair,
+                this.lang.RepairManage_FaultRepair
+            ];
             this.hasoptions = [
                 {
                     value: this.lang.MaintenanceManage_Enable,
@@ -1192,7 +1932,7 @@ export default {
                     value: this.lang.MaintenanceManage_Stop,
                     label: this.lang.MaintenanceManage_Stop
                 }
-            ]
+            ];
             this.TimeOptions1 = [
                 {
                     value: this.lang.HMI_HT_LineChartWindowViewModel_Hour,
@@ -1210,7 +1950,7 @@ export default {
                     value: this.lang.HMI_HT_LineChartWindowViewModel_Month,
                     label: this.lang.HMI_HT_LineChartWindowViewModel_Month
                 }
-            ]
+            ];
             this.TimeOptions = [
                 {
                     value: this.lang.HMI_HT_LineChartWindowViewModel_Hour,
@@ -1228,7 +1968,7 @@ export default {
                     value: this.lang.HMI_HT_LineChartWindowViewModel_Month,
                     label: this.lang.HMI_HT_LineChartWindowViewModel_Month
                 }
-            ]
+            ];
             this.TimeeOptions = [
                 {
                     value: this.lang.HMI_HT_LineChartWindowViewModel_Hour,
@@ -1246,60 +1986,63 @@ export default {
                     value: this.lang.HMI_HT_LineChartWindowViewModel_Month,
                     label: this.lang.HMI_HT_LineChartWindowViewModel_Month
                 }
-            ]
-            this.hsavalue = this.lang.MaintenanceManage_Enable
-            this.timeValue = this.lang.HMI_HT_LineChartWindowViewModel_Hour
-            this.timeValuee = this.lang.HMI_HT_LineChartWindowViewModel_Hour
-            this.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Hour
+            ];
+            this.hsavalue = this.lang.MaintenanceManage_Enable;
+            this.timeValue = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+            this.timeValuee = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+            this.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
         },
-           findPathByLeafId(id,node,path){
-        if(!path){
-             path = []
-         }
-        for(let i=0;i<node.length;i++){
-          var temPath = path.concat();
-        
-          if(id == node[i].RightID){
-                temPath.push(node[i])
-           return temPath
-          }
-          if(node[i].Children){
-           var findResult = this.findPathByLeafId(id,node[i].Children,temPath)
-           if(findResult){
-           return findResult
-           }
-          }
-        }
-        },
-        changerwselect(a,b){
-         this.sesstion.rwselect = a
-          let dai = JSON.parse(JSON.stringify(this.sesstion))
-          this.sesstion = dai
-        },
-          GetUrlParam(paraName) {
-        let url = document.location.toString();
-        let arrObj = url.split("?");
-        if (arrObj.length > 1) {
-            let arrPara = arrObj[1].split("&");
-            let arr;
-           for(let i=0;i<arrPara.length;i++){
-            arr = arrPara[i].split("=");
-            if(arr&&arr[0] == paraName){
-              
-               return arr[1]
+        findPathByLeafId(id, node, path) {
+            if (!path) {
+                path = [];
             }
-           }
-           return ''
-        }else {
-            return ''
-        }
-          },
+            for (let i = 0; i < node.length; i++) {
+                var temPath = path.concat();
+
+                if (id == node[i].RightID) {
+                    temPath.push(node[i]);
+                    return temPath;
+                }
+                if (node[i].Children) {
+                    var findResult = this.findPathByLeafId(
+                        id,
+                        node[i].Children,
+                        temPath
+                    );
+                    if (findResult) {
+                        return findResult;
+                    }
+                }
+            }
+        },
+        changerwselect(a, b) {
+            this.sesstion.rwselect = a;
+            let dai = JSON.parse(JSON.stringify(this.sesstion));
+            this.sesstion = dai;
+        },
+        GetUrlParam(paraName) {
+            let url = document.location.toString();
+            let arrObj = url.split('?');
+            if (arrObj.length > 1) {
+                let arrPara = arrObj[1].split('&');
+                let arr;
+                for (let i = 0; i < arrPara.length; i++) {
+                    arr = arrPara[i].split('=');
+                    if (arr && arr[0] == paraName) {
+                        return arr[1];
+                    }
+                }
+                return '';
+            } else {
+                return '';
+            }
+        },
         currStationChange(val) {
             // debugger
             this.$forceUpdate();
-            let arr =  JSON.parse(JSON.stringify(this.checkArr))
-            if(arr.length<=this.alcheckArr.length){
-                arr = this.alcheckArr
+            let arr = JSON.parse(JSON.stringify(this.checkArr));
+            if (arr.length <= this.alcheckArr.length) {
+                arr = this.alcheckArr;
             }
             this.$nextTick(function() {
                 for (var i = 0; i < this.checkArr.length; i++) {
@@ -1318,7 +2061,7 @@ export default {
             this.nowcheck = i.Number;
             this.yidata = i;
             this.yinum = b;
-            console.log('eee',this.nowcheck,this.yinum)
+            console.log('eee', this.nowcheck, this.yinum);
         },
         swapArray(arr, index1, index2) {
             arr[index1] = arr.splice(index2, 1, arr[index1])[0];
@@ -1329,26 +2072,23 @@ export default {
                 this.swapArray(this.checkArr, this.yinum, this.yinum - 1);
                 this.yinum--;
             }
-         
         },
         xia() {
-       
             if (this.yinum + 1 !== this.checkArr.length) {
                 this.swapArray(this.checkArr, this.yinum, this.yinum + 1);
                 this.yinum++;
             }
-
         },
 
         deldata1() {
-              if(!this.scshow){
-                     setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                 this.pdyd1 = true;
+            if (!this.scshow) {
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd1 = true;
                 this.tipword = this.lang.NoOperationAuthority;
-                return
+                return;
             }
             let i = 0;
             let a = [];
@@ -1357,47 +2097,47 @@ export default {
             }
             if (a.length == 0) {
                 this.tipword = this.lang.EquipmentAccount_CheckTheDeleteItem;
-                  setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd1 = true;
             } else {
-              this.tipword = this.lang.EquipmentAccount_SureToDelete;
+                this.tipword = this.lang.EquipmentAccount_SureToDelete;
                 setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-               this.pdyd1 = true;
-              this.deltrue = false;
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd1 = true;
+                this.deltrue = false;
             }
         },
-        yes1(){
-               let a = [];
-               let i = 0;
+        yes1() {
+            let a = [];
+            let i = 0;
             for (i in this.list) {
                 a.push(this.list[i].ID);
             }
-              this.$axios({
-                    method: 'post',
-                    url:
-                        '/api/PointInspectionManage/PointInspectionManage_DeletePlan',
-                    data: a
-                }).then(res => {
-                    console.log(res);
-                    this.list = [];
-                    this.deltrue = true;
-                    this.tipword = res.data.data;
-                      setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                     this.pdyd1 = true;
-                    this.sad(1);
+            this.$axios({
+                method: 'post',
+                url:
+                    '/api/PointInspectionManage/PointInspectionManage_DeletePlan',
+                data: a
+            }).then(res => {
+                console.log(res);
+                this.list = [];
+                this.deltrue = true;
+                this.tipword = res.data.data;
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
                 });
+                this.pdyd1 = true;
+                this.sad(1);
+            });
         },
-        no1(){
-         this.deltrue = true;
+        no1() {
+            this.deltrue = true;
             this.tipchange = false;
         },
         //类型选择赋值SID
@@ -1408,74 +2148,23 @@ export default {
                 }
             }
         },
-              move(name, namehead) {
-          //  $(`.${name}`).addClass('center')
-           let left = ($(`.${name}`).width())/2+'px'
-           let top = ($(`.${name}`).height())/2+'px'
-             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
-            $(`.${name}`)[0].addEventListener('mousedown', function(e) {
-                
-                console.log(e.target.className.toLocaleLowerCase());
-                if (e.target.className.toLocaleLowerCase() == namehead) {
-                    $(`.${name}`).removeClass('center')
-                    window.event.stopPropagation();
-                    var x = 0;
-                    var y = 0;
-                    var l = 0;
-                    var t = 0;
-                    var isDown = false;
-                    x = window.event.clientX;
-                    y = window.event.clientY;
-                    //获取左部和顶部的偏移量
-                    l = $(`.${name}`)[0].offsetLeft;
-                    t = $(`.${name}`)[0].offsetTop;
-                    //开关打开
-                    isDown = true;
-                    var pdmove = false;
-
-                     
-                    //设置样式
-                    $('body')[0].style.cursor = 'move';
-
-                    $('body')[0].addEventListener('mousemove', function(e) {
-                        pdmove = true;
-                        if (isDown == false) {
-                            return;
-                        }
-                        //获取x和y
-                        var nx = window.event.clientX;
-                        var ny = window.event.clientY;
-
-                        //计算移动后的左偏移量和顶部的偏移量
-                        var nl = nx - (x - l);
-                        var nt = ny - (y - t);
-                        console.log(nx)
-                        console.log(x)
-                        console.log(l)
-                        $(`.${name}`)[0].style.left = nl + 'px';
-                        $(`.${name}`)[0].style.top = nt + 'px';
-                    });
-                    $('body')[0].addEventListener('mouseup', function(e) {
-                        //开关关闭
-                        isDown = false;
-                        $('body')[0].style.cursor = 'default';
-                    });
+        move(name, namehead) {
+            //  $(`.${name}`).addClass('center')
+            let left = $(`.${name}`).width() / 2 + 'px';
+            let top = $(`.${name}`).height() / 2 + 'px';
+            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+        },
+        sx() {
+            let that = this;
+            setTimeout(() => {
+                for (let i = 0; i < $('.el-picker-panel').length; i++) {
+                    $('.el-picker-panel')[i].style.zoom = that.zoom;
+                }
+                for (let i = 0; i < $('.el-select-dropdown').length; i++) {
+                    $('.el-select-dropdown')[i].style.zoom = that.zoom;
                 }
             });
-        },
-                                       sx(){
-                                        
-            let that = this
-            setTimeout(()=>{
-for(let i=0;i<$('.el-picker-panel').length;i++){
-                $('.el-picker-panel')[i].style.zoom = that.zoom
-            }
-            for(let i=0;i<$('.el-select-dropdown').length;i++){
-                $('.el-select-dropdown')[i].style.zoom = that.zoom
-            }
-            })
-              
         },
         //选择时间
         timeValueFun() {},
@@ -1486,29 +2175,26 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         treechange() {
             this.selectword2();
         },
-                sx1(){
-            let that = this
-            setTimeout(()=>{
-for(let i=0;i<$('.el-select__caret').length;i++){
-    console.log($('.el-select__caret')[i])
-              
-            }
-            })
-              
+        sx1() {
+            let that = this;
+            setTimeout(() => {
+                for (let i = 0; i < $('.el-select__caret').length; i++) {
+                    console.log($('.el-select__caret')[i]);
+                }
+            });
         },
         //开启添加弹窗
         addPopFun() {
-            
-              if(!this.tjshow){
-                     setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                 this.pdyd1 = true;
+            if (!this.tjshow) {
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd1 = true;
                 this.tipword = this.lang.NoOperationAuthority;
-                return
+                return;
             }
-            
+
             this.getDate();
             this.nowcheck = '';
             this.sestion = 3;
@@ -1522,34 +2208,25 @@ for(let i=0;i<$('.el-select__caret').length;i++){
             this.timeValue = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
             this.timeValuee = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
             this.hsavalue = this.lang.MaintenanceManage_Enable;
+            this.PlanType = 0;
             this.RemarksText = '';
             this.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
-                setTimeout(() => {
-            this.addShow = true;
-            this.sx1()
+            setTimeout(() => {
+                this.addShow = true;
+                this.sx1();
                 this.move('addPop', 'looktop');
             });
-               this.userValue = 'SuperAdmin'
-              this.pdyd3 = true;
-            this.rwtime = 1
-                 this.Expiretime = moment(this.startime).add(Number(6),"days").format("YYYY-MM-DD HH:mm:ss")
-           
+            this.userValue = 'SuperAdmin';
+            this.pdyd3 = true;
+            this.rwtime = 1;
+            this.Expiretime = moment(this.startime)
+                .add(Number(6), 'days')
+                .format('YYYY-MM-DD HH:mm:ss');
         },
-                                sx(){
-            let that = this
-            setTimeout(()=>{
-for(let i=0;i<$('.el-picker-panel').length;i++){
-                $('.el-picker-panel')[i].style.zoom = that.zoom
-            }
-            for(let i=0;i<$('.el-select-dropdown').length;i++){
-                $('.el-select-dropdown')[i].style.zoom = that.zoom
-            }
-            })
-              
-        },
+
         //关闭添加弹窗
         addPopcancel() {
-                let ss = JSON.stringify(this.antable);
+            let ss = JSON.stringify(this.antable);
             this.tableData1 = JSON.parse(ss);
             this.addShow = false;
         },
@@ -1565,7 +2242,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         },
         //关闭设备弹窗
         EquipmentCancelFun() {
-             this.checkArr2 = []
+            this.checkArr2 = [];
             // console.log('(this.sestion',this.sestion)
             // if (this.sestion == 3) {
             //     // this.checkArr = [];
@@ -1578,43 +2255,43 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         },
         //确定设备弹窗
         EquipmentQuerFun() {
-            
-            let arr = JSON.parse(JSON.stringify(this.checkArr))
+            let arr = JSON.parse(JSON.stringify(this.checkArr));
             // if(arr.length<this.alcheckArr.length){
             //     arr = this.alcheckArr
             // }
-             var checkArr2arr = []
-             if (this.checkArr2.length === 0) {
+            var checkArr2arr = [];
+            if (this.checkArr2.length === 0) {
                 this.tipchange = true;
                 this.tipword = this.lang.FileManage_SelectEquipment;
-                return
-             }
-            for(let i=0;i<arr.length;i++){
-                checkArr2arr.push(arr[i].AID)
+                return;
             }
-            var check = []
-            for(let j=0;j<this.checkArr2.length;j++){
-                var index = checkArr2arr.indexOf(this.checkArr2[j].AID)
-                if(index == -1){
-                    check.push(this.checkArr2[j])
+            for (let i = 0; i < arr.length; i++) {
+                checkArr2arr.push(arr[i].AID);
+            }
+            var check = [];
+            for (let j = 0; j < this.checkArr2.length; j++) {
+                var index = checkArr2arr.indexOf(this.checkArr2[j].AID);
+                if (index == -1) {
+                    check.push(this.checkArr2[j]);
                 }
             }
 
-            this.checkArr = JSON.parse(JSON.stringify(this.checkArr.concat(check)))
+            this.checkArr = JSON.parse(
+                JSON.stringify(this.checkArr.concat(check))
+            );
             this.equipmentShow = false;
             for (let i = 0; i < this.checkArr.length; i++) {
                 this.checkArr[i].Number = i + 1;
             }
-             this.checkArr2 = []
+            this.checkArr2 = [];
         },
         //开启设备关联弹窗
         inspectionAddFun() {
-            
-            this.nowcheck = this.yinum+1
-            this.checkArr11 = this.checkArr
+            this.nowcheck = this.yinum + 1;
+            this.checkArr11 = this.checkArr;
 
-              setTimeout(() => {
-            this.equipmentShow= true;
+            setTimeout(() => {
+                this.equipmentShow = true;
                 this.move('addEquipment', 'looktop1');
             });
             this.pdyd2 = true;
@@ -1626,8 +2303,8 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         },
         //删除设备
         inspectionDeleteFun() {
-            this.nowcheck = ''
-            this.alcheckArr = JSON.parse(JSON.stringify(this.checkArr))
+            this.nowcheck = '';
+            this.alcheckArr = JSON.parse(JSON.stringify(this.checkArr));
             if (this.AllShow == true) {
                 this.checkArr = [];
                 this.$refs.checkiptAll1.checked = false;
@@ -1644,15 +2321,15 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 //     this.checkArr.splice(ind, 1);
                 //     tt = true;
                 // }
-                  var deleteArr = []
-                for(let i=0;i<this.checkDeleArr.length;i++){
-                    deleteArr.push(this.checkArr[this.checkDeleArr[i]])
+                var deleteArr = [];
+                for (let i = 0; i < this.checkDeleArr.length; i++) {
+                    deleteArr.push(this.checkArr[this.checkDeleArr[i]]);
                 }
-                for(let k=0;k<this.checkArr.length;k++){
-                    var index = deleteArr.indexOf(this.checkArr[k])
-                    if(index != -1){
+                for (let k = 0; k < this.checkArr.length; k++) {
+                    var index = deleteArr.indexOf(this.checkArr[k]);
+                    if (index != -1) {
                         this.checkArr.splice(k, 1);
-                        k--
+                        k--;
                     }
                 }
 
@@ -1662,7 +2339,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 }
                 this.checkDeleArr = [];
             }
-             this.AllShow = false
+            this.AllShow = false;
         },
         // 巡检人接口
         InspectingPeopleAxios() {
@@ -1675,7 +2352,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 argKeyWord: ''
             })
                 .then(res => {
-                    console.log("巡检人",res)
+                    console.log('巡检人', res);
                     var data = res.data.data.DataList;
                     this.useroptions = [];
                     this.userValue = data[0].UserAccount;
@@ -1686,7 +2363,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         };
                         this.useroptions.push(value);
                     }
-                   
                 })
                 .catch(function(error) {
                     // console.log(error);
@@ -1700,7 +2376,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             var mothe = month > 9 ? month : '0' + month; //获取当前日
             var date = myDate.getDate();
             var da = date > 9 ? date : '0' + date;
-            var h = myDate.getHours()+1; //获取当前小时数(0-23)
+            var h = myDate.getHours() + 1; //获取当前小时数(0-23)
             var he = h > 9 ? h : '0' + h;
             var m = myDate.getMinutes(); //获取当前分钟数(0-59)
             var me = m > 9 ? m : '0' + m;
@@ -1715,7 +2391,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         },
         //转为日期时间
         getTime(dt) {
-            dt = new Date(dt)
+            dt = new Date(dt);
             var year = dt.getFullYear(); //获取当前月
             var month = dt.getMonth() + 1;
             var mothe = month > 9 ? month : '0' + month; //获取当前日
@@ -1737,15 +2413,25 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             let timestamp = new Date(time).getTime();
             return timestamp;
         },
-            endValue(time,stime,endtime){
-            if(time == this.lang.HMI_HT_LineChartWindowViewModel_Hour){
-               return moment(stime).add(Number(endtime),"hours").format("YYYY-MM-DD HH:mm:ss")
-            }else if(time == this.lang.MaintenanceManage_Day){
-              return  moment(stime).add(Number(endtime),"days").format("YYYY-MM-DD HH:mm:ss")
-            }else if(time == this.lang.HMI_HT_LineChartWindowViewModel_Week){
-              return  moment(stime).add(Number(endtime),"weeks").format("YYYY-MM-DD HH:mm:ss")
-            }else if(time == this.lang.HMI_HT_LineChartWindowViewModel_Month){
-               return moment(stime).add(Number(endtime),"months").format("YYYY-MM-DD HH:mm:ss")
+        endValue(time, stime, endtime) {
+            if (time == this.lang.HMI_HT_LineChartWindowViewModel_Hour) {
+                return moment(stime)
+                    .add(Number(endtime), 'hours')
+                    .format('YYYY-MM-DD HH:mm:ss');
+            } else if (time == this.lang.MaintenanceManage_Day) {
+                return moment(stime)
+                    .add(Number(endtime), 'days')
+                    .format('YYYY-MM-DD HH:mm:ss');
+            } else if (time == this.lang.HMI_HT_LineChartWindowViewModel_Week) {
+                return moment(stime)
+                    .add(Number(endtime), 'weeks')
+                    .format('YYYY-MM-DD HH:mm:ss');
+            } else if (
+                time == this.lang.HMI_HT_LineChartWindowViewModel_Month
+            ) {
+                return moment(stime)
+                    .add(Number(endtime), 'months')
+                    .format('YYYY-MM-DD HH:mm:ss');
             }
         },
         initTime() {
@@ -1777,50 +2463,70 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             this.datatime(da);
             this.endtimeS = this.datatime(da);
         },
+        changePlanType3() {
+            this.inspecionNum = '';
+            this.inspectionNum2 = '';
+        },
+        changePlanType() {
+            this.sesstion.a = '';
+            this.sesstion.b = '';
+        },
         //添加弹窗确定按钮
         addQuerFun() {
-            console.log('确定了',this.sestion)
+            console.log('确定了', this.sestion);
             if (this.sestion == 3) {
-              
-                 if(this.rwselect == this.lang.HMI_HT_LineChartWindowViewModel_Hour){
-               this.endtime  = 
-                moment(this.startime).add(Number(this.rwtime),"hours").format("YYYY-MM-DD HH:mm:ss")
-            }else if(this.rwselect == this.lang.MaintenanceManage_Day){
-               this.endtime  = 
-                moment(this.startime).add(Number(this.rwtime),"days").format("YYYY-MM-DD HH:mm:ss")
-            }else if(this.rwselect == this.lang.HMI_HT_LineChartWindowViewModel_Week){
-               this.endtime  = 
-                moment(this.startime).add(Number(this.rwtime),"weeks").format("YYYY-MM-DD HH:mm:ss")
-            }else if(this.rwselect == this.lang.HMI_HT_LineChartWindowViewModel_Month){
-               this.endtime = 
-                moment(this.startime).add(Number(this.rwtime),"months").format("YYYY-MM-DD HH:mm:ss")
-            }
+                if (
+                    this.rwselect ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                ) {
+                    this.endtime = moment(this.startime)
+                        .add(Number(this.rwtime), 'hours')
+                        .format('YYYY-MM-DD HH:mm:ss');
+                } else if (this.rwselect == this.lang.MaintenanceManage_Day) {
+                    this.endtime = moment(this.startime)
+                        .add(Number(this.rwtime), 'days')
+                        .format('YYYY-MM-DD HH:mm:ss');
+                } else if (
+                    this.rwselect ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Week
+                ) {
+                    this.endtime = moment(this.startime)
+                        .add(Number(this.rwtime), 'weeks')
+                        .format('YYYY-MM-DD HH:mm:ss');
+                } else if (
+                    this.rwselect ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Month
+                ) {
+                    this.endtime = moment(this.startime)
+                        .add(Number(this.rwtime), 'months')
+                        .format('YYYY-MM-DD HH:mm:ss');
+                }
                 if (this.planName == '') {
-                      setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                     this.pdyd1 = true;
-                    this.tipword = this.lang.MaintenanceManage_PlanNameIsEmpty
+                    setTimeout(() => {
+                        this.tipchange = true;
+                        this.move('tip', 'tiphead');
+                    });
+                    this.pdyd1 = true;
+                    this.tipword = this.lang.MaintenanceManage_PlanNameIsEmpty;
                     return;
                 }
                 var newDate = new Date().getTime();
                 if (newDate > this.startime) {
-                      setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                     this.pdyd1 = true;
-                    this.tipword = this.lang.PointInspectionManage_StartTimeMustBeGreaterThanCurrentTime
+                    setTimeout(() => {
+                        this.tipchange = true;
+                        this.move('tip', 'tiphead');
+                    });
+                    this.pdyd1 = true;
+                    this.tipword = this.lang.PointInspectionManage_StartTimeMustBeGreaterThanCurrentTime;
                     return;
                 }
                 if (this.endtime <= this.startime) {
-                      setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                     this.pdyd1 = true;
-                    this.tipword = this.lang.PointInspectionManage_EndTimeMustBeGreaterThanStartTime
+                    setTimeout(() => {
+                        this.tipchange = true;
+                        this.move('tip', 'tiphead');
+                    });
+                    this.pdyd1 = true;
+                    this.tipword = this.lang.PointInspectionManage_EndTimeMustBeGreaterThanStartTime;
                     return;
                 }
                 //巡检周期判断
@@ -1830,7 +2536,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         this.move('tip', 'tiphead');
                     });
                     this.pdyd1 = true;
-                    this.tipword = this.lang.PointInspectionManage_PatrolCycleIsEmpty
+                    this.tipword = this.lang.PointInspectionManage_PatrolCycleIsEmpty;
                     return;
                 } else {
                     var type = Number(this.inspecionNum);
@@ -1840,21 +2546,24 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                             this.move('tip', 'tiphead');
                         });
                         this.pdyd1 = true;
-                        this.tipword = this.lang.PointInspectionManage_PatrolCycleMustBePositiveInteger
+                        this.tipword = this.lang.PointInspectionManage_PatrolCycleMustBePositiveInteger;
                         return;
                     } else {
                         if (this.inspecionNum <= 0) {
                             setTimeout(() => {
-                            this.tipchange = true;
+                                this.tipchange = true;
                                 this.move('tip', 'tiphead');
                             });
                             this.pdyd1 = true;
-                            this.tipword = this.lang.PointInspectionManage_PatrolCycleMustBePositiveInteger
+                            this.tipword = this.lang.PointInspectionManage_PatrolCycleMustBePositiveInteger;
                             return;
                         } else {
                             var endStarTime = this.endtimeS - this.startimeS;
 
-                            if (this.timeValue == this.lang.HMI_HT_LineChartWindowViewModel_Hour) {
+                            if (
+                                this.timeValue ==
+                                this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                            ) {
                                 this.PeriodUnit = 1;
                                 var time11 = this.inspecionNum * 60 * 60 * 1000;
                                 this.reduceTime = this.inspecionNum;
@@ -1865,10 +2574,13 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                                         this.move('tip', 'tiphead');
                                     });
                                     this.pdyd1 = true;
-                                    this.tipword = this.lang.PointInspectionManage_CycleTimeLessThanDifferenceBetweenStartEndTime
+                                    this.tipword = this.lang.PointInspectionManage_CycleTimeLessThanDifferenceBetweenStartEndTime;
                                     return;
                                 }
-                            } else if (this.timeValue == this.lang.MaintenanceManage_Day) {
+                            } else if (
+                                this.timeValue ==
+                                this.lang.MaintenanceManage_Day
+                            ) {
                                 this.PeriodUnit = 2;
                                 var time22 =
                                     this.inspecionNum * 24 * 60 * 60 * 1000;
@@ -1879,10 +2591,13 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                                         this.move('tip', 'tiphead');
                                     });
                                     this.pdyd1 = true;
-                                    this.tipword = this.lang.PointInspectionManage_CycleTimeLessThanDifferenceBetweenStartEndTime
+                                    this.tipword = this.lang.PointInspectionManage_CycleTimeLessThanDifferenceBetweenStartEndTime;
                                     return;
                                 }
-                            } else if (this.timeValue == this.lang.HMI_HT_LineChartWindowViewModel_Week) {
+                            } else if (
+                                this.timeValue ==
+                                this.lang.HMI_HT_LineChartWindowViewModel_Week
+                            ) {
                                 this.PeriodUnit = 3;
                                 var time33 =
                                     this.inspecionNum *
@@ -1897,7 +2612,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                                         this.move('tip', 'tiphead');
                                     });
                                     this.pdyd1 = true;
-                                    this.tipword = this.lang.PointInspectionManage_CycleTimeLessThanDifferenceBetweenStartEndTime
+                                    this.tipword = this.lang.PointInspectionManage_CycleTimeLessThanDifferenceBetweenStartEndTime;
                                     return;
                                 }
                             } else {
@@ -1916,7 +2631,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                                         this.move('tip', 'tiphead');
                                     });
                                     this.pdyd1 = true;
-                                    this.tipword = this.lang.PointInspectionManage_CycleTimeLessThanDifferenceBetweenStartEndTime
+                                    this.tipword = this.lang.PointInspectionManage_CycleTimeLessThanDifferenceBetweenStartEndTime;
                                     return;
                                 }
                             }
@@ -1927,7 +2642,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                                     this.move('tip', 'tiphead');
                                 });
                                 this.pdyd1 = true;
-                                this.tipword = this.lang.PointInspectionManage_PleaseAddPatrolInspectionEquipment
+                                this.tipword = this.lang.PointInspectionManage_PleaseAddPatrolInspectionEquipment;
                                 return;
                             }
                         }
@@ -1940,7 +2655,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         this.move('tip', 'tiphead');
                     });
                     this.pdyd1 = true;
-                    this.tipword = this.lang.PointInspectionManage_PleaseAddPatrolInspectionEquipment
+                    this.tipword = this.lang.PointInspectionManage_PleaseAddPatrolInspectionEquipment;
                     return;
                 }
                 //checkArr
@@ -1951,13 +2666,14 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                             this.move('tip', 'tiphead');
                         });
                         this.pdyd1 = true;
-                        let msg = this.lang.PointInspectionManage_RowSelectInspectionItems
-                        let firstL = msg.indexOf('{')
-                        let firstR = msg.indexOf('}') + 1
-                        let str1 = msg.slice(firstL, firstR)
-                        msg = msg.replace(str1, `${s + 1}`)
+                        let msg = this.lang
+                            .PointInspectionManage_RowSelectInspectionItems;
+                        let firstL = msg.indexOf('{');
+                        let firstR = msg.indexOf('}') + 1;
+                        let str1 = msg.slice(firstL, firstR);
+                        msg = msg.replace(str1, `${s + 1}`);
                         // this.tipword = `请选择巡检设备第${s + 1}行的巡检项目！`;
-                        this.tipword =msg
+                        this.tipword = msg;
                         return;
                     }
                 }
@@ -1965,11 +2681,11 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 //巡检判断结束
                 if (this.Expiretime <= this.endtime) {
                     setTimeout(() => {
-                    this.tipchange = true;
+                        this.tipchange = true;
                         this.move('tip', 'tiphead');
                     });
                     this.pdyd1 = true;
-                    this.tipword = this.lang.PointInspectionManage_ExpirationTimeMustBeGreaterThanEndTime
+                    this.tipword = this.lang.PointInspectionManage_ExpirationTimeMustBeGreaterThanEndTime;
                     return;
                 }
                 if (this.inspectionNum2 == '') {
@@ -1978,40 +2694,52 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         this.move('tip', 'tiphead');
                     });
                     this.pdyd1 = true;
-                    this.tipword = this.lang.PointInspectionManage_AdvanceReminderIsEmpty
+                    this.tipword = this.lang.PointInspectionManage_AdvanceReminderIsEmpty;
                     return;
                 } else {
                     var type1 = Number(this.inspectionNum2);
                     if (type == true && type !== 1) {
                         setTimeout(() => {
-                        this.tipchange = true;
+                            this.tipchange = true;
                             this.move('tip', 'tiphead');
-                        });            
+                        });
                         this.pdyd1 = true;
                         this.pdyd1 = true;
-                        this.tipword = this.lang.PointInspectionManage_AdvanceReminderMustNotLessThan0
+                        this.tipword = this.lang.PointInspectionManage_AdvanceReminderMustNotLessThan0;
                         return;
                     } else {
                         if (this.inspectionNum2 < 0) {
-                              setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                             this.pdyd1 = true;
-                            this.tipword = this.lang.PointInspectionManage_AdvanceReminderMustNotLessThan0
+                            setTimeout(() => {
+                                this.tipchange = true;
+                                this.move('tip', 'tiphead');
+                            });
+                            this.pdyd1 = true;
+                            this.tipword = this.lang.PointInspectionManage_AdvanceReminderMustNotLessThan0;
                             return;
                         } else {
                             var time55;
-                            if (this.timeValuee == this.lang.HMI_HT_LineChartWindowViewModel_Hour) {
+                            if (
+                                this.timeValuee ==
+                                this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                            ) {
                                 this.ReminderTimeUnit = 1;
                                 time55 = this.inspectionNum2;
-                            } else if (this.timeValuee == this.lang.MaintenanceManage_Day) {
+                            } else if (
+                                this.timeValuee ==
+                                this.lang.MaintenanceManage_Day
+                            ) {
                                 this.ReminderTimeUnit = 2;
                                 time55 = this.inspectionNum2 * 24;
-                            } else if (this.timeValuee == this.lang.HMI_HT_LineChartWindowViewModel_Week) {
+                            } else if (
+                                this.timeValuee ==
+                                this.lang.HMI_HT_LineChartWindowViewModel_Week
+                            ) {
                                 this.ReminderTimeUnit = 3;
                                 time55 = this.inspectionNum2 * 24 * 7;
-                            } else if (this.timeValuee == this.lang.HMI_HT_LineChartWindowViewModel_Month) {
+                            } else if (
+                                this.timeValuee ==
+                                this.lang.HMI_HT_LineChartWindowViewModel_Month
+                            ) {
                                 this.ReminderTimeUnit = 4;
                                 time55 = this.inspectionNum2 * 24 * 30;
                             }
@@ -2022,6 +2750,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 this.dataValue = {
                     PlanName: this.planName,
                     Executor: this.userValue,
+                    PlanType: this.PlanType,
                     StartTime: this.getTime(this.startime),
                     EndTime: this.getTime(this.endtime),
                     MaturityTime: this.getTime(this.Expiretime),
@@ -2029,19 +2758,27 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     PeriodUnit: this.PeriodUnit,
                     ReminderTimeValue: Number(this.inspectionNum2),
                     ReminderTimeUnit: this.ReminderTimeUnit,
-                    IsEnabled: this.hsavalue == this.lang.MaintenanceManage_Enable ? true : false,
+                    IsEnabled:
+                        this.hsavalue == this.lang.MaintenanceManage_Enable
+                            ? true
+                            : false,
                     Remarks: this.RemarksText,
                     DeviceAndStandardGroup: []
                 };
-                   
+
                 var checkArrSid = [];
                 for (var t = 0; t < this.checkArr.length; t++) {
                     checkArrSid.push(this.checkArr[t].AID);
                 }
 
-                 console.log('EquipmentTypeAll555',this.EquipmentTypeAll,this.checkArr,checkArrSid)
-                console.log( this.dataValue)
-              
+                console.log(
+                    'EquipmentTypeAll555',
+                    this.EquipmentTypeAll,
+                    this.checkArr,
+                    checkArrSid
+                );
+                console.log(this.dataValue);
+
                 for (var w = 0; w < this.EquipmentTypeAll.length; w++) {
                     var indexof = checkArrSid.indexOf(
                         this.EquipmentTypeAll[w].AID
@@ -2055,7 +2792,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         this.dataValue.DeviceAndStandardGroup.push(value1);
                     }
                 }
-              
+
                 this.$axios({
                     method: 'post',
                     url:
@@ -2065,20 +2802,20 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     .then(res => {
                         console.log('resrr', res);
                         if (res.data.code == 0) {
-                              setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                             this.pdyd1 = true;
+                            setTimeout(() => {
+                                this.tipchange = true;
+                                this.move('tip', 'tiphead');
+                            });
+                            this.pdyd1 = true;
                             this.tipword = res.data.data;
                             this.addShow = false;
                             this.getsetime();
                         } else {
-                              setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                             this.pdyd1 = true;
+                            setTimeout(() => {
+                                this.tipchange = true;
+                                this.move('tip', 'tiphead');
+                            });
+                            this.pdyd1 = true;
                             this.tipword = res.data.msg;
                         }
                     })
@@ -2088,27 +2825,55 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
 
                 console.log('EquipmentTypeAll', this.EquipmentTypeAll);
             } else {
-                if (this.sesstion.PeriodUnit == this.lang.HMI_HT_LineChartWindowViewModel_Hour) {
+                if (
+                    this.sesstion.PeriodUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                ) {
                     this.sesstion.PeriodUnit = 1;
-                } else if (this.sesstion.PeriodUnit == this.lang.MaintenanceManage_Day) {
+                } else if (
+                    this.sesstion.PeriodUnit == this.lang.MaintenanceManage_Day
+                ) {
                     this.sesstion.PeriodUnit = 2;
-                } else if (this.sesstion.PeriodUnit == this.lang.HMI_HT_LineChartWindowViewModel_Week) {
+                } else if (
+                    this.sesstion.PeriodUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Week
+                ) {
                     this.sesstion.PeriodUnit = 3;
-                } else if (this.sesstion.PeriodUnit == this.lang.HMI_HT_LineChartWindowViewModel_Month) {
+                } else if (
+                    this.sesstion.PeriodUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Month
+                ) {
                     this.sesstion.PeriodUnit = 4;
                 }
-                if (this.sesstion.ReminderTimeUnit == this.lang.HMI_HT_LineChartWindowViewModel_Hour) {
+                if (
+                    this.sesstion.ReminderTimeUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                ) {
                     this.sesstion.ReminderTimeUnit = 1;
-                } else if (this.sesstion.ReminderTimeUnit == this.lang.MaintenanceManage_Day) {
+                } else if (
+                    this.sesstion.ReminderTimeUnit ==
+                    this.lang.MaintenanceManage_Day
+                ) {
                     this.sesstion.ReminderTimeUnit = 2;
-                } else if (this.sesstion.ReminderTimeUnit == this.lang.HMI_HT_LineChartWindowViewModel_Week) {
+                } else if (
+                    this.sesstion.ReminderTimeUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Week
+                ) {
                     this.sesstion.ReminderTimeUnit = 3;
-                } else if (this.sesstion.ReminderTimeUnit == this.lang.HMI_HT_LineChartWindowViewModel_Month) {
+                } else if (
+                    this.sesstion.ReminderTimeUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Month
+                ) {
                     this.sesstion.ReminderTimeUnit = 4;
                 }
-                if (this.sesstion.IsEnabled == this.lang.MaintenanceManage_Enable) {
+                if (
+                    this.sesstion.IsEnabled ==
+                    this.lang.MaintenanceManage_Enable
+                ) {
                     this.sesstion.IsEnabled = true;
-                } else if (this.sesstion.IsEnabled == this.lang.MaintenanceManage_Stop) {
+                } else if (
+                    this.sesstion.IsEnabled == this.lang.MaintenanceManage_Stop
+                ) {
                     this.sesstion.IsEnabled = false;
                 }
                 let a = [
@@ -2125,73 +2890,97 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     b.StandardID = this.checkArr[i].SID;
                     a.push(b);
                 }
-                 if(this.sesstion.rwselect == this.lang.HMI_HT_LineChartWindowViewModel_Hour){
-              this.sesstion.CurrentEndTime = 
-                moment(this.sesstion.CurrentStartTime).add(Number(this.sesstion.rwtime),"hours").format("YYYY-MM-DD HH:mm:ss")
-            }else if(this.sesstion.rwselect == this.lang.MaintenanceManage_Day){
-              this.sesstion.CurrentEndTime = 
-                moment(this.sesstion.CurrentStartTime).add(Number(this.sesstion.rwtime),"days").format("YYYY-MM-DD HH:mm:ss")
-            }else if(this.sesstion.rwselect == this.lang.HMI_HT_LineChartWindowViewModel_Week){
-              this.sesstion.CurrentEndTime = 
-                moment(this.sesstion.CurrentStartTime).add(Number(this.sesstion.rwtime),"weeks").format("YYYY-MM-DD HH:mm:ss")
-            }else if(this.sesstion.rwselect == this.lang.HMI_HT_LineChartWindowViewModel_Month){
-              this.sesstion.CurrentEndTime= 
-                moment(this.sesstion.CurrentStartTime).add(Number(this.sesstion.rwtime),"months").format("YYYY-MM-DD HH:mm:ss")
-            }
-              //判断是否存在相同设备或未选择的巡检项目
-              if(a.length){
-                  var StandardIDArr = []
-                  var isStandard = true
-                  var StandardIndex
-                  for(let o=0;o<a.length;o++){
-                      if(typeof(a[o].StandardID) != 'string'){
+                if (
+                    this.sesstion.rwselect ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                ) {
+                    this.sesstion.CurrentEndTime = moment(
+                        this.sesstion.CurrentStartTime
+                    )
+                        .add(Number(this.sesstion.rwtime), 'hours')
+                        .format('YYYY-MM-DD HH:mm:ss');
+                } else if (
+                    this.sesstion.rwselect == this.lang.MaintenanceManage_Day
+                ) {
+                    this.sesstion.CurrentEndTime = moment(
+                        this.sesstion.CurrentStartTime
+                    )
+                        .add(Number(this.sesstion.rwtime), 'days')
+                        .format('YYYY-MM-DD HH:mm:ss');
+                } else if (
+                    this.sesstion.rwselect ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Week
+                ) {
+                    this.sesstion.CurrentEndTime = moment(
+                        this.sesstion.CurrentStartTime
+                    )
+                        .add(Number(this.sesstion.rwtime), 'weeks')
+                        .format('YYYY-MM-DD HH:mm:ss');
+                } else if (
+                    this.sesstion.rwselect ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Month
+                ) {
+                    this.sesstion.CurrentEndTime = moment(
+                        this.sesstion.CurrentStartTime
+                    )
+                        .add(Number(this.sesstion.rwtime), 'months')
+                        .format('YYYY-MM-DD HH:mm:ss');
+                }
+                //判断是否存在相同设备或未选择的巡检项目
+                if (a.length) {
+                    var StandardIDArr = [];
+                    var isStandard = true;
+                    var StandardIndex;
+                    for (let o = 0; o < a.length; o++) {
+                        if (typeof a[o].StandardID != 'string') {
+                            setTimeout(() => {
+                                this.tipchange = true;
+                                this.move('tip', 'tiphead');
+                            });
+                            this.pdyd1 = true;
+                            let msg = this.lang
+                                .PointInspectionManage_RowSelectInspectionItems;
+                            let firstL = msg.indexOf('{');
+                            let firstR = msg.indexOf('}') + 1;
+                            let str1 = msg.slice(firstL, firstR);
+                            msg = msg.replace(str1, `${o + 1}`);
+
+                            //  this.tipword = `请选择巡检设备第${o + 1}行的巡检项目！`;
+                            this.tipword = msg;
+                            return;
+                        } else {
+                            console.log('a[o]', a[o]);
+                            StandardIDArr.push(a[o].DeviceID);
+                        }
+                    }
+                    var indexArr = [];
+                    for (let o1 = 0; o1 < StandardIDArr.length; o1++) {
+                        let ind = indexArr.indexOf(StandardIDArr[o1]);
+                        if (ind == -1) {
+                            indexArr.push(StandardIDArr[o1]);
+                        } else {
+                            isStandard = false;
+                            StandardIndex = o1;
+                        }
+                    }
+                    if (!isStandard) {
                         setTimeout(() => {
                             this.tipchange = true;
                             this.move('tip', 'tiphead');
                         });
                         this.pdyd1 = true;
-                        let msg = this.lang.PointInspectionManage_RowSelectInspectionItems
-                        let firstL = msg.indexOf('{')
-                        let firstR = msg.indexOf('}') + 1
-                        let str1 = msg.slice(firstL, firstR)
-                        msg = msg.replace(str1, `${o + 1}`)
+                        let msg = this.lang
+                            .PointInspectionManage_RowEquipmentSameStandardAlreadyExists;
+                        let firstL = msg.indexOf('{');
+                        let firstR = msg.indexOf('}') + 1;
+                        let str1 = msg.slice(firstL, firstR);
+                        msg = msg.replace(str1, `${StandardIndex + 1}`);
 
-                        //  this.tipword = `请选择巡检设备第${o + 1}行的巡检项目！`;
-                        this.tipword = msg
+                        //   this.tipword = `巡检设备第${StandardIndex + 1}行已存在相同标准的设备，请重新选择`;
+                        this.tipword = msg;
                         return;
-                      }else{
-                          console.log('a[o]',a[o])
-                          StandardIDArr.push(a[o].DeviceID)
-                      }
-                  }
-                  var indexArr = []
-                  for(let o1=0;o1<StandardIDArr.length;o1++){
-                      let ind = indexArr.indexOf(StandardIDArr[o1])
-                       if(ind == -1){
-                          indexArr.push(StandardIDArr[o1])
-                       }else{
-                           isStandard = false
-                           StandardIndex = o1
-                       }
-                  }
-                  if(!isStandard){
-                        setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                      this.pdyd1 = true;
-                        let msg = this.lang.PointInspectionManage_RowEquipmentSameStandardAlreadyExists
-                        let firstL = msg.indexOf('{')
-                        let firstR = msg.indexOf('}') + 1
-                        let str1 = msg.slice(firstL, firstR)
-                        msg = msg.replace(str1, `${StandardIndex + 1}`)
-
-                    //   this.tipword = `巡检设备第${StandardIndex + 1}行已存在相同标准的设备，请重新选择`;
-                        this.tipword = msg
-                       return;
-                  }
-                
-              }
+                    }
+                }
 
                 this.$axios({
                     method: 'post',
@@ -2202,6 +2991,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         PlanName: this.sesstion.Name,
                         Executor: this.sesstion.Executor,
                         StartTime: this.sesstion.CurrentStartTime,
+                        PlanType: this.sesstion.PlanType,
                         EndTime: this.sesstion.CurrentEndTime,
                         MaturityTime: this.sesstion.MaturityTime,
                         PeriodValue: this.sesstion.a,
@@ -2216,21 +3006,20 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     if (res.data.code == 0) {
                         this.sad(1);
                         this.addShow = false;
-                          setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                         this.pdyd1 = true;
-                        this.tipword = this.lang.FormulaManage_HT_FormulaSetting_ModifiedSuccessfully
+                        setTimeout(() => {
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                        this.pdyd1 = true;
+                        this.tipword = this.lang.FormulaManage_HT_FormulaSetting_ModifiedSuccessfully;
                     } else {
-                          setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-            
-                         this.pdyd1 = true;
-                         console.log('aaa',this.checkArr)
+                        setTimeout(() => {
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
 
+                        this.pdyd1 = true;
+                        console.log('aaa', this.checkArr);
 
                         this.tipword = res.data.msg;
                         if (this.sesstion.PeriodUnit == 1) {
@@ -2253,9 +3042,9 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         }
 
                         if (this.sesstion.IsEnabled == true) {
-                            this.sesstion.IsEnabled = this.lang.MaintenanceManage_Enable
+                            this.sesstion.IsEnabled = this.lang.MaintenanceManage_Enable;
                         } else if (this.sesstion.IsEnabled == false) {
-                            this.sesstion.IsEnabled = this.lang.MaintenanceManage_Stop
+                            this.sesstion.IsEnabled = this.lang.MaintenanceManage_Stop;
                         }
                     }
                 });
@@ -2267,8 +3056,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             this.tipchange = false;
         },
         //添加弹窗初始化
-        initPopData(num, dataAll){
-            
+        initPopData(num, dataAll) {
             this.$axios({
                 method: 'post',
                 url: `/api/EquipmentAccount/EquipmentAccount_GstEquipment?argDeviceType=${this.deviceType}&argKeyword=${this.keyWord}&argPageIndex=${num}&argPageSize=50`,
@@ -2276,126 +3064,127 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 argKeyword: this.keyWord,
                 argPageIndex: num,
                 argPageSize: 50
-            }).then(res => {
-                console.log('设备',res.data.data.DataList)
-                dataAll.push(...res.data.data.DataList)
+            })
+                .then(res => {
+                    console.log('设备', res.data.data.DataList);
+                    dataAll.push(...res.data.data.DataList);
 
-                this.$axios({
-                    method: 'post',
-                    url: `/api/PointInspectionManage/PointInspectionManage_GstStandard?argDeviceType&argKeyword&argPageSize=50000000&argPageIndex=${num}`,
-                    argDeviceType: '',
-                    argKeyword: ''
-                }).then(res => {
-                    
-                    var data = res.data.data.DataList;
-                    console.log('添加',data)
-                    var AIDShow = false;
-                    this.EquipmentTypeAll = [];
-                    for (let i = 0; i < dataAll.length; i++) {
-                        this.typeArr = [];
-                        this.SID = [];
-
-                        var value = {
-                            DeviceName: dataAll[i].DeviceName,
-                            DeviceNo: dataAll[i].DeviceNo,
-                            DeviceModel: dataAll[i].DeviceModel,
-                            DeviceType: dataAll[i].DetailDeviceType,
-                            type: this.typeArr,
-                            AID: dataAll[i].AID,
-                            value: '',
-                            SID: '',
-                            SIDValue: ''
-                        };
-
-                        //比较AID
-                        for (var e = 0; e < data.length; e++) {
-                            if (data[e].Devices.length != 0) {
-                                for (
-                                    var d = 0;
-                                    d < data[e].Devices.length;
-                                    d++
-                                ) {
-                                    if (
-                                        data[e].Devices[d].AID ==
-                                        dataAll[i].AID
-                                    ) {
-                                        var value1 = {
-                                            label: data[e].Name,
-                                            value: data[e].Name
-                                        };
-                                        this.typeArr.push(value1);
-                                        var value2 = {
-                                            label:
-                                                data[e].Projects[0].SID,
-                                            value:
-                                                data[e].Projects[0].SID
-                                        };
-                                        this.SID.push(value2);
-                                        AIDShow = true;
-                                        // break;
-                                    }
-                                    // else{
-                                    //     AIDShow = false
-                                    //     this.typeArr = [];
-                                    //     this.SID = [];
-                                    // }
-                                }
-                                // if(AIDShow){
-                                //     break;
-                                // }
-                            } else {
-                                AIDShow = false;
+                    this.$axios({
+                        method: 'post',
+                        url: `/api/PointInspectionManage/PointInspectionManage_GstStandard?argDeviceType&argKeyword&argPageSize=50000000&argPageIndex=${num}`,
+                        argDeviceType: '',
+                        argKeyword: ''
+                    })
+                        .then(res => {
+                            var data = res.data.data.DataList;
+                            console.log('添加', data);
+                            var AIDShow = false;
+                            this.EquipmentTypeAll = [];
+                            for (let i = 0; i < dataAll.length; i++) {
                                 this.typeArr = [];
                                 this.SID = [];
+
+                                var value = {
+                                    DeviceName: dataAll[i].DeviceName,
+                                    DeviceNo: dataAll[i].DeviceNo,
+                                    DeviceModel: dataAll[i].DeviceModel,
+                                    DeviceType: dataAll[i].DetailDeviceType,
+                                    type: this.typeArr,
+                                    AID: dataAll[i].AID,
+                                    value: '',
+                                    SID: '',
+                                    SIDValue: ''
+                                };
+
+                                //比较AID
+                                for (var e = 0; e < data.length; e++) {
+                                    if (data[e].Devices.length != 0) {
+                                        for (
+                                            var d = 0;
+                                            d < data[e].Devices.length;
+                                            d++
+                                        ) {
+                                            if (
+                                                data[e].Devices[d].AID ==
+                                                dataAll[i].AID
+                                            ) {
+                                                var value1 = {
+                                                    label: data[e].Name,
+                                                    value: data[e].Name
+                                                };
+                                                this.typeArr.push(value1);
+                                                var value2 = {
+                                                    label:
+                                                        data[e].Projects[0].SID,
+                                                    value:
+                                                        data[e].Projects[0].SID
+                                                };
+                                                this.SID.push(value2);
+                                                AIDShow = true;
+                                                // break;
+                                            }
+                                            // else{
+                                            //     AIDShow = false
+                                            //     this.typeArr = [];
+                                            //     this.SID = [];
+                                            // }
+                                        }
+                                        // if(AIDShow){
+                                        //     break;
+                                        // }
+                                    } else {
+                                        AIDShow = false;
+                                        this.typeArr = [];
+                                        this.SID = [];
+                                    }
+                                }
+                                value.type = this.typeArr;
+                                value.SID = this.SID;
+                                if (this.typeArr.length != 0) {
+                                    value.value = this.typeArr[0].value;
+                                    value.SIDValue = this.SID[0].label;
+                                }
+                                this.AID = value.AID;
+
+                                this.EquipmentTypeAll.push(value);
                             }
-                        }
-                        value.type = this.typeArr;
-                        value.SID = this.SID;
-                        if (this.typeArr.length != 0) {
-                            value.value = this.typeArr[0].value;
-                            value.SIDValue = this.SID[0].label;
-                        }
-                        this.AID = value.AID;
 
-                        this.EquipmentTypeAll.push(value);
+                            console.log(
+                                'EquipmentTypeAll',
+                                this.EquipmentTypeAll
+                            );
+                        })
+                        .catch(function(error) {
+                            console.log('err111111111111111111111', error);
+                        });
+
+                    if (res.data.data.ParameterList.NextEnabled) {
+                        this.initPopData(num + 1, dataAll);
+                        return;
                     }
-
-                    console.log(
-                        'EquipmentTypeAll',
-                        this.EquipmentTypeAll
-                    );
                 })
                 .catch(function(error) {
-                    console.log('err111111111111111111111', error);
+                    console.log('err', error);
                 });
-                
-                if(res.data.data.ParameterList.NextEnabled){
-                    this.initPopData(num+1, dataAll)
-                    return 
-                }
-            })
-            .catch(function(error) {
-                console.log('err', error);
-            });
         },
         // EquipmentTypeName
         addPopAxios() {
             if (this.Meter3id == '11111111-1111-1111-1111-111111111111') {
                 this.deviceType = '';
             }
-            let dataAll = []
-            this.initPopData(1, dataAll)
+            let dataAll = [];
+            this.initPopData(1, dataAll);
         },
         //设备管理单选框
         checkFun(item, index) {
             var checkDom = this.$refs.checkipt;
             if (checkDom[index].checked) {
                 // this.checkArr.push(item);
-                this.checkArr2.push(item)
+                this.checkArr2.push(item);
             } else {
                 var a = this.checkArr.indexOf(item);
                 // this.checkArr.splice(a, 1);
-                 this.checkArr2.splice(a, 1);
+                this.checkArr2.splice(a, 1);
             }
 
             //全选框是否选中
@@ -2407,21 +3196,21 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     break;
                 }
             }
-   
         },
         //全选框
         checkAllFun() {
-            
             if (this.$refs.checkiptAll.checked) {
-                if(this.checkArr.length != 0){
-                     this.checkArr2 =  []
-                    for(var j=0;j<this.EquipmentTypeAll.length;j++){
+                if (this.checkArr.length != 0) {
+                    this.checkArr2 = [];
+                    for (var j = 0; j < this.EquipmentTypeAll.length; j++) {
                         // this.checkArr.push(this.EquipmentTypeAll[j])
-                        this.checkArr2.push(this.EquipmentTypeAll[j])
+                        this.checkArr2.push(this.EquipmentTypeAll[j]);
                     }
-                }else{
+                } else {
                     // this.checkArr = this.EquipmentTypeAll;
-                    this.checkArr2 = JSON.parse(JSON.stringify(this.EquipmentTypeAll))
+                    this.checkArr2 = JSON.parse(
+                        JSON.stringify(this.EquipmentTypeAll)
+                    );
                 }
                 for (let i1 = 0; i1 < this.checkArr2.length; i1++) {
                     // this.checkArr[i1].Number = i1 + 1;
@@ -2429,17 +3218,15 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 }
             } else {
                 // this.checkArr = this.checkArr11;
-                this.checkArr2 = []
+                this.checkArr2 = [];
             }
             var checkDom = this.$refs.checkipt;
             for (var i = 0; i < checkDom.length; i++) {
                 checkDom[i].checked = this.$refs.checkiptAll.checked;
             }
-           
         },
         //添加弹窗单选框
         checkFun1(item, index) {
-            
             var checkDom = this.$refs.checkipt1;
 
             if (checkDom[index].checked) {
@@ -2510,49 +3297,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         tip1() {
             this.tipchange = false;
         },
-        mouseDownHandleelse(event) {
-            event.currentTarget.style.cursor = 'move';
-            window.onmousemove = this.mouseMoveHandleelse;
-        },
-        mouseDownHandleelse1(event) {
-            event.currentTarget.style.cursor = 'move';
-            window.onmousemove = this.mouseMoveHandleelse1;
-        },
-        mouseDownHandleelse2(event) {
-            event.currentTarget.style.cursor = 'move';
-            window.onmousemove = this.mouseMoveHandleelse2;
-        },
-        mouseMoveHandleelse(event) {
-            let moveLeft = event.pageX - 350 + 'px';
-            let moveTop = event.pageY - 30 + 'px';
-            this.$refs.kongtiao.style.left = moveLeft;
-            this.$refs.kongtiao.style.top = moveTop;
-        },
-        mouseMoveHandleelse1(event) {
-            let moveLeft = event.pageX - 350 + 'px';
-            let moveTop = event.pageY - 30 + 'px';
-            this.$refs.kongtiao1.style.left = moveLeft;
-            this.$refs.kongtiao1.style.top = moveTop;
-        },
-        mouseMoveHandleelse2(event) {
-            this.pdyd1 = false;
-            let moveLeft = event.pageX - 190 + 'px';
-            let moveTop = event.pageY - 20 + 'px';
-            this.$refs.kongtiao2.style.left = moveLeft;
-            this.$refs.kongtiao2.style.top = moveTop;
-        },
-        mouseUpHandleelse(event) {
-            window.onmousemove = null;
-            event.currentTarget.style.cursor = 'move';
-        },
-        mouseUpHandleelse1(event) {
-            window.onmousemove = null;
-            event.currentTarget.style.cursor = 'move';
-        },
-        mouseUpHandleelse2(event) {
-            window.onmousemove = null;
-            event.currentTarget.style.cursor = 'move';
-        },
+
         handleNodeClick(data) {
             if (this.select1 == 1) {
                 this.Preservation1 = data.label;
@@ -2571,7 +3316,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             console.log(obj);
         },
         cancel() {
-            console.log("ss")
+            console.log('ss');
             this.change = false;
             this.setionchange = false;
             let ss = JSON.stringify(this.antable);
@@ -2579,132 +3324,27 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         },
 
         handleEdit(a, b) {
-        
-              if(!this.ckshow){
-                     setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                 this.pdyd1 = true;
+            if (!this.ckshow) {
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd1 = true;
                 this.tipword = this.lang.NoOperationAuthority;
-                return
+                return;
             }
             this.nowcheck = '';
             this.setionchange = true;
             this.sestion = 1;
             this.disabled = true;
-              setTimeout(() => {
-            this.addShow = true;
-               this.sx1()
+            setTimeout(() => {
+                this.addShow = true;
+                this.sx1();
                 this.move('addPop', 'looktop');
             });
-             this.pdyd3 = true;
+            this.pdyd3 = true;
             b.a = parseInt(b.PeriodStr);
             b.b = parseInt(b.ReminderTimeValue);
-            if (b.PeriodUnit == 1) {
-                b.PeriodUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
-            } else if (b.PeriodUnit == 2) {
-                b.PeriodUnit = this.lang.MaintenanceManage_Day;
-            } else if (b.PeriodUnit == 3) {
-                b.PeriodUnit =this.lang.HMI_HT_LineChartWindowViewModel_Week;
-            } else if (b.PeriodUnit == 4) {
-                b.PeriodUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
-            }
-            if (b.ReminderTimeUnit == 1) {
-                b.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
-            } else if (b.ReminderTimeUnit == 2) {
-                b.ReminderTimeUnit = this.lang.MaintenanceManage_Day;
-            } else if (b.ReminderTimeUnit == 3) {
-                b.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Week;
-            } else if (b.ReminderTimeUnit == 4) {
-                b.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
-            }
-            if (b.IsEnabled == false) {
-                b.IsEnabled = this.lang.MaintenanceManage_Stop
-            } else {
-                b.IsEnabled = this.lang.MaintenanceManage_Enable
-            }
-            let aaa = b.MaturityTime.indexOf('/');
-            if (aaa == 0) {
-                b.MaturityTime = this.gettime(b.MaturityTime);
-            }
-            this.$axios({
-                method: 'post',
-                url: `/api/PointInspectionManage/PointInspectionManage_GstStandard?argDeviceType&argKeyword&argPageSize=50000000&argPageIndex=1`,
-                argDeviceType: '',
-                argKeyword: ''
-            }).then(res => {
-                console.log(res)
-                console.log(b)
-                for (let i = 0; i < res.data.data.DataList.length; i++) {
-                    for (let j = 0; j < b.Devices.length; j++) {
-                        if (b.Devices[j].SID == res.data.data.DataList[i].ID) {
-                            b.Devices[j].Name = res.data.data.DataList[i].Name;
-                            for(let a =0;a<res.data.data.DataList[i].Devices.length;a++){
-                                if(b.Devices[j].AID==res.data.data.DataList[i].Devices[a].AID){
-                                    b.Devices[j].DeviceType = res.data.data.DataList[i].Devices[a].DevicePath
-                                }
-                            }
-                            // b.Devices[j].DeviceType = res.data.data[i].DevicePath;
-                        }
-                    }
-                }
-            //                       for(let i=0;b.Devices.length;i++){
-            //       b.Devices[i].DeviceType =  b.Devices[i].DetailDeviceType
-            // }
-           
-                this.checkArr = b.Devices;
-            });
-
-            this.sesstion = b;
-            var startime = moment( this.sesstion.CurrentStartTime)
-            var endtime = moment( this.sesstion.CurrentEndTime)
-            var jsvalue = endtime.diff(startime,'hours')
-            var ss =  this.sesstion.CurrentStartTime.slice(8)
-            var ee =  this.sesstion.CurrentEndTime.slice(8)
-            var cc = ss == ee
-            console.log('jsvalue==>',jsvalue)
-           if(cc){
-                jsvalue = endtime.diff(startime,'months')
-                 this.sesstion.rwtime = jsvalue
-                 this.sesstion.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Month
-           }else{
-               if(jsvalue % 168 == 0){
-                    this.sesstion.rwtime = jsvalue / 168
-                    this.sesstion.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Week
-               }else if(jsvalue % 24 == 0){
-                    this.sesstion.rwtime = jsvalue / 24
-                    this.sesstion.rwselect = this.lang.MaintenanceManage_Day
-               }else{
-                    this.sesstion.rwtime = jsvalue
-                    this.sesstion.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Hour
-               }
-           }
-        },
-        handleEdit2(a, b) {
-           
-              if(!this.bjshow){
-                     setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                 this.pdyd1 = true;
-                this.tipword = this.lang.NoOperationAuthority;
-                return
-            }
-            this.nowcheck = '';
-            this.setionchange = true;
-            this.sestion = 2;
-            this.disabled = true;
-              setTimeout(() => {
-            this.addShow = true;
-               this.sx1()
-                this.move('addPop', 'looktop');
-            });
-             this.pdyd3 = true;
-            b.a = parseInt(b.PeriodStr);
-            b.b = parseInt(b.ReminderTimeValue);
-         
             if (b.PeriodUnit == 1) {
                 b.PeriodUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
             } else if (b.PeriodUnit == 2) {
@@ -2724,9 +3364,122 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 b.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
             }
             if (b.IsEnabled == false) {
-                b.IsEnabled = this.lang.MaintenanceManage_Stop
+                b.IsEnabled = this.lang.MaintenanceManage_Stop;
             } else {
-                b.IsEnabled = this.lang.MaintenanceManage_Enable
+                b.IsEnabled = this.lang.MaintenanceManage_Enable;
+            }
+            let aaa = b.MaturityTime.indexOf('/');
+            if (aaa == 0) {
+                b.MaturityTime = this.gettime(b.MaturityTime);
+            }
+            this.$axios({
+                method: 'post',
+                url: `/api/PointInspectionManage/PointInspectionManage_GstStandard?argDeviceType&argKeyword&argPageSize=50000000&argPageIndex=1`,
+                argDeviceType: '',
+                argKeyword: ''
+            }).then(res => {
+                console.log(res);
+                console.log(b);
+                for (let i = 0; i < res.data.data.DataList.length; i++) {
+                    for (let j = 0; j < b.Devices.length; j++) {
+                        if (b.Devices[j].SID == res.data.data.DataList[i].ID) {
+                            b.Devices[j].Name = res.data.data.DataList[i].Name;
+                            for (
+                                let a = 0;
+                                a < res.data.data.DataList[i].Devices.length;
+                                a++
+                            ) {
+                                if (
+                                    b.Devices[j].AID ==
+                                    res.data.data.DataList[i].Devices[a].AID
+                                ) {
+                                    b.Devices[j].DeviceType =
+                                        res.data.data.DataList[i].Devices[
+                                            a
+                                        ].DevicePath;
+                                }
+                            }
+                            // b.Devices[j].DeviceType = res.data.data[i].DevicePath;
+                        }
+                    }
+                }
+                //                       for(let i=0;b.Devices.length;i++){
+                //       b.Devices[i].DeviceType =  b.Devices[i].DetailDeviceType
+                // }
+
+                this.checkArr = b.Devices;
+            });
+
+            this.sesstion = b;
+            var startime = moment(this.sesstion.CurrentStartTime);
+            var endtime = moment(this.sesstion.CurrentEndTime);
+            var jsvalue = endtime.diff(startime, 'hours');
+            var ss = this.sesstion.CurrentStartTime.slice(8);
+            var ee = this.sesstion.CurrentEndTime.slice(8);
+            var cc = ss == ee;
+            console.log('jsvalue==>', jsvalue);
+            if (cc) {
+                jsvalue = endtime.diff(startime, 'months');
+                this.sesstion.rwtime = jsvalue;
+                this.sesstion.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Month;
+            } else {
+                if (jsvalue % 168 == 0) {
+                    this.sesstion.rwtime = jsvalue / 168;
+                    this.sesstion.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Week;
+                } else if (jsvalue % 24 == 0) {
+                    this.sesstion.rwtime = jsvalue / 24;
+                    this.sesstion.rwselect = this.lang.MaintenanceManage_Day;
+                } else {
+                    this.sesstion.rwtime = jsvalue;
+                    this.sesstion.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+                }
+            }
+        },
+        handleEdit2(a, b) {
+            if (!this.bjshow) {
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd1 = true;
+                this.tipword = this.lang.NoOperationAuthority;
+                return;
+            }
+            this.nowcheck = '';
+            this.setionchange = true;
+            this.sestion = 2;
+            this.disabled = true;
+            setTimeout(() => {
+                this.addShow = true;
+                this.sx1();
+                this.move('addPop', 'looktop');
+            });
+            this.pdyd3 = true;
+            b.a = parseInt(b.PeriodStr);
+            b.b = parseInt(b.ReminderTimeValue);
+
+            if (b.PeriodUnit == 1) {
+                b.PeriodUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+            } else if (b.PeriodUnit == 2) {
+                b.PeriodUnit = this.lang.MaintenanceManage_Day;
+            } else if (b.PeriodUnit == 3) {
+                b.PeriodUnit = this.lang.HMI_HT_LineChartWindowViewModel_Week;
+            } else if (b.PeriodUnit == 4) {
+                b.PeriodUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
+            }
+            if (b.ReminderTimeUnit == 1) {
+                b.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+            } else if (b.ReminderTimeUnit == 2) {
+                b.ReminderTimeUnit = this.lang.MaintenanceManage_Day;
+            } else if (b.ReminderTimeUnit == 3) {
+                b.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Week;
+            } else if (b.ReminderTimeUnit == 4) {
+                b.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
+            }
+            if (b.IsEnabled == false) {
+                b.IsEnabled = this.lang.MaintenanceManage_Stop;
+            } else {
+                b.IsEnabled = this.lang.MaintenanceManage_Enable;
             }
             let aaa = b.MaturityTime.indexOf('/');
             if (aaa == 0) {
@@ -2739,72 +3492,84 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 argDeviceType: '',
                 argKeyword: ''
             }).then(res => {
-                
-                console.log(res)
+                console.log(res);
                 var a = [];
-               
-                       for (let j = 0; j < b.Devices.length; j++) {
-                          let a1 = []
-                            for (let z = 0; z < res.data.data.DataList.length; z++) {
-                        if (res.data.data.DataList[z].DevicesStr.includes(b.Devices[j].DeviceName)) {
-                            let b1 = {}
-                             b1.value = res.data.data.DataList[z].Name;
-                    b1.ID = res.data.data.DataList[z].ID;
-                    b1.label = res.data.data.DataList[z].Name;
-                    a1.push(b1);
+
+                for (let j = 0; j < b.Devices.length; j++) {
+                    let a1 = [];
+                    for (let z = 0; z < res.data.data.DataList.length; z++) {
+                        if (
+                            res.data.data.DataList[z].DevicesStr.includes(
+                                b.Devices[j].DeviceName
+                            )
+                        ) {
+                            let b1 = {};
+                            b1.value = res.data.data.DataList[z].Name;
+                            b1.ID = res.data.data.DataList[z].ID;
+                            b1.label = res.data.data.DataList[z].Name;
+                            a1.push(b1);
                         }
-                        }
-                   a.push(a1)
-                   
+                    }
+                    a.push(a1);
                 }
-                 console.log(a)
+                console.log(a);
                 for (let i = 0; i < res.data.data.DataList.length; i++) {
                     for (let j = 0; j < b.Devices.length; j++) {
                         b.Devices[j].type = a[j];
 
                         if (b.Devices[j].SID == res.data.data.DataList[i].ID) {
                             b.Devices[j].Name = res.data.data.DataList[i].Name;
-                             for(let a =0;a<res.data.data.DataList[i].Devices.length;a++){
-                                if(b.Devices[j].AID==res.data.data.DataList[i].Devices[a].AID){
-                                    b.Devices[j].DeviceType = res.data.data.DataList[i].Devices[a].DevicePath
+                            for (
+                                let a = 0;
+                                a < res.data.data.DataList[i].Devices.length;
+                                a++
+                            ) {
+                                if (
+                                    b.Devices[j].AID ==
+                                    res.data.data.DataList[i].Devices[a].AID
+                                ) {
+                                    b.Devices[j].DeviceType =
+                                        res.data.data.DataList[i].Devices[
+                                            a
+                                        ].DevicePath;
                                 }
                             }
                         }
                     }
                 }
-            //                       for(let i=0;b.Devices.length;i++){
-            //       b.Devices[i].DeviceType =  b.Devices[i].DetailDeviceType
-            // }
-                    console.log(b)
-              
+                //                       for(let i=0;b.Devices.length;i++){
+                //       b.Devices[i].DeviceType =  b.Devices[i].DetailDeviceType
+                // }
+                console.log(b);
+
                 this.checkArr = b.Devices;
-                  console.log(this.checkArr)
+                console.log(this.checkArr);
                 this.checkArr1 = b.Devices;
             });
             this.sesstion = b;
-                    var startime = moment( this.sesstion.CurrentStartTime)
-            var endtime = moment( this.sesstion.CurrentEndTime)
-            var jsvalue = endtime.diff(startime,'hours')
-            var ss =  this.sesstion.CurrentStartTime.slice(8)
-            var ee =  this.sesstion.CurrentEndTime.slice(8)
-            var cc = ss == ee
-            console.log('jsvalue==>',jsvalue)
-           if(cc){
-                jsvalue = endtime.diff(startime,'months')
-                 this.sesstion.rwtime = jsvalue
-                 this.sesstion.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Month
-           }else{
-               if(jsvalue % 168 == 0){
-                    this.sesstion.rwtime = jsvalue / 168
-                    this.sesstion.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Week
-               }else if(jsvalue % 24 == 0){
-                    this.sesstion.rwtime = jsvalue / 24
-                    this.sesstion.rwselect = this.lang.MaintenanceManage_Day
-               }else{
-                    this.sesstion.rwtime = jsvalue
-                    this.sesstion.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Hour
-               }
-           }
+            var startime = moment(this.sesstion.CurrentStartTime);
+            var endtime = moment(this.sesstion.CurrentEndTime);
+            var jsvalue = endtime.diff(startime, 'hours');
+            var ss = this.sesstion.CurrentStartTime.slice(8);
+            var ee = this.sesstion.CurrentEndTime.slice(8);
+            var cc = ss == ee;
+            console.log('jsvalue==>', jsvalue);
+            if (cc) {
+                jsvalue = endtime.diff(startime, 'months');
+                this.sesstion.rwtime = jsvalue;
+                this.sesstion.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Month;
+            } else {
+                if (jsvalue % 168 == 0) {
+                    this.sesstion.rwtime = jsvalue / 168;
+                    this.sesstion.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Week;
+                } else if (jsvalue % 24 == 0) {
+                    this.sesstion.rwtime = jsvalue / 24;
+                    this.sesstion.rwselect = this.lang.MaintenanceManage_Day;
+                } else {
+                    this.sesstion.rwtime = jsvalue;
+                    this.sesstion.rwselect = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+                }
+            }
         },
         getNowTime() {
             let date = new Date();
@@ -2827,7 +3592,10 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             let j = 1;
             for (i in this.selectname) {
                 if (this.a1 == 1) {
-                    if (this.selectname[i].NodeName == this.lang.EquipmentAccount_EquipmentType) {
+                    if (
+                        this.selectname[i].NodeName ==
+                        this.lang.EquipmentAccount_EquipmentType
+                    ) {
                         this.selectname[i].NID =
                             '11111111-1111-1111-1111-111111111111';
                     }
@@ -2850,7 +3618,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             }
             this.data6 = [];
             this.data6.push(this.selectname[0]);
-              $(`.selectword`).css({
+            $(`.selectword`).css({
                 left:
                     $('.sblx')[0].offsetLeft + $('.sblx')[0].clientWidth + 'px',
                 top:
@@ -2866,7 +3634,10 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             let j = 1;
             for (i in this.selectname) {
                 if (this.a2 == 1) {
-                    if (this.selectname[i].NodeName == this.lang.EquipmentAccount_EquipmentType) {
+                    if (
+                        this.selectname[i].NodeName ==
+                        this.lang.EquipmentAccount_EquipmentType
+                    ) {
                         this.selectname[i].NID =
                             '11111111-1111-1111-1111-111111111111';
                     }
@@ -2893,9 +3664,11 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         },
         cancel2() {
             if (this.Preservation == this.lang.EquipmentAccount_EquipmentType) {
-                this.Preservation = this.lang.EquipmentAccount_ClickSelect
-            } else if (this.Preservation5 == this.lang.EquipmentAccount_InstallPosition) {
-                this.Preservation5 = this.lang.EquipmentAccount_ClickSelect
+                this.Preservation = this.lang.EquipmentAccount_ClickSelect;
+            } else if (
+                this.Preservation5 == this.lang.EquipmentAccount_InstallPosition
+            ) {
+                this.Preservation5 = this.lang.EquipmentAccount_ClickSelect;
             } else {
                 this.cancel1 = false;
             }
@@ -2964,73 +3737,102 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     `/api/PointInspectionManage/PointInspectionManage_GstPlan?argDeviceType=${c}&argStartTime=${this.value1}&argEndTime=${this.value2}&argKeyword=${this.keyword}&argPageSize=${this.PageData.PageSize}&argPageIndex=${this.PageData.PageIndex}`
                 )
                 .then(res => {
-                    console.log("this",res)
+                    console.log('this', res);
                     if (res.data.code == 0) {
                         this.tableData1 = res.data.data.DataList;
-                         console.log('this.tableData1',this.tableData1)
+                        console.log('this.tableData1', this.tableData1);
                         this.PageData = res.data.data.ParameterList;
                         let i = 0;
                         for (i in this.tableData1) {
-                            this.tableData1[i].CurrentStartTime = this.gettime(
-                                this.tableData1[i].CurrentStartTime
-                            );
-                            this.tableData1[i].CurrentEndTime = this.gettime(
-                                this.tableData1[i].CurrentEndTime
-                            );
-                            this.tableData1[i].NextStartTime = this.gettime(
-                                this.tableData1[i].NextStartTime
-                            );
-                            this.tableData1[i].NextEndTime = this.gettime(
-                                this.tableData1[i].NextEndTime
-                            );
+                            this.tableData1[i].CurrentStartTime =
+                                this.tableData1[i].PlanTypeDesc == '按班次'
+                                    ? '-'
+                                    : this.gettime(
+                                          this.tableData1[i].CurrentStartTime
+                                      );
+                            this.tableData1[i].CurrentEndTime =
+                                this.tableData1[i].PlanTypeDesc == '按班次'
+                                    ? '-'
+                                    : this.gettime(
+                                          this.tableData1[i].CurrentEndTime
+                                      );
+                            this.tableData1[i].NextStartTime =
+                                this.tableData1[i].PlanTypeDesc == '按班次'
+                                    ? '-'
+                                    : this.gettime(
+                                          this.tableData1[i].NextStartTime
+                                      );
+                            this.tableData1[i].NextEndTime =
+                                this.tableData1[i].PlanTypeDesc == '按班次'
+                                    ? '-'
+                                    : this.gettime(
+                                          this.tableData1[i].NextEndTime
+                                      );
                             let a = i;
                             this.tableData1[i].Number = ++a;
                             if (this.tableData1[i].LifeCycleUnit == 1) {
                                 this.tableData1[i].LifeCycleValue =
-                                    this.tableData1[i].LifeCycleValue + this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                                    this.tableData1[i].LifeCycleValue +
+                                    this.lang
+                                        .HMI_HT_LineChartWindowViewModel_Hour;
                             } else if (this.tableData1[i].LifeCycleUnit == 2) {
                                 this.tableData1[i].LifeCycleValue =
-                                    this.tableData1[i].LifeCycleValue + this.lang.MaintenanceManage_Day
+                                    this.tableData1[i].LifeCycleValue +
+                                    this.lang.MaintenanceManage_Day;
                             } else if (this.tableData1[i].LifeCycleUnit == 3) {
                                 this.tableData1[i].LifeCycleValue =
-                                    this.tableData1[i].LifeCycleValue + this.lang.HMI_HT_LineChartWindowViewModel_Month
+                                    this.tableData1[i].LifeCycleValue +
+                                    this.lang
+                                        .HMI_HT_LineChartWindowViewModel_Month;
                             } else if (this.tableData1[i].LifeCycleUnit == 4) {
                                 this.tableData1[i].LifeCycleValue =
-                                    this.tableData1[i].LifeCycleValue + this.lang.HMI_HT_LineChartWindowViewModel_Year
+                                    this.tableData1[i].LifeCycleValue +
+                                    this.lang
+                                        .HMI_HT_LineChartWindowViewModel_Year;
                             }
                             if (this.tableData1[i].ReminderTimeUnit == 1) {
                                 this.tableData1[i].ReminderTimeValue =
                                     this.tableData1[i].ReminderTimeValue +
-                                    this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                                    this.lang
+                                        .HMI_HT_LineChartWindowViewModel_Hour;
                             } else if (
                                 this.tableData1[i].ReminderTimeUnit == 2
                             ) {
                                 this.tableData1[i].ReminderTimeValue =
-                                    this.tableData1[i].ReminderTimeValue + this.lang.MaintenanceManage_Day
+                                    this.tableData1[i].ReminderTimeValue +
+                                    this.lang.MaintenanceManage_Day;
                             } else if (
                                 this.tableData1[i].ReminderTimeUnit == 3
                             ) {
                                 this.tableData1[i].ReminderTimeValue =
-                                    this.tableData1[i].ReminderTimeValue + this.lang.HMI_HT_LineChartWindowViewModel_Month
+                                    this.tableData1[i].ReminderTimeValue +
+                                    this.lang
+                                        .HMI_HT_LineChartWindowViewModel_Month;
                             } else if (
                                 this.tableData1[i].ReminderTimeUnit == 4
                             ) {
                                 this.tableData1[i].ReminderTimeValue =
-                                    this.tableData1[i].ReminderTimeValue + this.lang.HMI_HT_LineChartWindowViewModel_Year
+                                    this.tableData1[i].ReminderTimeValue +
+                                    this.lang
+                                        .HMI_HT_LineChartWindowViewModel_Year;
                             }
-                           if(this.tableData1[i].IsEnabled){
-                               this.tableData1[i].IsEnabled = this.lang.MaintenanceManage_Enable
-                           }else{
-                               this.tableData1[i].IsEnabled = this.lang.MaintenanceManage_Stop
-                           }
+                            if (this.tableData1[i].IsEnabled) {
+                                this.tableData1[
+                                    i
+                                ].IsEnabled = this.lang.MaintenanceManage_Enable;
+                            } else {
+                                this.tableData1[
+                                    i
+                                ].IsEnabled = this.lang.MaintenanceManage_Stop;
+                            }
                         }
-                        console.log('this.tableData1',this.tableData1)
+                        console.log('this.tableData1', this.tableData1);
                     } else {
-                          setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                         this.pdyd1 = true;
+                        setTimeout(() => {
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                        this.pdyd1 = true;
                         this.tipword = res.data.msg;
                         this.tableData1 = [];
                         this.PageData = {
@@ -3068,16 +3870,16 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         },
         jump() {
             if (!this.isPositiveInteger(this.nowpage)) {
-                  setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                 this.pdyd1 = true;
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd1 = true;
                 this.tipword = this.lang.RoleManage_HT_PEAPositiveInteger;
-                  setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 return;
             } else {
                 if (
@@ -3089,11 +3891,11 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         this.nowpage > this.PageData.TotalPage
                     ) {
                         this.tipword = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
-                          setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                         this.pdyd1 = true;
+                        setTimeout(() => {
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                        this.pdyd1 = true;
                         return;
                     }
                 }
@@ -3102,59 +3904,30 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             this.PageData.PageIndex = this.nowpage;
             this.onetable();
         },
-        mouseDownHandleelse5(event) {
-            event.currentTarget.style.cursor = 'move';
-            window.onmousemove = this.mouseMoveHandleelse5;
-        },
-        mouseMoveHandleelse5(event) {
-            this.pdyd3 = false;
-            let moveLeft = event.pageX - 550 + 'px';
-            let moveTop = event.pageY - 30 + 'px';
-            this.$refs.kongtiao5.style.left = moveLeft;
-            this.$refs.kongtiao5.style.top = moveTop;
-        },
-        mouseUpHandleelse5(event) {
-            window.onmousemove = null;
-            event.currentTarget.style.cursor = 'move';
-        },
-        mouseDownHandleelse6(event) {
-            event.currentTarget.style.cursor = 'move';
-            window.onmousemove = this.mouseMoveHandleelse6;
-        },
-        mouseMoveHandleelse6(event) {
-            this.pdyd2 = false;
-            let moveLeft = event.pageX - 600 + 'px';
-            let moveTop = event.pageY - 30 + 'px';
-            this.$refs.kongtiao6.style.left = moveLeft;
-            this.$refs.kongtiao6.style.top = moveTop;
-        },
-        mouseUpHandleelse6(event) {
-            window.onmousemove = null;
-            event.currentTarget.style.cursor = 'move';
-        },
+
         sad(a) {
-            if(!this.cxshow&&a!==1){
-                     setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                 this.pdyd1 = true;
+            if (!this.cxshow && a !== 1) {
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd1 = true;
                 this.tipword = this.lang.NoOperationAuthority;
-                return
+                return;
             }
             if (
                 new Date(this.value1).getTime() >
                 new Date(this.value2).getTime()
             ) {
-                  setTimeout(() => {
-             this.tipchange = true;
-                this.move('tip', 'tiphead');
-            });
-                 this.pdyd1 = true;
-                this.tipword = this.lang.AlarmRecord_HT_TheQueryDate
-                return
+                setTimeout(() => {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd1 = true;
+                this.tipword = this.lang.AlarmRecord_HT_TheQueryDate;
+                return;
             }
-               this.onetable();
+            this.onetable();
         },
         setParams(params) {
             this.searchData = params;
@@ -3164,7 +3937,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             if (this.Meterid == '11111111-1111-1111-1111-111111111111') {
                 rang = '';
             }
-            
+
             this.$axios({
                 method: 'post',
                 url: `/api/EquipmentAccount/EquipmentAccount_GstEquipment?argDeviceType=${rang}&argKeyword=${this.keyword}&argPageSize=${this.PageData.TotalCount}&argPageIndex=${this.pageindex}`
@@ -3269,24 +4042,23 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         }
     },
     mounted() {
-        this.zoom = window.screen.width / 1920 < 0.75 ?  0.75 : window.screen.width / 1920
-         let that = this;
-         $('body')[0].addEventListener("mousemove",function(){
-         
-         setTimeout(()=>{
-for(let i=0;i<$('.atooltip').length;i++){
-    
-                $('.atooltip')[i].style.zoom = that.zoom
-               
-            console.log($('.atooltip')[i].style.zoom )
-            }
-            })
-     })
-        this.$axios.post(`/api/UserManage/UserManage_GstUserWithNoPage`).then(res => {
-              console.log("ss",res)
-              this.useroptions = res.data.data;
-          })
-      
+        let that = this;
+        $('body')[0].addEventListener('mousemove', function() {
+            setTimeout(() => {
+                for (let i = 0; i < $('.atooltip').length; i++) {
+                    $('.atooltip')[i].style.zoom = that.zoom;
+
+                    console.log($('.atooltip')[i].style.zoom);
+                }
+            });
+        });
+        this.$axios
+            .post(`/api/UserManage/UserManage_GstUserWithNoPage`)
+            .then(res => {
+                console.log('ss', res);
+                this.useroptions = res.data.data;
+            });
+
         this.value1 = this.GMTToStr(this.value1);
         this.value2 = this.GMTToStr(this.value2);
         this.getsetime();
@@ -3295,8 +4067,7 @@ for(let i=0;i<$('.atooltip').length;i++){
 </script>
 
 <style lang="scss">
-
-.ysj{
+.ysj {
     select {
         background-color: #fff;
     }
@@ -3327,12 +4098,21 @@ for(let i=0;i<$('.atooltip').length;i++){
                 // line-height: 30px;
             }
         }
-        .el-select>.el-input{
-            height: inherit;
+        .el-select > .el-input {
+            height: 100%;
             font-size: inherit;
-            .el-input__inner{
-                width: 100%!important;
-                height: inherit !important;;
+            .el-input__inner {
+                width: 100% !important;
+                height: inherit !important;
+            }
+        }
+        .type {
+            .el-select > .el-input {
+                height: 36px;
+                .el-input__inner {
+                    width: 100% !important;
+                    height: 36px !important;
+                }
             }
         }
     }
@@ -3345,10 +4125,9 @@ for(let i=0;i<$('.atooltip').length;i++){
         }
     }
 }
-
 </style>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .box {
     position: relative;
     top: 10px;
@@ -3380,7 +4159,7 @@ for(let i=0;i<$('.atooltip').length;i++){
     position: fixed;
     width: 380px;
     height: 200px;
-    z-index: 3000999999;
+    z-index: 3000;
     top: 350px;
     left: 750px;
     box-shadow: 0px 0px 8px black;
@@ -3488,7 +4267,7 @@ for(let i=0;i<$('.atooltip').length;i++){
     .sp1 {
         margin-left: 10px;
     }
-    .title{
+    .title {
         display: inline-block;
         line-height: 1;
         vertical-align: middle;
@@ -3510,7 +4289,7 @@ for(let i=0;i<$('.atooltip').length;i++){
         height: 40px;
         margin-left: 10px;
         text-indent: 1em;
-        border: 1px solid rgb(244,244,244);
+        border: 1px solid rgb(244, 244, 244);
     }
     .sad {
         width: 120px;
@@ -3554,7 +4333,22 @@ for(let i=0;i<$('.atooltip').length;i++){
         display: inline-block;
         cursor: pointer;
     }
-
+    .importBtnCont {
+        display: inline-block;
+    }
+    .importBtn {
+        color: #fff;
+        width: 120px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        background-color: #386df0;
+        margin-left: 10px;
+        border-radius: 4px;
+        font-weight: 600;
+        display: inline-block;
+        cursor: pointer;
+    }
     .move {
         width: 120px;
         height: 40px;
@@ -3593,14 +4387,14 @@ for(let i=0;i<$('.atooltip').length;i++){
         position: fixed;
         top: 100px;
         left: 500px;
-        z-index: 999999999;
+        z-index: 999;
         box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.6);
         .i-c {
             margin-top: 12px;
             right: 10px;
             cursor: pointer;
             position: absolute;
-            z-index: 1000999999;
+            z-index: 1000;
             // background-color: #000;
             display: block;
         }
@@ -3637,7 +4431,7 @@ for(let i=0;i<$('.atooltip').length;i++){
                 position: fixed;
                 top: 172px;
                 left: 312px;
-                z-index: 11999999;
+                z-index: 11;
                 width: 230px;
                 overflow: auto;
                 // height: 350px;
@@ -3832,7 +4626,7 @@ for(let i=0;i<$('.atooltip').length;i++){
             right: 10px;
             cursor: pointer;
             position: absolute;
-            z-index: 1000999999;
+            z-index: 1000;
             // background-color: #000;
             display: block;
         }
@@ -3842,7 +4636,7 @@ for(let i=0;i<$('.atooltip').length;i++){
             height: 60px;
         }
         // margin: auto;
-        z-index: 199999999;
+        z-index: 199;
         box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.6);
 
         .TipsPop {
@@ -3914,7 +4708,7 @@ for(let i=0;i<$('.atooltip').length;i++){
         .addPop_table {
             width: 85%;
             margin: 0 auto;
-            height: 346px;
+            height: 400px;
 
             .table_name {
                 margin-top: 15px;
@@ -3953,6 +4747,20 @@ for(let i=0;i<$('.atooltip').length;i++){
             .table_name1 {
                 margin-top: 35px;
             }
+            .table_radio {
+                margin-top: 15px;
+                width: 100%;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                .name_text {
+                    font-size: 16px;
+                    display: inline-block;
+                    width: 100px;
+                    text-align: left;
+                    margin-right: 15px;
+                }
+            }
 
             .table_inspection {
                 margin-top: 15px;
@@ -3973,7 +4781,6 @@ for(let i=0;i<$('.atooltip').length;i++){
                         width: 100px;
                         text-align: left;
                         margin-right: 15px;
-                        
                     }
 
                     .name_ipt {
@@ -4091,9 +4898,7 @@ for(let i=0;i<$('.atooltip').length;i++){
                 }
             }
         }
-        .list_title > div {
-            height: 50px !important;
-        }
+
         .addPop_list {
             width: 85%;
             height: 265px;
@@ -4103,15 +4908,15 @@ for(let i=0;i<$('.atooltip').length;i++){
 
             .list_title {
                 overflow: hidden;
-                width: 980px;
-                height: 50px;
+                width: 100%;
+                height: 40px;
                 position: sticky;
                 top: 0;
-                z-index: 100999999;
+                z-index: 100;
 
                 .ipt {
                     float: left;
-                    width: 8%;
+                    width: 7%;
                     height: 40px;
                     line-height: 40px;
                     background: #dcf0f9;
@@ -4122,7 +4927,7 @@ for(let i=0;i<$('.atooltip').length;i++){
                 }
                 .id {
                     float: left;
-                    width: 12%;
+                    width: 11%;
                     height: 40px;
                     line-height: 40px;
                     background: #dcf0f9;
@@ -4133,7 +4938,7 @@ for(let i=0;i<$('.atooltip').length;i++){
                 }
                 .num {
                     float: left;
-                    width: 20%;
+                    width: 19%;
                     height: 40px;
                     line-height: 40px;
                     background: #dcf0f9;
@@ -4145,7 +4950,7 @@ for(let i=0;i<$('.atooltip').length;i++){
                 .name {
                     float: left;
                     float: left;
-                    width: 15%;
+                    width: 14%;
                     height: 40px;
                     line-height: 40px;
                     background: #dcf0f9;
@@ -4157,7 +4962,7 @@ for(let i=0;i<$('.atooltip').length;i++){
                 .type {
                     float: left;
                     float: left;
-                    width: 15%;
+                    width: 13%;
                     height: 40px;
                     line-height: 40px;
                     background: #dcf0f9;
@@ -4169,7 +4974,7 @@ for(let i=0;i<$('.atooltip').length;i++){
                 .typeNum {
                     float: left;
                     float: left;
-                    width: 15%;
+                    width: 13%;
                     height: 40px;
                     line-height: 40px;
                     background: #dcf0f9;
@@ -4181,7 +4986,19 @@ for(let i=0;i<$('.atooltip').length;i++){
                 .setType {
                     float: left;
                     float: left;
-                    width: 15%;
+                    width: 13%;
+                    height: 40px;
+                    line-height: 40px;
+                    background: #dcf0f9;
+                    color: #6d94ea;
+                    padding-left: 5px;
+                    box-sizing: border-box;
+                    border-right: 1px solid #ddd;
+                }
+                .action {
+                    float: left;
+                    float: left;
+                    width: 10%;
                     height: 40px;
                     line-height: 40px;
                     background: #dcf0f9;
@@ -4193,14 +5010,14 @@ for(let i=0;i<$('.atooltip').length;i++){
             }
             .list_conter {
                 overflow: hidden;
-                width: 980px;
+                width: 100%;
                 height: 40px;
                 border-bottom: 1px solid #ddd;
                 box-sizing: border-box;
 
                 .ipt {
                     float: left;
-                    width: 8%;
+                    width: 7%;
                     height: 40px;
                     line-height: 40px;
                     background: #fff;
@@ -4211,7 +5028,7 @@ for(let i=0;i<$('.atooltip').length;i++){
                 }
                 .id {
                     float: left;
-                    width: 12%;
+                    width: 11%;
                     height: 40px;
                     line-height: 40px;
                     background: #fff;
@@ -4222,7 +5039,7 @@ for(let i=0;i<$('.atooltip').length;i++){
                 }
                 .num {
                     float: left;
-                    width: 20%;
+                    width: 19%;
                     height: 40px;
                     line-height: 40px;
                     background: #fff;
@@ -4234,7 +5051,7 @@ for(let i=0;i<$('.atooltip').length;i++){
                 .name {
                     float: left;
                     float: left;
-                    width: 15%;
+                    width: 14%;
                     height: 40px;
                     line-height: 40px;
                     background: #fff;
@@ -4246,7 +5063,7 @@ for(let i=0;i<$('.atooltip').length;i++){
                 .type {
                     float: left;
                     float: left;
-                    width: 15%;
+                    width: 13%;
                     height: 40px;
                     line-height: 40px;
                     background: #fff;
@@ -4258,7 +5075,7 @@ for(let i=0;i<$('.atooltip').length;i++){
                 .typeNum {
                     float: left;
                     float: left;
-                    width: 15%;
+                    width: 13%;
                     height: 40px;
                     line-height: 40px;
                     background: #fff;
@@ -4270,7 +5087,19 @@ for(let i=0;i<$('.atooltip').length;i++){
                 .setType {
                     float: left;
                     float: left;
-                    width: 15%;
+                    width: 13%;
+                    height: 40px;
+                    line-height: 40px;
+                    background: #fff;
+                    color: #000;
+                    padding-left: 5px;
+                    box-sizing: border-box;
+                    border-right: 1px solid #ddd;
+                }
+                .action {
+                    float: left;
+                    float: left;
+                    width: 10%;
                     height: 40px;
                     line-height: 40px;
                     background: #fff;
@@ -4328,7 +5157,7 @@ for(let i=0;i<$('.atooltip').length;i++){
         text-align: center;
         vertical-align: middle;
         line-height: 24px;
-        z-index: 11999999;
+        z-index: 11;
         position: relative;
         outline: none;
         -webkit-appearance: none;
@@ -4365,6 +5194,19 @@ for(let i=0;i<$('.atooltip').length;i++){
     .page-container {
         height: 60px;
     }
+}
+.checkSopBtn {
+    width: 70px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    background-color: #4270e4;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 5px;
+    margin-top: 3px;
 }
 .table-container .img {
     width: 60px;
@@ -4412,7 +5254,7 @@ img {
 
 .selectword {
     position: absolute;
-    z-index: 11999999;
+    z-index: 11;
     width: 230px;
     overflow: auto;
     // height: 350px;
@@ -4433,7 +5275,7 @@ img {
 .cover1 {
     width: 100%;
     height: 100%;
-    z-index: 9999999;
+    z-index: 9;
     position: fixed;
     top: 0;
     left: 0;
@@ -4441,7 +5283,7 @@ img {
 .cover2 {
     width: 100%;
     height: 100%;
-    z-index: 1229999999;
+    z-index: 1229;
     position: fixed;
     top: 0;
     left: 0;
@@ -4466,7 +5308,7 @@ img {
         background-color: #ebebe4;
     }
     height: 800px;
-    z-index: 10999999;
+    z-index: 10;
     box-shadow: 0px 0px 8px black;
     position: fixed;
     top: 120px;
@@ -4489,7 +5331,7 @@ img {
         .no {
             position: absolute;
             top: 0;
-            z-index: 5099999;
+            z-index: 5;
             bottom: 0;
             margin: auto;
             height: 25px;
@@ -4563,7 +5405,7 @@ img {
         }
     }
     .inputimg {
-        z-index: 50999999;
+        z-index: 50;
         position: absolute;
         right: 7px;
         top: 0;
@@ -4621,8 +5463,8 @@ textarea {
         cursor: pointer;
     }
     width: 100%;
-    height: 50px;
-    line-height: 50px;
+    height: 60px;
+    line-height: 60px;
     color: #ababab;
     padding-left: 10px;
     font-size: 14px;
@@ -4658,7 +5500,7 @@ textarea {
 .cover7 {
     width: 100%;
     height: 100%;
-    z-index: 200999999;
+    z-index: 200;
     position: fixed;
     top: 0;
     left: 0;
@@ -4666,7 +5508,7 @@ textarea {
 .cover6 {
     width: 100%;
     height: 100%;
-    z-index: 190999999;
+    z-index: 190;
     position: fixed;
     top: 0;
     left: 0;
@@ -4674,14 +5516,14 @@ textarea {
 .nowcheck {
     background-color: rgb(217, 229, 243) !important;
 }
-.yd{
-   margin: auto;
-     top: 0 !important;
+.yd {
+    margin: auto;
+    top: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
-    left: 0 !important;   
+    left: 0 !important;
 }
-img{
+img {
     cursor: pointer;
 }
 .fcolor {
@@ -4699,44 +5541,44 @@ img{
 .colortip {
     background-color: #efeff0 !important;
 }
-.a::before{
+.a::before {
     color: #000 !important;
 }
-.showtext{
+.showtext {
     position: absolute;
     top: 200px;
     left: 475px;
     cursor: pointer;
 }
-.showtext1{
+.showtext1 {
     cursor: pointer;
     position: absolute;
     top: 150px;
     left: 475px;
 }
-   .is1 {
-        display: inline-block;
-        // position: absolute;
-        width: 300px;
-        // overflow: hidden;
-        height: 32px;
-        input {
-            position: relative;
-            top: 1px;
-            float: left;
-            height: 30px;
-            width: 180px;
-        }
-        .sl1 {
-            // width: 100px;
-            // height: 30px;
-            float: left;
-            .el-input__inner{
-                width: inherit !important;
-            }
+.is1 {
+    display: inline-block;
+    // position: absolute;
+    width: 300px;
+    // overflow: hidden;
+    height: 32px;
+    input {
+        position: relative;
+        top: 1px;
+        float: left;
+        height: 30px;
+        width: 180px;
+    }
+    .sl1 {
+        // width: 100px;
+        // height: 30px;
+        float: left;
+        .el-input__inner {
+            width: inherit !important;
         }
     }
-       .seleword{
+}
+.seleword {
     display: inline-block;
     width: 13%;
     height: 40px;
@@ -4745,17 +5587,17 @@ img{
     background: #fff;
     text-indent: 1em;
     line-height: 40px;
-    .seleword1{
+    .seleword1 {
         width: calc(100%);
         position: relative;
         height: 100%;
         padding-right: 20px;
-         white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    word-break: break-all;
-    border: 1px solid rgb(244, 244, 244);
-        img{
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
+        border: 1px solid rgb(244, 244, 244);
+        img {
             position: absolute;
             right: 2px;
             width: 20px;
@@ -4765,13 +5607,10 @@ img{
     }
     // align-content: bottom;
 }
-.tinput{
-    margin-left: 15% !important;
-}
-.tinput1{
+.tinput1 {
     margin-left: 23% !important;
 }
- .seleword2{
+.seleword2 {
     display: inline-block;
     width: 21%;
     height: 30px;
@@ -4780,16 +5619,16 @@ img{
     background: #fff;
     text-indent: 1em;
     line-height: 30px;
-    .seleword1{
+    .seleword1 {
         width: calc(100%);
         position: relative;
         height: 100%;
         padding-right: 20px;
-         white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    word-break: break-all;
-        img{
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
+        img {
             position: absolute;
             right: 2px;
             width: 20px;
@@ -4804,8 +5643,7 @@ img{
     top: 34px !important;
     left: 94px !important;
 }
-.sblx{
-    display:inline-block;
+.sblx {
+    display: inline-block;
 }
 </style>
-

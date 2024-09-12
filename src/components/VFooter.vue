@@ -29,15 +29,6 @@ export default {
       clearInterval(this.timefoor);
     },
     mounted(){
-     if(window.screen.width>1920){
-      $('.v-footer').css({
-          zoom:Number(parseFloat(window.screen.width/1920).toFixed(2))
-      })
-     }else{
-     $('.v-footer').css({
-         zoom:1
-     })
-     }
     },
     methods:{
             getDate(){

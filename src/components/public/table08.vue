@@ -58,10 +58,6 @@ export default {
         };
     },
       mounted() {
-        this.a11 = Number(parseFloat(window.screen.width / 1920).toFixed(2));
-        if (this.a11 < 1) {
-            this.a11 = 0.8;
-        }
       },
     methods: {
         handleEdit1(a, b) {

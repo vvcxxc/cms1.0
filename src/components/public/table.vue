@@ -15,7 +15,7 @@
             row-class-name="high-light"
             height="100%"
             width="100%"
-            :style="{'font-size': 14*zoom + 'px'}"
+            :style="{'font-size': '14px'}"
             @select="select"
             @select-all="selectall"
             ref="metable"
@@ -23,22 +23,23 @@
                 background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',
                 color:($store.state.color=='grey')?'#000':'#fff',
                 'border-left':'1px solid #cccccc',
-                height: 50*zoom + 'px',
-                'font-size': 14*zoom + 'px',
-                padding:'0'}"
+                height: '50px',
+                'font-size': '14px',
+                padding:'0'
+            }"
         >
             <template slot="empty">
                 <!-- <no-data :tip="tip" v-if="!tip"></no-data>
                 <span v-else-if="tip === 'nodata'">暂无数据</span>-->
                 <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
             </template>
-            <el-table-column type="selection" :width="zoom>1?zoom*65:65" ></el-table-column>
+            <el-table-column type="selection" width="65" ></el-table-column>
             <el-table-column
                 v-for="(value, key) in tableHead"
                 :key="key"
                 :label="value"
                 align="left"
-                :width="180 * zoom"
+                width="180"
                  :show-overflow-tooltip="true"
             >
                 <template slot-scope="scope">
@@ -56,13 +57,7 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" v-for="(item, index) in operation" :key="index"  :show-overflow-tooltip="true">
-                <!-- <div>safa</div> -->
-                <!-- <template slot-scope="scope">
-					<div class="btn-container">
-						<div v-if="(item.title = 'edit')">修改</div>
-					</div>
-                </template>-->
+            <el-table-column label="操作" v-for="(item, index) in operation" :key="index" :show-overflow-tooltip="true">
             </el-table-column>
         </el-table>
     </div>
@@ -75,7 +70,6 @@ export default {
         return {
             comitdata: [],
             comitdata1: [],
-            zoom: 1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
@@ -96,8 +90,6 @@ export default {
             this.comitdata1 = [];
         },
         computedData(value, key) {
-            // if (key === 'AlarmTime' || key === 'RecoverTime') {
-            // }
             if (key === 'AlarmState') {
                 let stateObj = {
                     0: this.lang.AlarmRecord_HT_ConfirmedRecovery,
@@ -126,15 +118,6 @@ export default {
         }
     },
     mounted(){
-        console.log(this.$refs.metable)
-        this.zoom = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
-        setTimeout(()=>{
-            // let a = $(".content-container").height() - this.zoom * 160 - $(".page-container").height() * this.zoom;
-            // $('.table-container').css({
-            //     height: `${a}px`
-            // });
-        })
-        // $(".table-container1").height($(".alarm-container").height() - $(".pages-container").height())
         this.$nextTick(() => {
           this.$refs.metable.doLayout(); //解决表格错位
         })
@@ -152,10 +135,4 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-// .sad{
-//     color: red;
-// }
-// .sad:hover{
-//     color: black;
-// }
 </style>

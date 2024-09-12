@@ -6,227 +6,443 @@
  * @LastEditTime: 2020-10-14 18:24:12
  -->
 <template>
-    <div class="public-table" @click=" changeselect = false">
-        <!-- 测试模块 -->
-        <!-- <div style="position: fixed;z-index: 99;left: 0;top: 0;background: green;padding: 10px;">
-            <button @click="addInfo">添加</button><br>
-            <button @click="createDeviceShow('create')">添加新</button><br>
-            <button @click="createDeviceCallback('cancel')">隐藏新</button><br>
-            <button class="file">
-                导入
-                <input
-                @click="dr($event)"
-                    type="file"
-                    ref="upload"
-                    accept=".xls, .xlsx"
-                    class="outputlist_upload"
-                    @change="readExcel"
-                />
-            </button>
-            <button @click="exportTable">导出</button><br>
-        </div> -->
-
-        <div class="loadcover" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;width: 100%;height: 100%;top: 0;left: 0;"></div>
-        <div class="selectvar selectvar3" ref="kongtiao3" v-show="yx" :style="{width:1120*a11+'px',height:600*a11+'px'}">
+    <div class="public-table" @click="changeselect = false">
+        <div
+            class="loadcover"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.4)"
+            v-loading="this.$store.state.isShow"
+            v-show="this.$store.state.isShow"
+            style="position: absolute;
+            width: 100%; height: 100%; top: 0; left: 0;"
+        ></div>
+        <div
+            class="selectvar selectvar3"
+            ref="kongtiao3"
+            v-show="yx"
+            :style="{ width: 1120 * a11 + 'px', height: 600 * a11 + 'px' }"
+        >
             <div
                 class="selectvartop"
-                :style="{height:60*a11+'px',lineHeight:60*a11+'px',fontSize:18*a11+'px'}" 
+                :style="{
+                    height: 60 * a11 + 'px',
+                    lineHeight: 60 * a11 + 'px',
+                    fontSize: 18 * a11 + 'px'
+                }"
             ></div>
-            <div class="selectvarhead"   :style="{height:60*a11+'px',lineHeight:60*a11+'px',fontSize:18*a11+'px'}"     :class="[{colordiv:$store.state.color=='grey'},{fcolor:$store.state.color=='grey'}]">
-                {{lang.CruxParameterConfigure_SelectVariable_SelectionVariables}}
-                <img :src="no" alt  :style="{width:24*a11+'px',height:24*a11+'px'}" />
-                  <img
+            <div
+                class="selectvarhead"
+                :style="{
+                    height: 60 * a11 + 'px',
+                    lineHeight: 60 * a11 + 'px',
+                    fontSize: 18 * a11 + 'px'
+                }"
+                :class="[
+                    { colordiv: $store.state.color == 'grey' },
+                    { fcolor: $store.state.color == 'grey' }
+                ]"
+            >
+                {{
+                    lang.CruxParameterConfigure_SelectVariable_SelectionVariables
+                }}
+                <img
+                    :src="no"
+                    alt
+                    :style="{ width: 24 * a11 + 'px', height: 24 * a11 + 'px' }"
+                />
+                <img
                     :src="no2"
                     alt
                     class="no"
                     @click.stop="varcancel"
-                    v-if="$store.state.color=='grey'"
+                    v-if="$store.state.color == 'grey'"
                 />
-                <img :src="no" alt class="no" @click.stop="varcancel" :style="{width:24*a11+'px',height:24*a11+'px'}" v-else />
+                <img
+                    :src="no"
+                    alt
+                    class="no"
+                    @click.stop="varcancel"
+                    :style="{ width: 24 * a11 + 'px', height: 24 * a11 + 'px' }"
+                    v-else
+                />
             </div>
-            <div class="selectvarcontent"  :style="{paddingTop:30*a11+'px'}">
-                <div class="selecectvarselect"  :style="{width:1000*a11+'px',height:436*a11+'px'}">
-                    <div class="search"  :style="{zoom:a11}">
-                        <span>{{lang.FormulaManage_AddProject_DeviceName}}</span>
+            <div
+                class="selectvarcontent"
+                :style="{ paddingTop: 30 * a11 + 'px' }"
+            >
+                <div
+                    class="selecectvarselect"
+                    :style="{
+                        width: 1000 * a11 + 'px',
+                        height: 436 * a11 + 'px'
+                    }"
+                >
+                    <div class="search" :style="{ zoom: a11 }">
+                        <span>{{
+                            lang.FormulaManage_AddProject_DeviceName
+                        }}</span>
                         <select name id v-model="oneselect1">
                             <option
-                                v-for="(item,index) in projectlist"
+                                v-for="(item, index) in projectlist"
                                 :key="index"
                                 :value="item.DeviceName"
-                            >{{item.DisplayDeviceName}}</option>
+                                >{{ item.DisplayDeviceName }}</option
+                            >
                         </select>
-                        <span>{{lang.FormulaManage_AddProject_VariableGroup}}</span>
+                        <span>{{
+                            lang.FormulaManage_AddProject_VariableGroup
+                        }}</span>
                         <select name id v-model="twoselect1">
                             <option
-                                v-for="(item,index) in projectlist2"
+                                v-for="(item, index) in projectlist2"
                                 :key="index"
                                 :value="item.GroupName"
-                            >{{item.GroupName}}</option>
+                                >{{ item.GroupName }}</option
+                            >
                         </select>
-                        <span>{{lang.FormulaManage_AddProject_VariableType}}</span>
+                        <span>{{
+                            lang.FormulaManage_AddProject_VariableType
+                        }}</span>
                         <select name id v-model="threeselect1">
                             <option
-                                v-for="(item,index) in projectlist3"
+                                v-for="(item, index) in projectlist3"
                                 :key="index"
                                 :value="item.Value"
-                            >{{item.Text}}</option>
+                                >{{ item.Text }}</option
+                            >
                         </select>
-                        <input type="text" :placeholder="lang.AlarmRecord_Time_Keyword" v-model="selectvarword" />
-                        <span class="selectvarfor" @click="lookforsearch2">{{lang.RoleManage_Query}}</span>
+                        <input
+                            type="text"
+                            :placeholder="lang.AlarmRecord_Time_Keyword"
+                            v-model="selectvarword"
+                        />
+                        <span class="selectvarfor" @click="lookforsearch2">{{
+                            lang.RoleManage_Query
+                        }}</span>
                     </div>
-                    <div class="selectvartable" :style="{height:320*a11+'px',width:950*a11+'px'}">
+                    <div
+                        class="selectvartable"
+                        :style="{
+                            height: 320 * a11 + 'px',
+                            width: 950 * a11 + 'px'
+                        }"
+                    >
                         <el-table
                             :data="selecttabledata"
                             height="100%"
                             border
-                              @row-click="handleRowChange5"
+                            @row-click="handleRowChange5"
                             style="width: 100%"
-                             :style="{ fontSize: a11 * 15 + 'px', width: '100%' }"
-                 :row-style="{ height: 50 * a11 + 'px' }"
-                 :header-cell-style="{
-                    background:
-                        $store.state.color == 'grey' ? '#D9DBDE' : '#E1EDFA',
-                    color: $store.state.color == 'grey' ? '#000' : '#769DE7',
-                    'border-left': '1px solid #cccccc',
-                    height: 50 * a11 + 'px',
-                    padding: '0'
-                }"
-                               highlight-current-row
-                                  
+                            :style="{
+                                fontSize: a11 * 15 + 'px',
+                                width: '100%'
+                            }"
+                            :row-style="{ height: 50 * a11 + 'px' }"
+                            :header-cell-style="{
+                                background:
+                                    $store.state.color == 'grey'
+                                        ? '#D9DBDE'
+                                        : '#E1EDFA',
+                                color:
+                                    $store.state.color == 'grey'
+                                        ? '#000'
+                                        : '#769DE7',
+                                'border-left': '1px solid #cccccc',
+                                height: 50 * a11 + 'px',
+                                padding: '0'
+                            }"
+                            highlight-current-row
                         >
                             <template slot="empty">
-                                <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
+                                <span>{{
+                                    lang.SCMSConsoleWebApiMySql_NoData
+                                }}</span>
                             </template>
-                            <el-table-column prop="Device" :label="lang.FormulaManage_AddProject_DataGrid_DeviceName" :width="180*a11"></el-table-column>
-                            <el-table-column prop="DateType" :label="lang.FormulaManage_AddProject_DataGrid_VariableType" :width="180*a11"></el-table-column>
-                            <el-table-column prop="Name" :label="lang.FormulaManage_AddProject_DataGrid_Name" :width="180*a11"></el-table-column>
-                            <el-table-column prop="Descript" :label="lang.FormulaManage_AddProject_DataGrid_Describe" :width="180*a11"></el-table-column>
-                            <el-table-column prop="Address" :label="lang.FormulaManage_AddProject_DataGrid_VariableAddress" :width="280*a11"></el-table-column>
+                            <el-table-column
+                                prop="Device"
+                                :label="
+                                    lang.FormulaManage_AddProject_DataGrid_DeviceName
+                                "
+                                :width="180 * a11"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="DateType"
+                                :label="
+                                    lang.FormulaManage_AddProject_DataGrid_VariableType
+                                "
+                                :width="180 * a11"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="Name"
+                                :label="
+                                    lang.FormulaManage_AddProject_DataGrid_Name
+                                "
+                                :width="180 * a11"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="Descript"
+                                :label="
+                                    lang.FormulaManage_AddProject_DataGrid_Describe
+                                "
+                                :width="180 * a11"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="Address"
+                                :label="
+                                    lang.FormulaManage_AddProject_DataGrid_VariableAddress
+                                "
+                                :width="280 * a11"
+                            ></el-table-column>
                         </el-table>
                     </div>
-                    <div class="selectvarpage" :style="{zoom:a11}">
+                    <div class="selectvarpage" :style="{ zoom: a11 }">
                         <div class="pageword">
-                            {{lang.DataGrid_Reaction_HT_ATotalOf}}
-                            <span>{{ PageData1.TotalCount}}</span>{{lang.DataGrid_Reaction_HT_RecordsAndTheCurrent}}
-                            <span>{{ PageData1.PageIndex}}</span>{{lang.DataGrid_Reaction_HT_Page}}
-                            <span>{{ PageData1.TotalPage}}</span>{{lang.DataGrid_Reaction_HT_RecordsAnd}}
-                            <span>{{ PageData1.PageSize}}</span>{{lang.DataGrid_Reaction_HT_PerPage}}
+                            {{ lang.DataGrid_Reaction_HT_ATotalOf }}
+                            <span>{{ PageData1.TotalCount }}</span
+                            >{{
+                                lang.DataGrid_Reaction_HT_RecordsAndTheCurrent
+                            }}
+                            <span>{{ PageData1.PageIndex }}</span
+                            >{{ lang.DataGrid_Reaction_HT_Page }}
+                            <span>{{ PageData1.TotalPage }}</span
+                            >{{ lang.DataGrid_Reaction_HT_RecordsAnd }}
+                            <span>{{ PageData1.PageSize }}</span
+                            >{{ lang.DataGrid_Reaction_HT_PerPage }}
                         </div>
                         <div class="pageoperation">
-                            <span class="btn" @click="start1">{{lang.DataGrid_Reaction_FirstPage}}</span>
+                            <span class="btn" @click="start1">{{
+                                lang.DataGrid_Reaction_FirstPage
+                            }}</span>
                             <span
                                 class="btn"
                                 @click="prev1"
-                                :class="{nopage:!PageData1.LastEnabled}"
-                            >{{lang.DataGrid_Reaction_LastPage}}</span>
-                     
+                                :class="{ nopage: !PageData1.LastEnabled }"
+                                >{{ lang.DataGrid_Reaction_LastPage }}</span
+                            >
+
                             <span
                                 class="btn"
                                 @click="next1"
-                                :class="{nopage:!PageData1.NextEnabled}"
-                            >{{lang.DataGrid_Reaction_NextPage}}</span>
+                                :class="{ nopage: !PageData1.NextEnabled }"
+                                >{{ lang.DataGrid_Reaction_NextPage }}</span
+                            >
 
-                            <span class="btn" @click="end1">{{lang.DataGrid_Reaction_EndPage}}</span>
+                            <span class="btn" @click="end1">{{
+                                lang.DataGrid_Reaction_EndPage
+                            }}</span>
                             <div class="inputnumber">
-                                {{lang.DataGrid_Reaction_The}}
-                                <input type="text" v-model="nowpage1" /> {{lang.DataGrid_Reaction_Page}}
+                                {{ lang.DataGrid_Reaction_The }}
+                                <input type="text" v-model="nowpage1" />
+                                {{ lang.DataGrid_Reaction_Page }}
                             </div>
 
-                            <span class="btn" @click="jump1">{{lang.DataGrid_Reaction_TurnPage}}</span>
+                            <span class="btn" @click="jump1">{{
+                                lang.DataGrid_Reaction_TurnPage
+                            }}</span>
                         </div>
                     </div>
                 </div>
-                <div class="cancel" :style="{zoom:a11}" @click.stop="varcancel">{{lang.PopupCommon_Cancel}}</div>
-                <div class="pre" :style="{zoom:a11}" @click.stop="varpre">{{lang.PopupCommon_Save}}</div>
+                <div
+                    class="cancel"
+                    :style="{ zoom: a11 }"
+                    @click.stop="varcancel"
+                >
+                    {{ lang.PopupCommon_Cancel }}
+                </div>
+                <div class="pre" :style="{ zoom: a11 }" @click.stop="varpre">
+                    {{ lang.PopupCommon_Save }}
+                </div>
             </div>
         </div>
-        <div class="look wantlook"  v-show="ischange">
-            <div
-                class="looktop"
-                :style="{height:60*a11+'px'}"
-            ></div>
-            <div class="lookhead"  >
-                <span v-if="iswant == 1">{{lang.VulnerablePartManage_ReplaceDevice}}</span>
-                <span v-if="iswant == 2">{{lang.VulnerablePartManage_ExtendDeviceLife}}</span>
+        <div class="look" v-show="ischange" :class="{ wantlook: iswant !== 1 }">
+            <div class="looktop" :style="{ height: 60 * a11 + 'px' }"></div>
+            <div class="lookhead">
+                <span v-if="iswant == 1">{{
+                    lang.VulnerablePartManage_ReplaceDevice
+                }}</span>
+                <span v-if="iswant == 2">{{
+                    lang.VulnerablePartManage_ExtendDeviceLife
+                }}</span>
                 <img :src="no" alt @click="cancel" />
             </div>
-            <div class="lookcontent" v-if="iswant == 1">
-                <div class="wantdiv">
-                    <span class="wantsp">{{lang.EquipmentAccount_StartDate}}</span>
-                    <div class="div1">
-                        <template>
-                            <div class="block">
-                                <el-date-picker
-                                    v-model="wanttime"
-                                    type="datetime"
-                                    :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                    value-format="yyyy-MM-dd HH:mm:ss"
-                                ></el-date-picker>
-                            </div>
-                        </template>
+            <div class="lookcontent fix-contain" v-if="iswant == 1">
+                <div class="zl">
+                    <div class="wantdiv">
+                        <span class="wantsp">{{
+                            lang.EquipmentAccount_StartDate
+                        }}</span>
+                        <div class="div1">
+                            <template>
+                                <div class="block" style="margin-left: 30px;">
+                                    <el-date-picker
+                                        v-model="wanttime"
+                                        type="datetime"
+                                        :placeholder="
+                                            lang.SCMSConsoleWebApiMySql_PleChooseDate
+                                        "
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                    ></el-date-picker>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="wantdiv">
+                        <span class="wantsp ss">{{
+                            lang.MaintenanceManage_Remark
+                        }}</span>
+                        <textarea
+                            name
+                            id
+                            cols="30"
+                            rows="10"
+                            :placeholder="
+                                lang.VulnerablePartManage_RemarkDescription
+                            "
+                            v-model="vrmark"
+                        ></textarea>
                     </div>
                 </div>
-                <div class="wantdiv">
-                    <span class="wantsp ss">{{lang.MaintenanceManage_Remark}}</span>
-                    <textarea name id cols="30" rows="10" :placeholder="lang.VulnerablePartManage_RemarkDescription" v-model="vrmark"></textarea>
+                <div class="zr">
+                    <el-image
+                        style="width: 100%; height: 100%;text-align: center;"
+                        :src="url"
+                        :preview-src-list="srcList"
+                    >
+                        <div slot="error" class="image-slot">
+                            <div>无图片</div>
+                        </div>
+                    </el-image>
                 </div>
-                <div class="pre" @click="gpre">{{lang.PopupCommon_Save}}</div>
-                <div class="cancel" @click="cancel">{{lang.PopupCommon_Cancel}}</div>
+                <div class="pre" @click="gpre">{{ lang.PopupCommon_Save }}</div>
+                <div class="cancel" @click="cancel">
+                    {{ lang.PopupCommon_Cancel }}
+                </div>
             </div>
-
-            <!-- 延长器件寿命-弹窗内容 -->
-            <div class="lookcontent" v-if="iswant == 2">
-                <div class="wantdiv">
-                    <span class="wantsp">{{lang.VulnerablePartManage_TimeExpand}}</span>
-                    <div class="div1">
-                        <input type="text" v-model="timevalue" />
-                        <select name id v-model="sss" class="nans">
-                            <option
-                                v-for="(item,index) in ['小时', '天', '月', '年', '次']"
-                                :key="index"
-                                :value="item"
-                            >{{item}}</option>
-                        </select>
+            <div class="lookcontent fix-contain" v-if="iswant == 2">
+                <div class="zl">
+                    <div class="wantdiv">
+                        <span
+                            class="wantsp"
+                            v-if="zy.TimerType !== '运行频次'"
+                            >{{ lang.VulnerablePartManage_TimeExpand }}</span
+                        >
+                        <span class="wantsp" v-else>延长次数</span>
+                        <div class="div1">
+                            <template>
+                                <div class="block" style="margin-left: 30px;">
+                                    <input type="text" v-model="timevalue" />
+                                    <el-select
+                                        name
+                                        id
+                                        v-model="sss"
+                                        class="nans"
+                                        v-if="zy.TimerType !== '运行频次'"
+                                    >
+                                        <el-option
+                                            v-for="item in sametimearr"
+                                            :key="item.key"
+                                            :value="item.key"
+                                            :label="item.value"
+                                        />
+                                    </el-select>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="wantdiv">
+                        <span class="wantsp ss">{{
+                            lang.MaintenanceManage_Remark
+                        }}</span>
+                        <textarea
+                            name
+                            id
+                            cols="30"
+                            rows="10"
+                            :placeholder="
+                                lang.VulnerablePartManage_RemarkDescription
+                            "
+                            v-model="vrmark"
+                        ></textarea>
                     </div>
                 </div>
-                <div class="wantdiv">
-                    <span class="wantsp ss">{{lang.MaintenanceManage_Remark}}</span>
-                    <textarea name id cols="30" rows="10" :placeholder="lang.VulnerablePartManage_RemarkDescription" v-model="vrmark"></textarea>
+                <div class="zr">
+                    <el-image
+                        style="width: 100%; height: 100%;text-align: center;"
+                        :src="url"
+                        :preview-src-list="srcList"
+                    >
+                        <div slot="error" class="image-slot">
+                            <div>无图片</div>
+                        </div>
+                    </el-image>
                 </div>
-                <div class="pre" @click="prolongDeviceLife">{{lang.PopupCommon_Save}}</div>
-                <div class="cancel" @click="cancel">{{lang.PopupCommon_Cancel}}</div>
+
+                <div class="pre" @click="ypre">{{ lang.PopupCommon_Save }}</div>
+                <div class="cancel" @click="cancel">
+                    {{ lang.PopupCommon_Cancel }}
+                </div>
             </div>
-
-
         </div>
-        <div class="look look222" ref="kongtiao5" v-show="offdecive" @click="selectword3 = false"  :style="{width:1120*a11+'px',height:600*a11+'px'}">
+        <div
+            class="look look222"
+            ref="kongtiao5"
+            v-show="offdecive"
+            @click="selectword3 = false"
+            :style="{ width: 1120 * a11 + 'px', height: 600 * a11 + 'px' }"
+        >
+            <div class="looktop" :style="{ height: 60 * a11 + 'px' }"></div>
             <div
-                class="looktop"
-                 :style="{height:60*a11+'px'}"
-            ></div>
-            <div class="lookhead"  :style="{height:60*a11+'px',lineHeight:60*a11+'px',fontSize:18*a11+'px'}"   :class="[{colordiv:$store.state.color=='grey'},{fcolor:$store.state.color=='grey'}]">
-                {{lang.VulnerablePartManage_AddDevice}}
-                  <img
+                class="lookhead"
+                :style="{
+                    height: 60 * a11 + 'px',
+                    lineHeight: 60 * a11 + 'px',
+                    fontSize: 18 * a11 + 'px'
+                }"
+                :class="[
+                    { colordiv: $store.state.color == 'grey' },
+                    { fcolor: $store.state.color == 'grey' }
+                ]"
+            >
+                {{ lang.VulnerablePartManage_AddDevice }}
+                <img
                     :src="no2"
                     alt
                     class="no"
                     @click="cancel11"
-                    :style="{width:24*a11+'px',height:24*a11+'px'}"
-                    v-if="$store.state.color=='grey'"
+                    :style="{ width: 24 * a11 + 'px', height: 24 * a11 + 'px' }"
+                    v-if="$store.state.color == 'grey'"
                 />
-                <img    :style="{width:24*a11+'px',height:24*a11+'px'}" :src="no" alt class="no" @click="cancel11" v-else />
+                <img
+                    :style="{ width: 24 * a11 + 'px', height: 24 * a11 + 'px' }"
+                    :src="no"
+                    alt
+                    class="no"
+                    @click="cancel11"
+                    v-else
+                />
             </div>
-            <div class="lookcontent" :style="{paddingTop:30*a11+'px'}">
-                <div class="lookselect" :style="{width:1000*a11+'px',height:436*a11+'px'}">
-                    <div class="search" :style="{zoom:a11}">
-                        <span class="sblx1">{{lang.EquipmentAccount_EquipmentType1}}</span>
-                                         <div class="seleword2" @click.stop="selectword2">
-             <div class="seleword1">
-                  {{oneselect}}
-               <img :src="xiala" alt />
-             </div>
-            </div>
-                        <div class="selectword selectword2" v-show="selectword3">
+            <div class="lookcontent" :style="{ paddingTop: 30 * a11 + 'px' }">
+                <div
+                    class="lookselect"
+                    :style="{
+                        width: 1000 * a11 + 'px',
+                        height: 436 * a11 + 'px'
+                    }"
+                >
+                    <div class="search" :style="{ zoom: a11 }">
+                        <span class="sblx1">{{
+                            lang.EquipmentAccount_EquipmentType1
+                        }}</span>
+                        <div class="seleword2" @click.stop="selectword2">
+                            <div class="seleword1">
+                                {{ oneselect }}
+                                <img :src="xiala" alt />
+                            </div>
+                        </div>
+                        <div
+                            class="selectword selectword2"
+                            v-show="selectword3"
+                        >
                             <el-tree
                                 :data="data7"
                                 @node-click="handleNodeClic7"
@@ -234,19 +450,34 @@
                                 default-expand-all
                                 icon-class="el-icon-arrow-up"
                             >
-                                <span class="custom-tree-node" slot-scope="{ node, data }">
+                                <span
+                                    class="custom-tree-node"
+                                    slot-scope="{ node, data }"
+                                >
                                     <span>
-                                        <img v-show="data.file" :src="data.file" alt class="img11" />
+                                        <img
+                                            v-show="data.file"
+                                            :src="data.file"
+                                            alt
+                                            class="img11"
+                                        />
                                         <i :class="data.icon"></i>
                                         {{ node.label }}
                                     </span>
                                 </span>
                             </el-tree>
                         </div>
-                        <input type="text " class="tinput1" :placeholder="lang.AlarmRecord_Time_Keyword" v-model="projectkeyword" />
-                        <span class="lookfor1" @click="lookforsearch">{{lang.RoleManage_Query}}</span>
+                        <input
+                            type="text "
+                            class="tinput1"
+                            :placeholder="lang.AlarmRecord_Time_Keyword"
+                            v-model="projectkeyword"
+                        />
+                        <span class="lookfor1" @click="lookforsearch">{{
+                            lang.RoleManage_Query
+                        }}</span>
                     </div>
-                    <div class="table" :style="{height:340*a11+'px'}">
+                    <div class="table" :style="{ height: 340 * a11 + 'px' }">
                         <el-table
                             :data="projectlistdata"
                             height="100%"
@@ -254,61 +485,98 @@
                             style="width: 100%"
                             @row-click="handleRowChange1"
                             highlight-current-row
-                                                  :style="{ fontSize: a11 * 15 + 'px', width: '100%' }"
-                 :row-style="{ height: 50 * a11 + 'px' }"
-                 :header-cell-style="{
-                    background:
-                        $store.state.color == 'grey' ? '#D9DBDE' : '#E1EDFA',
-                    color: $store.state.color == 'grey' ? '#000' : '#769DE7',
-                    'border-left': '1px solid #cccccc',
-                    height: 50 * a11 + 'px',
-                    padding: '0'
-                }"
+                            :style="{
+                                fontSize: a11 * 15 + 'px',
+                                width: '100%'
+                            }"
+                            :row-style="{ height: 50 * a11 + 'px' }"
+                            :header-cell-style="{
+                                background:
+                                    $store.state.color == 'grey'
+                                        ? '#D9DBDE'
+                                        : '#E1EDFA',
+                                color:
+                                    $store.state.color == 'grey'
+                                        ? '#000'
+                                        : '#769DE7',
+                                'border-left': '1px solid #cccccc',
+                                height: 50 * a11 + 'px',
+                                padding: '0'
+                            }"
                         >
                             <template slot="empty">
-                                <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
+                                <span>{{
+                                    lang.SCMSConsoleWebApiMySql_NoData
+                                }}</span>
                             </template>
-                            <el-table-column prop="DeviceName" :label="lang.EquipmentAccount_EquipmentName"></el-table-column>
-                            <el-table-column prop="DeviceNo" :label="lang.EquipmentAccount_EquipmentNumber"></el-table-column>
-                            <el-table-column prop="DevicePath" :label="lang.EquipmentAccount_EquipmentType"></el-table-column>
-                            <el-table-column prop="DeviceModel" :label="lang.EquipmentAccount_EquipmentModel"></el-table-column>
+                            <el-table-column
+                                prop="DeviceName"
+                                :label="lang.EquipmentAccount_EquipmentName"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="DeviceNo"
+                                :label="lang.EquipmentAccount_EquipmentNumber"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="DevicePath"
+                                :label="lang.EquipmentAccount_EquipmentType"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="DeviceModel"
+                                :label="lang.EquipmentAccount_EquipmentModel"
+                            ></el-table-column>
                         </el-table>
                     </div>
                 </div>
             </div>
-            <div class="cancel cancel11" @click="cancel11" :style="{zoom:a11}">{{lang.PopupCommon_Cancel}}</div>
-            <div class="pre" @click="pre1" :style="{zoom:a11}">{{lang.PopupCommon_Sure}}</div>
-        </div>
-        <div class="search-container" :style="{zoom:a11}">
-            <div>
-                <span class="sblx">{{lang.EquipmentAccount_EquipmentType1}}</span>
-                   <div class="seleword" @click.stop="selectword1">
-             <div class="seleword1">
-                  {{Meter}}
-               <img :src="xiala" alt />
-             </div>
+            <div
+                class="cancel cancel11"
+                @click="cancel11"
+                :style="{ zoom: a11 }"
+            >
+                {{ lang.PopupCommon_Cancel }}
             </div>
-                <span class="spge tinput">{{lang.VulnerablePartManage_ChangeDateRange}}</span>
-
+            <div class="pre" @click="pre1" :style="{ zoom: a11 }">
+                {{ lang.PopupCommon_Sure }}
+            </div>
+        </div>
+        <div class="search-container" :style="{ zoom: a11 }">
+            <div>
+                <span class="sblx">{{
+                    lang.EquipmentAccount_EquipmentType1
+                }}</span>
+                <div class="seleword" @click.stop="selectword1">
+                    <div class="seleword1">
+                        {{ Meter }}
+                        <img :src="xiala" alt />
+                    </div>
+                </div>
+                <span class="spge tinput">{{
+                    lang.VulnerablePartManage_ChangeDateRange
+                }}</span>
                 <el-date-picker
                     v-model="value1"
-                    @focus='sx()'
+                    @focus="sx()"
                     type="datetime"
                     :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                     value-format="yyyy-MM-dd HH:mm:ss"
-                    :style="{width:'220px'}"
+                    :style="{ width: '220px' }"
                 ></el-date-picker>
                 <span class="demonstration">-</span>
                 <el-date-picker
                     v-model="value2"
-                     @focus='sx()'
+                    @focus="sx()"
                     type="datetime"
                     :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                     value-format="yyyy-MM-dd HH:mm:ss"
-                    :style="{width:'220px'}"
+                    :style="{ width: '220px' }"
                 ></el-date-picker>
-                <input type="text" :placeholder="lang.AlarmRecord_Time_Keyword" v-model="keyword" />
-                <div class="sad" @click="sad">{{lang.RoleManage_Query}}</div>
+                <input
+                    type="text"
+                    :placeholder="lang.AlarmRecord_Time_Keyword"
+                    v-model="keyword"
+                />
+                <div class="sad" @click="sad">{{ lang.RoleManage_Query }}</div>
                 <div class="selectword" v-show="changeselect">
                     <el-tree
                         :data="data6"
@@ -317,9 +585,17 @@
                         default-expand-all
                         icon-class="el-icon-arrow-up"
                     >
-                        <span class="custom-tree-node" slot-scope="{ node, data }">
+                        <span
+                            class="custom-tree-node"
+                            slot-scope="{ node, data }"
+                        >
                             <span>
-                                <img v-show="data.file" :src="data.file" alt class="img11" />
+                                <img
+                                    v-show="data.file"
+                                    :src="data.file"
+                                    alt
+                                    class="img11"
+                                />
                                 <i :class="data.icon"></i>
                                 {{ node.label }}
                             </span>
@@ -328,14 +604,15 @@
                 </div>
             </div>
             <div class="myd">
-                <!-- <div class="add" @click="addInfo">{{lang.RoleManage_Add}}</div> -->
-                <div class="add" @click="createDeviceShow('create')">{{lang.RoleManage_Add}}</div>
-                <div class="move" @click="del">{{lang.RoleManage_Delete}}</div>
+                <div class="add" @click="add">{{ lang.RoleManage_Add }}</div>
+                <div class="move" @click="del">
+                    {{ lang.RoleManage_Delete }}
+                </div>
                 <div class="import">
                     <a href="javascript:;" class="file">
-                        {{lang.QualityManage_SampleChoseUserControl_Import}}
+                        {{ lang.QualityManage_SampleChoseUserControl_Import }}
                         <input
-                         @click="dr($event)"
+                            @click="dr($event)"
                             type="file"
                             ref="upload"
                             accept=".xls, .xlsx"
@@ -344,7 +621,9 @@
                         />
                     </a>
                 </div>
-                <div class="export" @click="exportTable">{{lang.QualityManage_SampleChoseUserControl_Export}}</div>
+                <div class="export" @click="exportTable">
+                    {{ lang.QualityManage_SampleChoseUserControl_Export }}
+                </div>
             </div>
         </div>
         <div class="table-container table-container1">
@@ -354,14 +633,13 @@
                 stripe
                 height="100%"
                 tooltip-effect="dark"
-              
                 @select="select3"
                 @select-all="select2"
-                   border
-                  highlight-current-row
+                border
+                highlight-current-row
                 :style="{ fontSize: a11 * 15 + 'px', width: '100%' }"
-                 :row-style="{ height: 50 * a11 + 'px' }"
-             :header-cell-style="{
+                :row-style="{ height: 50 * a11 + 'px' }"
+                :header-cell-style="{
                     background:
                         $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
                     color: $store.state.color == 'grey' ? '#000' : '#fff',
@@ -371,61 +649,90 @@
                 }"
             >
                 <template slot="empty">
-                    <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
+                    <span>{{ lang.SCMSConsoleWebApiMySql_NoData }}</span>
                 </template>
-                <el-table-column type="selection" :width="a11>1?60*a11:60" fixed></el-table-column>
-                <el-table-column :label="lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber" :width="lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber=='Serial number'?145*a11:100*a11" prop="Number" fixed>
+                <el-table-column
+                    type="selection"
+                    :width="a11 > 1 ? 60 * a11 : 60"
+                    fixed
+                ></el-table-column>
+                <el-table-column
+                    :label="lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber"
+                    :width="
+                        lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber ==
+                        'Serial number'
+                            ? 145 * a11
+                            : 100 * a11
+                    "
+                    prop="Number"
+                    fixed
+                >
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.Number}}</span>
-                            <span v-else>{{scope.row.Number}}</span>
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.Number }}</span
+                            >
+                            <span v-else>{{ scope.row.Number }}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="name" :label="lang.RoleManage_Operation" :width="320*a11" fixed>
+                <el-table-column
+                    prop="name"
+                    :label="lang.RoleManage_Operation"
+                    :width="320 * a11"
+                    fixed
+                >
                     <template slot-scope="scope">
                         <div
-                            v-if="scope.row.Status == lang.SCMSConsoleWebApiMySql_Reminded"
+                            v-if="
+                                scope.row.Status ==
+                                    lang.SCMSConsoleWebApiMySql_Reminded
+                            "
                             class="img"
-                              :style="{zoom:a11}"
-                            @click="handleEdit7(scope.$index, scope.row) "
-                        >{{lang.VulnerablePartManage_Change}}</div>
-                        
-                        <!-- 延长器件寿命-显示弹窗 -->
-                        <!-- @click="handleEdit8(scope.$index, scope.row)" -->
+                            :style="{ zoom: a11 }"
+                            @click="handleEdit7(scope.$index, scope.row)"
+                        >
+                            {{ lang.VulnerablePartManage_Change }}
+                        </div>
                         <div
-                            v-if="scope.row.Status == lang.SCMSConsoleWebApiMySql_Reminded"
+                            v-if="
+                                scope.row.Status ==
+                                    lang.SCMSConsoleWebApiMySql_Reminded
+                            "
                             class="img"
-                            :style="{zoom:a11}"
-                            @click="prolongDeviceLifeShow('show', scope.row)"
-                        >{{lang.VulnerablePartManage_Extend}}</div>
-
-                        <div class="img" @click="createDeviceShow('check', scope.row, scope.$index)"   :style="{zoom:a11}">
+                            :style="{ zoom: a11 }"
+                            @click="handleEdit8(scope.$index, scope.row)"
+                        >
+                            {{ lang.VulnerablePartManage_Extend }}
+                        </div>
+                        <div
+                            class="img"
+                            @click="handleEdit11(scope.$index, scope.row)"
+                            :style="{ zoom: a11 }"
+                        >
                             <img :src="look" alt />
-                            {{scope.row.phone}}
+                            {{ scope.row.phone }}
                         </div>
-                        <div class="img" @click="createDeviceShow('edit', scope.row, scope.$index)"   :style="{zoom:a11}">
+                        <div
+                            class="img"
+                            @click="handleEdit1(scope.$index, scope.row)"
+                            :style="{ zoom: a11 }"
+                        >
                             <img :src="pensoil" alt />
-                            {{scope.row.phone}}
+                            {{ scope.row.phone }}
                         </div>
-                        <!-- <div class="img" @click="checkInfo(scope.$index, scope.row)"   :style="{zoom:a11}">
-                            <img :src="look" alt />
-                            {{scope.row.phone}}
-                        </div>
-                        <div class="img" @click="editInfo(scope.$index, scope.row)"   :style="{zoom:a11}">
-                            <img :src="pensoil" alt />
-                            {{scope.row.phone}}
-                        </div> -->
                     </template>
                 </el-table-column>
 
                 <el-table-column
                     prop="VulnerablePartName"
                     :label="lang.EquipmentAccount_VulnerablePartName"
-                    :width="200*a11"
+                    :width="200 * a11"
                     fixed
                     show-overflow-tooltip
                 >
@@ -433,736 +740,887 @@
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.TaskName}}</span>
-                            <span v-else>{{scope.row.VulnerablePartName}}</span>
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.TaskName }}</span
+                            >
+                            <span v-else>{{
+                                scope.row.VulnerablePartName
+                            }}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column
                     prop="VulnerablePartNo"
                     :label="lang.EquipmentAccount_VulnerablePartNo"
-                    :width="200*a11"
+                    :width="200 * a11"
                     show-overflow-tooltip
                 >
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.TaskType}}</span>
-                            <span v-else>{{scope.row.VulnerablePartNo}}</span>
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.TaskType }}</span
+                            >
+                            <span v-else>{{ scope.row.VulnerablePartNo }}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="UsingDevice" :label="lang.EquipmentAccount_UsingDevice" :width="200*a11" show-overflow-tooltip>
+                <el-table-column
+                    prop="UsingDevice"
+                    :label="lang.EquipmentAccount_UsingDevice"
+                    :width="200 * a11"
+                    show-overflow-tooltip
+                >
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.StartTime}}</span>
-                            <span v-else>{{scope.row.UsingDevice}}</span>
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.StartTime }}</span
+                            >
+                            <span v-else>{{ scope.row.UsingDevice }}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column
                     prop="VulnerablePartModel"
                     :label="lang.EquipmentAccount_VulnerablePartModel"
-                    :width="200*a11"
+                    :width="200 * a11"
                     show-overflow-tooltip
                 >
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.EndTime}}</span>
-                            <span v-else>{{scope.row.VulnerablePartModel}}</span>
-                        </div>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="MaturityTime" :label="lang.EquipmentAccount_MaturityTime" :width="300*a11" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <div class="item">
-                            <span
-                                class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.Status}}</span>
-                            <span v-else>{{scope.row.MaturityTime}}</span>
-                        </div>
-                    </template>
-                </el-table-column>
-
-                <!-- 剩余寿命 -->
-                <el-table-column prop="ResidualLife" :label="lang.EquipmentAccount_ResidualLife" :width="300*a11" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <div class="item">
-                            <span 
-                                :class="scope.row.TaskType === lang.RepairManage_FaultRepair ? 'sad' : ''"
-                            >{{ scope.row.ResidualLife }}</span>
-                        </div>
-                    </template>
-                </el-table-column>
-
-
-                <el-table-column prop="EnableTime" :label="lang.EquipmentAccount_StartDate" :width="300*a11" show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <div class="item">
-                            <span
-                                class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.DeviceName}}</span>
-                            <span v-else>{{scope.row.EnableTime}}</span>
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.EndTime }}</span
+                            >
+                            <span v-else>{{
+                                scope.row.VulnerablePartModel
+                            }}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="LifeCycleValue"
-                    :label="lang.EquipmentAccount_LifeCycle"
-                    :width="300*a11"
+                    prop="MaturityTime"
+                    :label="lang.EquipmentAccount_MaturityTime"
+                    :width="300 * a11"
                     show-overflow-tooltip
                 >
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.DeviceName}}</span>
-                            <span v-else>{{scope.row.LifeCycleValue}}</span>
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.Status }}</span
+                            >
+                            <span v-else>{{ scope.row.MaturityTime }}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="TimerType" label="统计类型" :width="300*a11" show-overflow-tooltip>
+                <el-table-column
+                    prop="ResidualLife"
+                    :label="lang.EquipmentAccount_ResidualLife"
+                    :width="300 * a11"
+                    show-overflow-tooltip
+                >
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.DeviceName}}</span>
-                            <span v-else>{{scope.row.TimerType}}</span>
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.RepairPerson }}</span
+                            >
+                            <span v-else>{{ scope.row.ResidualLife }}</span>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="EnableTime"
+                    :label="lang.EquipmentAccount_StartDate"
+                    :width="300 * a11"
+                    show-overflow-tooltip
+                >
+                    <template slot-scope="scope">
+                        <div class="item">
+                            <span
+                                class="sad"
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.DeviceName }}</span
+                            >
+                            <span v-else>{{ scope.row.EnableTime }}</span>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="LifeCycleDisplayName"
+                    :label="lang.EquipmentAccount_LifeCycle"
+                    :width="300 * a11"
+                    show-overflow-tooltip
+                >
+                    <template slot-scope="scope">
+                        <div class="item">
+                            <span
+                                class="sad"
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.DeviceName }}</span
+                            >
+                            <span v-else>{{
+                                scope.row.LifeCycleDisplayName
+                            }}</span>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="TimerType"
+                    :label="lang.EquipmentAccount_TimerType"
+                    :width="300 * a11"
+                    show-overflow-tooltip
+                >
+                    <template slot-scope="scope">
+                        <div class="item">
+                            <span
+                                class="sad"
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.DeviceName }}</span
+                            >
+                            <span v-else>{{ scope.row.TimerType }}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column
                     prop="RunningSignal"
-                    label="统计信号"
-                    :width="300*a11"
+                    :label="lang.EquipmentAccount_RunningSignal"
+                    :width="300 * a11"
                     show-overflow-tooltip
                 >
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.DeviceName}}</span>
-                            <span v-else>{{scope.row.RunningSignal}}</span>
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.DeviceName }}</span
+                            >
+                            <span v-else>{{ scope.row.RunningSignal }}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="ReminderTimeValue"
+                    prop="ReminderTimeDisplayName"
                     :label="lang.EquipmentAccount_AdvanceReminder"
-                    :width="300*a11"
+                    :width="300 * a11"
                     show-overflow-tooltip
                 >
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.DeviceName}}</span>
-                            <span v-else>{{scope.row.ReminderTimeValue}}</span>
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.DeviceName }}</span
+                            >
+                            <span v-else>{{
+                                scope.row.ReminderTimeDisplayName
+                            }}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="Executor" :label="lang.EquipmentAccount_Executor" :width="300*a11" show-overflow-tooltip>
+                <el-table-column
+                    prop="Executor"
+                    :label="lang.EquipmentAccount_Executor"
+                    :width="300 * a11"
+                    show-overflow-tooltip
+                >
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.DeviceName}}</span>
-                            <span v-else>{{scope.row.Executor}}</span>
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.DeviceName }}</span
+                            >
+                            <span v-else>{{ scope.row.Executor }}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="UseNumber" :label="lang.EquipmentAccount_UseNumber" :width="300*a11" show-overflow-tooltip>
+                <el-table-column
+                    prop="UseNumber"
+                    :label="lang.EquipmentAccount_UseNumber"
+                    :width="300 * a11"
+                    show-overflow-tooltip
+                >
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.DeviceName}}</span>
-                            <span v-else>{{scope.row.UseNumber}}</span>
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.DeviceName }}</span
+                            >
+                            <span v-else>{{ scope.row.UseNumber }}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="Price" :label="lang.EquipmentAccount_DevicePrice" :width="300*a11" show-overflow-tooltip>
+                <el-table-column
+                    prop="Price"
+                    :label="lang.EquipmentAccount_DevicePrice"
+                    :width="300 * a11"
+                    show-overflow-tooltip
+                >
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.DeviceName}}</span>
-                            <span v-else>{{scope.row.Price}}</span>
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.DeviceName }}</span
+                            >
+                            <span v-else>{{ scope.row.Price }}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="Manufactor" :label="lang.EquipmentAccount_Supplier" :width="300*a11" show-overflow-tooltip>
+                <el-table-column
+                    prop="Manufactor"
+                    :label="lang.EquipmentAccount_Supplier"
+                    :width="300 * a11"
+                    show-overflow-tooltip
+                >
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.DeviceName}}</span>
-                            <span v-else>{{scope.row.Manufactor}}</span>
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.DeviceName }}</span
+                            >
+                            <span v-else>{{ scope.row.Manufactor }}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="Remarks" :label="lang.EquipmentAccount_DeviceRemark" :width="300*a11" show-overflow-tooltip>
+                <el-table-column
+                    prop="Remarks"
+                    :label="lang.EquipmentAccount_DeviceRemark"
+                    :width="300 * a11"
+                    show-overflow-tooltip
+                >
                     <template slot-scope="scope">
                         <div class="item">
                             <span
                                 class="sad"
-                                v-if="scope.row.TaskType == lang.RepairManage_FaultRepair"
-                            >{{scope.row.DeviceName}}</span>
-                            <span v-else>{{scope.row.Remarks}}</span>
+                                v-if="
+                                    scope.row.TaskType ==
+                                        lang.RepairManage_FaultRepair
+                                "
+                                >{{ scope.row.DeviceName }}</span
+                            >
+                            <span v-else>{{ scope.row.Remarks }}</span>
                         </div>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
-        <div class="pages-container" :style="{zoom:a11}">
+        <div class="pages-container" :style="{ zoom: a11 }">
             <div class="page">
                 <div class="pageword">
-                    {{lang.DataGrid_Reaction_HT_ATotalOf}}
-                   <span>{{PageData.TotalCount}}</span>{{lang.DataGrid_Reaction_HT_RecordsAndTheCurrent}}
-                    <span>{{PageData.PageIndex}}</span>{{lang.DataGrid_Reaction_HT_Page}}
-                    <span>{{PageData.TotalPage}}</span>{{lang.DataGrid_Reaction_HT_RecordsAnd}}
-                    <span>{{PageData.PageSize}}</span>{{lang.DataGrid_Reaction_HT_PerPage}}
+                    {{ lang.DataGrid_Reaction_HT_ATotalOf }}
+                    <span>{{ PageData.TotalCount }}</span
+                    >{{ lang.DataGrid_Reaction_HT_RecordsAndTheCurrent }}
+                    <span>{{ PageData.PageIndex }}</span
+                    >{{ lang.DataGrid_Reaction_HT_Page }}
+                    <span>{{ PageData.TotalPage }}</span
+                    >{{ lang.DataGrid_Reaction_HT_RecordsAnd }}
+                    <span>{{ PageData.PageSize }}</span
+                    >{{ lang.DataGrid_Reaction_HT_PerPage }}
                 </div>
                 <div class="pageoperation">
-                    <span class="btn" @click="start">{{lang.DataGrid_Reaction_FirstPage}}</span>
-                     <span class="btn" :class="{nopage:!PageData.LastEnabled}" @click="abck">{{lang.DataGrid_Reaction_LastPage}}</span>
-                   <span class="btn" :class="{nopage:!PageData.NextEnabled}" @click="next">{{lang.DataGrid_Reaction_NextPage}}</span>
-                    <span class="btn" @click="end">{{lang.DataGrid_Reaction_EndPage}}</span>
+                    <span class="btn" @click="start">{{
+                        lang.DataGrid_Reaction_FirstPage
+                    }}</span>
+                    <span
+                        class="btn"
+                        :class="{ nopage: !PageData.LastEnabled }"
+                        @click="abck"
+                        >{{ lang.DataGrid_Reaction_LastPage }}</span
+                    >
+                    <span
+                        class="btn"
+                        :class="{ nopage: !PageData.NextEnabled }"
+                        @click="next"
+                        >{{ lang.DataGrid_Reaction_NextPage }}</span
+                    >
+                    <span class="btn" @click="end">{{
+                        lang.DataGrid_Reaction_EndPage
+                    }}</span>
                     <div class="inputnumber">
-                        {{lang.DataGrid_Reaction_The}}
-                        <input type="text" v-model="nowpage" /> {{lang.DataGrid_Reaction_Page}}
+                        {{ lang.DataGrid_Reaction_The }}
+                        <input type="text" v-model="nowpage" />
+                        {{ lang.DataGrid_Reaction_Page }}
                     </div>
 
-                    <span class="btn" @click="jump">{{lang.DataGrid_Reaction_TurnPage}}</span>
+                    <span class="btn" @click="jump">{{
+                        lang.DataGrid_Reaction_TurnPage
+                    }}</span>
                 </div>
             </div>
         </div>
-        <div class="sestion" v-show="change11" :style="{zoom:a11}">
-            <!-- v-if="change11" -->
-            <div class="sestionheader" :class="{colordiv:$store.state.color=='grey'}">
-                <div
-                    class="sestionheader1"
-                ></div>
-                <span class="head" v-if="sestion == 1" :class="{fcolor:$store.state.color=='grey'}">{{lang.VulnerablePartManage_AddDeviceInfo}}</span>
-                <span class="head" v-else-if="sestion == 2" :class="{fcolor:$store.state.color=='grey'}">{{lang.VulnerablePartManage_ViewDeviceInfo}}</span>
-                <span class="head" v-else-if="sestion == 3" :class="{fcolor:$store.state.color=='grey'}">{{lang.VulnerablePartManage_EditDeviceInfo}}</span>
-                  <img
+        <div class="sestion" v-show="change11" :style="{ zoom: a11 }">
+            <div
+                class="sestionheader"
+                :class="{ colordiv: $store.state.color == 'grey' }"
+            >
+                <div class="sestionheader1"></div>
+                <span
+                    class="head"
+                    v-if="sestion == 1"
+                    :class="{ fcolor: $store.state.color == 'grey' }"
+                    >{{ lang.VulnerablePartManage_AddDeviceInfo }}</span
+                >
+                <span
+                    class="head"
+                    v-else-if="sestion == 2"
+                    :class="{ fcolor: $store.state.color == 'grey' }"
+                    >{{ lang.VulnerablePartManage_ViewDeviceInfo }}</span
+                >
+                <span
+                    class="head"
+                    v-else-if="sestion == 3"
+                    :class="{ fcolor: $store.state.color == 'grey' }"
+                    >{{ lang.VulnerablePartManage_EditDeviceInfo }}</span
+                >
+                <img
                     :src="no2"
                     alt
                     class="no"
                     @click.stop="cancel"
-                    v-if="$store.state.color=='grey'"
+                    v-if="$store.state.color == 'grey'"
                 />
                 <img :src="no" alt class="no" @click.stop="cancel" v-else />
             </div>
             <div class="sestioncontain">
-                <div class="homesetion">
-                    <div class="hometop">
-                        <div class="linetop1 hometop-title">
-                              {{lang.EquipmentAccount_BasicInformation}}
-                        </div>
-                     
-                        <div class="line linetop2"></div>
-                    </div>
-                </div>
-                <div class="overflow">
-                    <div>
-                        <div class="zl" >
-                            <div class="margin">
-                                <span>{{lang.EquipmentAccount_VulnerablePartName}}</span>
-                                <input
-                                    type="text"
-                                    v-if="sestion == 1"
-                                    v-model="wantnowdata.VulnerablePartName"
-                                />
-                                <input
-                                    type="text"
-                                    v-else-if="sestion == 2"
-                                    v-model="wantnowdata.VulnerablePartName"
-                                    disabled
-                                />
-                                <input
-                                    type="text"
-                                    v-else-if="sestion == 3"
-                                    v-model="wantnowdata.VulnerablePartName"
-                                />
+                <div class="sestioncontain-content">
+                    <div class="homesetion">
+                        <div class="hometop">
+                            <div class="linetop1 hometop-title">
+                                {{ lang.EquipmentAccount_BasicInformation }}
                             </div>
-                            <div class="margin">
-                                <span>{{lang.EquipmentAccount_UsingDevice}}</span>
-                                <div v-if="sestion == 1" class="input1">
-                                    <span>{{wantnowdata.UsingDevice}}</span>
-                                    <div class="inputimg" @click="getdevice">
-                                        <img :src="diji" alt />
-                                    </div>
-                                </div>
-                                <div v-else-if="sestion == 2" class="input1">
-                                    <span>{{wantnowdata.UsingDevice}}</span>
-                                    <div class="inputimg">
-                                        <!-- <img :src="diji" alt /> -->
-                                    </div>
-                                </div>
-                                <div v-else-if="sestion == 3" class="input1">
-                                    <span>{{wantnowdata.UsingDevice}}</span>
-                                    <div class="inputimg" @click="getdevice">
-                                        <img :src="diji" alt />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="zr">
-                            <div class="margin" >
-                                <span>{{lang.EquipmentAccount_VulnerablePartNo}}</span>
-                                <input
-                                    type="text"
-                                    v-if="sestion == 1"
-                                    v-model="wantnowdata.VulnerablePartNo"
-                                />
-                                <input
-                                    type="text"
-                                    v-else-if="sestion == 2"
-                                    v-model="wantnowdata.VulnerablePartNo"
-                                    disabled
-                                />
-                                <input
-                                    type="text"
-                                    v-else-if="sestion == 3"
-                                    v-model="wantnowdata.VulnerablePartNo"
-                                />
-                            </div>
-                            <div class="margin">
-                                <span>{{lang.VulnerablePartManage_VulnerablePartType}}</span>
-                                <input
-                                    type="text"
-                                    v-if="sestion == 1"
-                                    v-model="wantnowdata.VulnerablePartModel"
-                                />
-                                <input
-                                    type="text"
-                                    v-else-if="sestion == 2"
-                                    v-model="wantnowdata.VulnerablePartModel"
-                                    disabled
-                                />
-                                <input
-                                    type="text"
-                                    v-else-if="sestion == 3"
-                                    v-model="wantnowdata.VulnerablePartModel"
-                                />
-                            </div>
+
+                            <div class="line linetop2"></div>
                         </div>
                     </div>
-                </div>
-                <div class="homesetion">
-                    <div class="hometop">
-                        <div class="linetop3 hometop-title">
-                            {{lang.VulnerablePartManage_LifeInfo}}
-                        </div>
-                       
-                        <div class="line linetop4"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="overflow" style="overflow: inherit;">
+                    <div class="overflow">
                         <div>
                             <div class="zl">
-
-                                <!-- 启用日期 -->
-                                <div class="margin margin-date">
-                                    <span>{{lang.EquipmentAccount_StartDate}}</span>
-                                    <template>
-                                        <div class="block" v-if="sestion == 1">
-                                            <el-date-picker
-                                                v-model="wantnowdata.EnableTime"
-                                                type="datetime"
-                                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                                value-format="yyyy-MM-dd HH:mm:ss"
-                                            ></el-date-picker>
-                                        </div>
-                                        <div class="block" v-else-if="sestion == 2">
-                                            <el-date-picker
-                                                v-model="wantnowdata.EnableTime"
-                                                type="datetime"
-                                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                                value-format="yyyy-MM-dd HH:mm:ss"
-                                                disabled
-                                            ></el-date-picker>
-                                        </div>
-                                        <div class="block" v-else-if="sestion == 3">
-                                            <el-date-picker
-                                                v-model="wantnowdata.EnableTime"
-                                                type="datetime"
-                                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                                                value-format="yyyy-MM-dd HH:mm:ss"
-                                            ></el-date-picker>
-                                        </div>
-                                    </template>
-                                </div>
-
-                                <!-- 寿命周期 -->
                                 <div class="margin">
-                                    <span class="sp6">{{lang.EquipmentAccount_LifeCycle}}</span>
-                                    <div class="is" v-if="sestion == 1">
-                                        <input type="text" v-model="wantnowdata.LifeCycleValue" />
-                                        <select name id v-model="wantnowdata.LifeCycleUnit">
-                                            <option
-                                                v-for="(item,index) in sametimearr"
-                                                :key="index"
-                                                :value="item"
-                                            >{{item}}</option>
-                                        </select>
-                                    </div>
-                                    <div class="is" v-if="sestion == 2">
-                                        <input
-                                            type="text"
-                                            v-model="wantnowdata.LifeCycleValue"
-                                            disabled
-                                        />
-                                        <select
-                                            name
-                                            id
-                                            v-model="wantnowdata.LifeCycleUnit"
-                                            disabled
+                                    <span>{{
+                                        lang.EquipmentAccount_VulnerablePartName
+                                    }}</span>
+                                    <input
+                                        type="text"
+                                        :disabled="sestion == 2"
+                                        v-model="wantnowdata.VulnerablePartName"
+                                    />
+                                </div>
+                                <div class="margin">
+                                    <span>{{
+                                        lang.EquipmentAccount_UsingDevice
+                                    }}</span>
+                                    <div class="input1">
+                                        <span>{{
+                                            wantnowdata.UsingDevice
+                                        }}</span>
+                                        <div
+                                            class="inputimg"
+                                            @click="getdevice"
                                         >
-                                            <option
-                                                v-for="(item,index) in sametimearr"
-                                                :key="index"
-                                                :value="item"
-                                            >{{item}}</option>
-                                        </select>
+                                            <img
+                                                :src="diji"
+                                                alt
+                                                v-if="sestion !== 2"
+                                            />
+                                        </div>
                                     </div>
-                                    <div class="is" v-if="sestion == 3">
-                                        <input type="text" v-model="wantnowdata.LifeCycleValue" />
-                                        <select name id v-model="wantnowdata.LifeCycleUnit">
-                                            <option
-                                                v-for="(item,index) in sametimearr"
-                                                :key="index"
-                                                :value="item"
-                                            >{{item}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- 统计系数 -->
-                                <div class="margin statisticalCoefficient"
-                                    v-if="['使用次数'].includes(wantnowdata.TimerType)"
-                                >
-                                    <span style="position: relative;">
-                                        <i class="el-icon-question" 
-                                        style="position: absolute;left: -16px;top: 3px;"
-                                        title="所在设备生产一个产品，器件被使用的次数。"
-                                        ></i>
-                                        <span>统计系数</span>
-                                    </span>
-
-                                    <el-input-number 
-                                        v-model="wantnowdata.Coefficient"
-                                        :disabled="sestion === 2 ? true : false"
-                                        :min="0"
-                                        style="width: 240px;"
-                                    ></el-input-number>
-                                </div>
-
-                                <!-- 执行人 -->
-                                <div class="margin">
-                                    <span class="sp12">{{lang.PointInspectionManage_Executor}}</span>
-                                    <select
-                                        name
-                                        id
-                                        v-model="wantnowdata.Executor"
-                                        v-if="sestion == 1"
-                                    >
-                                        <option
-                                            :value="item"
-                                            v-for="(item,index) in person"
-                                            :key="index"
-                                        >{{item}}</option>
-                                    </select>
-                                    <select
-                                        name
-                                        id
-                                        v-model="wantnowdata.Executor"
-                                        v-else-if="sestion == 2"
-                                        disabled
-                                    >
-                                        <option
-                                            :value="item"
-                                            v-for="(item,index) in person"
-                                            :key="index"
-                                        >{{item}}</option>
-                                    </select>
-                                    <select
-                                        name
-                                        id
-                                        v-model="wantnowdata.Executor"
-                                        v-else-if="sestion == 3"
-                                    >
-                                        <option
-                                            :value="item"
-                                            v-for="(item,index) in person"
-                                            :key="index"
-                                        >{{item}}</option>
-                                    </select>
                                 </div>
                             </div>
                             <div class="zr">
-                                
-                                <!-- 统计类型 -->
                                 <div class="margin">
-                                    <span>统计类型</span>
-                                    <select name id v-model="wantnowdata.TimerType"
-                                        v-if="sestion === 1"
-                                        class="typetime"
-                                        @change="StatisticalTypeChange"
-                                    >
-                                        <option
-                                            v-for="(item, i) in supermin1"
-                                            :key="i"
-                                            :value="item"
-                                        >{{item}}</option>
-                                    </select>
-                                    <select name id v-model="wantnowdata.TimerType"
-                                        v-else-if="sestion === 2"
-                                        disabled
-                                        style="background:#EBEBE4"
-                                        class="typetime"
-                                    >
-                                        <option
-                                            v-for="(item, i) in supermin1"
-                                            :key="i"
-                                            :value="item"
-                                        >{{item}}</option>
-                                    </select>
-                                    <select name id v-model="wantnowdata.TimerType"
-                                        v-else-if="sestion === 3"
-                                        class="typetime"
-                                        @change="StatisticalTypeChange"
-                                    >
-                                        <option
-                                            v-for="(item, i) in supermin1"
-                                            :key="i"
-                                            :value="item"
-                                        >{{item}}</option>
-                                    </select>
+                                    <span>{{
+                                        lang.EquipmentAccount_VulnerablePartNo
+                                    }}</span>
+                                    <input
+                                        type="text"
+                                        :disabled="sestion == 2"
+                                        v-model="wantnowdata.VulnerablePartNo"
+                                    />
                                 </div>
-
-                                <!-- 统计信号 -->
                                 <div class="margin">
-                                    <span>统计信号</span>
-                                    <div v-if="sestion == 1" class="input1">
-                                        <span>{{wantnowdata.RunningSignal}}</span>
-                                        <div
-                                            class="inputimg1"
-                                            :class="{handle:pdyx}"
-                                            @click="yunxing"
-                                        >
-                                            <img :src="diji" alt />
-                                        </div>
-                                    </div>
-                                    <div v-else-if="sestion == 2" class="input1">
-                                           <span>{{wantnowdata.RunningSignal}}</span>
-                            
-                                        <div class="inputimg1">
-                                            <!-- <img :src="diji" alt /> -->
-                                        </div>
-                                    </div>
-                                    <div v-else-if="sestion == 3" class="input1">
-                                       <span>{{wantnowdata.RunningSignal}}</span>
-                                        <div
-                                            class="inputimg1"
-                                            :class="{handle:pdyx}"
-                                            @click="yunxing"
-                                        >
-                                            <img :src="diji" alt />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 提前提醒 -->
-                                <div class="margin">
-                                    <span class="sp6">{{lang.EquipmentAccount_AdvanceReminder}}</span>
-                                    <div class="is" v-if="sestion == 1">
-                                        <input type="text" v-model="wantnowdata.ReminderTimeValue" />
-                                        <select name id v-model="wantnowdata.ReminderTimeUnit">
-                                            <option
-                                                v-for="(item,index) in sametimearr"
-                                                :key="index"
-                                                :value="item"
-                                            >{{item}}</option>
-                                        </select>
-                                    </div>
-                                    <div class="is" v-if="sestion == 2">
-                                        <input
-                                            type="text"
-                                            v-model="wantnowdata.ReminderTimeValue"
-                                            disabled
-                                        />
-                                        <select
-                                            name
-                                            id
-                                            v-model="wantnowdata.ReminderTimeUnit"
-                                            disabled
-                                        >
-                                            <option
-                                                v-for="(item,index) in sametimearr"
-                                                :key="index"
-                                                :value="item"
-                                            >{{item}}</option>
-                                        </select>
-                                    </div>
-                                    <div class="is" v-if="sestion == 3">
-                                        <input type="text" v-model="wantnowdata.ReminderTimeValue" />
-                                        <select name id v-model="wantnowdata.ReminderTimeUnit">
-                                            <option
-                                                v-for="(item,index) in sametimearr"
-                                                :key="index"
-                                                :value="item"
-                                            >{{item}}</option>
-                                        </select>
-                                    </div>
+                                    <span>{{
+                                        lang.VulnerablePartManage_VulnerablePartType
+                                    }}</span>
+                                    <input
+                                        type="text"
+                                        v-model="
+                                            wantnowdata.VulnerablePartModel
+                                        "
+                                        :disabled="sestion == 2"
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="homesetion">
                         <div class="hometop">
-                            <div class="linetop5 hometop-title">
-                                {{lang.EquipmentAccount_OtherInformation}}
+                            <div class="linetop3 hometop-title">
+                                {{ lang.VulnerablePartManage_LifeInfo }}
                             </div>
-                           
+
+                            <div class="line linetop4"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="overflow">
+                            <div>
+                                <div class="zl">
+                                    <div class="margin margin-date">
+                                        <span>{{
+                                            lang.EquipmentAccount_StartDate
+                                        }}</span>
+                                        <div class="block">
+                                            <el-date-picker
+                                                v-model="wantnowdata.EnableTime"
+                                                type="datetime"
+                                                :placeholder="
+                                                    lang.SCMSConsoleWebApiMySql_PleChooseDate
+                                                "
+                                                value-format="yyyy-MM-dd HH:mm:ss"
+                                                :disabled="sestion == 2"
+                                            ></el-date-picker>
+                                        </div>
+                                    </div>
+                                    <div class="margin">
+                                        <span>{{
+                                            lang.EquipmentAccount_TimerType
+                                        }}</span>
+                                        <div class="is2">
+                                            <el-select
+                                                name
+                                                id
+                                                v-model="wantnowdata.TimerType"
+                                                class="typetime"
+                                                :disabled="sestion == 2"
+                                                @change="pdyunxing"
+                                            >
+                                                <el-option
+                                                    v-for="(item,
+                                                    index) in supermin1"
+                                                    :key="index"
+                                                    :value="item"
+                                                    :label="item"
+                                                ></el-option>
+                                            </el-select>
+                                        </div>
+                                    </div>
+                                    <div class="margin">
+                                        <span class="sp6">{{
+                                            lang.EquipmentAccount_AdvanceReminder
+                                        }}</span>
+                                        <div class="is">
+                                            <input
+                                                type="text"
+                                                v-model="
+                                                    wantnowdata.ReminderTimeValue
+                                                "
+                                                :disabled="sestion == 2"
+                                            />
+                                            <el-select
+                                                name
+                                                id
+                                                v-model="
+                                                    wantnowdata.ReminderTimeUnit
+                                                "
+                                                :disabled="sestion == 2"
+                                            >
+                                                <el-option
+                                                    v-for="item in sametimearr"
+                                                    :key="item.key"
+                                                    :value="item.key"
+                                                    :label="item.value"
+                                                />
+                                            </el-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="zr">
+                                    <div class="margin">
+                                        <span class="sp6">{{
+                                            lang.EquipmentAccount_LifeCycle
+                                        }}</span>
+                                        <div class="is">
+                                            <input
+                                                type="text"
+                                                v-model="
+                                                    wantnowdata.LifeCycleValue
+                                                "
+                                                :disabled="sestion == 2"
+                                            />
+                                            <el-select
+                                                name
+                                                id
+                                                v-model="
+                                                    wantnowdata.LifeCycleUnit
+                                                "
+                                                :disabled="sestion == 2"
+                                            >
+                                                <el-option
+                                                    v-for="item in sametimearr"
+                                                    :key="item.key"
+                                                    :value="item.key"
+                                                    :label="item.value"
+                                                />
+                                            </el-select>
+                                        </div>
+                                    </div>
+                                    <div class="margin">
+                                        <span>{{
+                                            lang.EquipmentAccount_RunningSignal
+                                        }}</span>
+                                        <div class="input1">
+                                            <span>{{
+                                                wantnowdata.RunningSignal
+                                            }}</span>
+                                            <div
+                                                class="inputimg1"
+                                                :class="{
+                                                    handle:
+                                                        pdyx && sestion !== 2
+                                                }"
+                                                @click="yunxing"
+                                            >
+                                                <img
+                                                    :src="diji"
+                                                    alt
+                                                    v-if="sestion !== 2"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="margin">
+                                        <span class="sp12">已消耗次数</span>
+                                        <input
+                                            type="text"
+                                            v-model="
+                                                wantnowdata.ConsumptionTimes
+                                            "
+                                            :disabled="
+                                                wantnowdata.TimerType !==
+                                                    '运行频次' || sestion == 2
+                                            "
+                                        />
+                                    </div>
+                                    <div class="margin">
+                                        <span class="sp12">{{
+                                            lang.PointInspectionManage_Executor
+                                        }}</span>
+                                        <select
+                                            name
+                                            id
+                                            v-model="wantnowdata.Executor"
+                                            :disabled="sestion == 2"
+                                        >
+                                            <option
+                                                :value="item"
+                                                v-for="(item, index) in person"
+                                                :key="index"
+                                                >{{ item }}</option
+                                            >
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="homesetion">
+                            <div class="hometop">
+                                <div class="linetop5 hometop-title">
+                                    {{ lang.EquipmentAccount_OtherInformation }}
+                                </div>
+
+                                <div class="line linetop6"></div>
+                            </div>
+                        </div>
+                        <div class="overflow">
+                            <div>
+                                <div class="zl">
+                                    <div class="margin">
+                                        <span>{{
+                                            lang.EquipmentAccount_UseNumber
+                                        }}</span>
+                                        <input
+                                            type="text"
+                                            :disabled="sestion == 2"
+                                            v-model="wantnowdata.UseNumber"
+                                        />
+                                    </div>
+                                    <div class="margin">
+                                        <span class="sp12">{{
+                                            lang.EquipmentAccount_Supplier
+                                        }}</span>
+                                        <input
+                                            type="text"
+                                            :disabled="sestion == 2"
+                                            v-model="wantnowdata.Manufactor"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="zr">
+                                    <div class="margin">
+                                        <span>{{
+                                            lang.EquipmentAccount_DevicePrice
+                                        }}</span>
+                                        <input
+                                            type="text"
+                                            :disabled="sestion == 2"
+                                            v-model="wantnowdata.Price"
+                                        />
+                                    </div>
+                                    <div class="margin">
+                                        <span>图片</span>
+                                        <div class="input1">
+                                            <span>{{
+                                                wantnowdata.ImageName
+                                            }}</span>
+                                            <input
+                                                type="file"
+                                                @change="updateImg"
+                                                accept="image/jpg, image/png, image/jpeg"
+                                                ref="uploadImg"
+                                                style="display: none"
+                                            />
+                                            <div
+                                                class="inputimg1"
+                                                :class="{
+                                                    handle:
+                                                        pdyx && sestion !== 2
+                                                }"
+                                                @click="uploadImg"
+                                            >
+                                                <img
+                                                    :src="diji"
+                                                    alt
+                                                    v-if="sestion !== 2"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="overflow overflow1">
+                            <span>{{
+                                lang.EquipmentAccount_DeviceRemark
+                            }}</span>
+                            <textarea
+                                name
+                                id
+                                :disabled="sestion == 2"
+                                v-model="wantnowdata.Remarks"
+                                :placeholder="
+                                    lang.VulnerablePartManage_RemarkDescription
+                                "
+                            ></textarea>
+                        </div>
+                    </div>
+                    <div class="homesetion">
+                        <div class="hometop">
+                            <div class="linetop5 hometop-title">
+                                上传文件
+                            </div>
+
                             <div class="line linetop6"></div>
                         </div>
                     </div>
-                    <div class="overflow">
-                        <div>
-                            <div class="zl">
-                                <div class="margin" >
-                                    <span>{{lang.EquipmentAccount_UseNumber}}</span>
-                                    <input
-                                        type="text"
-                                        v-if="sestion == 1"
-                                        v-model="wantnowdata.UseNumber"
-                                    />
-                                    <input
-                                        type="text"
-                                        v-else-if="sestion == 2"
-                                        v-model="wantnowdata.UseNumber"
-                                        disabled
-                                    />
-                                    <input
-                                        type="text"
-                                        v-else-if="sestion == 3"
-                                        v-model="wantnowdata.UseNumber"
-                                    />
-                                </div>
-                                <div class="margin">
-                                    <span class="sp12">{{lang.EquipmentAccount_Supplier}}</span>
-                                    <input
-                                        type="text"
-                                        v-if="sestion == 1"
-                                        v-model="wantnowdata.Manufactor"
-                                    />
-                                    <input
-                                        type="text"
-                                        v-else-if="sestion == 2"
-                                        v-model="wantnowdata.Manufactor"
-                                        disabled
-                                    />
-                                    <input
-                                        type="text"
-                                        v-else-if="sestion == 3"
-                                        v-model="wantnowdata.Manufactor"
-                                    />
-                                </div>
-                            </div>
-                            <div class="zr">
-                                <div class="margin" >
-                                    <span>{{lang.EquipmentAccount_DevicePrice}}</span>
-                                    <input
-                                        type="text"
-                                        v-if="sestion == 1"
-                                        v-model="wantnowdata.Price"
-                                    />
-                                    <input
-                                        type="text"
-                                        v-else-if="sestion == 2"
-                                        v-model="wantnowdata.Price"
-                                        disabled
-                                    />
-                                    <input
-                                        type="text"
-                                        v-else-if="sestion == 3"
-                                        v-model="wantnowdata.Price"
-                                    />
-                                </div>
-                            </div>
-                        </div>
+                    <div class="tips">
+                        支持上传文件格式为JPEG、PNG、PDF格式，单个文件最大为10M
                     </div>
-                    <div class="overflow overflow1">
-                        <span>{{lang.EquipmentAccount_DeviceRemark}}</span>
-                        <textarea
-                            name
-                            id
-                            v-if="sestion == 1"
-                            v-model="wantnowdata.Remarks"
-                            :placeholder="lang.VulnerablePartManage_RemarkDescription"
-                        ></textarea>
-                        <textarea
-                            name
-                            id
-                            v-else-if="sestion == 2"
-                            :placeholder="lang.VulnerablePartManage_RemarkDescription"
-                            v-model="wantnowdata.Remarks"
-                            disabled
-                        ></textarea>
-                        <textarea
-                            name
-                            id
-                            v-else-if="sestion == 3"
-                            :placeholder="lang.VulnerablePartManage_RemarkDescription"
-                            v-model="wantnowdata.Remarks"
-                        ></textarea>
+
+                    <el-upload
+                        action="#"
+                        accept=".png,.jpg,.jpeg,.pdf"
+                        :show-file-list="false"
+                        :http-request="uploadFn"
+                    >
+                        <div class="add-btn">新增</div>
+                    </el-upload>
+                    <div class="table">
+                        <el-table
+                            :data="sopData"
+                            border
+                            style="width: 100%"
+                            :style="{
+                                fontSize: a11 * 15 + 'px',
+                                width: '100%'
+                            }"
+                            :row-style="{ height: 50 * a11 + 'px' }"
+                            :header-cell-style="{
+                                background:
+                                    $store.state.color == 'grey'
+                                        ? '#D9DBDE'
+                                        : '#E1EDFA',
+                                color:
+                                    $store.state.color == 'grey'
+                                        ? '#000'
+                                        : '#769DE7',
+                                'border-left': '1px solid #cccccc',
+                                height: 50 * a11 + 'px',
+                                padding: '0'
+                            }"
+                            highlight-current-row
+                        >
+                            <template slot="empty">
+                                <span>{{
+                                    lang.SCMSConsoleWebApiMySql_NoData
+                                }}</span>
+                            </template>
+                            <el-table-column
+                                type="index"
+                                label="序号"
+                                :width="70"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="Name"
+                                label="文件名称"
+                                :width="120"
+                                :show-overflow-tooltip="true"
+                            >
+                                <template slot-scope="scope">
+                                    <div
+                                        class="fileName"
+                                        v-if="
+                                            scope.row.Name.endsWith('pdf') ||
+                                                scope.row.Name.endsWith('PDF')
+                                        "
+                                        @click="
+                                            openViewSop(
+                                                '查看文件',
+                                                scope.row.Address
+                                            )
+                                        "
+                                    >
+                                        {{ scope.row.Name }}
+                                    </div>
+                                    <img
+                                        class="fileImg"
+                                        :src="scope.row.Address"
+                                        alt
+                                        @click="
+                                            openViewSop(
+                                                '查看图片',
+                                                scope.row.Address
+                                            )
+                                        "
+                                        v-else
+                                    />
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="c" label="操作">
+                                <template slot-scope="scope">
+                                    <div
+                                        class="fileName"
+                                        @click="delFileTip(scope)"
+                                    >
+                                        删除
+                                    </div>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="Staff"
+                                label="上传人"
+                                :show-overflow-tooltip="true"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="Time"
+                                label="上传时间"
+                                :show-overflow-tooltip="true"
+                            ></el-table-column>
+                        </el-table>
                     </div>
                 </div>
-                <div class="Preservation" v-if="sestion == 1 || sestion == 3" @click="nopre">{{lang.PopupCommon_Save}}</div>
-                <div class="cancel" @click="cancel" v-if="sestion == 1 || sestion == 3">{{lang.PopupCommon_Cancel}}</div>
+                <div class="footer">
+                    <div
+                        class="Preservation"
+                        v-if="sestion == 1 || sestion == 3"
+                        @click="nopre"
+                    >
+                        {{ lang.PopupCommon_Save }}
+                    </div>
+                    <div
+                        class="cancel"
+                        @click="cancel"
+                        v-if="sestion == 1 || sestion == 3"
+                    >
+                        {{ lang.PopupCommon_Cancel }}
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="tip"  v-show="tipchange" :style="{zoom:a11}">
+        <div class="tip" v-show="tipchange" :style="{ zoom: a11 }">
             <div
                 class="tiphead"
                 style="position:absolute;width: 380px;height: 40px;"
             ></div>
-            <div
-                class="tiptop"
-               
-            >
+            <div class="tiptop">
                 <img :src="gth" alt />
-                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
+                <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
             </div>
             <div class="tipcontanin">
-                <div class="tipword">{{tipword}}</div>
-                <div class="tipdetermine" @click="tip1" v-if="deltrue">{{lang.MessageBox_Confrim}}</div>
+                <div class="tipword">{{ tipword }}</div>
+                <div class="tipdetermine" @click="tip1" v-if="deltrue">
+                    {{ lang.MessageBox_Confrim }}
+                </div>
                 <div class="delclass" v-if="!deltrue">
-                    <div class="one" @click="no1">{{lang.MessageBox_NO}}</div>
-                    <div class="two" @click="yes1">{{lang.MessageBox_YES}}</div>
+                    <div class="one" @click="no1">{{ lang.MessageBox_NO }}</div>
+                    <div class="two" @click="yes1">
+                        {{ lang.MessageBox_YES }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -1173,17 +1631,30 @@
                 @mouseup="mouseUpHandleelse12($event)"
             >
                 <div class="tiphead">
-                    <span>{{lang.PointInspectionManage_CloseToDoPointPatrolTask}}</span>
+                    <span>{{
+                        lang.PointInspectionManage_CloseToDoPointPatrolTask
+                    }}</span>
                     <img :src="no" alt class="no" @click.stop="cancel" />
                 </div>
                 <div class="t">
-                    <span class="w">{{lang.MaintenanceManage_Remark}}</span>
-                    <textarea name id cols="30" rows="10" :placeholder="lang.MaintenanceManage_InputCloseReason" v-model="gbword"></textarea>
+                    <span class="w">{{ lang.MaintenanceManage_Remark }}</span>
+                    <textarea
+                        name
+                        id
+                        cols="30"
+                        rows="10"
+                        :placeholder="lang.MaintenanceManage_InputCloseReason"
+                        v-model="gbword"
+                    ></textarea>
                 </div>
                 <!-- <img :src="gth" alt /> -->
 
-                <div class="Preservation" @click="gb">{{lang.PopupCommon_Sure}}</div>
-                <div class="cancel" @click.stop="cancel">{{lang.PopupCommon_Cancel}}</div>
+                <div class="Preservation" @click="gb">
+                    {{ lang.PopupCommon_Sure }}
+                </div>
+                <div class="cancel" @click.stop="cancel">
+                    {{ lang.PopupCommon_Cancel }}
+                </div>
             </div>
         </div>
         <div class="cover1" v-if="change"></div>
@@ -1195,65 +1666,61 @@
         <div class="cover7" v-if="daibang"></div>
         <div class="cover4" v-if="ischange"></div>
         <div class="cover8" v-if="yx"></div>
-        
-        <!-- 延长器件寿命 -->
-        <prolong-device-life 
-            v-if="ProlongDeviceLifeDialog.show"
-            :editData="ProlongDeviceLifeDialog.editData"
-            @callback="ProlongDeviceLifeCallback"
-        ></prolong-device-life>
-
-        <!-- 添加/编辑器件信息 -->
-        <create-device
-            :state="createDeviceDialog.state"
-            :editData="createDeviceDialog.editData"
-            @callback="createDeviceCallback"
-        ></create-device>
+        <ViewSop
+            v-if="sopShow"
+            :defaultSrc="defaultSrc"
+            :title="sopPopTitle"
+            :sopData="sopData"
+            @callback="viewSopCallback"
+        />
+        <tip-pop
+            v-if="isTipShow"
+            :tipText="tipText"
+            :noCancel="noCancel"
+            @tipCallBack="tipCallBack"
+        ></tip-pop>
     </div>
 </template>
 
 <script>
+import moment from 'moment'; //导入文件
 import MySearch from '../public/search01.vue';
+import ViewSop from './ViewSop.vue';
+import TipPop from '../public/tipPop.vue';
+
 // import MyPage from '../public/Pages.vue';
-import ProlongDeviceLife from './prolong-device-life.vue';
-import CreateDevice from './create-device.vue';
-import { getStatisticalTypeValue, getLifeCycleUnitValue } from './index';
 import XLSX from 'xlsx';
-// import { export_json_to_excel } from 'Export2Excel';
 export default {
     components: {
         // MySearch,
         // MyPage
-        ProlongDeviceLife,
-        CreateDevice,
+        TipPop,
+        ViewSop
     },
     data() {
         return {
-            // 延长器件寿命-弹窗
-            ProlongDeviceLifeDialog: {
-                show: false,
-                editData: null,
-            },
-            // 添加/编辑器件信息-弹窗
-            createDeviceDialog: {
-                state: 'hide',
-                editData: null,
-            },
-
-
-            a11:1,
+            delIdx: null,
+            tipText: '',
+            isTipShow: false,
+            noCancel: true,
+            sopData: [],
+            sopPopTitle: '',
+            sopShow: false,
+            defaultSrc: '',
+            a11: 1,
             oneselect1: '',
             twoselect1: '',
             threeselect1: '',
             projectlist: '',
             projectlist2: '',
             projectlist3: '',
-              pdyd1:true,
-            pdyd2:true,
-            pdyd3:true,
+            pdyd1: true,
+            pdyd2: true,
+            pdyd3: true,
             list: [],
             nowpage1: 1,
             sss: '小时',
+            daochu: '',
             wantnowdata: {
                 Selected: false, //是否选中
                 ID: '',
@@ -1269,8 +1736,8 @@ export default {
                 LifeCycleValue: '', //寿命周期
                 LifeCycleUnit: '小时', //寿命周期类型：1-小时 2-天 3-月 4-年
                 LifeCycleDisplayName: '', //寿命周期在表格显示
-                TimerType: '标准时间', //统计类型,统计信号为空时，计时类型为标准时间，否则为运行时间
-                RunningSignal: '点击选择', // 统计信号
+                TimerType: '标准时间', //计时类型,运行信号为空时，计时类型为标准时间，否则为运行时间
+                RunningSignal: '点击选择', //运行信号
                 ReminderTimeValue: 1, //提前提醒
                 ReminderTimeUnit: '小时', //提前提醒类型：1-小时 2-天 3-月 4-年
                 ReminderTimeDisplayName: '', //提前提醒
@@ -1280,7 +1747,7 @@ export default {
                 Manufactor: '', //供应商
                 Remarks: '', //备注
                 Status: '提醒了', //状态,1为提醒了，2为未提醒
-                Coefficient: 1, // 统计系数
+                ImageName: '点击选择' // 图片
             },
             pdyx: false,
             value1: new Date(new Date().toLocaleDateString()),
@@ -1293,7 +1760,7 @@ export default {
 
             nowtime2: '',
             data7: [],
-            antable:[],
+            antable: [],
             deltrue: true,
             changeselect: false,
             tipword: '',
@@ -1336,7 +1803,7 @@ export default {
             time3: '',
             change11: false,
             selecttabledata: [],
-           PageData: {
+            PageData: {
                 PageSize: 50,
                 TotalCount: 0,
                 TotalPage: 1,
@@ -1375,14 +1842,15 @@ export default {
             pensoil: require('../../assets/images/icon_pensoil.png'),
             diji: require('../../assets/images/icon_diji.png'),
             rili: require('../../assets/images/rili.png'),
-               xiala:require('../../assets/images/ziyuan4.png'),
+            xiala: require('../../assets/images/ziyuan4.png'),
+            sopImg: require('../../assets/images/sop.png'),
             change: false,
             keyword: '',
             sesstion: '',
             disabled: '',
             pagesize: 50,
             pageindex: 1,
-            sestion: 1, // 模式 1-添加 2-查看 3-编辑
+            sestion: 1,
             Preservation: '点击选择',
             Preservation1: '点击选择',
             Preservation5: '点击选择',
@@ -1391,7 +1859,24 @@ export default {
             time4: '',
             muchdata: '',
             a: 1,
-            sametimearr: ['小时', '天', '月', '年'],
+            sametimearr: [
+                {
+                    key: 0,
+                    value: '小时'
+                },
+                {
+                    key: 1,
+                    value: '天'
+                },
+                {
+                    key: 2,
+                    value: '月'
+                },
+                {
+                    key: 3,
+                    value: '年'
+                }
+            ],
             data6: [],
             selectword3: false,
             a1: 1,
@@ -1409,7 +1894,7 @@ export default {
             ztarr: ['不限', '未开始', '进行中', '已延误'],
             leixinarr: ['不限', '计划维修', '故障维修'],
             projectlistdataL: {},
-            supermin1: ['标准时间', '运行时间', '使用次数'],
+            supermin1: ['标准时间', '运行时间', '运行频次'],
             deviceperson: 'SuperAdmin',
             addremarks: '',
             taskname: '',
@@ -1425,273 +1910,120 @@ export default {
             iswant: 1,
             vrmark: '',
             timevalue: '',
-            yx:false,
+            yx: false,
             ischange: false,
-            tyname:'',
-            jurisdiction:[],
-            buttonarr:[],
-            xcid:'',
-            cxshow:true,
-            tjid:'',
-            tjshow:true,
-            scid:'',
-            scshow:true,
-            drid:'',
-            drshow:true,
-            dcid:'',
-            dcshow:true,
-            ckid:'',
-            ckshow:true,
-            bjid:'',
-            bjshow:true,
-            ghid:"",
-            ghshow:true,
-            ycid:'',
-            ycshow:true,
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
+            tyname: '',
+            jurisdiction: [],
+            buttonarr: [],
+            xcid: '',
+            cxshow: true,
+            tjid: '',
+            tjshow: true,
+            scid: '',
+            scshow: true,
+            drid: '',
+            drshow: true,
+            dcid: '',
+            dcshow: true,
+            ckid: '',
+            ckshow: true,
+            bjid: '',
+            bjshow: true,
+            ghid: '',
+            ghshow: true,
+            ycid: '',
+            ycshow: true,
+            url: null,
+            srcList: [],
+            imgFile: '',
+            lang: JSON.parse(localStorage.getItem('languages'))[
+                localStorage.getItem('currentLang')
+            ]
         };
     },
 
     created() {
-        this.getLangData()
-           this.jurisdiction = this.$store.state.btnPowerData
-     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
-        console.log("nut",this.buttonarr)
-           this.buttonarr.forEach((item)=>{
-                 if(item.RightName == "易损件台账-查询按钮"){
-                 this.cxid = item.RightID
-              }else if(item.RightName == "易损件台账-添加按钮"){
-                this.tjid = item.RightID
-              }else if(item.RightName == "易损件台账-删除按钮"){
-                this.scid = item.RightID
-              }else if(item.RightName == "易损件台账-导入按钮"){
-                this.drid = item.RightID
-              }else if(item.RightName == "易损件台账-导出按钮"){
-                this.dcid = item.RightID
-              }else if(item.RightName == "易损件台账-查看按钮"){
-                this.ckid = item.RightID
-              }else if(item.RightName == "易损件台账-编辑按钮"){
-                this.bjid = item.RightID
-              }else if(item.RightName == "易损件台账-更换按钮"){
-                this.ghid = item.RightID
-              }else if(item.RightName == "易损件台账-延长按钮"){
-                this.ycid = item.RightID
-              }
-           })
-                var userid = ''
-      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
-                userid = JSON.parse(
-                    sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserID;
-            } else {
-                userid = JSON.parse(
-                    sessionStorage.getItem('userInfo1')
-                ).SCMSUserID;
+        this.getLangData();
+        this.jurisdiction = this.$store.state.btnPowerData;
+        this.buttonarr = this.findPathByLeafId(
+            this.GetUrlParam('id'),
+            this.jurisdiction
+        )[0].Children;
+        console.log('nut', this.buttonarr);
+        this.buttonarr.forEach(item => {
+            if (item.RightName == '易损件台账-查询按钮') {
+                this.cxid = item.RightID;
+            } else if (item.RightName == '易损件台账-添加按钮') {
+                this.tjid = item.RightID;
+            } else if (item.RightName == '易损件台账-删除按钮') {
+                this.scid = item.RightID;
+            } else if (item.RightName == '易损件台账-导入按钮') {
+                this.drid = item.RightID;
+            } else if (item.RightName == '易损件台账-导出按钮') {
+                this.dcid = item.RightID;
+            } else if (item.RightName == '易损件台账-查看按钮') {
+                this.ckid = item.RightID;
+            } else if (item.RightName == '易损件台账-编辑按钮') {
+                this.bjid = item.RightID;
+            } else if (item.RightName == '易损件台账-更换按钮') {
+                this.ghid = item.RightID;
+            } else if (item.RightName == '易损件台账-延长按钮') {
+                this.ycid = item.RightID;
             }
-              this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`,
-              }).then(res => {
-                  this.cxshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                  this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.tjid}`,
-              }).then(res => {
-                  this.tjshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                  this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.scid}`,
-              }).then(res => {
-                  this.scshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                  this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.drid}`,
-              }).then(res => {
-                  this.drshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.dcid}`,
-              }).then(res => {
-                  this.dcshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ckid}`,
-              }).then(res => {
-                  this.ckshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.bjid}`,
-              }).then(res => {
-                  this.bjshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ghid}`,
-              }).then(res => {
-                  this.ghshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ycid}`,
-              }).then(res => {
-                  this.ycshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
+        });
+        var userid = '';
+        if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+            userid = JSON.parse(sessionStorage.getItem('sightseerInfo1'))
+                .SCMSUserID;
+        } else {
+            userid = JSON.parse(sessionStorage.getItem('userInfo1')).SCMSUserID;
+        }
+
+        this.getPermissions(userid);
         this.getEquipmentType();
         this.req(1);
         this.time4 = this.getNowTime();
     },
     watch: {
-               VpowerData(val){
-                this.jurisdiction = this.$store.state.btnPowerData
-     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
-        console.log("nut",this.buttonarr)
-           this.buttonarr.forEach((item)=>{
-                 if(item.RightName == "易损件台账-查询按钮"){
-                 this.cxid = item.RightID
-              }else if(item.RightName == "易损件台账-添加按钮"){
-                this.tjid = item.RightID
-              }else if(item.RightName == "易损件台账-删除按钮"){
-                this.scid = item.RightID
-              }else if(item.RightName == "易损件台账-导入按钮"){
-                this.drid = item.RightID
-              }else if(item.RightName == "易损件台账-导出按钮"){
-                this.dcid = item.RightID
-              }else if(item.RightName == "易损件台账-查看按钮"){
-                this.ckid = item.RightID
-              }else if(item.RightName == "易损件台账-编辑按钮"){
-                this.bjid = item.RightID
-              }else if(item.RightName == "易损件台账-更换按钮"){
-                this.ghid = item.RightID
-              }else if(item.RightName == "易损件台账-延长按钮"){
-                this.ycid = item.RightID
-              }
-           })
-                var userid = ''
-      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
-                userid = JSON.parse(
-                    sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserID;
+        VpowerData(val) {
+            this.jurisdiction = this.$store.state.btnPowerData;
+            this.buttonarr = this.findPathByLeafId(
+                this.GetUrlParam('id'),
+                this.jurisdiction
+            )[0].Children;
+            console.log('nut', this.buttonarr);
+            this.buttonarr.forEach(item => {
+                if (item.RightName == '易损件台账-查询按钮') {
+                    this.cxid = item.RightID;
+                } else if (item.RightName == '易损件台账-添加按钮') {
+                    this.tjid = item.RightID;
+                } else if (item.RightName == '易损件台账-删除按钮') {
+                    this.scid = item.RightID;
+                } else if (item.RightName == '易损件台账-导入按钮') {
+                    this.drid = item.RightID;
+                } else if (item.RightName == '易损件台账-导出按钮') {
+                    this.dcid = item.RightID;
+                } else if (item.RightName == '易损件台账-查看按钮') {
+                    this.ckid = item.RightID;
+                } else if (item.RightName == '易损件台账-编辑按钮') {
+                    this.bjid = item.RightID;
+                } else if (item.RightName == '易损件台账-更换按钮') {
+                    this.ghid = item.RightID;
+                } else if (item.RightName == '易损件台账-延长按钮') {
+                    this.ycid = item.RightID;
+                }
+            });
+            var userid = '';
+            if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+                userid = JSON.parse(sessionStorage.getItem('sightseerInfo1'))
+                    .SCMSUserID;
             } else {
-                userid = JSON.parse(
-                    sessionStorage.getItem('userInfo1')
-                ).SCMSUserID;
+                userid = JSON.parse(sessionStorage.getItem('userInfo1'))
+                    .SCMSUserID;
             }
-              this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`,
-              }).then(res => {
-                  this.cxshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                  this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.tjid}`,
-              }).then(res => {
-                  this.tjshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                  this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.scid}`,
-              }).then(res => {
-                  this.scshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                  this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.drid}`,
-              }).then(res => {
-                  this.drshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.dcid}`,
-              }).then(res => {
-                  this.dcid = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ckid}`,
-              }).then(res => {
-                  this.ckshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.bjid}`,
-              }).then(res => {
-                  this.bjshpw = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ghid}`,
-              }).then(res => {
-                  this.ghshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ycid}`,
-              }).then(res => {
-                  this.ycshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-               },
-                
+            this.getPermissions(userid);
+        },
+
         oneselect1(val) {
             let i = 0;
             for (i in this.projectlist) {
@@ -1704,16 +2036,29 @@ export default {
         },
         twoselect1(val) {
             let i = 0;
-            let types = [this.lang.AlarmRecord_HT_Unlimited, '二进制变量', '有符号8位整型','无符号8位整型','有符号16位整型','无符号16位整型','有符号32位整型','无符号32位整型','有符号64位整型','无符号64位整型','F32位浮点数IEEE754','F64位浮点数IEEE754']
+            let types = [
+                this.lang.AlarmRecord_HT_Unlimited,
+                '二进制变量',
+                '有符号8位整型',
+                '无符号8位整型',
+                '有符号16位整型',
+                '无符号16位整型',
+                '有符号32位整型',
+                '无符号32位整型',
+                '有符号64位整型',
+                '无符号64位整型',
+                'F32位浮点数IEEE754',
+                'F64位浮点数IEEE754'
+            ];
             for (i in this.projectlist2) {
                 if (val == this.projectlist2[i].GroupName) {
                     this.projectlist3 = this.projectlist3 = this.projectlist2[0].DataTypes.filter(
-                        (item)=> {
+                        item => {
                             /* return item.Value == this.lang.AlarmRecord_HT_Unlimited || item.Value == '二进制变量' */
-                            return types.includes(item.Value)
+                            return types.includes(item.Value);
                         }
                     );
-                    this.threeselect1 = /* this.projectlist3[0].Value; */ this.lang.AlarmRecord_HT_Unlimited
+                    this.threeselect1 = /* this.projectlist3[0].Value; */ this.lang.AlarmRecord_HT_Unlimited;
                 }
             }
             this.watchdata();
@@ -1722,97 +2067,276 @@ export default {
             this.watchdata();
         }
     },
-    computed:{
+    computed: {
         VpowerData() {
-                    return this.$store.state.btnPowerData;
-        },
+            return this.$store.state.btnPowerData;
+        }
     },
     methods: {
-        getLangData() {
-            this.sss = this.lang.HMI_HT_LineChartWindowViewModel_Hour
-            this.wantnowdata.UsingDevice = this.lang.EquipmentAccount_ClickSelect
-            this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour
-            this.wantnowdata.TimerType = this.lang.VulnerablePartManage_StandardTime
-            this.wantnowdata.RunningSignal = this.lang.EquipmentAccount_ClickSelect
-            this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour
-            this.wantnowdata.Status = this.lang.SCMSConsoleWebApiMySql_Reminded
-            this.over = this.lang.RepairManage_Processed
-            this.warry = this.lang.EquipmentAccount_Inside
-            this.device = this.lang.EquipmentAccount_Used
-            this.Meter1 = this.lang.AlarmRecord_HT_Unlimited
-            this.Meter2 = this.lang.AlarmRecord_HT_Unlimited
-            this.Preservation = this.lang.EquipmentAccount_ClickSelect
-            this.Preservation1 = this.lang.EquipmentAccount_ClickSelect
-            this.Preservation5 = this.lang.EquipmentAccount_ClickSelect
-            this.sametimearr =  [this.lang.HMI_HT_LineChartWindowViewModel_Hour, this.lang.MaintenanceManage_Day, this.lang.HMI_HT_LineChartWindowViewModel_Month, this.lang.HMI_HT_LineChartWindowViewModel_Year],
-            this.ztarr = [this.lang.AlarmRecord_HT_Unlimited, this.lang.MaintenanceManage_NotStarted, this.lang.MaintenanceManage_Ongoing, this.lang.MaintenanceManage_Delayed]
-            this.leixinarr = [this.lang.AlarmRecord_HT_Unlimited, this.lang.RepairManage_PlanRepair, this.lang.RepairManage_FaultRepair]
-            this.supermin1 = [this.lang.VulnerablePartManage_StandardTime, this.lang.VulnerablePartManage_RunningTime, '使用次数']
-            this.arr = [this.lang.RepairManage_Processed, this.lang.RepairManage_NoCauseWasFound]
+        tipCallBack(str) {
+            this.isTipShow = false;
+            this.tipText = '';
+            this.noCancel = true;
+            if (str == 'yes') {
+                this.delFile();
+            }
         },
-         dr(e){
-                     
-            if(!this.drshow){
-                  setTimeout(() => {
+        guid() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+                /[xy]/g,
+                function(c) {
+                    var r = (Math.random() * 16) | 0,
+                        v = c == 'x' ? r : (r & 0x3) | 0x8;
+                    return v.toString(16);
+                }
+            );
+        },
+
+        imgSrc(_id) {
+            const apiHref = window.location.host.includes('localhost')
+                ? '192.168.2.168:8802'
+                : window.location.host;
+            let str = `http://${apiHref}/api/VulnerablePartManage/VulnerablePartManage_GetImage?filePID=${_id}`;
+            str = str.replace(/\\/g, '\\\\');
+            return str;
+        },
+        uploadFn(file) {
+            console.log(
+                file.file.size / 1024 / 1024,
+                file.file.size / 1024 / 1024 > 10
+            );
+            if (file.file.size / 1024 / 1024 > 10) {
+                this.isTipShow = true;
+                this.tipText = `文件超出10M，请重新选择`;
+                return;
+            }
+            let userid = '';
+            if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+                userid = JSON.parse(sessionStorage.getItem('sightseerInfo1'))
+                    .SCMSUserAccount;
+            } else {
+                userid = JSON.parse(sessionStorage.getItem('userInfo1'))
+                    .SCMSUserAccount;
+            }
+            let formData = new FormData();
+            console.log('file', file);
+            formData.append('file', file.file);
+            let _id = this.guid();
+            this.$axios({
+                method: 'post',
+                url: `/api/VulnerablePartManage/VulnerablePartManage_UploadImage?filePID=${_id}`,
+                data: formData
+            }).then(res => {
+                if (res.data.code == 0) {
+                    this.sopData.push({
+                        ID: _id,
+                        Name: file.file.name,
+                        Address: this.imgSrc(_id),
+                        Type: 0,
+                        Staff: userid,
+                        Time: moment().format('YYYY-MM-DD HH:mm:ss')
+                    });
+                } else {
+                    this.isTipShow = true;
+                    this.tipText = res.data.msg;
+                }
+            });
+        },
+        delFileTip(scope) {
+            this.delIdx = scope.$index;
+            this.noCancel = false;
+            this.isTipShow = true;
+            this.tipText = '是否确认删除当前文件?';
+        },
+        delFile() {
+            this.sopData.splice(this.delIdx, 1);
+            this.delIdx = null;
+        },
+        openViewSop(type, src) {
+            this.sopPopTitle = type;
+            this.sopShow = true;
+            this.defaultSrc = src;
+        },
+        viewSopCallback() {
+            this.sopShow = false;
+        },
+        getPermissions(userid) {
+            let argRightID = [
+                { id: this.cxid, key: 'cxshow' },
+                { id: this.tjid, key: 'tjshow' },
+                { id: this.scid, key: 'scshow' },
+                { id: this.drid, key: 'drshow' },
+                { id: this.dcid, key: 'dcshow' },
+                { id: this.ckid, key: 'ckshow' },
+                { id: this.bjid, key: 'bjshpw' },
+                { id: this.ghid, key: 'ghshow' },
+                { id: this.ycid, key: 'ycshow' }
+            ];
+            for (let i = 0; i < argRightID.length; i++) {
+                this.$axios({
+                    method: 'post',
+                    url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${argRightID[i].id}`
+                })
+                    .then(res => {
+                        this[argRightID[i].key] = res.data.data;
+                    })
+                    .catch(err => {
+                        console.log('err', err);
+                    });
+            }
+        },
+        getLangData() {
+            this.sss = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+            this.wantnowdata.UsingDevice = this.lang.EquipmentAccount_ClickSelect;
+            this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+            this.wantnowdata.TimerType = this.lang.VulnerablePartManage_StandardTime;
+            this.wantnowdata.RunningSignal = this.lang.EquipmentAccount_ClickSelect;
+            this.wantnowdata.ImageName = this.lang.EquipmentAccount_ClickSelect;
+            this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+            this.wantnowdata.Status = this.lang.SCMSConsoleWebApiMySql_Reminded;
+            this.over = this.lang.RepairManage_Processed;
+            this.warry = this.lang.EquipmentAccount_Inside;
+            this.device = this.lang.EquipmentAccount_Used;
+            this.Meter1 = this.lang.AlarmRecord_HT_Unlimited;
+            this.Meter2 = this.lang.AlarmRecord_HT_Unlimited;
+            this.Preservation = this.lang.EquipmentAccount_ClickSelect;
+            this.Preservation1 = this.lang.EquipmentAccount_ClickSelect;
+            this.Preservation5 = this.lang.EquipmentAccount_ClickSelect;
+            this.sametimearr = [
+                {
+                    key: this.lang.HMI_HT_LineChartWindowViewModel_Hour,
+                    value: this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                },
+                {
+                    key: this.lang.MaintenanceManage_Day,
+                    value: this.lang.MaintenanceManage_Day
+                },
+                {
+                    key: this.lang.HMI_HT_LineChartWindowViewModel_Month,
+                    value: this.lang.HMI_HT_LineChartWindowViewModel_Month
+                },
+                {
+                    key: this.lang.HMI_HT_LineChartWindowViewModel_Year,
+                    value: this.lang.HMI_HT_LineChartWindowViewModel_Year
+                }
+            ];
+            this.ztarr = [
+                this.lang.AlarmRecord_HT_Unlimited,
+                this.lang.MaintenanceManage_NotStarted,
+                this.lang.MaintenanceManage_Ongoing,
+                this.lang.MaintenanceManage_Delayed
+            ];
+            this.leixinarr = [
+                this.lang.AlarmRecord_HT_Unlimited,
+                this.lang.RepairManage_PlanRepair,
+                this.lang.RepairManage_FaultRepair
+            ];
+            this.supermin1 = [
+                this.lang.VulnerablePartManage_StandardTime,
+                this.lang.VulnerablePartManage_RunningTime,
+                '运行频次'
+            ];
+            this.arr = [
+                this.lang.RepairManage_Processed,
+                this.lang.RepairManage_NoCauseWasFound
+            ];
+        },
+        uploadImg() {
+            this.$refs.uploadImg.click();
+        },
+        updateImg(file) {
+            console.log(file);
+            if (file.target.files.length > 0) {
+                let { name, size } = file.target.files[0];
+                const isLt10M = size / 1024 / 1024 > 10;
+                if (isLt10M) {
+                    // 提示：照片大小限制为10M
+
+                    setTimeout(() => {
                         $('.tip').css({
-                            zoom: this.a11,
-                          
+                            zoom: this.a11
                         });
                         this.tipchange = true;
                         this.move('tip', 'tiphead');
                     });
-            this.tipword = this.lang.NoOperationAuthority;
-            e.preventDefault();
-            return
+                    this.tipword = '照片大小限制为10M';
+                    this.$refs.uploadImg.value = '';
+                    return;
+                }
+                this.wantnowdata.ImageName = name;
+
+                let formData = new FormData();
+                // 向 formData 对象中添加文件
+                formData.append('file', file.target.files[0]);
+                this.imgFile = formData;
+                console.log(this.wantnowdata);
             }
         },
-             findPathByLeafId(id,node,path){
-        if(!path){
-             path = []
-         }
-        for(let i=0;i<node.length;i++){
-          var temPath = path.concat();
-        
-          if(id == node[i].RightID){
-                temPath.push(node[i])
-           return temPath
-          }
-          if(node[i].Children){
-           var findResult = this.findPathByLeafId(id,node[i].Children,temPath)
-           if(findResult){
-           return findResult
-           }
-          }
-        }
-        },
-          GetUrlParam(paraName) {
-        let url = document.location.toString();
-        let arrObj = url.split("?");
-        if (arrObj.length > 1) {
-            let arrPara = arrObj[1].split("&");
-            let arr;
-           for(let i=0;i<arrPara.length;i++){
-            arr = arrPara[i].split("=");
-            if(arr&&arr[0] == paraName){
-              
-               return arr[1]
+        dr(e) {
+            if (!this.drshow) {
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
+                    });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.tipword = this.lang.NoOperationAuthority;
+                e.preventDefault();
+                return;
             }
-           }
-           return ''
-        }else {
-            return ''
-        }
-          },
+        },
+        findPathByLeafId(id, node, path) {
+            if (!path) {
+                path = [];
+            }
+            for (let i = 0; i < node.length; i++) {
+                var temPath = path.concat();
+
+                if (id == node[i].RightID) {
+                    temPath.push(node[i]);
+                    return temPath;
+                }
+                if (node[i].Children) {
+                    var findResult = this.findPathByLeafId(
+                        id,
+                        node[i].Children,
+                        temPath
+                    );
+                    if (findResult) {
+                        return findResult;
+                    }
+                }
+            }
+        },
+        GetUrlParam(paraName) {
+            let url = document.location.toString();
+            let arrObj = url.split('?');
+            if (arrObj.length > 1) {
+                let arrPara = arrObj[1].split('&');
+                let arr;
+                for (let i = 0; i < arrPara.length; i++) {
+                    arr = arrPara[i].split('=');
+                    if (arr && arr[0] == paraName) {
+                        return arr[1];
+                    }
+                }
+                return '';
+            } else {
+                return '';
+            }
+        },
         lookforsearch2() {
             this.watchdata();
         },
-        // 导入表格
         readExcel(e) {
-            console.clear();
+            //表格导入
             this.daorudata = [];
+            var that = this;
+            var $this = this;
             const files = e.target.files;
             if (files.length <= 0) {
-                console.log('没有文件名');
+                //如果没有文件名
                 return false;
             } else if (!/\.(xls|xlsx)$/.test(files[0].name.toLowerCase())) {
                 this.$Message.error('上传格式不正确，请上传xls或者xlsx格式');
@@ -1820,82 +2344,256 @@ export default {
             }
             const fileReader = new FileReader();
             fileReader.onload = ev => {
-                const data = ev.target.result;
-                const workbook = XLSX.read(data, { type: 'binary' });
-                const wsname = workbook.SheetNames[0]; // 取第一张表
-                const initTableData = XLSX.utils.sheet_to_json(workbook.Sheets[wsname]); // 生成表格数据
-                console.log("初始表格数据", JSON.parse(JSON.stringify(initTableData)));
-
-                let newTableData = [] // 新表格数据
-                for (let i = 0, iLen = initTableData.length; i < iLen; i++) {
-                  const item = initTableData[i]
-                  newTableData.push({
-                    No: item['序号'],
-                    VulnerablePartName: item['器件名称'],
-                    VulnerablePartNo: item['器件编号'],
-                    UsingDevice: item['使用设备'],
-                    VulnerablePartModel: item['器件型号'],
-                    MaturityTime: item['到期时间'],
-                    ResidualLife: item['剩余寿命'],
-                    EnableTime: item['启用日期'],
-                    LifeCycle: item['寿命周期'],
-                    TimerType: item['统计类型'],
-                    RunningSignal: item['统计信号'],
-                    ReminderTime: item['提前提醒'],
-                    Executor: item['执行人员'],
-                    UseNumber: item['使用数量'],
-                    Price: item['器件价格'],
-                    Manufactor: item['供应商'],
-                    Remarks: item['器件备注'],
-                    LoginUserName: this.abc,
-                    // AddTime: this.getNowTime(),
-                  })
-                }
-
-                console.log("准备提交的表格数据", JSON.parse(JSON.stringify(newTableData)));
-                this.$api.agency.vulnerablePartManageImport(newTableData).then(ref => {
-                    console.log('导入结果', ref);
-                    if (ref.data.code === 1) {
-                        this.$message({
-                            message: ref.data.msg,
-                            type: 'warning'
-                        });
-                        return
-                    }
-                    this.$message({
-                        message: ref.data.data,
-                        type: 'success'
+                try {
+                    const data = ev.target.result;
+                    const workbook = XLSX.read(data, {
+                        type: 'binary'
                     });
-                }, err => {
-                    console.log('失败回调', err);
-                })
+                    const wsname = workbook.SheetNames[0]; //取第一张表
+                    const ws = XLSX.utils.sheet_to_json(
+                        workbook.Sheets[wsname]
+                    ); //生成json表格内容
+                    console.log(ws);
+                    let a = 0;
+                    for (a in ws) {
+                        ws[a].No = ws[a][$this.lang.UserManage_NO];
+                        ws[a].VulnerablePartName =
+                            ws[a][
+                                $this.lang.EquipmentAccount_VulnerablePartName
+                            ];
+                        ws[a].VulnerablePartNo =
+                            ws[a][$this.lang.EquipmentAccount_VulnerablePartNo];
+                        ws[a].UsingDevice =
+                            ws[a][$this.lang.EquipmentAccount_UsingDevice];
+                        ws[a].VulnerablePartModel =
+                            ws[a][
+                                $this.lang.EquipmentAccount_VulnerablePartModel
+                            ];
+                        ws[a].MaturityTime =
+                            ws[a][$this.lang.EquipmentAccount_MaturityTime];
+                        ws[a].ResidualLife =
+                            ws[a][$this.lang.EquipmentAccount_ResidualLife];
+                        ws[a].EnableTime =
+                            ws[a][$this.lang.EquipmentAccount_StartDate];
+                        ws[a].LifeCycleValue =
+                            ws[a][$this.lang.EquipmentAccount_LifeCycle];
+                        ws[a].TimerType =
+                            ws[a][$this.lang.EquipmentAccount_TimerType];
+                        ws[a].RunningSignal =
+                            ws[a][$this.lang.EquipmentAccount_RunningSignal];
+                        ws[a].ReminderTimeValue =
+                            ws[a][$this.lang.EquipmentAccount_AdvanceReminder];
+                        ws[a].Executor =
+                            ws[a][$this.lang.EquipmentAccount_Executor];
+                        ws[a].UseNumber =
+                            ws[a][$this.lang.EquipmentAccount_UseNumber];
+                        ws[a].Price =
+                            ws[a][$this.lang.EquipmentAccount_DevicePrice];
+                        ws[a].Manufactor =
+                            ws[a][$this.lang.EquipmentAccount_Supplier];
+                        ws[a].Remarks =
+                            ws[a][$this.lang.EquipmentAccount_DeviceRemark];
+                    }
+                    let b = 0;
+                    for (b in ws) {
+                        delete ws[b][$this.lang.UserManage_NO];
+                        delete ws[b][
+                            $this.lang.EquipmentAccount_VulnerablePartName
+                        ];
+                        delete ws[b][
+                            $this.lang.EquipmentAccount_VulnerablePartNo
+                        ];
+                        delete ws[b][$this.lang.EquipmentAccount_UsingDevice];
+                        delete ws[b][
+                            $this.lang.EquipmentAccount_VulnerablePartModel
+                        ];
+                        delete ws[b][$this.lang.EquipmentAccount_MaturityTime];
+                        delete ws[b][$this.lang.EquipmentAccount_ResidualLife];
+                        delete ws[b][$this.lang.EquipmentAccount_StartDate];
+                        delete ws[b][$this.lang.EquipmentAccount_LifeCycle];
+                        delete ws[b][$this.lang.EquipmentAccount_TimerType];
+                        delete ws[b][$this.lang.EquipmentAccount_RunningSignal];
+                        delete ws[b][
+                            $this.lang.EquipmentAccount_AdvanceReminder
+                        ];
+                        // delete ws[b][$this.lang.EquipmentAccount_Executor]
+                        // 此处不需要用多语言key替换，否则传参会少一个字段
+                        delete ws[b].执行人员;
+                        delete ws[b][$this.lang.EquipmentAccount_UseNumber];
+                        delete ws[b][$this.lang.EquipmentAccount_DevicePrice];
+                        delete ws[b][$this.lang.EquipmentAccount_Supplier];
+                        delete ws[b][$this.lang.EquipmentAccount_DeviceRemark];
+                        // delete ws[b].序号;
+                        // delete ws[b].器件名称;
+                        // delete ws[b].器件编号;
+                        // delete ws[b].使用设备;
+                        // delete ws[b].器件型号;
+                        // delete ws[b].到期时间;
+                        // delete ws[b].剩余寿命;
+                        // delete ws[b].启用日期;
+                        // delete ws[b].寿命周期;
+                        // delete ws[b].计时类型;
+                        // delete ws[b].运行信号;
+                        // delete ws[b].提前提醒;
+                        // delete ws[b].执行人员;
+                        // delete ws[b].使用数量;
+                        // delete ws[b].器件价格;
+                        // delete ws[b].供应商;
+                        // delete ws[b].器件备注;
+                    }
+                    console.log(ws);
+                    $this.daorudata = ws;
+                    for (var c1 in $this.daorudata) {
+                        if (!$this.daorudata[c1]) {
+                            $this.daorudata[c1] = '';
+                        }
+                    }
+                    for (let c = 0; c < $this.daorudata.length; c++) {
+                        $this.daorudata[c].LifeCycle =
+                            $this.daorudata[c].LifeCycleValue;
+                        $this.daorudata[c].ReminderTime =
+                            $this.daorudata[c].ReminderTimeValue;
+                        if ($this.daorudata[c].LifeCycleValue) {
+                            // $this.daorudata[c].LifeCycleUnit = $this.daorudata[c].LifeCycleValue.match(/[\u4e00-\u9fa5]/g).join('');
+                            $this.daorudata[c].LifeCycleUnit = $this.daorudata[
+                                c
+                            ].LifeCycleValue.replace(/\d+/g, '');
+                        }
+                        if ($this.daorudata[c].ReminderTimeValue) {
+                            // $this.daorudata[c].ReminderTimeUnit = $this.daorudata[c].ReminderTimeValue.match(/[\u4e00-\u9fa5]/g).join('');
+                            $this.daorudata[
+                                c
+                            ].ReminderTimeUnit = $this.daorudata[
+                                c
+                            ].ReminderTimeValue.replace(/\d+/g, '');
+                        }
+
+                        $this.daorudata[c].ReminderTimeValue = parseInt(
+                            $this.daorudata[c].ReminderTimeValue
+                        );
+                        $this.daorudata[c].LifeCycleValue = parseInt(
+                            $this.daorudata[c].LifeCycleValue
+                        );
+                        $this.daorudata[c].LoginUserName = $this.abc;
+                        // if (this.daorudata[c].LifeCycleUnit == '小时') {
+                        //     this.daorudata[c].LifeCycle = 1;
+                        //     // this.daorudata[c].LifeCycleUnit = 1;
+                        // } else if (this.daorudata[c].LifeCycleUnit == '天') {
+                        //     this.daorudata[c].LifeCycle = 2;
+                        //     // this.daorudata[c].LifeCycleUnit = 2;
+                        // } else if (this.daorudata[c].LifeCycleUnit == '月') {
+                        //     this.daorudata[c].LifeCycle = 3;
+                        //     // this.daorudata[c].LifeCycleUnit = 3;
+                        // } else if (this.daorudata[c].LifeCycleUnit == '年') {
+                        //     this.daorudata[c].LifeCycle = 4;
+                        //     // this.daorudata[c].LifeCycleUnit = 4;
+                        // }
+                        // if (this.daorudata[c].ReminderTimeUnit == '小时') {
+                        //     this.daorudata[c].ReminderTime = 1;
+                        //     // this.daorudata[c].ReminderTimeUnit = 1;
+                        // } else if (this.daorudata[c].ReminderTimeUnit == '天') {
+                        //     this.daorudata[c].ReminderTime = 2;
+                        //     // this.daorudata[c].ReminderTimeUnit = 2;
+                        // } else if (this.daorudata[c].ReminderTimeUnit == '月') {
+                        //     this.daorudata[c].ReminderTime = 3;
+                        //     // this.daorudata[c].ReminderTimeUnit = 3;
+                        // } else if (this.daorudata[c].ReminderTimeUnit == '年') {
+                        //     this.daorudata[c].ReminderTime = 4;
+                        //     // this.daorudata[c].ReminderTimeUnit = 4;
+                        // }
+                    }
+
+                    // let g = [
+                    //     {
+                    //         VulnerablePartName: '111111',
+                    //         VulnerablePartNo: '1212',
+                    //         UsingDevice: '111',
+                    //         VulnerablePartModel: '1',
+                    //         RunningSignal: '1',
+                    //         EnableTime: '2019-01-16',
+                    //         TimerType: '标准时间',
+                    //         LifeCycleValue: '1',
+                    //         LifeCycle: '1小时',
+                    //         LifeCycleTotalMinute: '1',
+                    //         MaturityTime: '1',
+                    //         ReminderTimeValue: '1',
+                    //         ReminderTime: '1小时',
+                    //         Executor: 'Guest',
+                    //         UseNumber: '1',
+                    //         Price: '1',
+                    //         Manufactor: '1',
+                    //         Remarks: '1',
+                    //         AddTime: '1',
+                    //         Status: '1',
+                    //         AlarmTime: '1',
+                    //         AlarmMinute: '1',
+                    //         RunMinute: '1',
+                    //         LoginUserName: '1'
+                    //     }
+                    // ];
+                    this.$axios({
+                        method: 'post',
+                        url: `/api/VulnerablePartManage/VulnerablePartManage_Import`,
+                        data: this.daorudata
+                    }).then(res => {
+                        console.log(res);
+                        setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                        this.pdyd3 = true;
+                        if (res.data.msg == '请求成功') {
+                            res.data.msg = this.lang.FormulaManage_HT_ImportSuccess;
+                            this.getsetime();
+                        }
+                        this.tipword = res.data.msg;
+                    });
+                    that.outputs = []; //清空接收数据
+                    for (var i = 0; i < ws.length; i++) {
+                        var sheetData = {
+                            address: ws[i].addr,
+                            value: ws[i].value
+                        };
+                        that.outputs.push(sheetData);
+                    }
+                    this.$refs.upload.value = '';
+                } catch (e) {
+                    return false;
+                }
             };
             fileReader.readAsBinaryString(files[0]);
         },
-        // 导出表格
         exportTable() {
-            console.clear();
-            if(!this.dcshow) {
+            if (!this.dcshow) {
                 setTimeout(() => {
-                    $('.tip').css({zoom: this.a11});
+                    $('.tip').css({
+                        zoom: this.a11
+                    });
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
                 });
                 this.tipword = this.lang.NoOperationAuthority;
-                return
+                return;
             }
-            
-            if(this.PageData.TotalCount >= 150000) {
+
+            if (this.PageData.TotalCount >= 150000) {
                 setTimeout(() => {
-                    $('.tip').css({zoom: this.a11});
+                    $('.tip').css({
+                        zoom: this.a11
+                    });
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
                 });
-                this.tipword = this.lang.SCMSConsoleWebApiMySql_ExportedDataNotSupportMoreThan150000
+                this.tipword = this.lang.SCMSConsoleWebApiMySql_ExportedDataNotSupportMoreThan150000;
                 return;
             }
             require.ensure([], () => {
-                // 表头
+                const {
+                    export_json_to_excel
+                } = require('../../vendor/Export2Excel');
                 const tHeader = [
                     this.lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber,
                     this.lang.EquipmentAccount_VulnerablePartName,
@@ -1906,10 +2604,8 @@ export default {
                     this.lang.EquipmentAccount_ResidualLife,
                     this.lang.EquipmentAccount_StartDate,
                     this.lang.EquipmentAccount_LifeCycle,
-                    // this.lang.EquipmentAccount_TimerType,
-                    '统计类型',
-                    // this.lang.EquipmentAccount_RunningSignal,
-                    '统计信号',
+                    this.lang.EquipmentAccount_TimerType,
+                    this.lang.EquipmentAccount_RunningSignal,
                     this.lang.EquipmentAccount_AdvanceReminder,
                     this.lang.EquipmentAccount_Executor,
                     this.lang.EquipmentAccount_UseNumber,
@@ -1917,9 +2613,7 @@ export default {
                     this.lang.EquipmentAccount_Supplier,
                     this.lang.EquipmentAccount_DeviceRemark
                 ];
-                // console.log('表头', tHeader);
-                
-                // 字段值
+
                 const filterVal = [
                     'Number',
                     'VulnerablePartName',
@@ -1929,10 +2623,10 @@ export default {
                     'MaturityTime',
                     'ResidualLife',
                     'EnableTime',
-                    'LifeCycleDisplayName', // 寿命周期-名称
-                    'TimerType', // 统计类型
-                    'RunningSignal', // 统计信号
-                    'ReminderTimeDisplayName', // 提前提醒-名称
+                    'LifeCycleDisplayName',
+                    'TimerType',
+                    'RunningSignal',
+                    'ReminderTimeDisplayName',
                     'Executor',
                     'UseNumber',
                     'Price',
@@ -1940,41 +2634,851 @@ export default {
                     'Remarks'
                 ];
 
-                const c = this.Meterid == '11111111-1111-1111-1111-111111111111' ? '' : this.Meter;
-                this.$axios.post( `/api/VulnerablePartManage/VulnerablePartManage_GstPlan?argDeviceType=${c}&argStartTime=${this.value1}&argEndTime=${this.value2}&argKeyword=${this.keyword}&argPageSize=${this.PageData.TotalCount}&argPageIndex=1`).then(res =>{
-                    let dataList = res.data.data.DataList // 表格数据
-                    // console.log('表格数据', res);
-                    console.log("表格数据-后台", JSON.parse(JSON.stringify(dataList)));
-                    
-                     // 数据格式转换
-                    dataList.forEach(item => {
-                        item.EnableTime = this.gettime(item.EnableTime) // 启用日期
-                        // 寿命周期
-                        // const lifeCycleUnit = getLifeCycleUnitValue(item.LifeCycleUnit)
-                        // if (lifeCycleUnit) {
-                        //     console.log(`寿命周期值是：${item.LifeCycleValue}；单位是${lifeCycleUnit}`);
-                        //     item.LifeCycleDisplayName = item.LifeCycleValue + lifeCycleUnit
-                        // }
-                    })
+                let c = this.Meter;
+                if (this.Meterid == '11111111-1111-1111-1111-111111111111') {
+                    c = '';
+                } else {
+                    c = this.Meter;
+                }
+                this.$axios
+                    .post(
+                        `/api/VulnerablePartManage/VulnerablePartManage_GstPlan?argDeviceType=${c}&argStartTime=${this.value1}&argEndTime=${this.value2}&argKeyword=${this.keyword}&argPageSize=${this.PageData.TotalCount}&argPageIndex=1`
+                    )
+                    .then(res => {
+                        this.daochu = res.data.data.DataList;
+                        console.log(this.daochu[0]);
+                        this.daochu.forEach(item => {
+                            item.EnableTime = this.gettime(item.EnableTime);
+                        });
+                        // this.tableData1[i].EnableTime = this.gettime(
+                        //     this.tableData1[i].EnableTime
+                        // );
+                        if (
+                            140000 < this.daochu.length &&
+                            this.daochu.length <= 150000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet2'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet3'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet4'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet5'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet6'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet7'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet8'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet9'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet10'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet11'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet12'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet13'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet14'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet15'
+                                }
+                            ];
+                        } else if (
+                            130000 < this.daochu.length &&
+                            this.daochu.length <= 140000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet2'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet3'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet4'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet5'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet6'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet7'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet8'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet9'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet10'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet11'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet12'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet13'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet14'
+                                }
+                            ];
+                        } else if (
+                            120000 < this.daochu.length &&
+                            this.daochu.length <= 130000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet2'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet3'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet4'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet5'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet6'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet7'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet8'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet9'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet10'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet11'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet12'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet13'
+                                }
+                            ];
+                        } else if (
+                            110000 < this.daochu.length &&
+                            this.daochu.length <= 120000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet2'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet3'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet4'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet5'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet6'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet7'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet8'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet9'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet10'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet11'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet12'
+                                }
+                            ];
+                        } else if (
+                            100000 < this.daochu.length &&
+                            this.daochu.length <= 110000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet2'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet3'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet4'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet5'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet6'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet7'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet8'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet9'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet10'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet11'
+                                }
+                            ];
+                        } else if (
+                            90000 < this.daochu.length &&
+                            this.daochu.length <= 100000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet2'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet3'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet4'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet5'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet6'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet7'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet8'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet9'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet10'
+                                }
+                            ];
+                        } else if (
+                            80000 < this.daochu.length &&
+                            this.daochu.length <= 90000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet2'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet3'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet4'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet5'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet6'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet7'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet8'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet9'
+                                }
+                            ];
+                        } else if (
+                            70000 < this.daochu.length &&
+                            this.daochu.length <= 80000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet2'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet3'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet4'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet5'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet6'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet7'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet8'
+                                }
+                            ];
+                        } else if (
+                            60000 < this.daochu.length &&
+                            this.daochu.length <= 70000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet2'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet3'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet4'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet5'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet6'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet7'
+                                }
+                            ];
+                        } else if (
+                            50000 < this.daochu.length &&
+                            this.daochu.length <= 60000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet2'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet3'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet4'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet5'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet6'
+                                }
+                            ];
+                        } else if (
+                            40000 < this.daochu.length &&
+                            this.daochu.length <= 50000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet2'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet3'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet4'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet5'
+                                }
+                            ];
+                        } else if (
+                            30000 < this.daochu.length &&
+                            this.daochu.length <= 40000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet2'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet3'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet4'
+                                }
+                            ];
+                        } else if (
+                            20000 < this.daochu.length &&
+                            this.daochu.length <= 30000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet2'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet3'
+                                }
+                            ];
+                        } else if (
+                            10000 < this.daochu.length &&
+                            this.daochu.length <= 20000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 10000),
+                                    sheetName: 'sheet2'
+                                }
+                            ];
+                        } else if (
+                            0 < this.daochu.length &&
+                            this.daochu.length <= 10000
+                        ) {
+                            this.excelDatas = [
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 20000),
+                                    sheetName: 'sheet1'
+                                },
+                                {
+                                    tHeader: tHeader,
+                                    filterVal: filterVal,
+                                    tableDatas: this.daochu.splice(0, 1000),
+                                    sheetName: 'sheet2'
+                                }
+                            ];
+                        }
 
-                    const excelDatas = [
-                        {
-                            tHeader: tHeader,
-                            filterVal: filterVal,
-                            tableDatas: dataList.splice(0, 20000),
-                            sheetName: 'sheet1'
-                        },
-                        {
-                            tHeader: tHeader,
-                            filterVal: filterVal,
-                            tableDatas: dataList.splice(0, 1000),
-                            sheetName: 'sheet2'
-                        },
-                    ];
-
-                    console.log("输出表格数据", JSON.parse(JSON.stringify(excelDatas)));
-                    this.json2excel(excelDatas, this.lang.VulnerablePartManage_VulnerablePartsAccount, true, 'xlsx');
-                })
+                        this.json2excel(
+                            this.excelDatas,
+                            this.lang
+                                .VulnerablePartManage_VulnerablePartsAccount,
+                            true,
+                            'xlsx'
+                        );
+                    });
             });
         },
         json2excel(tableJson, filenames, autowidth, bookTypes) {
@@ -2020,12 +3524,15 @@ export default {
             if (this.sestion == 1) {
                 this.wantnowdata.UsingDevice = this.wantword;
                 this.wantnowdata.AID = this.aid;
-                if (this.wantnowdata.UsingDevice == this.lang.EquipmentAccount_ClickSelect || this.wantnowdata.UsingDevice == '') {
+                if (
+                    this.wantnowdata.UsingDevice ==
+                        this.lang.EquipmentAccount_ClickSelect ||
+                    this.wantnowdata.UsingDevice == ''
+                ) {
                     this.tipword = this.lang.FileManage_SelectEquipment;
-                       setTimeout(() => {
+                    setTimeout(() => {
                         $('.tip').css({
-                            zoom: this.a11,
-                          
+                            zoom: this.a11
                         });
                         this.tipchange = true;
                         this.move('tip', 'tiphead');
@@ -2039,20 +3546,19 @@ export default {
                     this.tipword = this.lang.FileManage_SelectEquipment;
                     setTimeout(() => {
                         $('.tip').css({
-                            zoom: this.a11,
-                          
+                            zoom: this.a11
                         });
                         this.tipchange = true;
                         this.move('tip', 'tiphead');
                     });
                     this.pdyd3 = true;
-                    return
+                    return;
                 }
                 console.log(this.wantnowdata);
                 this.wantnowdata.AID = this.aid;
                 this.wantnowdata.UsingDevice = this.wantword;
                 this.offdecive = false;
-                this.cancel11()
+                this.cancel11();
             }
         },
         handleNodeClic6(data) {
@@ -2070,13 +3576,14 @@ export default {
             this.deltrue = true;
         },
         getdevice() {
+            if (this.sestion == 2) return;
             this.$axios
                 .post(`/api/RepairManage/RepairManage_GstEquipmentAccount`)
                 .then(res => {
                     console.log(res);
                     this.projectlistdata = res.data.data;
                     this.projectlistdata1 = res.data.data;
-                       setTimeout(() => {
+                    setTimeout(() => {
                         $('.look222').css({
                             // zoom: this.a11,
                             left: `calc(50% - ${($('.look222').width() / 2) *
@@ -2084,7 +3591,7 @@ export default {
                             top: `calc(50% - ${($('.look222').height() / 2) *
                                 this.a11}px)`
                         });
-                        this.offdecive  = true;
+                        this.offdecive = true;
                         this.move('look222', 'looktop');
                     });
                     this.offdecive = true;
@@ -2092,6 +3599,113 @@ export default {
                     this.selectword3 = false;
                     this.projectkeyword = '';
                 });
+        },
+        handleSelectedFile(ws) {
+            console.log(ws);
+            this.daorudata = [];
+            let a = 0;
+            for (a in ws) {
+                ws[a].No =
+                    ws[a][
+                        this.lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber
+                    ];
+                ws[a].VulnerablePartName =
+                    ws[a][this.lang.EquipmentAccount_VulnerablePartName];
+                ws[a].VulnerablePartNo =
+                    ws[a][this.lang.EquipmentAccount_VulnerablePartNo];
+                ws[a].UsingDevice =
+                    ws[a][this.lang.EquipmentAccount_UsingDevice];
+                ws[a].VulnerablePartModel =
+                    ws[a][this.lang.EquipmentAccount_VulnerablePartModel];
+                ws[a].MaturityTime =
+                    ws[a][this.lang.EquipmentAccount_MaturityTime];
+                ws[a].ResidualLife =
+                    ws[a][this.lang.EquipmentAccount_ResidualLife];
+                ws[a].EnableTime = ws[a][this.lang.EquipmentAccount_StartDate];
+                ws[a].LifeCycleValue =
+                    ws[a][this.lang.EquipmentAccount_LifeCycle];
+                ws[a].TimerType = ws[a][this.lang.EquipmentAccount_TimerType];
+                ws[a].RunningSignal =
+                    ws[a][this.lang.EquipmentAccount_RunningSignal];
+                ws[a].ReminderTimeValue =
+                    ws[a][this.lang.EquipmentAccount_AdvanceReminder];
+                ws[a].Executor = ws[a][this.lang.EquipmentAccount_Executor];
+                ws[a].UseNumber = ws[a][this.lang.EquipmentAccount_UseNumber];
+                ws[a].Price = ws[a][this.lang.EquipmentAccount_DevicePrice];
+                ws[a].Manufactor = ws[a][this.lang.EquipmentAccount_Supplier];
+                ws[a].Remarks = ws[a][this.lang.EquipmentAccount_DeviceRemark];
+            }
+            let b = 0;
+            for (b in ws) {
+                delete ws[b][
+                    this.lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber
+                ];
+                delete ws[b][this.lang.EquipmentAccount_VulnerablePartName];
+                delete ws[b][this.lang.EquipmentAccount_VulnerablePartNo];
+                delete ws[b][this.lang.EquipmentAccount_UsingDevice];
+                delete ws[b][this.lang.EquipmentAccount_VulnerablePartModel];
+                delete ws[b][this.lang.EquipmentAccount_MaturityTime];
+                delete ws[b][this.lang.EquipmentAccount_ResidualLife];
+                delete ws[b][this.lang.EquipmentAccount_StartDate];
+                delete ws[b][this.lang.EquipmentAccount_LifeCycle];
+                delete ws[b][this.lang.EquipmentAccount_TimerType];
+                delete ws[b][this.lang.EquipmentAccount_RunningSignal];
+                delete ws[b][this.lang.EquipmentAccount_AdvanceReminder];
+                delete ws[b][this.lang.EquipmentAccount_Executor];
+                delete ws[b][this.lang.EquipmentAccount_UseNumber];
+                delete ws[b][this.lang.EquipmentAccount_DevicePrice];
+                delete ws[b][this.lang.EquipmentAccount_Supplier];
+                delete ws[b][this.lang.EquipmentAccount_DeviceRemark];
+            }
+            console.log(ws);
+            this.daorudata = ws;
+            let c = 0;
+            for (c in this.daorudata) {
+                this.daorudata[c].LifeCycle = this.daorudata[c].LifeCycleValue;
+                this.daorudata[c].ReminderTime = this.daorudata[
+                    c
+                ].ReminderTimeValue;
+                this.daorudata[c].LifeCycleUnit = this.daorudata[
+                    c
+                ].LifeCycleValue.match(/[\u4e00-\u9fa5]/g).join('');
+                this.daorudata[c].ReminderTimeUnit = this.daorudata[
+                    c
+                ].ReminderTimeValue.match(/[\u4e00-\u9fa5]/g).join('');
+                this.daorudata[c].ReminderTimeValue = parseInt(
+                    this.daorudata[c].ReminderTimeValue
+                );
+                this.daorudata[c].LifeCycleValue = parseInt(
+                    this.daorudata[c].LifeCycleValue
+                );
+                this.daorudata[c].LoginUserName = this.abc;
+                // if (this.daorudata[c].LifeCycleUnit == '小时') {
+                //     this.daorudata[c].LifeCycle = 1;
+                //     // this.daorudata[c].LifeCycleUnit = 1;
+                // } else if (this.daorudata[c].LifeCycleUnit == '天') {
+                //     this.daorudata[c].LifeCycle = 2;
+                //     // this.daorudata[c].LifeCycleUnit = 2;
+                // } else if (this.daorudata[c].LifeCycleUnit == '月') {
+                //     this.daorudata[c].LifeCycle = 3;
+                //     // this.daorudata[c].LifeCycleUnit = 3;
+                // } else if (this.daorudata[c].LifeCycleUnit == '年') {
+                //     this.daorudata[c].LifeCycle = 4;
+                //     // this.daorudata[c].LifeCycleUnit = 4;
+                // }
+                // if (this.daorudata[c].ReminderTimeUnit == '小时') {
+                //     this.daorudata[c].ReminderTime = 1;
+                //     // this.daorudata[c].ReminderTimeUnit = 1;
+                // } else if (this.daorudata[c].ReminderTimeUnit == '天') {
+                //     this.daorudata[c].ReminderTime = 2;
+                //     // this.daorudata[c].ReminderTimeUnit = 2;
+                // } else if (this.daorudata[c].ReminderTimeUnit == '月') {
+                //     this.daorudata[c].ReminderTime = 3;
+                //     // this.daorudata[c].ReminderTimeUnit = 3;
+                // } else if (this.daorudata[c].ReminderTimeUnit == '年') {
+                //     this.daorudata[c].ReminderTime = 4;
+                //     // this.daorudata[c].ReminderTimeUnit = 4;
+                // }
+            }
+            console.log('123', this.daorudata);
         },
         yes1() {
             this.tipchange = false;
@@ -2107,74 +3721,69 @@ export default {
                 console.log(res);
                 this.list = [];
                 this.tipword = this.lang.FormulaManage_HT_DeletedSuccessfully;
-                   setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
                 this.deltrue = true;
                 this.getsetime();
             });
         },
         del() {
-             if(!this.scshow){
-              setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+            if (!this.scshow) {
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
-                   this.pdyd3 = true;
-                 this.tipword = this.lang.NoOperationAuthority;
-                return
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd3 = true;
+                this.tipword = this.lang.NoOperationAuthority;
+                return;
             }
             if (this.list.length !== 0) {
-                this.tipword = this.lang.EquipmentAccount_SureToDelete
-                   setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                this.tipword = this.lang.EquipmentAccount_SureToDelete;
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
                 this.deltrue = false;
             } else {
-                this.tipword = this.lang.EquipmentAccount_CheckTheDeleteItem
-                   setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                this.tipword = this.lang.EquipmentAccount_CheckTheDeleteItem;
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
                 this.deltrue = true;
             }
         },
-        sx(){
-            let that = this
-            setTimeout(()=>{
-for(let i=0;i<$('.el-picker-panel').length;i++){
-                $('.el-picker-panel')[i].style.zoom = that.a11
-            }
-            })
-              
+        sx() {
+            let that = this;
+            setTimeout(() => {
+                for (let i = 0; i < $('.el-picker-panel').length; i++) {
+                    $('.el-picker-panel')[i].style.zoom = that.a11;
+                }
+            });
         },
-          handleRowChange5(a) {
+        handleRowChange5(a) {
             // this.wantdata = a;
             console.log(a);
             this.tyname = a.Name;
             // this.wantnowdata.RunningSignal = a.Name;
-            
+
             // this.projectchangedata.DataType = a.DateType;
         },
         GMTToStr(time) {
@@ -2197,13 +3806,12 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             this.PageData1.PageIndex = 1;
             // this.onetable();
             this.watchdata();
-             this.nowpage1 = this.PageData1.PageIndex;
-
+            this.nowpage1 = this.PageData1.PageIndex;
         },
         prev1() {
             if (this.PageData1.LastEnabled) {
                 this.PageData1.PageIndex--;
-                   this.nowpage1 = this.PageData1.PageIndex;
+                this.nowpage1 = this.PageData1.PageIndex;
                 this.watchdata();
             }
 
@@ -2219,54 +3827,51 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 this.PageData1.PageIndex++;
                 this.watchdata();
                 this.nowpage1 = this.PageData1.PageIndex;
-                console.log(this.PageData1)
+                console.log(this.PageData1);
                 // this.onetable();
             }
         },
         jump1() {
-             if (!this.isPositiveInteger(this.nowpage1)) {
-                      setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+            if (!this.isPositiveInteger(this.nowpage1)) {
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
-                    this.pdyd3 = true;
-                    this.tipword = this.lang.RoleManage_HT_PEAPositiveInteger;
-                      setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd3 = true;
+                this.tipword = this.lang.RoleManage_HT_PEAPositiveInteger;
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
-                    return;
-                } else {
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                return;
+            } else {
+                if (
+                    this.nowpage1 !== 1 &&
+                    this.nowpage1 !== this.PageData1.TotalPage
+                ) {
                     if (
-                        this.nowpage1!== 1 &&
-                        this.nowpage1 !==  this.PageData1.TotalPage
+                        this.nowpage1 < 1 ||
+                        this.nowpage1 > this.PageData1.TotalPage
                     ) {
-                        if (
-                            this.nowpage1 < 1 ||
-                            this.nowpage1 >  this.PageData1.TotalPage
-                        ) {
-                            this.tipword = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
-                              setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
+                        this.tipword = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
+                        setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
                         });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
-                            this.pdyd3 = true;
-                            return;
-                        }
+                        this.pdyd3 = true;
+                        return;
                     }
                 }
+            }
             if (this.nowpage1 <= this.PageData1.TotalPage) {
                 this.PageData1.PageIndex = this.nowpage1;
                 // this.onetable();
@@ -2276,53 +3881,57 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         end1() {
             this.PageData1.PageIndex = this.PageData1.TotalPage;
             this.watchdata();
-             this.nowpage1 = this.PageData1.PageIndex;
+            this.nowpage1 = this.PageData1.PageIndex;
             // this.onetable();
         },
         cancel11() {
             this.aid = '';
-            this.wantword = ''
+            this.wantword = '';
             this.offdecive = false;
         },
         tip1() {
-             if(this.tipword == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect){
-               this.$axios
-                .post(
-                    `/api/VulnerablePartManage/VulnerablePartManage_GstPlanInitTime`
-                )
-                .then(res => {
-                    console.log('sss', res);
-                    this.value1 = res.data.data.StartTime;
-                    this.value2 = res.data.data.EndTime;
-                    let a = new Date(
-                        new Date(new Date().toLocaleDateString()).getTime() +
-                            24 * 60 * 60 * 1000 -
-                            1
-                    ).getTime();
-                    if (new Date(this.value2).getTime() < a) {
-                        this.value2 = this.GMTToStr(
+            if (
+                this.tipword ==
+                this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect
+            ) {
+                this.$axios
+                    .post(
+                        `/api/VulnerablePartManage/VulnerablePartManage_GstPlanInitTime`
+                    )
+                    .then(res => {
+                        console.log('sss', res);
+                        this.value1 = res.data.data.StartTime;
+                        this.value2 = res.data.data.EndTime;
+                        let a = new Date(
                             new Date(
                                 new Date().toLocaleDateString()
                             ).getTime() +
                                 24 * 60 * 60 * 1000 -
                                 1
-                        );
-                    }
-                })
-        }
+                        ).getTime();
+                        if (new Date(this.value2).getTime() < a) {
+                            this.value2 = this.GMTToStr(
+                                new Date(
+                                    new Date().toLocaleDateString()
+                                ).getTime() +
+                                    24 * 60 * 60 * 1000 -
+                                    1
+                            );
+                        }
+                    });
+            }
             this.tipchange = false;
         },
         move(name, namehead) {
-          //  $(`.${name}`).addClass('center')
-           let left = ($(`.${name}`).width())/2+'px'
-           let top = ($(`.${name}`).height())/2+'px'
-             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+            //  $(`.${name}`).addClass('center')
+            let left = $(`.${name}`).width() / 2 + 'px';
+            let top = $(`.${name}`).height() / 2 + 'px';
+            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
             $(`.${name}`)[0].addEventListener('mousedown', function(e) {
-                
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
-                    $(`.${name}`).removeClass('center')
+                    $(`.${name}`).removeClass('center');
                     window.event.stopPropagation();
                     var x = 0;
                     var y = 0;
@@ -2338,7 +3947,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     isDown = true;
                     var pdmove = false;
 
-                     
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
@@ -2354,9 +3962,9 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         //计算移动后的左偏移量和顶部的偏移量
                         var nl = nx - (x - l);
                         var nt = ny - (y - t);
-                        console.log(nx)
-                        console.log(x)
-                        console.log(l)
+                        console.log(nx);
+                        console.log(x);
+                        console.log(l);
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
@@ -2388,7 +3996,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             window.onmousemove = this.mouseMoveHandleelse;
         },
         mouseDownHandleelse18(event) {
-          
             event.currentTarget.style.cursor = 'move';
             window.onmousemove = this.mouseMoveHandleelse18;
         },
@@ -2415,9 +4022,9 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             this.$refs.kongtiao.style.top = moveTop;
         },
         mouseMoveHandleelse18(event) {
-            console.log("we",event.pageX)
+            console.log('we', event.pageX);
             let moveLeft = event.pageX - 350 + 'px';
-            console.log(moveLeft)
+            console.log(moveLeft);
             let moveTop = event.pageY - 30 + 'px';
             this.$refs.kongtiao18.style.left = moveLeft;
             this.$refs.kongtiao18.style.top = moveTop;
@@ -2499,31 +4106,33 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             this.daibang = false;
             let ss = JSON.stringify(this.antable);
             this.tableData1 = JSON.parse(ss);
-            console.log(this.antable)
+            console.log(this.antable);
         },
         Preservation2() {
             this.Preservation = this.Preservation1;
-            if (this.Preservation1 == this.lang.EquipmentAccount_EquipmentType) {
-                this.tipword = this.lang.EquipmentAccount_SelectEquipmentType1
-                    setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+            if (
+                this.Preservation1 == this.lang.EquipmentAccount_EquipmentType
+            ) {
+                this.tipword = this.lang.EquipmentAccount_SelectEquipmentType1;
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-            } else if (this.Preservation5 == this.lang.EquipmentAccount_InstallPosition) {
-                this.tipword = this.lang.EquipmentAccount_SelectInstallPosition
-                    setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+            } else if (
+                this.Preservation5 == this.lang.EquipmentAccount_InstallPosition
+            ) {
+                this.tipword = this.lang.EquipmentAccount_SelectInstallPosition;
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
             } else {
                 this.cancel1 = false;
@@ -2531,63 +4140,67 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         },
         Preservation3() {
             this.Preservation = this.Preservation1;
-            if (this.pen.DeviceType == this.lang.EquipmentAccount_EquipmentType) {
-                this.tipword = this.lang.EquipmentAccount_SelectEquipmentType1
-                this.pen.DeviceType = this.lang.EquipmentAccount_ClickSelect
-                    setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+            if (
+                this.pen.DeviceType == this.lang.EquipmentAccount_EquipmentType
+            ) {
+                this.tipword = this.lang.EquipmentAccount_SelectEquipmentType1;
+                this.pen.DeviceType = this.lang.EquipmentAccount_ClickSelect;
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-            } else if (this.pen.InstallationLocation == this.lang.EquipmentAccount_InstallPosition) {
-                this.tipword = this.lang.EquipmentAccount_SelectInstallPosition
-                this.pen.InstallationLocation = this.lang.EquipmentAccount_ClickSelect
-                    setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+            } else if (
+                this.pen.InstallationLocation ==
+                this.lang.EquipmentAccount_InstallPosition
+            ) {
+                this.tipword = this.lang.EquipmentAccount_SelectInstallPosition;
+                this.pen.InstallationLocation = this.lang.EquipmentAccount_ClickSelect;
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
             } else {
                 this.cancel1 = false;
             }
         },
         handleEdit7(a, b) {
-               if(!this.ghshow){
-               setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+            console.log(a, b);
+            if (!this.ghshow) {
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
-                   this.pdyd3 = true;
-                 this.tipword = this.lang.NoOperationAuthority;
-                return
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd3 = true;
+                this.tipword = this.lang.NoOperationAuthority;
+                return;
             }
-            this.vrmark = ''
+            this.url = this.imgSrc(b.ID);
+            this.srcList = [this.imgSrc(b.ID)];
+            this.vrmark = '';
             this.zy = b;
             this.iswant = 1;
-                   setTimeout(() => {
-                        $('.look').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.look').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.look').height() / 2) *
-                                this.a11}px)`
-                        });
-                       this.ischange = true;
-                        this.move('look', 'looktop');
-                    });
-          
+            setTimeout(() => {
+                $('.look').css({
+                    zoom: this.a11,
+                    left: `calc(50% - ${($('.look').width() / 2) *
+                        this.a11}px)`,
+                    top: `calc(50% - ${($('.look').height() / 2) * this.a11}px)`
+                });
+                this.ischange = true;
+                this.move('look', 'looktop');
+            });
+
             this.wanttime = this.getNowTime();
         },
         gpre() {
@@ -2597,17 +4210,16 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     `/api/VulnerablePartManage/VulnerablePartManage_Replace?argPID=${this.zy.ID}&argEnableTime=${this.wanttime}&argRemarks=${this.vrmark}&argLoginUserName=${this.abc}`
                 )
                 .then(res => {
-                       setTimeout(() => {
+                    setTimeout(() => {
                         $('.tip').css({
-                            zoom: this.a11,
-                          
+                            zoom: this.a11
                         });
                         this.tipchange = true;
                         this.move('tip', 'tiphead');
                     });
                     this.pdyd3 = true;
                     if (res.data.msg == '请求成功') {
-                        this.tipword = this.lang.SCMSConsoleWebApiMySql_ReplacementSucceeded
+                        this.tipword = this.lang.SCMSConsoleWebApiMySql_ReplacementSucceeded;
                         this.ischange = false;
                         this.getsetime();
                     } else {
@@ -2615,86 +4227,51 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     }
                 });
         },
-
-
-        // 延长器件寿命-显示/隐藏
-        prolongDeviceLifeShow(state, row){
-            switch (state) {
-                case 'show':
-                    this.ProlongDeviceLifeDialog.show = true
-                    this.ProlongDeviceLifeDialog.editData = row
-                    break;
-                case 'hide':
-                    this.ProlongDeviceLifeDialog.show = false
-                    this.ProlongDeviceLifeDialog.editData = null
-                    break;
-                default:
-                    break;
-            }
-        },
-        // 延长器件寿命-回调
-        ProlongDeviceLifeCallback(data) {
-            if (data === 'cancel') {
-                this.prolongDeviceLifeShow('hide')
-                return
-            }
-            this.prolongDeviceLifeShow('hide')
-            this.getsetime();
-        },
-
-        // 器件信息-添加/编辑/查看
-        createDeviceShow(state, row, index){
-            // console.clear();
-            // console.log('添加/编辑器件信息-显示', state, index, row);
-            if (row) this.createDeviceDialog.editData = row
-            this.createDeviceDialog.state = state
-        },
-        // 添加/编辑器件信息-回调
-        createDeviceCallback(state) {
-            if (state === 'confirm') {
-                this.getsetime();
-            }
-            this.createDeviceDialog.state = 'hide'
-        },
-
         handleEdit8(a, b) {
-            console.log(a,b);
-            // this.sametimearr = ['小时', '天', '月', '年', '次']
-            if(!this.ycshow) {
+            if (!this.ycshow) {
                 setTimeout(() => {
-                    $('.tip').css({zoom: this.a11});
+                    $('.tip').css({
+                        zoom: this.a11
+                    });
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
                 });
                 this.pdyd3 = true;
                 this.tipword = this.lang.NoOperationAuthority;
-                return
+                return;
             }
-            this.vrmark = ''
-            this.timevalue = ''
+
+            this.url = this.imgSrc(b.ID);
+            this.srcList = [this.imgSrc(b.ID)];
+            this.vrmark = '';
+            this.timevalue = '';
             this.zy = b;
             this.iswant = 2;
+            console.log(this.zy);
             setTimeout(() => {
                 $('.look').css({
                     zoom: this.a11,
-                    left: `calc(50% - ${($('.look').width() / 2) * this.a11}px)`,
+                    left: `calc(50% - ${($('.look').width() / 2) *
+                        this.a11}px)`,
                     top: `calc(50% - ${($('.look').height() / 2) * this.a11}px)`
                 });
                 this.ischange = true;
                 this.move('look', 'looktop');
             });
         },
-
-        // 延长器件寿命-保存
-        prolongDeviceLife() {
+        ypre() {
             console.log(this.zy);
             if (this.sss == this.lang.HMI_HT_LineChartWindowViewModel_Hour) {
                 this.sss = 1;
             } else if (this.sss == this.lang.MaintenanceManage_Day) {
                 this.sss = 2;
-            } else if (this.sss == this.lang.HMI_HT_LineChartWindowViewModel_Month) {
+            } else if (
+                this.sss == this.lang.HMI_HT_LineChartWindowViewModel_Month
+            ) {
                 this.sss = 3;
-            } else if (this.sss == this.lang.HMI_HT_LineChartWindowViewModel_Year) {
+            } else if (
+                this.sss == this.lang.HMI_HT_LineChartWindowViewModel_Year
+            ) {
                 this.sss = 4;
             }
             let a = this.getNowTime();
@@ -2703,159 +4280,133 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     `/api/VulnerablePartManage/VulnerablePartManage_Extend?argPID=${this.zy.ID}&argTime=${this.timevalue}&argTimeUnit=${this.sss}&argEnableTime=${this.zy.EnableTime}&argRemarks=${this.vrmark}&argLoginUserName=${this.abc}`
                 )
                 .then(res => {
-                       setTimeout(() => {
+                    setTimeout(() => {
                         $('.tip').css({
-                            zoom: this.a11,
-                          
+                            zoom: this.a11
                         });
                         this.tipchange = true;
                         this.move('tip', 'tiphead');
                     });
                     this.pdyd3 = true;
                     if (res.data.msg == '请求成功') {
-                        this.tipword = this.lang.SCMSConsoleWebApiMySql_ExtensionSucceeded
+                        this.tipword = this.lang.SCMSConsoleWebApiMySql_ExtensionSucceeded;
                         this.ischange = false;
                         this.getsetime();
                     } else {
                         if (this.sss == 1) {
-                            this.sss = this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                            this.sss = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
                         } else if (this.sss == 2) {
-                            this.sss = this.lang.MaintenanceManage_Day
+                            this.sss = this.lang.MaintenanceManage_Day;
                         } else if (this.sss == 3) {
-                            this.sss = this.lang.HMI_HT_LineChartWindowViewModel_Month
+                            this.sss = this.lang.HMI_HT_LineChartWindowViewModel_Month;
                         } else if (this.sss == 4) {
-                            this.sss = this.lang.HMI_HT_LineChartWindowViewModel_Year
+                            this.sss = this.lang.HMI_HT_LineChartWindowViewModel_Year;
                         }
                         this.tipword = res.data.msg;
                     }
                 })
                 .then(() => {
                     if (this.sss == 1) {
-                        this.sss = this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                        this.sss = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
                     } else if (this.sss == 2) {
-                        this.sss = this.lang.MaintenanceManage_Day
+                        this.sss = this.lang.MaintenanceManage_Day;
                     } else if (this.sss == 3) {
-                        this.sss = this.lang.HMI_HT_LineChartWindowViewModel_Month
+                        this.sss = this.lang.HMI_HT_LineChartWindowViewModel_Month;
                     } else if (this.sss == 4) {
-                        this.sss = this.lang.HMI_HT_LineChartWindowViewModel_Year
+                        this.sss = this.lang.HMI_HT_LineChartWindowViewModel_Year;
                     }
                 });
         },
-        // 添加器件信息
-        addInfo() {
-            if(!this.tjshow) {
+        handleEdit11(a, b) {
+            this.imgFile = '';
+            if (!this.ckshow) {
                 setTimeout(() => {
-                    $('.tip').css({zoom: this.a11});
+                    $('.tip').css({
+                        zoom: this.a11
+                    });
                     this.tipchange = true;
                     this.move('tip', 'tiphead');
                 });
                 this.pdyd3 = true;
                 this.tipword = this.lang.NoOperationAuthority;
-                return
+                return;
             }
-            this.sestion = 1;
-            setTimeout(() => {
-                $('.sestion').css({
-                    zoom: this.a11,
-                    left: `calc(50% - ${($('.sestion').width() / 2) * this.a11}px)`,
-                    top: `calc(50% - ${($('.sestion').height() / 2) * this.a11}px)`
-                });
-                this.change11 = true;
-                setTimeout(()=>{
-                    let w =  $('.linetop1').width() + 20 +'px'
-                    let w1 =  $('.linetop3').width() + 20 +'px'
-                    let w2 =  $('.linetop5').width() + 20 +'px'
-                    $('.linetop2').css({width:`calc(100% - ${w})`})
-                    $('.linetop4').css({width:`calc(100% - ${w1})`})
-                    $('.linetop6').css({width:`calc(100% - ${w2})`})
-                })
-                this.move('sestion', 'sestionheader1');
-            })
-
-            this.pdyd1 = true;
-            this.wantnowdata = {
-                Selected: false, //是否选中
-                ID: '',
-                Number: '', //序号
-                VulnerablePartName: '', //器件名称
-                VulnerablePartNo: '', //器件编号
-                AID: '', //器件编号
-                UsingDevice: this.lang.EquipmentAccount_ClickSelect, //使用设备
-                VulnerablePartModel: '', //器件型号
-                MaturityTime: '', //到期时间
-                ResidualLife: '', //剩余寿命
-                EnableTime: '', //启用日期
-                LifeCycleValue: '', //寿命周期
-                LifeCycleUnit: this.lang.HMI_HT_LineChartWindowViewModel_Hour, //寿命周期类型：1-小时 2-天 3-月 4-年
-                LifeCycleDisplayName: '', //寿命周期在表格显示
-                TimerType: this.lang.VulnerablePartManage_StandardTime, //统计类型,统计信号为空时，计时类型为标准时间，否则为运行时间
-                RunningSignal: this.lang.EquipmentAccount_ClickSelect, //统计信号
-                ReminderTimeValue: '', //提前提醒
-                ReminderTimeUnit: this.lang.HMI_HT_LineChartWindowViewModel_Hour, //提前提醒类型：1-小时 2-天 3-月 4-年
-                ReminderTimeDisplayName: '', //提前提醒
-                Executor: 'SuperAdmin', //执行人员
-                UseNumber: '', //使用数量
-                Price: '', //器件价格
-                Manufactor: '', //供应商
-                Remarks: '', //备注
-                Status: this.lang.SCMSConsoleWebApiMySql_Reminded, //状态,1为提醒了，2为未提醒
-                Coefficient: 1,
-            };
-            this.wantnowdata.EnableTime = this.getNowTime();
-            this.wantnowdata.OldVulnerablePartName = this.wantnowdata.VulnerablePartName;
-            console.log(this.wantnowdata);
-            console.log(this.sestion);
-        },
-        // 查看器件信息
-        checkInfo(a, b) {
-            if(!this.ckshow) {
-                setTimeout(() => {
-                    $('.tip').css({zoom: this.a11});
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-                this.pdyd3 = true;
-                this.tipword = this.lang.NoOperationAuthority;
-                return
-            }
-
+            console.log(a);
+            console.log(b);
             this.sestion = 2;
             this.wantnowdata = b;
+
+            if (this.wantnowdata.TimerType === '运行频次') {
+                this.sametimearr = [
+                    {
+                        key: 5,
+                        value: '次数'
+                    }
+                ];
+            } else {
+                this.sametimearr = [
+                    {
+                        key: this.lang.HMI_HT_LineChartWindowViewModel_Hour,
+                        value: this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                    },
+                    {
+                        key: this.lang.MaintenanceManage_Day,
+                        value: this.lang.MaintenanceManage_Day
+                    },
+                    {
+                        key: this.lang.HMI_HT_LineChartWindowViewModel_Month,
+                        value: this.lang.HMI_HT_LineChartWindowViewModel_Month
+                    },
+                    {
+                        key: this.lang.HMI_HT_LineChartWindowViewModel_Year,
+                        value: this.lang.HMI_HT_LineChartWindowViewModel_Year
+                    }
+                ];
+            }
+
             setTimeout(() => {
                 $('.sestion').css({
                     zoom: this.a11,
-                    left: `calc(50% - ${($('.sestion').width() / 2) * this.a11}px)`,
-                    top: `calc(50% - ${($('.sestion').height() / 2) * this.a11}px)`
+                    left: `calc(50% - ${($('.sestion').width() / 2) *
+                        this.a11}px)`,
+                    top: `calc(50% - ${($('.sestion').height() / 2) *
+                        this.a11}px)`
                 });
                 this.change11 = true;
-                setTimeout(()=>{
-                    let w =  $('.linetop1').width() + 20 +'px'
-                    let w1 =  $('.linetop3').width() + 20 +'px'
-                    let w2 =  $('.linetop5').width() + 20 +'px'
-                    $('.linetop2').css({width:`calc(100% - ${w})`})
-                    $('.linetop4').css({width:`calc(100% - ${w1})`})
-                    $('.linetop6').css({width:`calc(100% - ${w2})`})
-                })
+                setTimeout(() => {
+                    let w = $('.linetop1').width() + 20 + 'px';
+                    let w1 = $('.linetop3').width() + 20 + 'px';
+                    let w2 = $('.linetop5').width() + 20 + 'px';
+                    $('.linetop2').css({
+                        width: `calc(100% - ${w})`
+                    });
+                    $('.linetop4').css({
+                        width: `calc(100% - ${w1})`
+                    });
+                    $('.linetop6').css({
+                        width: `calc(100% - ${w2})`
+                    });
+                });
                 this.move('sestion', 'sestionheader1');
-            })
+            });
             this.pdyd1 = true;
             if (this.wantnowdata.LifeCycleUnit == 1) {
-                this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
             } else if (this.wantnowdata.LifeCycleUnit == 2) {
-                this.wantnowdata.LifeCycleUnit = this.lang.MaintenanceManage_Day
+                this.wantnowdata.LifeCycleUnit = this.lang.MaintenanceManage_Day;
             } else if (this.wantnowdata.LifeCycleUnit == 3) {
-                this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month
+                this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
             } else if (this.wantnowdata.LifeCycleUnit == 4) {
-                this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Year
+                this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Year;
             }
             if (this.wantnowdata.ReminderTimeUnit == 1) {
-                this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
             } else if (this.wantnowdata.ReminderTimeUnit == 2) {
-                this.wantnowdata.ReminderTimeUnit = this.lang.MaintenanceManage_Day
+                this.wantnowdata.ReminderTimeUnit = this.lang.MaintenanceManage_Day;
             } else if (this.wantnowdata.ReminderTimeUnit == 3) {
-                this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month
+                this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
             } else if (this.wantnowdata.ReminderTimeUnit == 4) {
-                this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Year
+                this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Year;
             }
             this.wantnowdata.ReminderTimeValue = parseInt(
                 this.wantnowdata.ReminderTimeValue
@@ -2866,49 +4417,18 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             console.log(this.wantnowdata);
             console.log('sadasdadasdasdasdasd');
         },
-        // 编辑器件信息
-        editInfo(a, b) {
-            if(!this.bjshow) {
-                setTimeout(() => {
-                    $('.tip').css({zoom: this.a11});
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-                this.pdyd3 = true;
-                this.tipword = this.lang.NoOperationAuthority;
-                return
-            }
-            this.sestion = 3;
-            setTimeout(() => {
-                $('.sestion').css({
-                    zoom: this.a11,
-                    left: `calc(50% - ${($('.sestion').width() / 2) * this.a11}px)`,
-                    top: `calc(50% - ${($('.sestion').height() / 2) * this.a11}px)`
-                });
-                this.change11 = true;
-                setTimeout(()=>{
-                    let w =  $('.linetop1').width() + 20 +'px'
-                    let w1 =  $('.linetop3').width() + 20 +'px'
-                    let w2 =  $('.linetop5').width() + 20 +'px'
-                    $('.linetop2').css({width:`calc(100% - ${w})`})
-                    $('.linetop4').css({width:`calc(100% - ${w1})`})
-                    $('.linetop6').css({width:`calc(100% - ${w2})`})
-                })
-                this.move('sestion', 'sestionheader1');
-            })
-            this.pdyd1 = true;
+        handleEdit3(a, b) {
+            console.log(b);
+            this.daibang = true;
+            this.aid = b.ID;
+
+            // this.change11 = true;
+        },
+        handleEdit111(a, b) {
+            console.log(b);
+            this.imgFile = '';
+            this.sestion = 1;
             this.wantnowdata = b;
-            this.wantnowdata.PID = b.ID;
-
-
-            console.log("器件信息", JSON.parse(JSON.stringify(this.wantnowdata)));
-            if (this.wantnowdata.TimerType === '使用次数') {
-                this.sametimearr = ['次']
-            } else {
-                this.sametimearr = ['小时', '天', '月', '年']
-            }
-
-            // 寿命周期-单位
             if (this.wantnowdata.LifeCycleUnit == 1) {
                 this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
             } else if (this.wantnowdata.LifeCycleUnit == 2) {
@@ -2917,11 +4437,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
             } else if (this.wantnowdata.LifeCycleUnit == 4) {
                 this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Year;
-            } else if (this.wantnowdata.LifeCycleUnit == 5) {
-                this.wantnowdata.LifeCycleUnit = '次';
             }
-
-            // 提前提醒-单位
             if (this.wantnowdata.ReminderTimeUnit == 1) {
                 this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
             } else if (this.wantnowdata.ReminderTimeUnit == 2) {
@@ -2930,155 +4446,15 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
             } else if (this.wantnowdata.ReminderTimeUnit == 4) {
                 this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Year;
-            } else if (this.wantnowdata.ReminderTimeUnit == 5) {
-                this.wantnowdata.ReminderTimeUnit = '次';
             }
+            this.wantnowdata.ReminderTimeValue = parseInt(
+                this.wantnowdata.ReminderTimeValue
+            );
+            this.wantnowdata.LifeCycleValue = parseInt(
+                this.wantnowdata.LifeCycleValue
+            );
 
-            // 提前提醒-值
-            this.wantnowdata.ReminderTimeValue = parseInt(this.wantnowdata.ReminderTimeValue);
-            this.wantnowdata.LifeCycleValue = parseInt(this.wantnowdata.LifeCycleValue);
-            if(this.wantnowdata.RunningSignal == null){
-                this.wantnowdata.RunningSignal = this.lang.EquipmentAccount_ClickSelect
-            }
-            this.wantnowdata.OldVulnerablePartName = JSON.parse(JSON.stringify(this.wantnowdata.VulnerablePartName))
-        },
-        // 提交器件信息
-        nopre() {
-            console.clear();
-            // 转换单位
-            const conversionUnit = () => {
-                // 寿命周期-单位
-                const LifeCycleUnit = getLifeCycleUnitValue(this.wantnowdata.LifeCycleUnit)
-                if (LifeCycleUnit) {
-                    this.wantnowdata.LifeCycleUnit = LifeCycleUnit
-                } else {
-                    console.log('寿命周期-单位有误');
-                    return false
-                }
-                // 提前提醒-单位
-                const ReminderTimeUnit = getLifeCycleUnitValue(this.wantnowdata.ReminderTimeUnit)
-                if (ReminderTimeUnit) {
-                    this.wantnowdata.ReminderTimeUnit = ReminderTimeUnit
-                } else {
-                    console.log('提前提醒-单位有误');
-                    return false
-                }
-
-                // 统计类型
-                const SelectedTimerType = getStatisticalTypeValue(this.wantnowdata.SelectedTimerType || this.wantnowdata.TimerType)
-                if (SelectedTimerType) {
-                    this.wantnowdata.SelectedTimerType = SelectedTimerType
-                } else {
-                    console.log('统计类型有误');
-                    return false
-                }
-            }
-            if (conversionUnit() === false) return
-
-            this.wantnowdata.LifeCycleTotalMinute = this.wantnowdata.LifeCycleValue;
-            this.wantnowdata.AddTime = this.getNowTime();
-            this.wantnowdata.Status = '1';
-            this.wantnowdata.AlarmTime = '1';
-            this.wantnowdata.RunMinute = '1';
-            this.wantnowdata.AlarmMinute = '1';
-            this.wantnowdata.LoginUserName = this.abc;
-            
-            if (!this.wantnowdata.LifeCycleValue) {
-                this.tipchange = true;
-                this.tipword = '寿命周期不允许为空，请重新输入';
-                conversionUnit()
-                return
-            }
-
-            if (this.sestion == 1) { // 添加模式
-                this.wantnowdata.Operate = 1;
-                console.log("器件信息", JSON.parse(JSON.stringify(this.wantnowdata)));
-                console.log("", JSON.parse(JSON.stringify({
-                    "1启用日期": this.wantnowdata.EnableTime,
-                    "2.0统计类型(中文)": this.wantnowdata.TimerType,
-                    "2.1统计类型(值)": this.wantnowdata.SelectedTimerType,
-                    "3.0寿命周期(值)": this.wantnowdata.LifeCycleValue,
-                    "3.1寿命周期(单位)": this.wantnowdata.LifeCycleUnit,
-                    "4运行信号": this.wantnowdata.RunningSignal,
-                    "5统计系数": this.wantnowdata.Coefficient,
-                    "6.0提前提醒(值)": this.wantnowdata.ReminderTimeValue,
-                    "6.1提前提醒(单位)": this.wantnowdata.ReminderTimeUnit,
-                    "7执行人": this.wantnowdata.Executor,
-                })));
-                this.$axios({
-                    method: 'post',
-                    url: `/api/VulnerablePartManage/VulnerablePartManage_SaveAcount`,
-                    data: this.wantnowdata
-                }).then(res => {
-                    console.log('提交器件信息.添加', res);
-                    if (res.data.code === 1) {
-                        this.tipchange = true;
-                        this.tipword = res.data.msg;
-                        return
-                    }
-
-                    setTimeout(() => {
-                        $('.tip').css({zoom: this.a11});
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
-                    this.pdyd3 = true;
-                    if (res.data.msg == '请求成功') {
-                        this.tipword = this.lang.EquipmentAccount_SuccessfullyAdded
-                        this.change11 = false;
-                        this.getsetime();
-                    } else {
-                        if(res.data.msg == "设备id格式应为GUID！"){
-                            this.tipword = this.lang.VulnerablePartManage_DeviceChoice
-                        }else{
-                            this.tipword = res.data.msg;
-                        }
-                    }
-                });
-            } else if (this.sestion == 3) { // 编辑模式
-                this.wantnowdata.Operate = 2;
-
-                console.log("器件信息", JSON.parse(JSON.stringify(this.wantnowdata)));
-                console.log("", JSON.parse(JSON.stringify({
-                    "1启用日期": this.wantnowdata.EnableTime,
-                    "2.0统计类型(中文)": this.wantnowdata.TimerType,
-                    "2.1统计类型(值)": this.wantnowdata.SelectedTimerType,
-                    "3.0寿命周期(值)": this.wantnowdata.LifeCycleValue,
-                    "3.1寿命周期(单位)": this.wantnowdata.LifeCycleUnit,
-                    "4运行信号": this.wantnowdata.RunningSignal,
-                    "5统计系数": this.wantnowdata.Coefficient,
-                    "6.0提前提醒(值)": this.wantnowdata.ReminderTimeValue,
-                    "6.1提前提醒(单位)": this.wantnowdata.ReminderTimeUnit,
-                    "7执行人": this.wantnowdata.Executor,
-                })));
-
-                this.$axios({
-                    method: 'post',
-                    url: `/api/VulnerablePartManage/VulnerablePartManage_SaveAcount`,
-                    data: this.wantnowdata
-                }).then(res => {
-                    console.log('提交器件信息.编辑', res);
-                    if (res.data.code === 1) {
-                        this.tipchange = true;
-                        this.tipword = res.data.msg;
-                        return
-                    }
-                    setTimeout(() => {
-                        $('.tip').css({zoom: this.a11});
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
-                    this.pdyd3 = true;
-                    if (res.data.msg == '请求成功') {
-                        this.tipword = this.lang.FormulaManage_HT_FormulaSetting_ModifiedSuccessfully;
-                        this.change11 = false;
-                        this.getsetime();
-                    } else {
-                        this.tipword = res.data.msg;
-                    }
-                });
-            }
-            conversionUnit()
+            // this.change11 = true;
         },
         handleRowChange(row, event, column) {
             this.c = row;
@@ -3090,26 +4466,24 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             this.aid = row.AID;
             console.log(row);
         },
-       jump() {
+        jump() {
             if (!this.isPositiveInteger(this.nowpage)) {
-               setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
                 this.tipword = this.lang.RoleManage_HT_PEAPositiveInteger;
-               setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 return;
             } else {
                 if (
@@ -3121,14 +4495,13 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         this.nowpage > this.PageData.TotalPage
                     ) {
                         this.tipword = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
-                       setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
+                        setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
                         });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
                         this.pdyd3 = true;
                         return;
                     }
@@ -3150,9 +4523,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             }
         },
         next() {
-            if (
-                this.PageData.PageIndex < this.PageData.TotalPage 
-            ) {
+            if (this.PageData.PageIndex < this.PageData.TotalPage) {
                 this.PageData.PageIndex++;
                 this.onetable();
             }
@@ -3194,6 +4565,479 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 return clock;
             }
         },
+        nopre() {
+            if (this.sestion == 1) {
+                this.wantnowdata.Operate = 1;
+                if (
+                    this.wantnowdata.RunningSignal ==
+                        this.lang.EquipmentAccount_ClickSelect ||
+                    this.wantnowdata.RunningSignal == null
+                ) {
+                    this.wantnowdata.SelectedTimerType = 1;
+                } else {
+                    this.wantnowdata.SelectedTimerType = 2;
+                }
+                if (
+                    this.wantnowdata.RunningSignal ==
+                    this.lang.EquipmentAccount_ClickSelect
+                ) {
+                    this.wantnowdata.RunningSignal = null;
+                }
+                if (
+                    this.wantnowdata.LifeCycleUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                ) {
+                    this.wantnowdata.LifeCycleUnit = 1;
+                } else if (
+                    this.wantnowdata.LifeCycleUnit ==
+                    this.lang.MaintenanceManage_Day
+                ) {
+                    this.wantnowdata.LifeCycleUnit = 2;
+                } else if (
+                    this.wantnowdata.LifeCycleUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Month
+                ) {
+                    this.wantnowdata.LifeCycleUnit = 3;
+                } else if (
+                    this.wantnowdata.LifeCycleUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Year
+                ) {
+                    this.wantnowdata.LifeCycleUnit = 4;
+                }
+                if (
+                    this.wantnowdata.ReminderTimeUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                ) {
+                    this.wantnowdata.ReminderTimeUnit = 1;
+                } else if (
+                    this.wantnowdata.ReminderTimeUnit ==
+                    this.lang.MaintenanceManage_Day
+                ) {
+                    this.wantnowdata.ReminderTimeUnit = 2;
+                } else if (
+                    this.wantnowdata.ReminderTimeUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Month
+                ) {
+                    this.wantnowdata.ReminderTimeUnit = 3;
+                } else if (
+                    this.wantnowdata.ReminderTimeUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Year
+                ) {
+                    this.wantnowdata.ReminderTimeUnit = 4;
+                }
+                this.wantnowdata.LifeCycleTotalMinute = this.wantnowdata.LifeCycleValue;
+                this.wantnowdata.AddTime = this.getNowTime();
+                this.wantnowdata.Status = '1';
+                this.wantnowdata.AlarmTime = '1';
+                this.wantnowdata.RunMinute = '1';
+                this.wantnowdata.AlarmMinute = '1';
+                this.wantnowdata.LoginUserName = this.abc;
+                if (
+                    this.wantnowdata.TimerType ==
+                    this.lang.VulnerablePartManage_StandardTime
+                ) {
+                    this.wantnowdata.SelectedTimerType = 1;
+                    this.wantnowdata.RunningSignal = null;
+                } else if (this.wantnowdata.TimerType == '运行频次') {
+                    this.wantnowdata.SelectedTimerType = 3;
+                } else {
+                    this.wantnowdata.SelectedTimerType = 2;
+                }
+                console.log(this.wantnowdata);
+                this.$axios({
+                    method: 'post',
+                    url: `/api/VulnerablePartManage/VulnerablePartManage_SaveAcount`,
+                    data: this.wantnowdata
+                }).then(res => {
+                    console.log(res);
+
+                    this.$axios({
+                        method: 'post',
+                        url: `/api/VulnerablePartManage/VulnerablePartManage_SaveFiles?PID=${res.data.data}`,
+
+                        data: this.sopData.map(_ => ({
+                            ..._,
+                            PID: res.data.data
+                        }))
+                    }).then(Files => {
+                        if (Files.data.code === 0) {
+                            if (this.imgFile && res.data.code === 0) {
+                                this.$axios({
+                                    method: 'post',
+                                    url:
+                                        '/api/VulnerablePartManage/VulnerablePartManage_UploadImage',
+                                    params: {
+                                        argPID: res.data.data
+                                    },
+                                    data: this.imgFile
+                                }).then(res => {
+                                    if (res.data.code === 0) {
+                                        this.tipword = '添加成功！';
+                                        this.change11 = false;
+                                        this.getsetime();
+                                        setTimeout(() => {
+                                            $('.tip').css({
+                                                zoom: this.a11
+                                            });
+                                            this.tipchange = true;
+                                            this.move('tip', 'tiphead');
+                                        });
+                                    }
+                                });
+                            } else if (res.data.code === 0) {
+                                this.tipword = '添加成功！';
+                                this.change11 = false;
+                                this.getsetime();
+                                setTimeout(() => {
+                                    $('.tip').css({
+                                        zoom: this.a11
+                                    });
+                                    this.tipchange = true;
+                                    this.move('tip', 'tiphead');
+                                });
+                            }
+                            this.pdyd3 = true;
+                            if (res.data.msg != '请求成功') {
+                                setTimeout(() => {
+                                    $('.tip').css({
+                                        zoom: this.a11
+                                    });
+                                    this.tipchange = true;
+                                    this.move('tip', 'tiphead');
+                                });
+                                if (res.data.msg == '设备id格式应为GUID！') {
+                                    this.tipword = this.lang.VulnerablePartManage_DeviceChoice;
+                                } else {
+                                    this.tipword = res.data.msg;
+                                }
+
+                                if (this.wantnowdata.LifeCycleUnit == 1) {
+                                    this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+                                } else if (
+                                    this.wantnowdata.LifeCycleUnit == 2
+                                ) {
+                                    this.wantnowdata.LifeCycleUnit = this.lang.MaintenanceManage_Day;
+                                } else if (
+                                    this.wantnowdata.LifeCycleUnit == 3
+                                ) {
+                                    this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
+                                } else if (
+                                    this.wantnowdata.LifeCycleUnit == 4
+                                ) {
+                                    this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Year;
+                                }
+                                if (this.wantnowdata.ReminderTimeUnit == 1) {
+                                    this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+                                } else if (
+                                    this.wantnowdata.ReminderTimeUnit == 2
+                                ) {
+                                    this.wantnowdata.ReminderTimeUnit = this.lang.MaintenanceManage_Day;
+                                } else if (
+                                    this.wantnowdata.ReminderTimeUnit == 3
+                                ) {
+                                    this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
+                                } else if (
+                                    this.wantnowdata.ReminderTimeUnit == 4
+                                ) {
+                                    this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Year;
+                                }
+                            }
+                        } else {
+                            this.isTipShow = true;
+                            this.tipText = Files.data.msg;
+                        }
+                    });
+                });
+            } else if (this.sestion == 3) {
+                this.wantnowdata.Operate = 2;
+                if (
+                    this.wantnowdata.RunningSignal ==
+                        this.lang.EquipmentAccount_ClickSelect ||
+                    this.wantnowdata.RunningSignal == null
+                ) {
+                    this.wantnowdata.SelectedTimerType = 1;
+                } else {
+                    this.wantnowdata.SelectedTimerType = 2;
+                }
+                if (
+                    this.wantnowdata.RunningSignal ==
+                    this.lang.EquipmentAccount_ClickSelect
+                ) {
+                    this.wantnowdata.RunningSignal = null;
+                }
+
+                if (
+                    this.wantnowdata.LifeCycleUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                ) {
+                    this.wantnowdata.LifeCycleUnit = 1;
+                } else if (
+                    this.wantnowdata.LifeCycleUnit ==
+                    this.lang.MaintenanceManage_Day
+                ) {
+                    this.wantnowdata.LifeCycleUnit = 2;
+                } else if (
+                    this.wantnowdata.LifeCycleUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Month
+                ) {
+                    this.wantnowdata.LifeCycleUnit = 3;
+                } else if (
+                    this.wantnowdata.LifeCycleUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Year
+                ) {
+                    this.wantnowdata.LifeCycleUnit = 4;
+                }
+                if (
+                    this.wantnowdata.ReminderTimeUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                ) {
+                    this.wantnowdata.ReminderTimeUnit = 1;
+                } else if (
+                    this.wantnowdata.ReminderTimeUnit ==
+                    this.lang.MaintenanceManage_Day
+                ) {
+                    this.wantnowdata.ReminderTimeUnit = 2;
+                } else if (
+                    this.wantnowdata.ReminderTimeUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Month
+                ) {
+                    this.wantnowdata.ReminderTimeUnit = 3;
+                } else if (
+                    this.wantnowdata.ReminderTimeUnit ==
+                    this.lang.HMI_HT_LineChartWindowViewModel_Year
+                ) {
+                    this.wantnowdata.ReminderTimeUnit = 4;
+                }
+                if (
+                    this.wantnowdata.TimerType ==
+                    this.lang.VulnerablePartManage_StandardTime
+                ) {
+                    this.wantnowdata.SelectedTimerType = 1;
+                    this.wantnowdata.RunningSignal = null;
+                } else if (this.wantnowdata.TimerType == '运行频次') {
+                    this.wantnowdata.SelectedTimerType = 3;
+                } else {
+                    this.wantnowdata.SelectedTimerType = 2;
+                }
+                this.wantnowdata.LifeCycleTotalMinute = this.wantnowdata.LifeCycleValue;
+                this.wantnowdata.AddTime = this.getNowTime();
+                this.wantnowdata.Status = '1';
+                this.wantnowdata.AlarmTime = '1';
+                this.wantnowdata.RunMinute = '1';
+                this.wantnowdata.AlarmMinute = '1';
+                this.wantnowdata.LoginUserName = this.abc;
+
+                this.$axios({
+                    method: 'post',
+                    url: `/api/VulnerablePartManage/VulnerablePartManage_SaveAcount`,
+                    data: this.wantnowdata
+                }).then(res => {
+                    this.$axios({
+                        method: 'post',
+                        url: `/api/VulnerablePartManage/VulnerablePartManage_SaveFiles?PID=${res.data.data}`,
+
+                        data: this.sopData.map(_ => ({
+                            ..._,
+                            PID: res.data.data
+                        }))
+                    }).then(Files => {
+                        if (Files.data.code === 0) {
+                            console.log(res);
+                            console.log('zl', this.wantnowdata);
+                            if (this.imgFile && res.data.code === 0) {
+                                this.$axios({
+                                    method: 'post',
+                                    url:
+                                        '/api/VulnerablePartManage/VulnerablePartManage_UploadImage',
+                                    params: {
+                                        argPID: this.wantnowdata.ID
+                                    },
+                                    data: this.imgFile
+                                }).then(res => {
+                                    if (res.data.code === 0) {
+                                        this.tipword = '修改成功！';
+                                        this.change11 = false;
+                                        this.getsetime();
+                                        setTimeout(() => {
+                                            $('.tip').css({
+                                                zoom: this.a11
+                                            });
+                                            this.tipchange = true;
+                                            this.move('tip', 'tiphead');
+                                        });
+                                    }
+                                });
+                            } else if (res.data.code === 0) {
+                                this.tipword = '修改成功！';
+                                this.change11 = false;
+                                this.getsetime();
+                                setTimeout(() => {
+                                    $('.tip').css({
+                                        zoom: this.a11
+                                    });
+                                    this.tipchange = true;
+                                    this.move('tip', 'tiphead');
+                                });
+                            }
+                            this.pdyd3 = true;
+                            if (res.data.msg != '请求成功') {
+                                setTimeout(() => {
+                                    $('.tip').css({
+                                        zoom: this.a11
+                                    });
+                                    this.tipchange = true;
+                                    this.move('tip', 'tiphead');
+                                });
+                                this.tipword = res.data.msg;
+                                if (this.wantnowdata.LifeCycleUnit == 1) {
+                                    this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+                                } else if (
+                                    this.wantnowdata.LifeCycleUnit == 2
+                                ) {
+                                    this.wantnowdata.LifeCycleUnit = this.lang.MaintenanceManage_Day;
+                                } else if (
+                                    this.wantnowdata.LifeCycleUnit == 3
+                                ) {
+                                    this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
+                                } else if (
+                                    this.wantnowdata.LifeCycleUnit == 4
+                                ) {
+                                    this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Year;
+                                }
+                                if (this.wantnowdata.ReminderTimeUnit == 1) {
+                                    this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+                                } else if (
+                                    this.wantnowdata.ReminderTimeUnit == 2
+                                ) {
+                                    this.wantnowdata.ReminderTimeUnit = this.lang.MaintenanceManage_Day;
+                                } else if (
+                                    this.wantnowdata.ReminderTimeUnit == 3
+                                ) {
+                                    this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
+                                } else if (
+                                    this.wantnowdata.ReminderTimeUnit == 4
+                                ) {
+                                    this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Year;
+                                }
+                            }
+                        } else {
+                            this.isTipShow = true;
+                            this.tipText = Files.data.msg;
+                        }
+                    });
+                });
+            }
+        },
+        handleEdit1(a, b) {
+            if (!this.bjshow) {
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
+                    });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd3 = true;
+                this.tipword = this.lang.NoOperationAuthority;
+                return;
+            }
+            this.pdyd1 = true;
+
+            this.wantnowdata = b;
+            this.wantnowdata.PID = b.ID;
+            if (this.wantnowdata.LifeCycleUnit == 1) {
+                this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+            } else if (this.wantnowdata.LifeCycleUnit == 2) {
+                this.wantnowdata.LifeCycleUnit = this.lang.MaintenanceManage_Day;
+            } else if (this.wantnowdata.LifeCycleUnit == 3) {
+                this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
+            } else if (this.wantnowdata.LifeCycleUnit == 4) {
+                this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Year;
+            }
+            if (this.wantnowdata.ReminderTimeUnit == 1) {
+                this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour;
+            } else if (this.wantnowdata.ReminderTimeUnit == 2) {
+                this.wantnowdata.ReminderTimeUnit = this.lang.MaintenanceManage_Day;
+            } else if (this.wantnowdata.ReminderTimeUnit == 3) {
+                this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month;
+            } else if (this.wantnowdata.ReminderTimeUnit == 4) {
+                this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Year;
+            }
+            // 修改提前提醒及寿命周期
+
+            if (this.wantnowdata.TimerType === '运行频次') {
+                this.sametimearr = [
+                    {
+                        key: 5,
+                        value: '次数'
+                    }
+                ];
+            } else {
+                this.sametimearr = [
+                    {
+                        key: this.lang.HMI_HT_LineChartWindowViewModel_Hour,
+                        value: this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                    },
+                    {
+                        key: this.lang.MaintenanceManage_Day,
+                        value: this.lang.MaintenanceManage_Day
+                    },
+                    {
+                        key: this.lang.HMI_HT_LineChartWindowViewModel_Month,
+                        value: this.lang.HMI_HT_LineChartWindowViewModel_Month
+                    },
+                    {
+                        key: this.lang.HMI_HT_LineChartWindowViewModel_Year,
+                        value: this.lang.HMI_HT_LineChartWindowViewModel_Year
+                    }
+                ];
+            }
+            this.wantnowdata.ReminderTimeValue = parseInt(
+                this.wantnowdata.ReminderTimeValue
+            );
+            this.wantnowdata.LifeCycleValue = parseInt(
+                this.wantnowdata.LifeCycleValue
+            );
+            if (this.wantnowdata.RunningSignal == null) {
+                this.wantnowdata.RunningSignal = this.lang.EquipmentAccount_ClickSelect;
+            }
+            this.sestion = 3;
+            let aa = JSON.stringify(this.wantnowdata.VulnerablePartName);
+            this.wantnowdata.OldVulnerablePartName = JSON.parse(aa);
+            console.log('b', this.wantnowdata);
+
+            this.$axios({
+                method: 'post',
+                url: `/api/VulnerablePartManage/VulnerablePartManage_GstFiles?Pid=${this.wantnowdata.PID}`
+            }).then(res => {
+                this.sopData = res.data.data || [];
+            });
+            setTimeout(() => {
+                $('.sestion').css({
+                    zoom: this.a11,
+                    left: `calc(50% - ${($('.sestion').width() / 2) *
+                        this.a11}px)`,
+                    top: `calc(50% - ${($('.sestion').height() / 2) *
+                        this.a11}px)`
+                });
+                this.change11 = true;
+                setTimeout(() => {
+                    let w = $('.linetop1').width() + 20 + 'px';
+                    let w1 = $('.linetop3').width() + 20 + 'px';
+                    let w2 = $('.linetop5').width() + 20 + 'px';
+                    $('.linetop2').css({
+                        width: `calc(100% - ${w})`
+                    });
+                    $('.linetop4').css({
+                        width: `calc(100% - ${w1})`
+                    });
+                    $('.linetop6').css({
+                        width: `calc(100% - ${w2})`
+                    });
+                });
+                this.move('sestion', 'sestionheader1');
+            });
+        },
         getNowTime() {
             let date = new Date();
             let y = date.getFullYear();
@@ -3209,14 +5053,109 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             s = s < 10 ? '0' + s : s;
             return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
         },
+        add() {
+            if (!this.tjshow) {
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
+                    });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd3 = true;
+                this.tipword = this.lang.NoOperationAuthority;
+                return;
+            }
+            this.sestion = 1;
+            setTimeout(() => {
+                $('.sestion').css({
+                    zoom: this.a11,
+                    left: `calc(50% - ${($('.sestion').width() / 2) *
+                        this.a11}px)`,
+                    top: `calc(50% - ${($('.sestion').height() / 2) *
+                        this.a11}px)`
+                });
+                this.change11 = true;
+                setTimeout(() => {
+                    let w = $('.linetop1').width() + 20 + 'px';
+                    let w1 = $('.linetop3').width() + 20 + 'px';
+                    let w2 = $('.linetop5').width() + 20 + 'px';
+                    $('.linetop2').css({
+                        width: `calc(100% - ${w})`
+                    });
+                    $('.linetop4').css({
+                        width: `calc(100% - ${w1})`
+                    });
+                    $('.linetop6').css({
+                        width: `calc(100% - ${w2})`
+                    });
+                });
+                this.move('sestion', 'sestionheader1');
+            });
+            this.pdyd1 = true;
+            this.sopData = [];
+            this.wantnowdata = {
+                Selected: false, //是否选中
+                ID: '',
+                Number: '', //序号
+                VulnerablePartName: '', //器件名称
+                VulnerablePartNo: '', //器件编号
+                AID: '', //器件编号
+                UsingDevice: this.lang.EquipmentAccount_ClickSelect, //使用设备
+                VulnerablePartModel: '', //器件型号
+                MaturityTime: '', //到期时间
+                ResidualLife: '', //剩余寿命
+                EnableTime: '', //启用日期
+                LifeCycleValue: '', //寿命周期
+                LifeCycleUnit: this.lang.HMI_HT_LineChartWindowViewModel_Hour, //寿命周期类型：1-小时 2-天 3-月 4-年 5-次数
+                LifeCycleDisplayName: '', //寿命周期在表格显示
+                TimerType: this.lang.VulnerablePartManage_StandardTime, //计时类型,运行信号为空时，计时类型为标准时间，否则为运行时间
+                RunningSignal: this.lang.EquipmentAccount_ClickSelect, //运行信号
+                ReminderTimeValue: '', //提前提醒
+                ReminderTimeUnit: this.lang
+                    .HMI_HT_LineChartWindowViewModel_Hour, //提前提醒类型：1-小时 2-天 3-月 4-年 5-次数
+                ReminderTimeDisplayName: '', //提前提醒
+                Executor: 'SuperAdmin', //执行人员
+                UseNumber: '', //使用数量
+                Price: '', //器件价格
+                Manufactor: '', //供应商
+                Remarks: '', //备注
+                Status: this.lang.SCMSConsoleWebApiMySql_Reminded, //状态,1为提醒了，2为未提醒
+                ImageName: this.lang.EquipmentAccount_ClickSelect
+            };
+            this.wantnowdata.EnableTime = this.getNowTime();
+            this.wantnowdata.OldVulnerablePartName = this.wantnowdata.VulnerablePartName;
+            this.sametimearr = [
+                {
+                    key: this.lang.HMI_HT_LineChartWindowViewModel_Hour,
+                    value: this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                },
+                {
+                    key: this.lang.MaintenanceManage_Day,
+                    value: this.lang.MaintenanceManage_Day
+                },
+                {
+                    key: this.lang.HMI_HT_LineChartWindowViewModel_Month,
+                    value: this.lang.HMI_HT_LineChartWindowViewModel_Month
+                },
+                {
+                    key: this.lang.HMI_HT_LineChartWindowViewModel_Year,
+                    value: this.lang.HMI_HT_LineChartWindowViewModel_Year
+                }
+            ];
 
-        
+            console.log(this.wantnowdata);
+            console.log(this.sestion);
+        },
         selectword1() {
             let i = 0;
             let j = 1;
             for (i in this.selectname) {
                 if (this.a1 == 1) {
-                    if (this.selectname[i].NodeName == this.lang.EquipmentAccount_EquipmentType) {
+                    if (
+                        this.selectname[i].NodeName ==
+                        this.lang.EquipmentAccount_EquipmentType
+                    ) {
                         this.selectname[i].NID =
                             '11111111-1111-1111-1111-111111111111';
                     }
@@ -3239,12 +5178,13 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             }
             this.data6 = [];
             this.data6.push(this.selectname[0]);
-             $(`.selectword`).css({
+            $(`.selectword`).css({
                 left:
                     $('.sblx')[0].offsetLeft + $('.sblx')[0].clientWidth + 'px',
                 top:
                     $('.sad')[0].offsetTop +
-                    $('.seleword')[0].clientHeight +2+
+                    $('.seleword')[0].clientHeight +
+                    2 +
                     'px'
             });
             this.changeselect = !this.changeselect;
@@ -3311,7 +5251,10 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             let j = 1;
             for (i in this.selectname) {
                 if (this.a2 == 1) {
-                    if (this.selectname[i].NodeName == this.lang.EquipmentAccount_EquipmentType) {
+                    if (
+                        this.selectname[i].NodeName ==
+                        this.lang.EquipmentAccount_EquipmentType
+                    ) {
                         this.selectname[i].NID =
                             '11111111-1111-1111-1111-111111111111';
                     }
@@ -3335,22 +5278,26 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             this.data7 = [];
             this.data7.push(this.selectname[0]);
             this.selectword3 = !this.selectword3;
-              $(`.selectword2`).css({
+            $(`.selectword2`).css({
                 left:
                     $('.sblx1')[0].offsetLeft +
-                    $('.sblx1')[0].clientWidth +10+
+                    $('.sblx1')[0].clientWidth +
+                    10 +
                     'px',
-                       top:
+                top:
                     $('.lookfor1')[0].offsetTop +
-                    $('.seleword1')[0].clientHeight +2+
+                    $('.seleword1')[0].clientHeight +
+                    2 +
                     'px'
             });
         },
         cancel2() {
             if (this.Preservation == this.lang.EquipmentAccount_EquipmentType) {
-                this.Preservation = this.lang.EquipmentAccount_ClickSelect
-            } else if (this.Preservation5 == this.lang.EquipmentAccount_InstallPosition) {
-                this.Preservation5 = this.lang.EquipmentAccount_ClickSelect
+                this.Preservation = this.lang.EquipmentAccount_ClickSelect;
+            } else if (
+                this.Preservation5 == this.lang.EquipmentAccount_InstallPosition
+            ) {
+                this.Preservation5 = this.lang.EquipmentAccount_ClickSelect;
             } else {
                 this.cancel1 = false;
             }
@@ -3378,14 +5325,13 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 .then(res => {
                     setTimeout(() => {
                         $('.tip').css({
-                            zoom: this.a11,
-                          
+                            zoom: this.a11
                         });
                         this.tipchange = true;
                         this.move('tip', 'tiphead');
                     });
                     this.pdyd3 = true;
-                    this.tipword = this.lang.MaintenanceManage_SubmittedSuccessfully
+                    this.tipword = this.lang.MaintenanceManage_SubmittedSuccessfully;
                     this.getsetime();
                     this.mesad2 = false;
                 });
@@ -3422,57 +5368,33 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     `/api/VulnerablePartManage/VulnerablePartManage_GstPlan?argDeviceType=${c}&argStartTime=${this.value1}&argEndTime=${this.value2}&argKeyword=${this.keyword}&argPageSize=${this.PageData.PageSize}&argPageIndex=${this.PageData.PageIndex}`
                 )
                 .then(res => {
-                      if (res.data.code == 0) {
-                                this.tableData1 = res.data.data.DataList;
+                    if (res.data.code == 0) {
+                        this.tableData1 = res.data.data.DataList;
                         this.PageData = res.data.data.ParameterList;
-                    let i = 0;
-                    for (i in this.tableData1) {
-                        this.tableData1[i].EnableTime = this.gettime(
-                            this.tableData1[i].EnableTime
-                        );
-                        if (this.tableData1[i].LifeCycleUnit == 1) {
-                            this.tableData1[i].LifeCycleValue =
-                                this.tableData1[i].LifeCycleValue + this.lang.HMI_HT_LineChartWindowViewModel_Hour;
-                        } else if (this.tableData1[i].LifeCycleUnit == 2) {
-                            this.tableData1[i].LifeCycleValue =
-                                this.tableData1[i].LifeCycleValue + this.lang.MaintenanceManage_Day;
-                        } else if (this.tableData1[i].LifeCycleUnit == 3) {
-                            this.tableData1[i].LifeCycleValue =
-                                this.tableData1[i].LifeCycleValue + this.lang.HMI_HT_LineChartWindowViewModel_Month;
-                        } else if (this.tableData1[i].LifeCycleUnit == 4) {
-                            this.tableData1[i].LifeCycleValue =
-                                this.tableData1[i].LifeCycleValue + this.lang.HMI_HT_LineChartWindowViewModel_Year;
+                        let i = 0;
+                        for (i in this.tableData1) {
+                            this.tableData1[i].EnableTime = this.gettime(
+                                this.tableData1[i].EnableTime
+                            );
+                            if (this.tableData1[i].Status == 1) {
+                                this.tableData1[
+                                    i
+                                ].Status = this.lang.SCMSConsoleWebApiMySql_Reminded;
+                            } else if (this.tableData1[i].Status == 0) {
+                                this.tableData1[
+                                    i
+                                ].Status = this.lang.SCMSConsoleWebApiMySql_NotRemind;
+                            }
                         }
-                        if (this.tableData1[i].ReminderTimeUnit == 1) {
-                            this.tableData1[i].ReminderTimeValue =
-                                this.tableData1[i].ReminderTimeValue + this.lang.HMI_HT_LineChartWindowViewModel_Hour;
-                        } else if (this.tableData1[i].ReminderTimeUnit == 2) {
-                            this.tableData1[i].ReminderTimeValue =
-                                this.tableData1[i].ReminderTimeValue + this.lang.MaintenanceManage_Day;
-                        } else if (this.tableData1[i].ReminderTimeUnit == 3) {
-                            this.tableData1[i].ReminderTimeValue =
-                                this.tableData1[i].ReminderTimeValue + this.lang.HMI_HT_LineChartWindowViewModel_Month;
-                        } else if (this.tableData1[i].ReminderTimeUnit == 4) {
-                            this.tableData1[i].ReminderTimeValue =
-                                this.tableData1[i].ReminderTimeValue + this.lang.HMI_HT_LineChartWindowViewModel_Year;
-                        }
-                        if (this.tableData1[i].Status == 1) {
-                            this.tableData1[i].Status = this.lang.SCMSConsoleWebApiMySql_Reminded
-                        } else if (this.tableData1[i].Status == 0) {
-                            this.tableData1[i].Status = this.lang.SCMSConsoleWebApiMySql_NotRemind
-                        }
-                    }
-               
-                      }else{
-                      setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
+                    } else {
+                        setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
                         });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
-                      this.pdyd3 = true;
+                        this.pdyd3 = true;
                         this.tipword = res.data.msg;
                         this.tableData1 = [];
                         this.PageData = {
@@ -3483,16 +5405,16 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                             LastEnabled: false,
                             NextEnabled: false
                         };
-                      }
-             
-                   this.nowpage = this.PageData.PageIndex;
+                    }
+
+                    this.nowpage = this.PageData.PageIndex;
                     console.log(this.tableData1);
-                      let avc = JSON.stringify(this.tableData1);
+                    let avc = JSON.stringify(this.tableData1);
                     this.antable = JSON.parse(avc);
                 });
         },
-        varcancel(){
-         this.yx = false;
+        varcancel() {
+            this.yx = false;
         },
         gettime(val) {
             var date = new Date(
@@ -3513,35 +5435,33 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             );
         },
         sad(a) {
-             if(!this.cxshow&&a!==1){
-           setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+            if (!this.cxshow && a !== 1) {
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
-                   this.pdyd3 = true;
-                 this.tipword = this.lang.NoOperationAuthority;
-                return
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd3 = true;
+                this.tipword = this.lang.NoOperationAuthority;
+                return;
             }
-     
+
             if (
                 new Date(this.value1).getTime() >
                 new Date(this.value2).getTime()
             ) {
                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                    $('.tip').css({
+                        zoom: this.a11
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
-                this.tipword = this.lang.AlarmRecord_HT_TheQueryDate
-                return
+                this.tipword = this.lang.AlarmRecord_HT_TheQueryDate;
+                return;
             }
             this.onetable();
             // this.getEquipmentType();
@@ -3556,11 +5476,11 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 )
                 .then(res => {
                     console.log(res);
-                    (this.tipword = this.lang.MaintenanceManage_ClosedSuccessfully), (this.daibang = false);
+                    (this.tipword = this.lang.MaintenanceManage_ClosedSuccessfully),
+                        (this.daibang = false);
                     setTimeout(() => {
                         $('.tip').css({
-                            zoom: this.a11,
-                          
+                            zoom: this.a11
                         });
                         this.tipchange = true;
                         this.move('tip', 'tiphead');
@@ -3585,26 +5505,35 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         res.data.data.DataList[i].number = ++i;
                         a = --i;
                         if (res.data.data.DataList[a].DeviceStatus == 1) {
-                            res.data.data.DataList[a].DeviceStatus = this.lang.EquipmentAccount_Used
+                            res.data.data.DataList[
+                                a
+                            ].DeviceStatus = this.lang.EquipmentAccount_Used;
                         } else if (
                             res.data.data.DataList[a].DeviceStatus == 2
                         ) {
-                            res.data.data.DataList[a].DeviceStatus = this.lang.EquipmentAccount_Stopped
+                            res.data.data.DataList[
+                                a
+                            ].DeviceStatus = this.lang.EquipmentAccount_Stopped;
                         } else if (
                             res.data.data.DataList[a].DeviceStatus == 3
                         ) {
-                            res.data.data.DataList[a].DeviceStatus = this.lang.EquipmentAccount_Abandoned
+                            res.data.data.DataList[
+                                a
+                            ].DeviceStatus = this.lang.EquipmentAccount_Abandoned;
                         }
                         if (res.data.data.DataList[a].QualityStatus == 1) {
-                            res.data.data.DataList[a].QualityStatus = this.lang.EquipmentAccount_Inside
+                            res.data.data.DataList[
+                                a
+                            ].QualityStatus = this.lang.EquipmentAccount_Inside;
                         } else if (
                             res.data.data.DataList[a].QualityStatus == 2
                         ) {
-                            res.data.data.DataList[a].QualityStatus = this.lang.EquipmentAccount_Outside
+                            res.data.data.DataList[
+                                a
+                            ].QualityStatus = this.lang.EquipmentAccount_Outside;
                         }
                     }
                     this.tableData = res.data.data.DataList;
-                   
                 })
                 .catch(function(error) {
                     console.log(error);
@@ -3630,81 +5559,83 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     console.log(error);
                 });
         },
-        varpre(){
-          if(!this.tyname){
-              setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                          
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+        varpre() {
+            if (!this.tyname) {
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11
                     });
-              this.pdyd3 = true;
-              this.tipword = this.lang.QualityManage_HT_ChoseProcessItemWindowViewModel_PsaVariable
-          }else{
-              this.wantnowdata.RunningSignal = this.tyname;
-              this.yx = false;
-          }
-           
-        },
-        // 统计类型值改变
-        StatisticalTypeChange() {
-            if ( this.wantnowdata.TimerType === this.lang.VulnerablePartManage_RunningTime ) {
-                this.pdyx = true;
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
+                this.pdyd3 = true;
+                this.tipword = this.lang.QualityManage_HT_ChoseProcessItemWindowViewModel_PsaVariable;
             } else {
-                this.pdyx = false;
+                this.wantnowdata.RunningSignal = this.tyname;
+                this.yx = false;
             }
+        },
+        pdyunxing(value) {
+            console.log('ss', value);
+            this.pdyx = value == this.lang.VulnerablePartManage_RunningTime;
+            // 修改提前提醒及寿命周期
+            if (value === '运行频次') {
+                this.sametimearr = [
+                    {
+                        key: 5,
+                        value: '次数'
+                    }
+                ];
+            } else {
+                this.sametimearr = [
+                    {
+                        key: this.lang.HMI_HT_LineChartWindowViewModel_Hour,
+                        value: this.lang.HMI_HT_LineChartWindowViewModel_Hour
+                    },
+                    {
+                        key: this.lang.MaintenanceManage_Day,
+                        value: this.lang.MaintenanceManage_Day
+                    },
+                    {
+                        key: this.lang.HMI_HT_LineChartWindowViewModel_Month,
+                        value: this.lang.HMI_HT_LineChartWindowViewModel_Month
+                    },
+                    {
+                        key: this.lang.HMI_HT_LineChartWindowViewModel_Year,
+                        value: this.lang.HMI_HT_LineChartWindowViewModel_Year
+                    }
+                ];
+            }
+            this.wantnowdata.LifeCycleUnit = this.sametimearr[0].key;
+            this.wantnowdata.ReminderTimeUnit = this.sametimearr[0].key;
 
-            if (this.wantnowdata.TimerType === '使用次数') {
-                this.sametimearr = ['次']
-                this.wantnowdata.LifeCycleUnit = "次"
-                this.wantnowdata.ReminderTimeUnit = "次"
-            } else {
-                this.sametimearr = ['小时', '天', '月', '年']
-                this.wantnowdata.LifeCycleUnit = "小时"
-                this.wantnowdata.ReminderTimeUnit = "小时"
-                this.wantnowdata.Coefficient = 1
-            }
+            console.log(this.wantnowdata);
         },
-        // 统计信号-显示
         yunxing() {
-            if (this.wantnowdata.TimerType === '标准时间') return
-            this.addproject();
-            setTimeout(() => {
-                $('.selectvar ').css({
-                    left: `calc(50% - ${($('.selectvar ').width() / 2) * this.a11}px)`,
-                    top: `calc(50% - ${($('.selectvar ').height() / 2) * this.a11}px)`
+            if (
+                [
+                    this.lang.VulnerablePartManage_RunningTime,
+                    '运行频次'
+                ].includes(this.wantnowdata.TimerType)
+            ) {
+                this.addproject();
+                setTimeout(() => {
+                    $('.selectvar ').css({
+                        // zoom: this.a11,
+                        left: `calc(50% - ${($('.selectvar ').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.selectvar ').height() / 2) *
+                            this.a11}px)`
+                    });
+                    this.yx = true;
+                    this.move('selectvar ', 'selectvartop');
                 });
-                this.yx = true;
-                this.move('selectvar ', 'selectvartop');
-            });
-        },
-        // 统计信号-
-        addproject() {
-            var $this = this
-            this.$axios
-                .post(`/api/ProcessParameterConfigure/GstCondition`)
-                .then(res => {
-                    $this.projectlist = res.data.data;
-                    $this.projectlist2 = $this.projectlist[0].Groups;
-                    let types = [this.lang.AlarmRecord_HT_Unlimited, '二进制变量', '有符号8位整型','无符号8位整型','有符号16位整型','无符号16位整型','有符号32位整型','无符号32位整型','有符号64位整型','无符号64位整型','F32位浮点数IEEE754','F64位浮点数IEEE754']
-                    $this.projectlist3 = $this.projectlist2[0].DataTypes.filter(
-                        function(item) {
-                            // return item.Value == $this.lang.AlarmRecord_HT_Unlimited || item.Value == '二进制变量'
-                            return types.includes(item.Value)
-                        }
-                    );
-                    $this.oneselect1 = $this.projectlist[0].DeviceName;
-                    $this.twoselect1 = $this.projectlist2[0].GroupName;
-                    $this.threeselect1 = /* $this.projectlist3[0].Value; */$this.lang.AlarmRecord_HT_Unlimited
-                })
-                .then(() => {
-                    $this.watchdata();
-                    $this.lookforsearch1 = true;
-                });
-        },
+            }
 
+            //   console.log("aaaaaaaa")
+            //   console.log()
+            //   if(document.getElementsByClassName('typetime')[0])
+        },
         // 获取所有设备类型和安装位置
         getEquipmentType() {
             this.$axios
@@ -3762,66 +5693,71 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 .catch(err => {});
         },
         watchdata() {
-            let arr = []
-            if(this.threeselect1== this.lang.AlarmRecord_HT_Unlimited){
-                this.projectlist3.filter(f => f.Value !== this.lang.AlarmRecord_HT_Unlimited).forEach(item => {
-                    arr.push(item.Value)
-                })
-            }else{
-                arr.push(this.threeselect1)
+            let arr = [];
+            if (this.threeselect1 == this.lang.AlarmRecord_HT_Unlimited) {
+                this.projectlist3
+                    .filter(f => f.Value !== this.lang.AlarmRecord_HT_Unlimited)
+                    .forEach(item => {
+                        arr.push(item.Value);
+                    });
+            } else {
+                arr.push(this.threeselect1);
             }
             this.$axios({
-                method:'post',
-                url:`/api/ProcessParameterConfigure/GstVariableList`,
-                data:{
-                    argDevice:this.oneselect1,
-                    argGroup:this.twoselect1,
-                    argDataType:arr,
-                    argKeyWord:this.selectvarword,
-                    argPageSize:this.PageData1.PageSize,
-                    argPageIndex:this.PageData1.PageIndex
-
+                method: 'post',
+                url: `/api/ProcessParameterConfigure/GstVariableList`,
+                data: {
+                    argDevice: this.oneselect1,
+                    argGroup: this.twoselect1,
+                    argDataType: arr,
+                    argKeyWord: this.selectvarword,
+                    argPageSize: this.PageData1.PageSize,
+                    argPageIndex: this.PageData1.PageIndex
                 }
             }).then(res => {
-                    console.log(res);
-                    this.selecttabledata = res.data.data.DataList;
+                console.log(res);
+                this.selecttabledata = res.data.data.DataList;
 
-                    this.PageData1 = res.data.data.ParameterList;
-                    //     this.pageDate.togesize = this.projectlistdata.length;
-                    //     this.pageDate.togeIndex = Math.ceil(
-                    //         this.projectlistdata.length / 50
-                    //     );
-                    //     let a = this.nowIndex - 1;
-                    //     if (this.pageDate.togesize <= 50) {
-                    //         let b = this.pageDate.togesize;
-                    //         this.pageDate.pageIndex = this.nowIndex;
-                    //     } else {
-                    //         let b = this.nowIndex * 1 + 1;
-                    //         this.pageDate.pageIndex = this.nowIndex;
-                    //         this.projectlistdata = this.projectlistdata.splice(
-                    //             a * 1,
-                    //             50
-                    //         );
-                    //         // let c = 0;
-                    //         // for(c in this.projectlistdata){
-                    //         //     let d = (parseInt(c)+1);
-                    //         //     this.projectlistdata[c].Number = d;
-                    //         // }
-                    //     }
-                    //     if (this.nowIndex >= this.pageDate.togeIndex) {
-                    //         this.aaa1 = false;
-                    //     } else {
-                    //         this.aaa1 = true;
-                    //     }
-                    //     if (this.nowIndex < this.pageDate.togeIndex) {
-                    //         this.bbb1 = false;
-                    //     } else {
-                    //         this.bbb1 = true;
-                    //     }
-                    //     this.nowpage = 1;
+                this.PageData1 = res.data.data.ParameterList;
+            });
+        },
+        addproject() {
+            var $this = this;
+            this.$axios
+                .post(`/api/ProcessParameterConfigure/GstCondition`)
+                .then(res => {
+                    $this.projectlist = res.data.data;
+                    $this.projectlist2 = $this.projectlist[0].Groups;
+                    let types = [
+                        this.lang.AlarmRecord_HT_Unlimited,
+                        '二进制变量',
+                        '有符号8位整型',
+                        '无符号8位整型',
+                        '有符号16位整型',
+                        '无符号16位整型',
+                        '有符号32位整型',
+                        '无符号32位整型',
+                        '有符号64位整型',
+                        '无符号64位整型',
+                        'F32位浮点数IEEE754',
+                        'F64位浮点数IEEE754'
+                    ];
+                    $this.projectlist3 = $this.projectlist2[0].DataTypes.filter(
+                        function(item) {
+                            // return item.Value == $this.lang.AlarmRecord_HT_Unlimited || item.Value == '二进制变量'
+                            return types.includes(item.Value);
+                        }
+                    );
+                    $this.oneselect1 = $this.projectlist[0].DeviceName;
+                    $this.twoselect1 = $this.projectlist2[0].GroupName;
+                    $this.threeselect1 =
+                        /* $this.projectlist3[0].Value; */ $this.lang.AlarmRecord_HT_Unlimited;
+                })
+                .then(() => {
+                    $this.watchdata();
+                    $this.lookforsearch1 = true;
                 });
         },
-        
         getsetime() {
             this.$axios
                 .post(
@@ -3857,10 +5793,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         }
     },
     mounted() {
-         this.a11 = Number(parseFloat(window.screen.width / 1920).toFixed(2));
-        if (this.a11 < 1) {
-            this.a11 = 0.8;
-        }
         setTimeout(() => {
             let a = this.a11 * 170 + 'px';
             $('.table-container').css({
@@ -3873,7 +5805,10 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         console.log(this.tableData);
         this.nowtime1 = this.gettimenowtime();
         this.nowtime2 = this.gettimenowtime();
-        if (!JSON.parse(sessionStorage.getItem('userInfo1'))|(JSON.parse(sessionStorage.getItem('userInfo1')) == null)) {
+        if (
+            !JSON.parse(sessionStorage.getItem('userInfo1')) |
+            (JSON.parse(sessionStorage.getItem('userInfo1')) == null)
+        ) {
             this.abc = JSON.parse(
                 sessionStorage.getItem('sightseerInfo1')
             ).SCMSUserName;
@@ -3882,7 +5817,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 sessionStorage.getItem('userInfo1')
             ).SCMSUserName;
         }
-         this.$axios
+        this.$axios
             .post(`/api/UserManage/UserManage_GstUserWithNoPage`)
             .then(res => {
                 console.log('ss', res);
@@ -3892,126 +5827,47 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             //绑定监听表格导入事件
             // this.readExcel(e);
         });
-          this.jurisdiction = this.$store.state.btnPowerData
-     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
-        console.log("nut",this.buttonarr)
-           this.buttonarr.forEach((item)=>{
-                 if(item.RightName == "易损件台账-查询按钮"){
-                 this.cxid = item.RightID
-              }else if(item.RightName == "易损件台账-添加按钮"){
-                this.tjid = item.RightID
-              }else if(item.RightName == "易损件台账-删除按钮"){
-                this.scid = item.RightID
-              }else if(item.RightName == "易损件台账-导入按钮"){
-                this.drid = item.RightID
-              }else if(item.RightName == "易损件台账-导出按钮"){
-                this.dcid = item.RightID
-              }else if(item.RightName == "易损件台账-查看按钮"){
-                this.ckid = item.RightID
-              }else if(item.RightName == "易损件台账-编辑按钮"){
-                this.bjid = item.RightID
-              }else if(item.RightName == "易损件台账-更换按钮"){
-                this.ghid = item.RightID
-              }else if(item.RightName == "易损件台账-延长按钮"){
-                this.ycid = item.RightID
-              }
-           })
-                var userid = ''
-      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
-                userid = JSON.parse(
-                    sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserID;
-            } else {
-                userid = JSON.parse(
-                    sessionStorage.getItem('userInfo1')
-                ).SCMSUserID;
+        this.jurisdiction = this.$store.state.btnPowerData;
+        this.buttonarr = this.findPathByLeafId(
+            this.GetUrlParam('id'),
+            this.jurisdiction
+        )[0].Children;
+        console.log('nut', this.buttonarr);
+        this.buttonarr.forEach(item => {
+            if (item.RightName == '易损件台账-查询按钮') {
+                this.cxid = item.RightID;
+            } else if (item.RightName == '易损件台账-添加按钮') {
+                this.tjid = item.RightID;
+            } else if (item.RightName == '易损件台账-删除按钮') {
+                this.scid = item.RightID;
+            } else if (item.RightName == '易损件台账-导入按钮') {
+                this.drid = item.RightID;
+            } else if (item.RightName == '易损件台账-导出按钮') {
+                this.dcid = item.RightID;
+            } else if (item.RightName == '易损件台账-查看按钮') {
+                this.ckid = item.RightID;
+            } else if (item.RightName == '易损件台账-编辑按钮') {
+                this.bjid = item.RightID;
+            } else if (item.RightName == '易损件台账-更换按钮') {
+                this.ghid = item.RightID;
+            } else if (item.RightName == '易损件台账-延长按钮') {
+                this.ycid = item.RightID;
             }
-              this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`,
-              }).then(res => {
-                  this.cxshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                  this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.tjid}`,
-              }).then(res => {
-                  this.tjshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                  this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.scid}`,
-              }).then(res => {
-                  this.scshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                  this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.drid}`,
-              }).then(res => {
-                  this.drshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.dcid}`,
-              }).then(res => {
-                  this.dcshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ckid}`,
-              }).then(res => {
-                  this.ckshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.bjid}`,
-              }).then(res => {
-                  this.bjshpw = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ghid}`,
-              }).then(res => {
-                  this.ghshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                   this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.ycid}`,
-              }).then(res => {
-                  this.ycshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
+        });
+        var userid = '';
+        if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+            userid = JSON.parse(sessionStorage.getItem('sightseerInfo1'))
+                .SCMSUserID;
+        } else {
+            userid = JSON.parse(sessionStorage.getItem('userInfo1')).SCMSUserID;
+        }
+
+        this.getPermissions(userid);
     }
 };
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .boxsad {
     position: fixed;
     width: 530px;
@@ -4373,20 +6229,20 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     // bottom: -10px;
     display: flex;
     margin-top: 10px;
-
 }
-
 .sestion {
-    width: 800px;
-    height: 760px;
-    position: fixed;
-    top: 120px;
-    left: 590px;
-    border: 1px solid #cccccc;
-    box-shadow: 0px 0px 8px black;
-    z-index: 11999999;
     .sp1 {
         margin-left: 10px;
+    }
+    .is2 {
+        display: inline-block;
+        width: 240px;
+        overflow: hidden;
+        height: 36px;
+        input {
+            float: left;
+            width: 160px;
+        }
     }
     .is {
         display: inline-block;
@@ -4397,15 +6253,26 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             float: left;
             width: 160px;
         }
-        select {
+        ::v-deep .el-select {
             width: 80px;
             float: left;
+
+            input {
+                height: 36px !important;
+                padding-left: 0px;
+            }
         }
     }
     select {
         background-color: #ebebe4;
     }
-    
+    width: 800px;
+    height: 800px;
+    z-index: 10999999;
+    position: fixed;
+    top: 120px;
+    left: 590px;
+    border: 1px solid #cccccc;
     .sestionheader {
         background-color: #386df0;
         height: 50px;
@@ -4435,7 +6302,47 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         width: 100%;
         height: calc(100% - 50px);
         background-color: #eeeeee;
-        padding: 1px 30px 0px 30px;
+        .sestioncontain-content {
+            width: 100%;
+            height: auto;
+            padding: 1px 30px 0px 30px;
+            box-sizing: border-box;
+            height: calc(100% - 80px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            .tips {
+                margin: 5px 0;
+                font-size: 14px;
+            }
+            .add-btn {
+                width: 100px;
+                height: 34px;
+                cursor: pointer;
+                background-color: #386df0;
+                color: #ffffff;
+                border-radius: 3px;
+                text-align: center;
+                margin-bottom: 5px;
+                line-height: 34px;
+            }
+            .table {
+                width: 100%;
+                height: auto;
+            }
+
+            .fileName {
+                cursor: pointer;
+                color: #386df0;
+            }
+            .fileImg {
+                cursor: pointer;
+                height: 28px;
+                width: 45px;
+            }
+        }
+        .footer {
+            padding: 0 30px;
+        }
     }
     .homesetion {
         width: 100%;
@@ -4546,12 +6453,35 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         float: right;
     }
 }
-
+.sestion {
+    box-shadow: 0px 0px 8px black;
+    height: 770px;
+    z-index: 199;
+}
 .margin {
     margin-top: 10px;
     display: flex;
     height: 40px;
     align-items: center;
+
+    ::v-deep .el-select {
+        width: 100%;
+        .el-input {
+            &.is-disabled {
+                .el-input__inner {
+                    color: #545454;
+                    background-color: #eee;
+                    border-color: #e0e0e0 !important;
+                }
+            }
+            .el-input__inner {
+                padding-left: 0;
+                border-radius: 0;
+                height: 36px !important;
+                border-color: #ccc !important;
+            }
+        }
+    }
 }
 .indent {
     text-indent: 1em;
@@ -4666,9 +6596,9 @@ select {
 }
 
 .selectword {
-   position: absolute;
+    position: absolute;
 
-    z-index: 11999999;
+    z-index: 199;
     width: 230px;
     overflow: auto;
     // height: 350px;
@@ -4718,7 +6648,7 @@ select {
 .cover5 {
     width: 100%;
     height: 100%;
-    z-index: 1099999;
+    z-index: 99;
     position: fixed;
     top: 0;
     left: 0;
@@ -4802,7 +6732,7 @@ select {
         position: relative;
         color: #ffffff;
         img {
-            z-index: 12999999;
+            z-index: 200;
             width: 24px;
             height: 24px;
             cursor: pointer;
@@ -4824,12 +6754,57 @@ select {
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 11999999;
+        z-index: 199;
     }
     .lookcontent {
         padding: 30px 30px 0px 60px;
         width: 100%;
         position: relative;
+
+        &.fix-contain {
+            display: flex;
+            height: 465px;
+
+            .wantdiv {
+                &:first-child {
+                    margin-top: 0;
+                }
+            }
+
+            .zl {
+                width: 480px;
+
+                .ss {
+                    top: -350px;
+                }
+
+                textarea {
+                    height: 370px;
+                }
+            }
+            .zr {
+                flex: 1;
+                border: 1px solid #e0e0e0;
+                ::v-deep img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+
+                ::v-deep .image-slot {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    font-size: 14px;
+                    color: #000;
+                }
+            }
+
+            .pre {
+                bottom: -55px;
+            }
+        }
 
         .search {
             position: relative;
@@ -4942,7 +6917,7 @@ select {
     .table {
         // width: 950px !important;
         margin-left: 23px;
-          width: calc(100% - 46px) !important;
+        width: calc(100% - 46px) !important;
         // height: 320px !important;
         border: 1px solid #ccc;
     }
@@ -4962,15 +6937,50 @@ select {
     text-align: right;
 }
 .wantlook {
-    width: 600px !important;
-    height: 400px !important;
-    left: 800px ;
+    width: 1120px !important;
+    height: 600px !important;
+    left: 800px;
     .lookcontent {
-        padding-top: 0px !important;
+        padding: 30px 30px 0px 60px;
+        width: 100%;
+        position: relative;
+        &.fix-contain {
+            display: flex;
+            height: 465px;
+        }
     }
     .pre {
         bottom: -55px;
         right: 90px;
+    }
+    .zl {
+        width: 480px;
+
+        .ss {
+            top: -350px;
+        }
+
+        textarea {
+            height: 370px;
+        }
+    }
+    .zr {
+        flex: 1;
+        border: 1px solid #e0e0e0;
+        ::v-deep img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        ::v-deep .image-slot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            color: #000;
+        }
     }
 }
 .wantdiv {
@@ -4991,25 +7001,46 @@ select {
 .div1 {
     float: right;
     height: 40px;
-    width: 360px;
+    width: 390px;
     overflow: hidden;
-    margin-right: 60px;
+    margin-right: 30px;
     .block {
         width: 360px;
     }
     input {
         width: 240px;
         float: left;
-        height: 30px;
+        height: 40px;
         border: 1px solid #ccc;
         //  border:none
     }
-    select {
+    ::v-deep .el-select {
         width: 120px !important;
-        height: 30px;
         float: right;
-        border: 1px solid #ccc;
         // border:none
+        .el-input {
+            &.is-disabled {
+                .el-input__inner {
+                    background-color: #eee;
+                }
+            }
+            .el-input__inner {
+                border-radius: 0;
+                height: 36px !important;
+                border-color: #ccc !important;
+            }
+        }
+
+        &.nans {
+            // width: 100%!important;
+            .el-input {
+                .el-input__inner {
+                    border-radius: 0;
+                    height: 40px !important;
+                    border-color: #ccc !important;
+                }
+            }
+        }
     }
 }
 .ss {
@@ -5115,7 +7146,7 @@ select {
         position: relative;
         color: #ffffff;
         img {
-            z-index: 12999999;
+            z-index: 200;
             width: 24px;
             height: 24px;
             cursor: pointer;
@@ -5137,7 +7168,7 @@ select {
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 11999999;
+        z-index: 199;
     }
     .selectvarcontent {
         padding: 30px 30px 0px 60px;
@@ -5199,7 +7230,7 @@ select {
     width: 100%;
     height: 50px;
     color: #ababab;
-    padding:0 10px;
+    padding: 0 10px;
     font-size: 13px;
     overflow: hidden;
     display: flex;
@@ -5229,14 +7260,14 @@ select {
         }
     }
 }
-.yd{
-   margin: auto;
-     top: 0 !important;
+.yd {
+    margin: auto;
+    top: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
-    left: 0 !important;   
+    left: 0 !important;
 }
-img{
+img {
     cursor: pointer;
 }
 .fcolor {
@@ -5254,7 +7285,7 @@ img{
 .colortip {
     background-color: #efeff0 !important;
 }
-.seleword{
+.seleword {
     display: inline-block;
     width: 13%;
     height: 40px;
@@ -5263,16 +7294,16 @@ img{
     background: #fff;
     text-indent: 1em;
     line-height: 40px;
-    .seleword1{
+    .seleword1 {
         width: calc(100%);
         position: relative;
         height: 100%;
         padding-right: 20px;
-         white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    word-break: break-all;
-        img{
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
+        img {
             position: absolute;
             right: 2px;
             width: 20px;
@@ -5282,13 +7313,13 @@ img{
     }
     // align-content: bottom;
 }
-.tinput{
+.tinput {
     margin-left: 15% !important;
 }
-.tinput1{
+.tinput1 {
     margin-left: 23% !important;
 }
- .seleword2{
+.seleword2 {
     display: inline-block;
     width: 21%;
     height: 30px;
@@ -5297,16 +7328,16 @@ img{
     background: #fff;
     text-indent: 1em;
     line-height: 30px;
-    .seleword1{
+    .seleword1 {
         width: calc(100%);
         position: relative;
         height: 100%;
         padding-right: 20px;
-         white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    word-break: break-all;
-        img{
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
+        img {
             position: absolute;
             right: 2px;
             width: 20px;
@@ -5321,46 +7352,39 @@ img{
     // top: 41px !important;
     // left: 113px !important;
 }
-.sblx{
+.sblx {
     display: inline-block;
 }
-.linetop1{
+.linetop1 {
     display: inline-block;
 }
-.linetop3{
+.linetop3 {
     display: inline-block;
 }
-.linetop5{
+.linetop5 {
     display: inline-block;
 }
-.sblx1{
+.sblx1 {
     display: inline-block;
 }
-.img{
-    font-size:16px;
+.img {
+    font-size: 16px;
 }
-.lookhead{
-    img{
-        top:0 !important;
-        bottom:0 !important;
-        margin:auto;
+.lookhead {
+    img {
+        top: 0 !important;
+        bottom: 0 !important;
+        margin: auto;
     }
 }
-.selectvar3{
-     img{
-        top:0 !important;
-        bottom:0 !important;
-        margin:auto;
+.selectvar3 {
+    img {
+        top: 0 !important;
+        bottom: 0 !important;
+        margin: auto;
     }
 }
-.look222{
+.look222 {
     zoom: 1 !important;
 }
-
-.statisticalCoefficient ::v-deep .el-input-number__decrease,
-.statisticalCoefficient ::v-deep .el-input-number__increase {
-    height: 34px;
-    top: 2px;
-}
 </style>
-

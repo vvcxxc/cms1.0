@@ -6,8 +6,8 @@
  * @LastEditTime: 2019-11-29 16:34:35
  -->
 <template>
-    <div class="search-container" :class="{colordiv:$store.state.color=='grey'}" :style="{lineHeight: 40*1+'px',height: 60*1+'px'}">
-        <div class="search-left" :style="[{fontSize:16*zoom+'px'}]">
+    <div class="search-container" :class="{colordiv:$store.state.color=='grey'}">
+        <div class="search-left">
             <div class="search-item" v-for="(item, index) in searchList" :key="index">
                 <div
                     class="title"
@@ -23,7 +23,6 @@
                     class="search-select"
                     :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose"
                     @change="change(item, $event)"
-                    @focus="getZoom()"
                 >
                     <!-- <el-option label="全部" value="全部"></el-option> -->
                     <el-option
@@ -37,9 +36,8 @@
                     v-if="item.type === 'time'"
                     v-model="searchData[item.model]"
                     type="datetime"
-                    @focus="getZoom()"
                     :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
-                    :style="{width:220*zoom+'px'}"
+                    :style="{width:'220px'}"
                     default-time="12:00:00"
                      value-format="yyyy-MM-dd HH:mm:ss"
                 ></el-date-picker>
@@ -48,7 +46,6 @@
                     v-if="item.type === 'datetimerange'"
                     v-model="searchData[item.model]"
                     type="datetimerange"
-                    @focus="getZoom()"
                     range-separator="-"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
@@ -59,17 +56,12 @@
                     v-model="searchData[item.model]"
                     :placeholder="item.placeholder || lang.AlarmRecord_History_Keyword"
                     clearable
-                    :style="[{fontSize:16*zoom+'px'},
-                        {width: 217*zoom+'px'},
+                    :style="[{fontSize:'16px'},
+                        {width: '217px'},
                     ]"
                 ></el-input>
             </div>
-            <div class="btn pointer importtant" @click="search"
-                :style="[{fontSize:16*zoom+'px'},
-                    {height: 40*zoom+'px'},
-                    {width: 100*zoom+'px'},
-                    {right: 230*zoom+'px'}
-                ]" :id="cxid">{{lang.AlarmRecord_History_Select}}</div>
+            <div class="btn pointer importtant" @click="search" :id="cxid">{{lang.AlarmRecord_History_Select}}</div>
         </div>
         <!-- <div class="fr">
             <div class="import">导入</div>
@@ -87,8 +79,6 @@ export default {
             buttonarr:[],
             cxid:"",
             cxshow:true,
-            zoom1:1,
-            zoom: 1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
@@ -122,13 +112,6 @@ export default {
         }
     },
     mounted(){
-        this.zoom1 = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
-        setTimeout(()=>{
-            $(".search-item").css({marginLeft: 10*this.zoom, height: 40* this.zoom})
-            $(".el-input__icon").css({lineHeight: 40* this.zoom+'px'})
-            $(".search-select").css({width: 150 * this.zoom, height: 40* this.zoom})
-            $(".el-input--suffix").css({fontSize: 16 * this.zoom, height: 40* this.zoom})
-        })
           this.jurisdiction = this.$store.state.btnPowerData
      this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
      this.buttonarr.forEach((item)=>{
@@ -161,18 +144,7 @@ export default {
         },
     },
     methods: {
-        getZoom() {
-            let that = this
-            setTimeout(()=>{
-for(let i=0;i<$('.el-picker-panel').length;i++){
-                $('.el-picker-panel')[i].style.zoom = that.zoom1
-            }
-            for(let i=0;i<$('.el-select-dropdown').length;i++){
-                $('.el-select-dropdown')[i].style.zoom = that.zoom1
-            }
-            })
-        },
-            findPathByLeafId(id,node,path){
+        findPathByLeafId(id,node,path){
         if(!path){
              path = []
          }
@@ -239,6 +211,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     background-color: #ddd;
     width: 100%;
     position: relative;
+    min-height: 60px;
 }
 span {
     position: absolute;
@@ -248,10 +221,15 @@ span {
 .search-left {
     @extend %flex;
     flex-wrap: wrap;
+    font-size: 16px;
     .search-item {
         @extend %flex;
-        margin-bottom: 0;
+        margin: 0 10px;
         .mr10 {
+            margin-right: 10px;
+        }
+        ::v-deep .el-input__inner{
+            height: 40px;
             margin-right: 10px;
         }
     }

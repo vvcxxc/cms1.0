@@ -28,7 +28,7 @@
             </div>
             <div class="lookcontent" @click="selectword3 = false">
                 <div class="lookselect" :style="{width:1000*zoom+'px',height:436*zoom+'px'}">
-                    <div class="search" :style="{zoom}">
+                    <div class="search">
                         <span>{{lang.EquipmentAccount_EquipmentType1}}</span>
                                 <div class="seleword2" @click.stop="selectword2">
              <div class="seleword1">
@@ -79,8 +79,8 @@
                     </div>
                 </div>
             </div>
-            <div class="cancel" @click="cancel11" :style="{zoom}">{{lang.PopupCommon_Cancel}}</div>
-            <div class="pre" @click="pre1" :style="{zoom}">{{lang.PopupCommon_Sure}}</div>
+            <div class="cancel" @click="cancel11">{{lang.PopupCommon_Cancel}}</div>
+            <div class="pre" @click="pre1">{{lang.PopupCommon_Sure}}</div>
         </div>
         <div class="search-container" :style="{
                zoom
@@ -167,11 +167,11 @@
                     <template slot-scope="scope">
                         <!-- <i class="el-icon-share"></i> -->
                         <div class="img" @click="handleEdit(scope.$index, scope.row)" :style="{width:60*zoom+'px',height: 30*zoom+'px',lineHeight: 30*zoom+'px',marginLeft: 10*zoom+'px'}">
-                            <img :src="look" alt :style="{zoom}"/>
+                            <img :src="look" alt/>
                             {{scope.row.phone}}
                         </div>
                         <div class="img" @click="handleEdit1(scope.$index, scope.row)" :style="{width:60*zoom+'px',height: 30*zoom+'px',lineHeight: 30*zoom+'px',marginLeft: 10*zoom+'px'}">
-                            <img :src="pensoil" alt :style="{zoom}"/>
+                            <img :src="pensoil" alt/>
                             {{scope.row.phone}}
                         </div>
                     </template>
@@ -219,7 +219,7 @@
                 <el-table-column prop="Remarks" :label="lang.MaintenanceManage_TaskExecutionContent" :width="300*zoom" :show-overflow-tooltip="true"></el-table-column>
             </el-table>
         </div>
-        <div class="pages-container" :style="{zoom}">
+        <div class="pages-container">
           <div class="page">
                 <div class="pageword">
                     {{lang.DataGrid_Reaction_HT_ATotalOf}}
@@ -242,7 +242,7 @@
                 </div>
             </div>
         </div>
-        <div class="sestion sestion1"  v-show="changetrue" :style="{zoom}">
+        <div class="sestion sestion1"  v-show="changetrue">
         <!-- <div class="sestion sestion1" ref="kongtiao1" :class="{yd:pdyd2}" v-if="changetrue"> -->
             <div class="sestionheader"   :class="{colordiv:$store.state.color=='grey'}" >
                 <div

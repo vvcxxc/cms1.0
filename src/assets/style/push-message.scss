@@ -99,6 +99,9 @@
 
 /* === switch按钮文字在里面 开始 ========= */
 // switch按钮总长度
+.slot_switch {
+  height: 23px;
+}
 ::v-deep .my-switch, ::v-deep .my-switch.el-switch .el-switch__core, .el-switch .el-switch__label {
   width: 55px !important;
 }
@@ -132,6 +135,13 @@
   z-index: 9;
   left: 5px;
   color: #4270E4;
+}
+::v-deep .my-switch .el-switch__core {
+  border-color: #B5B5B5 !important;
+  // background: #4270E4 !important;
+}
+::v-deep .is-checked .el-switch__core{
+  border-color: #386DF0 !important;
 }
 // 激活状态-圆点
 ::v-deep .is-checked .el-switch__core::after {
@@ -168,28 +178,9 @@
 /* === 表格 结束 ========= */
 
 /* === dialog弹窗 开始 ========= */
-::v-deep .el-dialog__header {
-  padding: 10px 20px;
-  text-align: center;
-  background: #386DF0;
-}
-::v-deep .el-dialog__title {
-  font-size: 18px;
-  font-family: Source Han Sans CN;
-  font-weight: bold;
-  color: #EEEEEE;
-}
-::v-deep .el-dialog__headerbtn {
-  top: inherit;
-  .el-dialog__close {
-    font-size: 24px;
-    color: #EEEEEE;
-  }
-}
-.el-dialog__body {
-  padding: 20px 30px;
-  background: #EEEEEE;
-}
+
+
+
 /* === dialog弹窗 结束 ========= */
 
 /* === 鼠标提示弹窗 开始 ========= */
@@ -242,3 +233,58 @@
   }
 }
 /* === 鼠标提示弹窗 结束 ========= */
+
+
+/* 新消息推送样式部分 */
+.push_header {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 15px;
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 22px;
+    background: #386DF0;
+    left: 0;
+  }
+  .btns {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    >div {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      background-color: #fff;
+      border: 1px solid #fff;
+      padding: 5px;
+      &+div {
+        margin-left: 14px;
+      }
+      >img {
+        width: 100%;
+        height: 100%;
+      }
+      &:hover {
+        border: 1px solid #4ABFCD;
+      }
+    }
+  }
+}
+.push_main {
+  width: 100%;
+  height: calc(100% - 50px);
+  padding: 10px;
+  border: 1px solid #E4E4E4;
+  background-color: #FBFBFB;
+}
+.push_title {
+  font-weight: 400;
+  font-size: 18px;
+  color:  #386DF0;
+}

@@ -16,12 +16,12 @@
             ></div>
             <div
                 class="tiptop"
-                :style="{zoom}"
+               
             >
                 <img :src="gth" alt />
                 <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
             </div>
-            <div class="tipcontanin" :style="{zoom}">
+            <div class="tipcontanin">
                 <div class="tipword"><span>{{tipword}}</span></div>
                 <div class="tipdetermine" @click="tip1">{{lang.MessageBox_Confrim}}</div>
             </div>
@@ -44,7 +44,6 @@
 		</div>
 		<div class="staTime">
             <el-date-picker
-             @focus='sx'
                 :disabled="showTime"
                 v-model="Sstime"
                 type="datetime"
@@ -54,7 +53,6 @@
 		</div>
 		<div class="endTime" >
 			<el-date-picker
-             @focus='sx'
                 :disabled="showTime"
 				v-model="Eetime"
 				type="datetime"
@@ -215,19 +213,7 @@ export default {
         var id = this.ide
         this.curveName(id)
         this.time2Fun()
-        //图表自适应大小
-        // this.$nextTick(()=>{
-        //     window.onresize = ()=> {
-        //         if(this.myChart){
-        //             this.myChart.resize()
-        //         }
-        //     }
-        // })
-		this.zoom1 = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
-          this.zoom = 1
-        setTimeout(()=>{
-            $(".el-button--primary,.el-input__inner").css({lineHeight: 40*this.zoom+'px',height: 40*this.zoom+'px',fontSize: 14*this.zoom+'px'})
-        })
+        this.zoom = 1
     },
     beforeDestroy(){
        clearInterval(this.time2);
@@ -238,22 +224,6 @@ export default {
       clearInterval(this.timer);
     },
 methods: {
-                                  sx(){
-                                        
-            let that = this
-            setTimeout(()=>{
-for(let i=0;i<$('.el-picker-panel').length;i++){
-                $('.el-picker-panel')[i].style.zoom = that.zoom
-            }
-            for(let i=0;i<$('.el-select-dropdown').length;i++){
-                $('.el-select-dropdown')[i].style.zoom = that.zoom1
-            }
-             for(let i=0;i<$('.el-dropdown-menu ').length;i++){
-                $('.el-dropdown-menu ')[i].style.zoom = that.zoom1
-            }
-            })
-            
-        },
     //父组件调用
      huanyuan(){
         this.$nextTick(function(){
@@ -847,7 +817,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     drawLine(text){
         
         // 基于准备好的dom，初始化echarts实例
-        this.myChart = this.$echarts.init(this.$refs.tendency)
+        this.myChart = this.myChart || this.$echarts.init(this.$refs.tendency)
         // console.log("adadsasddsadsa")
         let a  = this.myChart.getOption()
         if(a){

@@ -13,7 +13,7 @@
     height: 100%;
     top: 0;
     left: 0;"></div>
-        <div class="look" ref="kongtiao5" v-if="offdecive" :style="{zoom}">
+        <div class="look" ref="kongtiao5" v-if="offdecive">
             <div
                 class="looktop"
                 @mousedown="mouseDownHandleelse5($event)"
@@ -249,7 +249,7 @@
                 </el-table-column>
             </el-table>
         </div>
-        <div class="pages-container" :style="{zoom}">
+        <div class="pages-container">
             <div class="page">
                 <div class="pageword">
                     {{lang.DataGrid_Reaction_HT_ATotalOf}}
@@ -273,7 +273,7 @@
             </div>
         </div>
         <div class="sestion sestion1" ref="kongtiao1" v-if="change11" :style="{width: 800*zoom+'px',height: 800*zoom+'px'}"> 
-            <div class="sestionheader" :style="{zoom}">
+            <div class="sestionheader">
                 <div
                     class="sestionheader1"
                     @mousedown="mouseDownHandleelse1($event)"
@@ -493,7 +493,7 @@
                 <div class="cancel" @click="cancel" v-if="sestion == 1 || sestion == 3">{{lang.PopupCommon_Cancel}}</div>
             </div>
         </div>
-        <div class="sestion sestion23" ref="kongtiao1" v-show="mesad2" :style="{zoom}">
+        <div class="sestion sestion23" ref="kongtiao1" v-show="mesad2">
             <div class="sestionheader" :class="{colordiv:$store.state.color=='grey'}" >
                 <div
                     class="sestionheader1"
@@ -723,7 +723,7 @@
                 </div>
             </div>
         </div>
-        <div class="boxsad" v-show="daibang" :style="{zoom}">
+        <div class="boxsad" v-show="daibang">
             <div
                 class="tqp"
              
@@ -749,13 +749,13 @@
                 <!-- <img :src="gth" alt /> -->
             </div>
         </div>
-        <div class="cover1" v-if="change" :style="{zoom}"></div>
-        <div class="cover3" v-if="cancel1" :style="{zoom}"></div>
-        <div class="cover2" v-if="tipchange" :style="{zoom}"></div>
-        <div class="cover4" v-if="offdecive" :style="{zoom}"></div>
-        <div class="cover5" v-if="change11" :style="{zoom}"></div>
-        <div class="cover6" v-if="mesad2" :style="{zoom}"></div>
-        <div class="cover7" v-if="daibang" :style="{zoom}"></div>
+        <div class="cover1" v-if="change"></div>
+        <div class="cover3" v-if="cancel1"></div>
+        <div class="cover2" v-if="tipchange"></div>
+        <div class="cover4" v-if="offdecive"></div>
+        <div class="cover5" v-if="change11"></div>
+        <div class="cover6" v-if="mesad2"></div>
+        <div class="cover7" v-if="daibang"></div>
     </div>
 </template>
 

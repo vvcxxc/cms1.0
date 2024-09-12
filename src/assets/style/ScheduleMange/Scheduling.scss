@@ -1,40 +1,40 @@
-.Scheduling_box{
-    width:100%;
-    height: 86vh;
-    .left{
+.Scheduling_box {
+    width: 100%;
+    height: 100%;
+    .left {
         float: left;
     }
-    .box{
-        width:100%;
-        height:100%;
+    .box {
+        width: 100%;
+        height: 100%;
         position: absolute;
         top: 0;
-        left:0;
-        right:0;
-        bottom:0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         margin: auto;
         z-index: 11;
-      }
-      .Frequency_mask{
-        width:100%;
-        height:100%;
+    }
+    .Frequency_mask {
+        width: 100%;
+        height: 100%;
         position: absolute;
         top: 0;
-        left:176px;
-        right:0;
-        bottom:0;
+        left: 176px;
+        right: 0;
+        bottom: 0;
         margin: auto;
         z-index: 8;
-      }
-    .Scheduling_head{
-        width:96%;
+    }
+    .Scheduling_head {
+        width: 96%;
         height: 70px;
-        margin:auto;
-        padding-top:20px;
+        margin: auto;
+        padding-top: 20px;
         overflow: hidden;
-        border-bottom: 1px solid #E2E2E2;
-        .head_return{
-            width:80px;
+        border-bottom: 1px solid #e2e2e2;
+        .head_return {
+            width: 80px;
             height: 30px;
             line-height: 30px;
             cursor: pointer;
@@ -42,116 +42,119 @@
             font-size: 14px;
             font-family: Source Han Sans CN;
             font-weight: 400;
-            color: #FFFFFF;
-            background: #4270E4;
+            color: #ffffff;
+            background: #4270e4;
             text-align: center;
             border-radius: 4px;
-            margin-right:20px;
+            margin-right: 20px;
         }
-        .head_yueText{
+        .head_yueText {
             font-size: 16px;
             font-family: Source Han Sans CN;
             font-weight: 400;
             color: #333333;
             user-select: none;
         }
-        .timeText{
+        .timeText {
             height: 30px;
-            width:38px;
+            width: 38px;
             line-height: 30px;
         }
-        .yearTime{
-            width:150px;
+        .yearTime {
+            width: 150px;
             height: 30px;
-            margin-right:363px;
+            margin-right: 363px;
         }
-        .monthBtn{
-            margin-right:30px;
+        .monthBtn {
+            margin-right: 30px;
         }
-        .line{
-            width:1px;
+        .line {
+            width: 1px;
             height: 30px;
-            background: #E2E2E2;
-            margin-right:30px;
+            background: #e2e2e2;
+            margin-right: 30px;
         }
-        .weeksText{
-            width:14px;
+        .weeksText {
+            width: 14px;
             height: 30px;
             line-height: 30px;
-            font-size:14px ;
+            font-size: 14px;
         }
-        .weeks{
+        .weeks {
             width: 70px;
             height: 30px;
-            border: 1px solid #E4E4E4;
-            margin-left:10px;
-            margin-right:10px;
+            border: 1px solid #e4e4e4;
+            margin-left: 10px;
+            margin-right: 10px;
             position: relative;
-            .up{
+            .up {
                 position: absolute;
                 top: 6px;
                 right: 4px;
-                display:inline-block;
-                width:0;
-                height:0;
-                border-left:5px solid transparent;
+                display: inline-block;
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
                 border-right: 5px solid transparent;
-                border-bottom:5px solid #666666;
+                border-bottom: 5px solid #666666;
                 cursor: pointer;
             }
             .down {
                 position: absolute;
                 bottom: 6px;
                 right: 4px;
-                display:inline-block;
-                width:0;
-                height:0;
-                border-left:5px solid transparent;
+                display: inline-block;
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
                 border-right: 5px solid transparent;
-                border-top:5px solid #666666;
+                border-top: 5px solid #666666;
                 cursor: pointer;
             }
-            .weekText{
+            .weekText {
                 position: absolute;
                 font-size: 14px;
                 top: 5px;
                 left: 12px;
             }
-
         }
-        .weeksText2{
+        .weeksText2 {
             width: 14px;
             height: 30px;
             line-height: 30px;
-            font-size:14px ;
+            font-size: 14px;
             margin-right: 5px;
         }
-        .weeksTime{
-            width:255px;
+        .weeksTime {
+            width: 255px;
             height: 30px;
             line-height: 30px;
             font-size: 14px;
             font-family: Source Han Sans CN;
             font-weight: 400;
             color: #666666;
-            margin-left:19px;
-            margin-right:19px;
+            margin-left: 19px;
+            margin-right: 19px;
         }
-        .quoteBtn{
-            margin-right:30px;
+        .quoteBtn {
+            margin-right: 30px;
         }
-        .importBtn{
-            margin-right:10px;
+        .importBtn {
+            margin-right: 10px;
         }
-        .exportBtn{
-            margin-right:10px
+        .exportBtn {
+            margin-right: 10px;
         }
-    
-        .setBtn,.exportBtn,.importBtn,.quoteBtn,.monthBtn{
-            width:100px;
+
+        .setBtn,
+        .exportBtn,
+        .importBtn,
+        .quoteBtn,
+        .monthBtn {
+            width: 100px;
             height: 30px;
             line-height: 30px;
-            background: #4270E4;
+            background: #4270e4;
             border-radius: 4px;
             text-align: center;
             user-select: none;
@@ -160,10 +163,10 @@
             font-size: 14px;
         }
     }
-    .Scheduling_middle{
-        width:98%;
-        // height:calc(100% - 70px);
-        height: 94%;
-        margin:auto;
+    .Scheduling_middle {
+        width: 98%;
+        height: calc(100% - 70px);
+        // height: 94%;
+        margin: auto;
     }
 }

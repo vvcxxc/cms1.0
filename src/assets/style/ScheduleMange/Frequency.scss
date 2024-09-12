@@ -1,97 +1,103 @@
-.Frequency_box{
-    width:100%;
+.Frequency_box {
+    width: 100%;
     height: 100%;
-    .left{
+    .left {
         float: left;
     }
-    .weekActive{
-        color:rgba(66, 112, 228, 1) !important;
+    .weekActive {
+        color: rgba(66, 112, 228, 1) !important;
     }
-    .frequency_head{
-        width:98%;
+    .frequency_head {
+        width: 98%;
         height: 84px;
         margin: auto;
-        .head_right,.head_left{
+        .head_right,
+        .head_left {
             width: 2%;
             text-align: center;
             height: 84px;
             cursor: pointer;
             user-select: none;
-            padding-top:30px;
-            .head_icon{
+            padding-top: 30px;
+            .head_icon {
                 font-size: 24px;
                 color: rgba(66, 112, 228, 1);
             }
         }
-        .head_right:hover{
-            background: #BEE6FD;
+        .head_right:hover {
+            background: #bee6fd;
         }
-        .head_left:hover{
-            background: #BEE6FD;
+        .head_left:hover {
+            background: #bee6fd;
         }
-        .head_week{
-            width:19.2%;
+        .head_week {
+            width: 19.2%;
             height: 100%;
             cursor: pointer;
             user-select: none;
-            .week_text,.week_time{
-                width:100%;
+            .week_text,
+            .week_time {
+                width: 100%;
                 font-size: 16px;
                 font-family: Source Han Sans CN;
                 font-weight: 400;
                 color: #666666;
                 text-align: center;
-                margin-top:16px;
+                margin-top: 16px;
                 line-height: 16px;
             }
         }
-        .head_week:hover{
-            background: #BEE6FD;
+        .head_week:hover {
+            background: #bee6fd;
         }
     }
-    .frequency_middle{
-        width:98%;
+    .frequency_middle {
+        width: 98%;
         height: 88%;
         margin: auto;
-        border: 1px solid #E2E2E2;
-        .middle_head{
+        border: 1px solid #e2e2e2;
+        overflow-y: auto;
+        position: relative;
+        .middle_head {
             width: 100%;
             height: 76px;
             overflow: hidden;
-            border-right:1px solid #e2e2e2;
-            .middle_head_kon{
-                width:50px;
+            border-right: 1px solid #e2e2e2;
+            position: sticky;
+            top: 0;
+            .middle_head_kon {
+                width: 50px;
                 height: 100%;
-                background: #F4F4F4;
-                border-right:1px solid #e2e2e2;
+                background: #f4f4f4;
+                border-right: 1px solid #e2e2e2;
             }
-            .middle_head_text{
-                background: #F4F4F4;
-                width:calc(100% - 50px);
+            .middle_head_text {
+                background: #f4f4f4;
+                width: 100%;
                 height: 100%;
-                .head_textValue{
-                    width:calc(99% / 7);
+                .head_textValue {
+                    width: calc(100% / 7);
                     height: 100%;
-                    border-right:1px solid #e2e2e2;
+                    border-right: 1px solid #e2e2e2;
                     box-sizing: border-box;
                 }
-                .head_text1{
+                .head_text1 {
                     width: 100%;
                     height: 35px;
                     line-height: 35px;
                     text-align: center;
                     user-select: none;
-                    border-bottom:1px solid #e2e2e2;
+                    border-bottom: 1px solid #e2e2e2;
                     box-sizing: border-box;
                     font-size: 16px;
                     font-family: Source Han Sans CN;
                     font-weight: 400;
                     color: #999999;
-                    .head_textValue:nth-of-type(7){
+                    .head_textValue:nth-of-type(7) {
                         border-right: none;
                     }
                 }
-                .head_text2{
+                .head_text2 {
                     width: 100%;
                     height: 40px;
                     line-height: 40px;
@@ -101,118 +107,169 @@
                     font-family: Source Han Sans CN;
                     font-weight: 400;
                     color: #999999;
-                    .head_textValue:nth-of-type(7){
+                    .head_textValue:nth-of-type(7) {
                         border-right: none;
                     }
                 }
-               
-                
             }
         }
-        .middle_conter{
+        .middle_conter {
             width: 100%;
             height: calc(100% - 79px);
-            overflow: auto;
-            .middle_conterBox:after{
-                content: "";
+            display: flex;
+            .conter-item {
+                width: calc(100% / 7);
+                height: auto;
+
+                .conter-shift,
+                .add-shift {
+                    width: 100%;
+                    height: 150px;
+                    border: 1px solid #e2e2e2;
+                    padding: 20px 30px 10px;
+                    box-sizing: border-box;
+
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    .shift-team,
+                    .shift-time,
+                    .shift-action {
+                        display: flex;
+                        justify-content: space-between;
+                        .team-name {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            .name {
+                                font-weight: bold;
+                            }
+                            .after {
+                                line-height: 1;
+                            }
+                        }
+                        .team-shift {
+                            font-weight: bold;
+                        }
+
+                        .edit {
+                            color: #02a7f0;
+                            cursor: pointer;
+                        }
+                    }
+                }
+                .add-shift {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #02a7f0;
+                    cursor: pointer;
+                    text-decoration: underline;
+                }
+            }
+
+            .middle_conterBox:after {
+                content: '';
                 display: block;
                 height: 0;
-                clear:both;
+                clear: both;
                 visibility: hidden;
             }
-            .middle_conterBox{
+            .middle_conterBox {
                 width: 100%;
                 zoom: 1;
-                .conterBox_left{
-                    width:50px;
+                .conterBox_left {
+                    width: 50px;
                     height: 100%;
-                    background: #F4F4F4;
-                    border-top:1px solid #e2e2e2;
-                    border-right:1px solid #e2e2e2; 
-                    .left_row{
+                    background: #f4f4f4;
+                    border-top: 1px solid #e2e2e2;
+                    border-right: 1px solid #e2e2e2;
+                    .left_row {
                         width: 100%;
                         height: 155px;
-                        border-bottom:1px solid #e2e2e2;
+                        border-bottom: 1px solid #e2e2e2;
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         overflow: hidden;
                     }
-                    .left_text{
-                        width:60%;
+                    .left_text {
+                        width: 60%;
                         font-size: 16px;
                         font-family: Source Han Sans CN;
                         font-weight: 400;
                         color: #333333;
                         text-align: center;
-                        white-space:normal; 
-                        word-break:break-all;
+                        white-space: normal;
+                        word-break: break-all;
                         user-select: none;
                     }
                 }
-                .conterBox_right{
-                    width:calc(100% - 50px);
+                .conterBox_right {
+                    width: 100%;
                     height: 100%;
-                    .right_row:after{
-                        content: "";
+                    .right_row:after {
+                        content: '';
                         display: block;
                         height: 0;
-                        clear:both;
+                        clear: both;
                         visibility: hidden;
                     }
-                    .right_row{
-                        width:100%;
+                    .right_row {
+                        width: 100%;
                         height: 155px;
                         zoom: 1;
-                        .right_input{
-                            width:calc(100% / 7);
+                        .right_input {
+                            width: calc(100% / 7);
                             height: 100%;
-                            border:1px solid #e2e2e2;
+                            border: 1px solid #e2e2e2;
                             box-sizing: border-box;
-                            border-right:none;
+                            border-right: none;
                             position: relative;
-                            .right_input_value{
+                            .right_input_value {
                                 position: absolute;
                                 text-align: center;
                                 line-height: 155px;
-                                top:0;
+                                top: 0;
                                 left: 0;
                                 width: 100%;
                                 height: 100%;
                                 z-index: 10;
                                 background: #fff;
                             }
-                            .right_input_bg{
+                            .right_input_bg {
                                 position: absolute;
                                 line-height: 155px;
-                                top:0;
+                                top: 0;
                                 left: 0;
                                 width: 100%;
                                 height: 100%;
                                 z-index: 11;
                                 opacity: 0.2;
                             }
-                            .right_input_line{
+                            .right_input_line {
                                 position: absolute;
                                 top: 0;
                                 left: 0;
-                                width:100%;
+                                width: 100%;
                                 height: 4px;
                                 z-index: 11;
                             }
-                            .right_input_xia{
+                            .right_input_xia {
                                 position: absolute;
                                 left: 0;
                                 top: 20px;
-                                width:100%;
+                                width: 100%;
                                 // height: 160px;
                                 display: none;
                                 text-align: center;
                                 background: #fff;
-                                border:1px solid #e2e2e2;
-                                box-shadow:4px 4px 3px 0px rgba(51,51,51,0.5);
+                                border: 1px solid #e2e2e2;
+                                box-shadow: 4px 4px 3px 0px
+                                    rgba(51, 51, 51, 0.5);
                                 z-index: 12;
-                                .xia_box{
+                                .xia_box {
                                     width: 100%;
                                     height: 40px;
                                     line-height: 40px;
@@ -220,8 +277,8 @@
                                     user-select: none;
                                     border-bottom: 1px solid #000;
                                 }
-                                .xia_box:hover{
-                                    background: #BEE6FD;
+                                .xia_box:hover {
+                                    background: #bee6fd;
                                 }
                             }
                             // .right_input_xia2{
@@ -238,7 +295,6 @@
                         //     100% {top: -100%;opacity:1}
                         // }
                     }
-
                 }
             }
         }

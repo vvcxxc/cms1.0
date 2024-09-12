@@ -7,7 +7,7 @@
  -->
 <template>
     <div class="alarm-container" ref="alarmContainer">
-        <aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200*(width/1920)+'px'}]">
+        <aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200+'px'}]">
             <left-nav @tabComponent="tabComponent"></left-nav>
         </aside>
         <section class="content-container">
@@ -40,12 +40,8 @@ export default {
     created() {},
 	mounted(){
         this.width = window.screen.width
-		this.zoom = this.width / 1920 < 0.8 ? 0.8 : this.width / 1920
-			setTimeout(()=>{
-		$('.alarm-container').css({
-        marginTop:$('.v-toolbar').height()*$('.v-toolbar')[0].style.zoom+10+'px'
-		});
-		let a = 200*(this.width/1920)+'px'
+        setTimeout(()=>{
+		let a = 200*1+'px'
 		$('.content-container').css({
 				width:`calc(100% - ${a})`
 		})
@@ -73,7 +69,7 @@ export default {
 .alarm-container {
     // width: clac(100% -40px);
     // height: 100%;
-    height: 86vh;
+    height: calc(100% - 130px);
     color: #000;
     margin-top: 100px;
     display: flex;

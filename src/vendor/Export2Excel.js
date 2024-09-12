@@ -497,7 +497,7 @@ export function export_json_to_excel({
       Object.keys(ws[l]).forEach(function(key){
         if(typeof(ws[l][key]) == 'object'){
           ws[l][key].s =  style1
-      // console.log(ws[l][key])
+      console.log(ws[l][key])
         }
    });
       ws[l]["!cols"] = result[l]

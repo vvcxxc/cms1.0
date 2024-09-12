@@ -89,6 +89,7 @@ export default {
                 LastEnabled: false,
                 NextEnabled: false
             },
+            a1: 1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
@@ -114,10 +115,6 @@ export default {
         this.req(1);
     },
     mounted() {
-        this.a1 = Number(parseFloat(window.screen.width / 1920).toFixed(2));
-        if (this.a1 < 1) {
-            this.a1 = 0.8;
-        }
     },
     methods: {
          getLangData() {
@@ -218,13 +215,7 @@ export default {
         setParams(params, a) {
             if (!a) {
                 setTimeout(() => {
-                    let a1 = Number(
-                        parseFloat(window.screen.width / 1920).toFixed(2)
-                    );
-                    if (a1 < 1) {
-                        a1 = 0.8;
-                    }
-                    this.a1 = a1;
+                    let a1 = 1
                     $('.tip').css({
                         zoom: a1,
                         left: `calc(50% - ${($('.tip').width() / 2) * a1}px)`,
@@ -248,13 +239,7 @@ export default {
                 !Regex.test(this.searchData.argEndTime)
             ) {
                 setTimeout(() => {
-                    let a1 = Number(
-                        parseFloat(window.screen.width / 1920).toFixed(2)
-                    );
-                    if (a1 < 1) {
-                        a1 = 0.8;
-                    }
-                    this.a1 = a1;
+                    let a1 = 1
                     $('.tip').css({
                         zoom: a1,
                         left: `calc(50% - ${($('.tip').width() / 2) * a1}px)`,
@@ -271,13 +256,7 @@ export default {
                 new Date(this.searchData.argEndTime).getTime()
             ) {
                 setTimeout(() => {
-                    let a1 = Number(
-                        parseFloat(window.screen.width / 1920).toFixed(2)
-                    );
-                    if (a1 < 1) {
-                        a1 = 0.8;
-                    }
-                    this.a1 = a1;
+                    let a1 = 1
                     $('.tip').css({
                         zoom: a1,
                         left: `calc(50% - ${($('.tip').width() / 2) * a1}px)`,
@@ -303,13 +282,7 @@ export default {
             if (s == 'jump') {
                 if (!this.isPositiveInteger(pageIndex)) {
                     setTimeout(() => {
-                        let a1 = Number(
-                            parseFloat(window.screen.width / 1920).toFixed(2)
-                        );
-                        if (a1 < 1) {
-                            a1 = 0.8;
-                        }
-                        this.a1 = a1;
+                        let a1 = 1
                         $('.tip').css({
                             zoom: a1,
                             left: `calc(50% - ${($('.tip').width() / 2) *
@@ -332,15 +305,7 @@ export default {
                             pageIndex > this.pageData.TotalPage
                         ) {
                             setTimeout(() => {
-                                let a1 = Number(
-                                    parseFloat(
-                                        window.screen.width / 1920
-                                    ).toFixed(2)
-                                );
-                                if (a1 < 1) {
-                                    a1 = 0.8;
-                                }
-                                this.a1 = a1;
+                                let a1 = 1
                                 $('.tip').css({
                                     zoom: a1,
                                     left: `calc(50% - ${($('.tip').width() /

@@ -6,13 +6,13 @@
  * @LastEditTime: 2019-11-27 15:55:08
  -->
 <template>
-    <section class="page-container" :style="{zoom:a}" >
+    <section class="page-container" >
         <div class="page">
   <div class="left" >
             {{localData.DataGrid_Reaction_HT_ATotalOf}}{{ pageData.TotalCount }}{{localData.DataGrid_Reaction_HT_RecordsAndTheCurrent}}{{ pageData.PageIndex }}{{localData.DataGrid_Reaction_Page}},
             {{localData.DataGrid_Reaction_HT_ATotalOf}}{{ pageData.TotalPage }}{{localData.DataGrid_Reaction_HT_RecordsAnd}}{{ pageData.PageSize }}{{localData.DataGrid_Reaction_HT_PerPage}}
         </div>
-        <div class="right" :style="{height:30*a+'px'}">
+        <div class="right" :style="{height:30+'px'}">
             <span class="btn"  @click="jump('first')" >{{localData.DataGrid_Reaction_FirstPage}}</span>
             <span class="btn"  @click="jump('prev')"  :class="{nopage:!pageData.LastEnabled}" >{{localData.DataGrid_Reaction_LastPage}}</span>
             <span class="btn"  @click="jump('next')"  :class="{nopage:!pageData.NextEnabled}" >{{localData.DataGrid_Reaction_NextPage}}</span>
@@ -35,7 +35,6 @@ export default {
     props: ['pageData'],
     data() {
         return {
-            a:1,
             targetPage: 1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
             localData: {
@@ -62,13 +61,6 @@ export default {
         this.targetPage = this.pageData.PageIndex;
     },
     mounted(){
-    this.a = Number(parseFloat(window.screen.width/1920).toFixed(2))
-    if( this.a<1){
-         this.a = 0.8
-    }
-    //      $('.page-container').css({
-    //       zoom:(a-0.09)
-    //   })
     },
        isPositiveInteger(s) {
             //是否为正整数

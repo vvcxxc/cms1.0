@@ -1571,10 +1571,10 @@ video{
 .el-button--primary{
   // display: flex;
   // justify-content: center;
-  span{
-    position: relative;
-    top: -2px;
-  }
+  // span{  // 此处影响到了全局样式，加个class单独修改吧
+  //   position: relative;
+  //   top: -2px;
+  // }
   // .header-search{
   //   position: absolute !important;
   //   top: 0 !important;

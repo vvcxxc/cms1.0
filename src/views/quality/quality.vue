@@ -50,7 +50,7 @@ export default {
             scshow:true,
             cpkid:'',
             cpkshow:true,
-            zoomValue: 0,
+            zoomValue: 1,
         };
     },
     watch:{
@@ -157,7 +157,6 @@ export default {
     },
     created() {
         this.$nextTick(() => {
-            this.zoomValue = Number(parseFloat(window.screen.width/1920).toFixed(2)) <= 0.8 ? 0.8 : Number(parseFloat(window.screen.width/1920).toFixed(2))
             let value = 200 * this.zoomValue
             this.$refs.left.style.zoom =  this.zoomValue
             this.$refs.content.style.width =  `calc(100% - ${value}px)`
@@ -327,7 +326,7 @@ export default {
     // width: 100%;
     // height: 100%;
     // flex: 1;
-    height: 86vh;
+    height: calc(100% - 130px);
     overflow: hidden;
     color: #000;
     margin-top: 100px;

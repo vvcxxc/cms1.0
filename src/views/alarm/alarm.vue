@@ -8,7 +8,7 @@
 <template>
 	<div class="alarm-container" >
 		
-	<aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200*(width/1920)+'px'}]">
+	<aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200+'px'}]">
 			<left-nav @tabComponent="tabComponent"></left-nav>
 		</aside>
 		<section class="content-container">

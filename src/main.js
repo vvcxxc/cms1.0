@@ -30,8 +30,6 @@ import store from './store';
 import vueXlsxTable from 'vue-xlsx-table'
 import './common/font.css'
 import common from './assets/js/common'
-import directives from './directive/index'
-import * as filters from './filters/index'
 
 import Print from './plugins/print'
 
@@ -40,9 +38,10 @@ import $ from 'jquery'
 
 import "@/assets/sass/common.scss";
 import "@/assets/sass/reset.scss";
-import '@/assets/sass/re-element.scss';
+import "@/assets/sass/rewrite.scss"
 import moment from 'moment'//导入文件
 import VideoPlayer from 'vue-video-player'
+import * as filters from './filters' // global filters
 // import 'videojs-flash';
 // import 'videojs-contrib-hls'
 require('video.js/dist/video-js.css')
@@ -51,9 +50,12 @@ import domtoimage from 'dom-to-image';
 // const hls =require("videojs-contrib-hls")
 
 Vue.use(Print) // 注册
-// Vue.use(hls)
 Vue.use(common)
-Vue.use(directives)
+// register global utility filters
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key])
+})
+// Vue.use(hls)
 Vue.prototype.$moment = moment;//赋值使用
 import JsEncrypt from 'jsencrypt'
 // 将jsencrypt压入到Vue
@@ -78,10 +80,6 @@ Vue.use(VCharts)
 Vue.prototype.$axios = axios
 Vue.prototype.$math = math
 Vue.config.productionTip = false;
-// 注册过滤器
-Object.keys(filters).forEach(key => {
-    Vue.filter(key, filters[key])
-})
 
 /*---------使用语言包合并element 多语言-----------*/
 const i18n = new VueI18n({

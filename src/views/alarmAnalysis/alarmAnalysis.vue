@@ -6,74 +6,163 @@
  * @LastEditTime: 2019-11-11 10:13:58
  -->
 <template>
-    <div class="tapwater" :style="{zoom:(a1-0.1)}" v-loading="this.$store.state.isShow">
-        <div class="linebox" :class="{colordiv:$store.state.color=='grey'}" >
-            <div class="table clearfix" >
+    <div class="tapwater" v-loading="this.$store.state.isShow">
+        <div
+            class="linebox"
+            :class="{ colordiv: $store.state.color == 'grey' }"
+        >
+            <div class="table clearfix">
                 <div class="fll">
-                    <span v-show="ri == 1"  >{{lang.AlarmStatistics_AlarmStatisticsUserControl_StartTime}}</span>
+                    <span v-show="ri == 1">{{
+                        lang.AlarmStatistics_AlarmStatisticsUserControl_StartTime
+                    }}</span>
                     <div class="container">
-                        <div class="block" >
+                        <div class="block">
                             <span class="demonstration"></span>
                             <el-date-picker
                                 v-model="value1"
                                 type="datetime"
-                                 @focus="sx"
-                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
+                                :placeholder="
+                                    lang.SCMSConsoleWebApiMySql_PleChooseDate
+                                "
                                 value-format="yyyy-MM-dd HH:mm:ss"
-                              :style="[{height:40*a1<40?40:40*1+'px'},{fontSize:16*1+'px'},{width:250*1+'px'}]"
+                                :style="[
+                                    { height: '40px' },
+                                    { fontSize: 16 * 1 + 'px' },
+                                    { width: 250 * 1 + 'px' }
+                                ]"
                             ></el-date-picker>
                         </div>
-                        <span v-show="ri == 1"  >{{lang.AlarmStatistics_AlarmStatisticsUserControl_EndTime}}</span>
-                        <div class="block" >
+                        <span v-show="ri == 1">{{
+                            lang.AlarmStatistics_AlarmStatisticsUserControl_EndTime
+                        }}</span>
+                        <div class="block">
                             <span class="demonstration"></span>
                             <el-date-picker
                                 v-model="value2"
                                 type="datetime"
-                                @focus="sx"
-                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
+                                :placeholder="
+                                    lang.SCMSConsoleWebApiMySql_PleChooseDate
+                                "
                                 value-format="yyyy-MM-dd HH:mm:ss"
-                                :style="[{height:40*a1<40?40:40*1+'px'},{fontSize:16*1+'px'},{width:250*1+'px'}]"
+                                :style="[
+                                    { height: '40px' },
+                                    { fontSize: 16 * 1 + 'px' },
+                                    { width: 250 * 1 + 'px' }
+                                ]"
                             ></el-date-picker>
                         </div>
                     </div>
                 </div>
-                <div class="query W1" @click="tablename" v-show="ri == 1" :id="cxid" :style="[{lineHeight:36*1<36?36+'px':36*1+'px'},{height:40*1<40?40:40*1+'px'},{fontSize:16*1+'px'},{width:120*1+'px'}]">{{lang.AlarmStatistics_AlarmStatisticsUserControl_Query}}</div>
+
+                <div
+                    class="query W1"
+                    @click="tablename"
+                    v-show="ri == 1"
+                    :id="cxid"
+                    :style="[
+                        { lineHeight: 36 * 1 + 'px' },
+                        { height: 40 * 1 + 'px' },
+                        { fontSize: 16 * 1 + 'px' },
+                        { width: 120 * 1 + 'px' }
+                    ]"
+                >
+                    {{ lang.AlarmStatistics_AlarmStatisticsUserControl_Query }}
+                </div>
                 <div class="fr">
-                    <div class="export" @click="saveImage('img', lang.AlarmAnalysis)" :id="dcid" :style="[{lineHeight:40*1<40?40+'px':40*1+'px'},{height:40*1<40?40:40*1+'px'},{fontSize:16*1+'px'},{width:120*1+'px'}]">{{lang.AlarmStatistics_AlarmStatisticsUserControl_Export}}</div>
-                 
-                    <div class="query" @click="back"   v-show="ri == 2" :style="[{lineHeight:36*1<36?36+'px':36*1+'px'},{height:40*1<40?40:40*1+'px'},{fontSize:16*1+'px'},{width:120*1+'px'}]">{{lang.AlarmStatistics_AlarmStatisticsUserControl_Back}}</div>
-            
+                    <div
+                        class="export"
+                        @click="saveImage('img', lang.AlarmAnalysis)"
+                        :id="dcid"
+                        :style="[
+                            {
+                                lineHeight:
+                                    40 * 1 < 40 ? 40 + 'px' : 40 * 1 + 'px'
+                            },
+                            { height: 40 * 1 + 'px' },
+                            { fontSize: 16 * 1 + 'px' },
+                            { width: 120 * 1 + 'px' }
+                        ]"
+                    >
+                        {{
+                            lang.AlarmStatistics_AlarmStatisticsUserControl_Export
+                        }}
+                    </div>
+
+                    <div
+                        class="query"
+                        @click="back"
+                        v-show="ri == 2"
+                        :style="[
+                            { lineHeight: 36 * 1 + 'px' },
+                            { height: 40 * 1 + 'px' },
+                            { fontSize: 16 * 1 + 'px' },
+                            { width: 120 * 1 + 'px' }
+                        ]"
+                    >
+                        {{
+                            lang.AlarmStatistics_AlarmStatisticsUserControl_Back
+                        }}
+                    </div>
                 </div>
             </div>
+
+            <div class="switchTab">
+                <div
+                    :class="typed == 0 ? 'curtab' : 'tab'"
+                    @click="changeType(0, '数量')"
+                >
+                    展示数量
+                </div>
+                <div
+                    :class="typed == 1 ? 'curtab' : 'tab'"
+                    @click="changeType(1, '时长（小时）')"
+                >
+                    展示时长
+                </div>
+            </div>
+
             <!-- <div id="myChart" ref="myChart" :style="{width: '100%', height: '36%'}"></div> -->
             <div
                 class="tabledata"
                 id="w"
-                :style="{width: '100%', height: `calc(100% - ${a2})`}"
-                v-if="ddddssss.length!==0"
+                :style="{ width: '100%', height: `calc(100% - 130px)` }"
+                v-if="ddddssss.length !== 0"
                 ref="img"
             >
-            <div class='mainbox'  style="width:100%;height:500px;position:relative">
-             <div id="main3" style="height:500px;display:block;position:absolute"  :style="{width: 100/(a1-0.1)+'%', height: '340px',zoom:1/(a1-0.1),transform:'scale('+(a1-0.1)+')'}" ></div>
-                <div id="main" style="height:500px;display:none;position:absolute" :style="{width: 100/(a1-0.1)+'%', height: '340px',zoom:1/(a1-0.1),transform:'scale('+(a1-0.1)+')'}" ></div>
-                <div id="main1" style="height:500px;display:none;position:absolute" :style="{width: 100/(a1-0.1)+'%', height: '340px',zoom:1/(a1-0.1),transform:'scale('+(a1-0.1)+')'}" ></div>
-            </div>
-               
+                <div
+                    class="mainbox"
+                    style="width:100%;height:calc(100% - 300px);position:relative"
+                >
+                    <div
+                        id="main"
+                        style="height:100%;width: 100%;display:none;position:absolute"
+                    ></div>
+                    <div
+                        id="main1"
+                        style="height:100%;width: 100%;display:none;position:absolute"
+                    ></div>
+                </div>
             </div>
         </div>
         <div class="tip" ref="kongtiao3" v-if="tipchange1">
-            <div
-                class="tiptop"
-            >
+            <div class="tiptop">
                 <img :src="gth" alt />
-                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
+                <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
             </div>
             <div class="tipcontanin">
-                <div class="w">{{w}}</div>
-                <div class="tipdetermine" @click="tip2">{{lang.MessageBox_Confrim}}</div>
+                <div class="w">{{ w }}</div>
+                <div class="tipdetermine" @click="tip2">
+                    {{ lang.MessageBox_Confrim }}
+                </div>
             </div>
         </div>
         <div class="cover3" v-if="tipchange1"></div>
+        <AlarmAnalysisPop
+            v-if="AlarmAnalysisPopShow"
+            :selectItem="AlarmAnalysisPopItem"
+            @callback="AlarmAnalysisPopCallback"
+        />
     </div>
 </template>
 
@@ -86,16 +175,25 @@ require('echarts/lib/chart/line');
 require('echarts/lib/component/tooltip'); // tooltip组件
 require('echarts/lib/component/title'); //  title组件
 require('echarts/lib/component/legend'); // legend组件
+import AlarmAnalysisPop from './alarmAnalysisPop.vue';
+import _ from 'lodash';
+
 export default {
     name: 'tapwater',
+    components: {
+        AlarmAnalysisPop
+    },
     data() {
         return {
-              jurisdiction:[],
-            buttonarr:[],
-            cxid:"",
-            dcid:'',
-            cxshow:true,
-            dcshow:true,
+            AlarmAnalysisPopShow: false,
+            AlarmAnalysisPopItem: null,
+            typed: 0,
+            jurisdiction: [],
+            buttonarr: [],
+            cxid: '',
+            dcid: '',
+            cxshow: true,
+            dcshow: true,
             aaa: 1,
             Chart1: '',
             Chart2: '',
@@ -219,126 +317,141 @@ export default {
             endtime: '',
             change: 2,
             tableData: [],
-            try:1,
+            try: 1,
             hasnum: 1,
-            a1:1,
-            a2:1,
+            a2: 1,
             sum: 0,
             data11: [],
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
+            lang: JSON.parse(localStorage.getItem('languages'))[
+                localStorage.getItem('currentLang')
+            ],
+            DeviceName: ''
         };
     },
 
     created() {
-        this.getLangData()
+        this.getLangData();
         //如果没有这句代码，select中初始化会是空白的，默认选中就无法实现
         this.couponSelected = this.couponList[0].name;
-              this.jurisdiction = this.$store.state.btnPowerData
-     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
-          this.buttonarr.forEach((item)=>{
-         if(item.RightName == "查询按钮"){
-          this.cxid = item.RightID
-         }else if(item.RightName == "导出按钮"){
-          this.dcid = item.RightID
-         }
-     })
-          var userid = ''
-      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
-                userid = JSON.parse(
-                    sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserID;
-            } else {
-                userid = JSON.parse(
-                    sessionStorage.getItem('userInfo1')
-                ).SCMSUserID;
+        this.jurisdiction = this.$store.state.btnPowerData;
+        this.buttonarr = this.findPathByLeafId(
+            this.GetUrlParam('id'),
+            this.jurisdiction
+        )[0].Children;
+        this.buttonarr.forEach(item => {
+            if (item.RightName == '查询按钮') {
+                this.cxid = item.RightID;
+            } else if (item.RightName == '导出按钮') {
+                this.dcid = item.RightID;
             }
-             this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`,
-              }).then(res => {
-                  this.cxshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                 this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.dcid}`,
-              }).then(res => {
-                  this.dcshow = res.data.data
-                 
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
+        });
+        var userid = '';
+        if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+            userid = JSON.parse(sessionStorage.getItem('sightseerInfo1'))
+                .SCMSUserID;
+        } else {
+            userid = JSON.parse(sessionStorage.getItem('userInfo1')).SCMSUserID;
+        }
+        this.$axios({
+            method: 'post',
+            url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`
+        })
+            .then(res => {
+                this.cxshow = res.data.data;
+            })
+            .catch(err => {
+                console.log('err', err);
+            });
+        this.$axios({
+            method: 'post',
+            url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.dcid}`
+        })
+            .then(res => {
+                this.dcshow = res.data.data;
+            })
+            .catch(err => {
+                console.log('err', err);
+            });
     },
-      computed:{
+    computed: {
         VpowerData() {
-                    return this.$store.state.btnPowerData;
-        },
+            return this.$store.state.btnPowerData;
+        }
     },
-      mounted() {
-          this.a1 = Number(parseFloat(window.screen.width/1920).toFixed(2))
-    if(this.a1 <1){
-        this.a1  = 1
-    }
-    this.a2 =   this.a1*60<60?82+'px':  this.a1*60+22+'px'
+    mounted() {
         this.value1 = this.GMTToStr(this.value1);
         this.value2 = this.GMTToStr(this.value2);
         // this.drawLine();
-       
-        if(this.cxshow){
-           
+
+        if (this.cxshow) {
             this.tablename();
         }
-     
-        
+
         // this.intgraph(this.ddddssss);
     },
     watch: {
         value1(val) {
             console.log(val);
         },
-         VpowerData(val){
-                 this.jurisdiction = this.$store.state.btnPowerData
-     this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
-          this.buttonarr.forEach((item)=>{
-         if(item.RightName == "查询按钮"){
-          this.cxid = item.RightID
-         }else if(item.RightName == "导出按钮"){
-          this.dcid = item.RightID
-         }
-     })
-       var userid = ''
-      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
-                userid = JSON.parse(
-                    sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserID;
+        VpowerData(val) {
+            this.jurisdiction = this.$store.state.btnPowerData;
+            this.buttonarr = this.findPathByLeafId(
+                this.GetUrlParam('id'),
+                this.jurisdiction
+            )[0].Children;
+            this.buttonarr.forEach(item => {
+                if (item.RightName == '查询按钮') {
+                    this.cxid = item.RightID;
+                } else if (item.RightName == '导出按钮') {
+                    this.dcid = item.RightID;
+                }
+            });
+            var userid = '';
+            if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
+                userid = JSON.parse(sessionStorage.getItem('sightseerInfo1'))
+                    .SCMSUserID;
             } else {
-                userid = JSON.parse(
-                    sessionStorage.getItem('userInfo1')
-                ).SCMSUserID;
+                userid = JSON.parse(sessionStorage.getItem('userInfo1'))
+                    .SCMSUserID;
             }
-             this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`,
-              }).then(res => {
-                  this.cxshow = res.data.data
-              
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-                 this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.dcid}`,
-              }).then(res => {
-                  this.dcshow = res.data.data
-                 
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-         }
+            this.$axios({
+                method: 'post',
+                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`
+            })
+                .then(res => {
+                    this.cxshow = res.data.data;
+                })
+                .catch(err => {
+                    console.log('err', err);
+                });
+            this.$axios({
+                method: 'post',
+                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.dcid}`
+            })
+                .then(res => {
+                    this.dcshow = res.data.data;
+                })
+                .catch(err => {
+                    console.log('err', err);
+                });
+        }
     },
     methods: {
+        openAlarmAnalysisPop(item) {
+            console.log('openAlarmAnalysisPop', item);
+            this.AlarmAnalysisPopItem = {
+                ...item,
+                StartTime: this.value1,
+                EndTime: this.value2,
+                AlarmType: item.name,
+                DeviceName: this.DeviceName
+            };
+            this.AlarmAnalysisPopShow = true;
+        },
+        AlarmAnalysisPopCallback() {
+            this.AlarmAnalysisPopItem = null;
+            this.AlarmAnalysisPopShow = false;
+        },
         getLangData() {
             this.ZHObj = {
                 chartitle: this.lang.AlarmStatistics_chartitle,
@@ -352,19 +465,18 @@ export default {
                 data1: this.lang.AlarmStatistics_data1,
                 data2: this.lang.AlarmStatistics_data2,
                 data3: this.lang.AlarmStatistics_data3
-            }
+            };
         },
-   move(name, namehead) {
-          //  $(`.${name}`).addClass('center')
-           let left = ($(`.${name}`).width())/2+'px'
-           let top = ($(`.${name}`).height())/2+'px'
-             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+        move(name, namehead) {
+            //  $(`.${name}`).addClass('center')
+            let left = $(`.${name}`).width() / 2 + 'px';
+            let top = $(`.${name}`).height() / 2 + 'px';
+            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
             $(`.${name}`)[0].addEventListener('mousedown', function(e) {
-                
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
-                    $(`.${name}`).removeClass('center')
+                    $(`.${name}`).removeClass('center');
                     window.event.stopPropagation();
                     var x = 0;
                     var y = 0;
@@ -380,7 +492,6 @@ export default {
                     isDown = true;
                     var pdmove = false;
 
-                     
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
@@ -396,9 +507,9 @@ export default {
                         //计算移动后的左偏移量和顶部的偏移量
                         var nl = nx - (x - l);
                         var nt = ny - (y - t);
-                        console.log(nx)
-                        console.log(x)
-                        console.log(l)
+                        console.log(nx);
+                        console.log(x);
+                        console.log(l);
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
@@ -410,43 +521,46 @@ export default {
                 }
             });
         },
-          findPathByLeafId(id,node,path){
-        if(!path){
-             path = []
-         }
-        for(let i=0;i<node.length;i++){
-          var temPath = path.concat();
-        
-          if(id == node[i].RightID){
-                temPath.push(node[i])
-           return temPath
-          }
-          if(node[i].Children){
-           var findResult = this.findPathByLeafId(id,node[i].Children,temPath)
-           if(findResult){
-           return findResult
-           }
-          }
-        }
-        },
-          GetUrlParam(paraName) {
-        let url = document.location.toString();
-        let arrObj = url.split("?");
-        if (arrObj.length > 1) {
-            let arrPara = arrObj[1].split("&");
-            let arr;
-           for(let i=0;i<arrPara.length;i++){
-            arr = arrPara[i].split("=");
-            if(arr&&arr[0] == paraName){
-              
-               return arr[1]
+        findPathByLeafId(id, node, path) {
+            if (!path) {
+                path = [];
             }
-           }
-           return ''
-        }else {
-            return ''
-        }
-          },
+            for (let i = 0; i < node.length; i++) {
+                var temPath = path.concat();
+
+                if (id == node[i].RightID) {
+                    temPath.push(node[i]);
+                    return temPath;
+                }
+                if (node[i].Children) {
+                    var findResult = this.findPathByLeafId(
+                        id,
+                        node[i].Children,
+                        temPath
+                    );
+                    if (findResult) {
+                        return findResult;
+                    }
+                }
+            }
+        },
+        GetUrlParam(paraName) {
+            let url = document.location.toString();
+            let arrObj = url.split('?');
+            if (arrObj.length > 1) {
+                let arrPara = arrObj[1].split('&');
+                let arr;
+                for (let i = 0; i < arrPara.length; i++) {
+                    arr = arrPara[i].split('=');
+                    if (arr && arr[0] == paraName) {
+                        return arr[1];
+                    }
+                }
+                return '';
+            } else {
+                return '';
+            }
+        },
         back() {
             document.getElementById('main1').style.display = 'none';
             document.getElementById('main').style.display = 'block';
@@ -457,19 +571,21 @@ export default {
             this.ri = 1;
         },
         tip2() {
-            if(this.w == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect){
-              this.value1=new Date(new Date().toLocaleDateString());
-            this.value2=new Date(
-                new Date(new Date().toLocaleDateString()).getTime() +
-                    24 * 60 * 60 * 1000 -
-                    1
-                      );
-                        this.value1 = this.GMTToStr(this.value1);
-        this.value2 = this.GMTToStr(this.value2);
+            if (
+                this.w == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect
+            ) {
+                this.value1 = new Date(new Date().toLocaleDateString());
+                this.value2 = new Date(
+                    new Date(new Date().toLocaleDateString()).getTime() +
+                        24 * 60 * 60 * 1000 -
+                        1
+                );
+                this.value1 = this.GMTToStr(this.value1);
+                this.value2 = this.GMTToStr(this.value2);
             }
             this.tipchange1 = false;
         },
-    
+
         exportTable() {
             //     let o = document.getElementById('tabledata').style.display;
             //     if (o !== 'none') {
@@ -614,7 +730,7 @@ export default {
             // 基于准备好的dom，初始化echarts实例
             let myChart = echarts.init(document.getElementById('myChart'));
             // 绘制图表
-            myChart.setOption(this.option);
+            myChart.setOption(this.option, true);
         },
         somethingdata() {
             this.$axios({
@@ -627,8 +743,6 @@ export default {
                 }&argEndTime=${this.endtime}`
             })
                 .then(res => {
-                   
-                  
                     this.try = 2;
                     this.option.xAxis.data = res.data.data.xAxis;
                     this.option.series[0].data = res.data.data.instantData;
@@ -646,69 +760,76 @@ export default {
                     console.log(error);
                 });
         },
-        
+        changeType(t, s) {
+            this.typed = t;
+            this.ZHObj.tablecell1 = s;
+            console.log('this.ri', this.ri);
+            if (this.ri == 2) {
+                this.back();
+            }
+            this.tablename();
+        },
         tablename() {
-          var timeRegex = "^((([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-" +
-          "(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})" +
-          "(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29))\\s+" +
-          "([0-1]?[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$"
-             var Regex = new RegExp(timeRegex)
-              console.log(this.value1)
-             console.log(Regex.test("2020-10-14 00:00:00"))
-            if(!this.cxshow){
-             this.tipchange1 = true;
-             setTimeout(()=>{
-                 $('.tip').css({
-
-          left:`calc(50% - ${($('.tip').width()/2)*this.a1}px)`,
-          top:`calc(50% - ${($('.tip').height()/2)*this.a1}px)`
-      })
-        this.move('tip','tiptop') 
-             })
-            this.w1 = true
-            this.tipword = ''
-            this.w = this.lang.NoOperationAuthority;
-            return
+            var timeRegex =
+                '^((([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-' +
+                '(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})' +
+                '(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29))\\s+' +
+                '([0-1]?[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$';
+            var Regex = new RegExp(timeRegex);
+            console.log(this.value1);
+            console.log(Regex.test('2020-10-14 00:00:00'));
+            if (!this.cxshow) {
+                this.tipchange1 = true;
+                setTimeout(() => {
+                    $('.tip').css({
+                        left: `calc(50% - ${$('.tip').width() / 2}px)`,
+                        top: `calc(50% - ${$('.tip').height() / 2}px)`
+                    });
+                    this.move('tip', 'tiptop');
+                });
+                this.w1 = true;
+                this.tipword = '';
+                this.w = this.lang.NoOperationAuthority;
+                return;
             }
-               if(!Regex.test(this.value1)||!Regex.test(this.value2)){
-                  this.tipchange1 = true;
-                        setTimeout(()=>{
-                 $('.tip').css({
-
-          left:`calc(50% - ${($('.tip').width()/2)*this.a1}px)`,
-          top:`calc(50% - ${($('.tip').height()/2)*this.a1}px)`
-      })
-        this.move('tip','tiptop') 
-             })
-            this.w1 = true
-            this.tipword = ''
-            this.w = this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect;
-            return
+            if (!Regex.test(this.value1) || !Regex.test(this.value2)) {
+                this.tipchange1 = true;
+                setTimeout(() => {
+                    $('.tip').css({
+                        left: `calc(50% - ${$('.tip').width() / 2}px)`,
+                        top: `calc(50% - ${$('.tip').height() / 2}px)`
+                    });
+                    this.move('tip', 'tiptop');
+                });
+                this.w1 = true;
+                this.tipword = '';
+                this.w = this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect;
+                return;
             }
-          
+
             //请求接口
             this.$axios({
                 method: 'post',
-                url: `/api/AlarmStatistics/SearchAlarm?StartTime=${this.value1}&EndTime=${this.value2}`
+                url: `/api/AlarmStatistics/SearchAlarm?StartTime=${this.value1}&EndTime=${this.value2}&Type=${this.typed}`
             })
                 .then(res => {
-                  console.log("res",res)
+                    console.log('res', res);
                     this.try = 2;
                     if (res.data.code == 0) {
-
-                        if(res.data.data.length === 0){
+                        if (res.data.data.length === 0) {
                             this.tipchange1 = true;
-                            setTimeout(()=>{
+                            setTimeout(() => {
                                 $('.tip').css({
-                             
-                                    left:`calc(50% - ${($('.tip').width()/2)*this.a1}px)`,
-                                    top:`calc(50% - ${($('.tip').height()/2)*this.a1}px)`
-                                })
-                                this.move('tip','tiptop') 
-                            })
+                                    left: `calc(50% - ${$('.tip').width() /
+                                        2}px)`,
+                                    top: `calc(50% - ${$('.tip').height() /
+                                        2}px)`
+                                });
+                                this.move('tip', 'tiptop');
+                            });
                             this.w = this.lang.AlarmStatistics_HT_NoAlarmRecord;
                             // this.w = res.data.msg
-                            return
+                            return;
                         }
                         this.tablenames = res.data.data;
 
@@ -739,14 +860,15 @@ export default {
                                 new Date(this.endtime).getTime()
                             ) {
                                 this.tipchange1 = true;
-                                setTimeout(()=>{
+                                setTimeout(() => {
                                     $('.tip').css({
-                                   
-                                        left:`calc(50% - ${($('.tip').width()/2)*this.a1}px)`,
-                                        top:`calc(50% - ${($('.tip').height()/2)*this.a1}px)`
-                                    })
-                                    this.move('tip','tiptop') 
-                                })
+                                        left: `calc(50% - ${$('.tip').width() /
+                                            2}px)`,
+                                        top: `calc(50% - ${$('.tip').height() /
+                                            2}px)`
+                                    });
+                                    this.move('tip', 'tiptop');
+                                });
                                 this.w = this.lang.AlarmRecord_HT_TheQueryDate;
                             }
                         } else if (this.couponSelected == '日报表') {
@@ -755,14 +877,15 @@ export default {
                                 new Date(this.endtime).getTime()
                             ) {
                                 this.tipchange1 = true;
-                                      setTimeout(()=>{
-                 $('.tip').css({
-       
-          left:`calc(50% - ${($('.tip').width()/2)*this.a1}px)`,
-          top:`calc(50% - ${($('.tip').height()/2)*this.a1}px)`
-      })
-        this.move('tip','tiptop') 
-             })
+                                setTimeout(() => {
+                                    $('.tip').css({
+                                        left: `calc(50% - ${$('.tip').width() /
+                                            2}px)`,
+                                        top: `calc(50% - ${$('.tip').height() /
+                                            2}px)`
+                                    });
+                                    this.move('tip', 'tiptop');
+                                });
                                 this.w = this.lang.AlarmRecord_HT_TheQueryDate;
                             }
                         } else if (this.couponSelected == '月报表') {
@@ -771,15 +894,16 @@ export default {
                                 new Date(this.endtime).getTime()
                             ) {
                                 this.tipchange1 = true;
-                                      setTimeout(()=>{
-                 $('.tip').css({
-   
-          left:`calc(50% - ${($('.tip').width()/2)*this.a1}px)`,
-          top:`calc(50% - ${($('.tip').height()/2)*this.a1}px)`
-      })
-        this.move('tip','tiptop') 
-             })
-                                this.w =  this.lang.AlarmRecord_HT_TheQueryDate;
+                                setTimeout(() => {
+                                    $('.tip').css({
+                                        left: `calc(50% - ${$('.tip').width() /
+                                            2}px)`,
+                                        top: `calc(50% - ${$('.tip').height() /
+                                            2}px)`
+                                    });
+                                    this.move('tip', 'tiptop');
+                                });
+                                this.w = this.lang.AlarmRecord_HT_TheQueryDate;
                             }
                         } else if (this.couponSelected == '年报表') {
                             if (
@@ -787,77 +911,64 @@ export default {
                                 new Date(this.endtime).getTime()
                             ) {
                                 this.tipchange1 = true;
-                                      setTimeout(()=>{
-                 $('.tip').css({
-    
-          left:`calc(50% - ${($('.tip').width()/2)*this.a1}px)`,
-          top:`calc(50% - ${($('.tip').height()/2)*this.a1}px)`
-      })
-        this.move('tip','tiptop') 
-             })
-                                this.w =this.lang.AlarmRecord_HT_TheQueryDate;
+                                setTimeout(() => {
+                                    $('.tip').css({
+                                        left: `calc(50% - ${$('.tip').width() /
+                                            2}px)`,
+                                        top: `calc(50% - ${$('.tip').height() /
+                                            2}px)`
+                                    });
+                                    this.move('tip', 'tiptop');
+                                });
+                                this.w = this.lang.AlarmRecord_HT_TheQueryDate;
                             }
                         }
-            
+
                         this.ddddssss = res.data.data;
                         this.$nextTick(function() {
                             this.intgraph(this.ddddssss);
                         });
                     } else {
-                 
                         this.tipchange1 = true;
-                              setTimeout(()=>{
-                 $('.tip').css({
-    
-          left:`calc(50% - ${($('.tip').width()/2)*this.a1}px)`,
-          top:`calc(50% - ${($('.tip').height()/2)*this.a1}px)`
-      })
-        this.move('tip','tiptop') 
-             })
+                        setTimeout(() => {
+                            $('.tip').css({
+                                left: `calc(50% - ${$('.tip').width() / 2}px)`,
+                                top: `calc(50% - ${$('.tip').height() / 2}px)`
+                            });
+                            this.move('tip', 'tiptop');
+                        });
                         // this.w =  this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect;
-                        this.w = res.data.msg
+                        this.w = res.data.msg;
                     }
                 })
                 .catch(function(error) {
-              
                     this.tipchange1 = true;
-                          setTimeout(()=>{
-                 $('.tip').css({
-        
-          left:`calc(50% - ${($('.tip').width()/2)*this.a1}px)`,
-          top:`calc(50% - ${($('.tip').height()/2)*this.a1}px)`
-      })
-        this.move('tip','tiptop') 
-             })
-                    // this.w = this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect;
-                    this.w = res.data.msg
+                    setTimeout(() => {
+                        $('.tip').css({
+                            left: `calc(50% - ${$('.tip').width() / 2}px)`,
+                            top: `calc(50% - ${$('.tip').height() / 2}px)`
+                        });
+                        this.move('tip', 'tiptop');
+                    });
+                    this.w = this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect;
+                    // this.w = res.data.msg;
                 });
         },
-                       sx(){
-            let that = this
-            setTimeout(()=>{
-for(let i=0;i<$('.el-picker-panel').length;i++){
-                $('.el-picker-panel')[i].style.zoom = that.a1
-            }
-            })
-              
-        },
         saveImage(divText, imgText) {
-               if(!this.dcshow){
-             this.tipchange1 = true;
-                   setTimeout(()=>{
-                 $('.tip').css({
-     
-          left:`calc(50% - ${($('.tip').width()/2)*this.a1}px)`,
-          top:`calc(50% - ${($('.tip').height()/2)*this.a1}px)`
-      })
-        this.move('tip','tiptop') 
-             })
-            this.w1 = true
-            this.tipword = ''
-            // this.w = this.lang.NoOperationAuthority;
-            this.w = res.data.msg
-            return
+            if (!this.dcshow) {
+                this.tipchange1 = true;
+                setTimeout(() => {
+                    $('.tip').css({
+                        left: `calc(50% - ${$('.tip').width() / 2}px)`,
+                        top: `calc(50% - ${$('.tip').height() / 2}px)`
+                    });
+                    this.move('tip', 'tiptop');
+                });
+                this.w1 = true;
+                this.tipword = '';
+                // this.w = this.lang.NoOperationAuthority;
+                this.w = res.data.msg;
+                return;
             }
             let canvasID = this.$refs[divText];
             let that = this;
@@ -878,14 +989,15 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             });
         },
         initgraphsubchart(obj, ids) {
-       
             if (document.getElementById('tabledata') != null) {
                 document.getElementById('tabledata').style.display == 'none';
             }
             if (document.getElementById('tablebox') !== null) {
-           
-                 document.getElementById('tablebox').parentNode.removeChild(document.getElementById('tablebox'))
-                
+                document
+                    .getElementById('tablebox')
+                    .parentNode.removeChild(
+                        document.getElementById('tablebox')
+                    );
             }
             let arrname = new Array();
             arrname.push(this.ZHObj.subtablecell0);
@@ -893,7 +1005,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 let j = i + 1;
                 arrname.push(obj[i][0]);
             }
-        
+
             let table = document.createElement('table');
             table.id = ids;
             table.classList.add('tableclass');
@@ -906,14 +1018,14 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 td.innerHTML = arrname[i];
                 tr.appendChild(td);
             }
-            
+
             thead.appendChild(tr);
             table.appendChild(thead);
             let div = document.createElement('div');
             div.id = 'tablebox';
             div.appendChild(table);
             document.getElementsByClassName('tabledata')[0].appendChild(div);
-      
+
             //   div.appendChild(document.getElementsByClassName('tabledata')[0]);
             //tabel赋样式
             table.style.width = '100%';
@@ -936,7 +1048,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             let newcellname = newRow.insertCell(0);
             newcellname.innerHTML = this.ZHObj.tablecell1;
             newcellname.style.backgroundColor = '#c7d5e8';
-            console.log(obj)
+            console.log(obj);
             for (let j = 1; j < obj.length + 1; j++) {
                 let newcellname = newRow.insertCell(j);
                 newcellname.innerHTML = obj[j - 1][1];
@@ -963,7 +1075,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         },
 
         initgraphchart(obj, ids) {
-        
             let arrname = new Array();
             arrname.push(this.ZHObj.tablecell0);
             for (let i = 0; i < obj.length; i++) {
@@ -997,7 +1108,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             let newRow = table.insertRow();
             let newcellname = newRow.insertCell(0);
             newcellname.innerHTML = this.ZHObj.tablecell1;
-         
+
             newcellname.style.backgroundColor = '#c7d5e8';
             for (let j = 1; j < obj.length + 1; j++) {
                 let newcellname = newRow.insertCell(j);
@@ -1009,9 +1120,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             newcellname.style.backgroundColor = '#c7d5e8';
             for (let j = 1; j < obj.length + 1; j++) {
                 let newcellname = newRow.insertCell(j);
-                newcellname.innerHTML = (
-                    parseFloat(obj[j - 1].Per) * 100
-                ).toFixed(1);
+                newcellname.innerHTML = (obj[j - 1].Per * 100).toFixed(1);
             }
             newRow = table.insertRow();
             newcellname = newRow.insertCell(0);
@@ -1019,41 +1128,33 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             newcellname.style.backgroundColor = '#c7d5e8';
             for (let j = 1; j < obj.length + 1; j++) {
                 let newcellname = newRow.insertCell(j);
-                newcellname.innerHTML = (
-                    parseFloat(obj[j - 1].SumPer) * 100
-                ).toFixed(1);
+                newcellname.innerHTML = (obj[j - 1].SumPer * 100).toFixed(1);
             }
-          
         },
         intgraph(secondgraphdata) {
-            if(document.getElementById('tabledata')!==null){
-                document.getElementById('tabledata').parentNode.removeChild(document.getElementById('tabledata'))
+            if (document.getElementById('tabledata') !== null) {
+                document
+                    .getElementById('tabledata')
+                    .parentNode.removeChild(
+                        document.getElementById('tabledata')
+                    );
             }
             if (this.Language == 'English') {
                 secondgraphdata = secondgraphdata.replace(/其他/g, 'other');
             }
-            document.getElementById('main3').style.display = 'none';
             //document.getElementById("tabletemple").style.display = "none";
             document.getElementById('main').style.display = 'block';
 
             this.secondgraphobj = secondgraphdata;
             this.Chart1 = this.$echarts.init(document.getElementById('main'));
-      
-            let dataAxis = new Array();
-            let databar = new Array();
-            let dataline = new Array();
+
+            let dataAxis = [];
+            let databar = [];
+            let dataline = [];
             for (let i = 0; i < this.secondgraphobj.length; i++) {
                 dataAxis.push(this.secondgraphobj[i].Name);
-                databar.push(
-                    parseInt(
-                        parseFloat(this.secondgraphobj[i].Per) * 100
-                    ).toFixed(1)
-                );
-                dataline.push(
-                    parseInt(
-                        parseFloat(this.secondgraphobj[i].SumPer) * 100
-                    ).toFixed(1)
-                );
+                databar.push((this.secondgraphobj[i].Per * 100).toFixed(1));
+                dataline.push((this.secondgraphobj[i].SumPer * 100).toFixed(1));
             }
             let yMax = 100;
             let dataShadow = [];
@@ -1153,30 +1254,40 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                                 )
                             }
                         },
-                        data: databar
+                        data: databar,
+                        label: {
+                            show: true,
+                            position: 'inside',
+                            formatter: '{c}%'
+                        }
                     },
                     {
                         type: 'line',
-                        data: dataline
+                        data: dataline,
+                        label: {
+                            show: true,
+                            position: 'top',
+                            formatter: '{c}%'
+                        }
                     }
                 ]
             };
-
-            this.Chart1.setOption(this.option);
+            this.Chart1.clear();
+            this.Chart1.setOption(this.option, true);
             // // Enable data zoom when user click bar.
             let zoomSize = 6;
             this.Chart1.on('click', params => {
-               
+                this.DeviceName = params.name;
                 this.ri = 2;
                 document.getElementById('main1').style.display = 'block';
                 document.getElementById('main').style.display = 'none';
                 for (let j = 0; j < this.secondgraphobj.length; j++) {
                     if (params.name == this.secondgraphobj[j].Name) {
                         //第二张表为空时创建
-                        this.subChardata = new Array();
-                        let dataAxis1 = new Array();
-                        let databar1 = new Array();
-                        let dataline1 = new Array();
+                        this.subChardata = [];
+                        let dataAxis1 = [];
+                        let databar1 = [];
+                        let dataline1 = [];
 
                         let sum = 0;
                         let sumper1 = 0;
@@ -1191,7 +1302,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                                     this.secondgraphobj[j].Children[jj].Con
                                 );
                         }
-                          
+
                         //对子项进行统计
                         for (
                             let i = 0;
@@ -1203,23 +1314,28 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                                     this.secondgraphobj[j].Children[i].Con
                                 ) > 0
                             ) {
-                                 
-                                dataAxis1.push(this.secondgraphobj[j].Children[i].Name);
-                                let per1 = (parseFloat( this.secondgraphobj[j].Children[i].Con ) / sum) * 100;
-                                sumper1 = sumper1 + per1;
+                                dataAxis1.push(
+                                    this.secondgraphobj[j].Children[i].Name
+                                );
+                                let per1 = (
+                                    this.secondgraphobj[j].Children[i].Per * 100
+                                ).toFixed(1);
+                                let sumPer1 = (
+                                    this.secondgraphobj[j].Children[i].SumPer *
+                                    100
+                                ).toFixed(1);
+
                                 databar1.push(per1);
-                                dataline1.push(sumper1);
-                                  console.log("this.secondgraphobj",this.secondgraphobj[j].Children[i].Con)
-                                  console.log("per1",per1)
-                                  console.log("sum",sum)
-                                  console.log("sumper1",sumper1)
+                                dataline1.push(sumPer1);
+
+                                console.log('per1', per1);
+                                console.log('sum', sum);
+                                console.log('sumper1', sumPer1);
                                 this.subChardata.push([
                                     this.secondgraphobj[j].Children[i].Name,
-                                    parseFloat(
-                                        this.secondgraphobj[j].Children[i].Con
-                                    ),
-                                    per1.toFixed(1),
-                                    sumper1.toFixed(1)
+                                    this.secondgraphobj[j].Children[i].Con,
+                                    per1,
+                                    sumPer1
                                 ]);
                             }
                         }
@@ -1296,7 +1412,12 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                                     showBackground: true,
                                     itemStyle: {
                                         normal: {
-                                            color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
+                                            color: new echarts.graphic.LinearGradient(
+                                                0,
+                                                0,
+                                                0,
+                                                1,
+                                                [
                                                     {
                                                         offset: 0,
                                                         color: '#83bff6'
@@ -1313,7 +1434,12 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                                             )
                                         },
                                         emphasis: {
-                                            color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
+                                            color: new echarts.graphic.LinearGradient(
+                                                0,
+                                                0,
+                                                0,
+                                                1,
+                                                [
                                                     {
                                                         offset: 0,
                                                         color: '#2378f7'
@@ -1330,22 +1456,37 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                                             )
                                         }
                                     },
-                                    data: databar1
+                                    data: databar1,
+                                    label: {
+                                        show: true,
+                                        position: 'inside',
+                                        formatter: '{c}%'
+                                    }
                                 },
                                 {
                                     type: 'line',
-                                    data: dataline1
+                                    data: dataline1,
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        formatter: '{c}%'
+                                    }
                                 }
                             ]
                         };
-                       console.log(" this.subChardata", this.subChardata)
+                        console.log(' this.subChardata', this.subChardata);
                         if (!this.Chart2) {
                             //初始化子图
                             // alert("s")
                             this.Chart2 = this.$echarts.init(
                                 document.getElementById('main1')
                             );
-                            this.Chart2.setOption(option1);
+                            this.Chart2.clear();
+                            this.Chart2.setOption(option1, true);
+                            this.Chart2.on('click', params => {
+                                this.openAlarmAnalysisPop(params);
+                            });
+
                             //初始化子表
                             document.getElementById('tabledata').style.display =
                                 'none';
@@ -1353,7 +1494,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                                 this.subChardata,
                                 'subtabledata'
                             );
-                              document.getElementById(
+                            document.getElementById(
                                 'subtabledata'
                             ).style.display = 'table';
                             document.getElementById(
@@ -1364,8 +1505,10 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                             ).style.height = '300px';
                             //隐藏c#端的控件
                         } else {
-                            
-                            this.Chart2.setOption(option1);
+                            this.Chart2.setOption(option1, true);
+                            this.Chart2.on('click', params =>
+                                this.openAlarmAnalysisPop(params)
+                            );
                             //初始化子表
                             document.getElementById('tabledata').style.display =
                                 'none';
@@ -1398,17 +1541,15 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
 
             //let option = tableobj.getOption();
             //option.series[0].data = yarray;
-            //tableobj.setOption(option);
+            //tableobj.setOption(option, true);
         }
-    },
-
-  
+    }
 };
 </script>
 <style lang="scss" scoped>
-.tabledata{
+.tabledata {
     overflow-y: auto;
-    overflow-x:hidden;
+    overflow-x: hidden;
 }
 .sum {
     margin-top: 5px;
@@ -1443,6 +1584,28 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         background-color: #ffffff;
         border: 1px solid #d5d5d5;
         overflow: hidden;
+    }
+    .switchTab {
+        height: 50px;
+        width: 100%;
+        display: flex;
+        padding-left: 20px;
+        .tab,
+        .curtab {
+            width: 120px;
+            height: 40px;
+            border-radius: 4px;
+            border: #4270e4 1px solid;
+            color: #4270e4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .curtab {
+            background-color: #81d3f8;
+            color: #fff;
+        }
     }
     .table {
         height: 60px;
@@ -1491,17 +1654,16 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         cursor: pointer;
     }
     .query {
-           background-color: #ffffff;
+        background-color: #ffffff;
         border: 2px solid #4270e4;
         color: #4270e4;
-              margin-right: 20px;
+        margin-right: 20px;
     }
     .export {
         color: #fd9e00;
         background-color: #ffffff;
         border: 2px solid #fd9e00;
-          margin-right: 10px;
-
+        margin-right: 10px;
     }
 
     .container {
@@ -1518,7 +1680,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
 }
 .tabledata {
     padding: 10px;
-    width: calc(100% - 20px);
+    width: calc(100%-20px);
 }
 
 select {
@@ -1562,7 +1724,7 @@ select {
     .w {
         width: 100%;
         margin-top: 40px;
-        overflow-y:auto;
+        overflow-y: auto;
         text-align: center;
     }
     .tipdetermine {
@@ -1810,12 +1972,14 @@ td {
     white-space: nowrap !important ;
     overflow: auto !important ;
 }
-#main,#main1,#main3{
-     transform-origin:0%;
-          position:absolute;
-          top:0px;
-          bottom:0;
-          left:0;
-          margin:auto;
+#main,
+#main1 {
+    transform-origin: 0%;
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    // background-color: #fff;
 }
-</style>t
+</style>

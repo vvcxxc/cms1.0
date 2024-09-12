@@ -371,6 +371,19 @@
       </div>
     </div>
 
+    <div v-show="tipShow" class="login_outPop">
+      <div class="login_outHead">
+        <i class="warning el-icon-warning"></i>
+        <span class="text">{{ lang.Main_MessageBox_Title_Tips }}</span>
+      </div>
+      <div class="login_conter">
+        <div>{{ tipWord }}</div>
+      </div>
+      <div class="login_btn">
+        <div @click="tipShow = false" class="login_confirm">{{ lang.PopupCommon_Sure }}</div>
+      </div>
+    </div>
+
     <div v-show="warnPopShow" class="login_outPop">
       <div class="login_outHead">
         <i class="warning el-icon-warning"></i>
@@ -440,10 +453,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <div class="test-btn">
-      <button @click="testFun1">+1消息</button>
-    </div> -->
   </header>
 </template>
 
@@ -451,8 +460,6 @@
 import Nav from './Nav.js';
 import '../../../public/jquery.signalR-2.4.1.js'
 import Utils from '../../assets/js/util.js'
-import { MaterialMistakeProofing } from '@/api/rzdn/common.js'
-
 export default {
   data() {
     return {
@@ -515,7 +522,9 @@ export default {
       iosImgUrl: '',
       appVersion: '',
       engineeringImgUrl: '',
-      engineeringName: ''
+      engineeringName: '',
+      tipShow: false,
+      tipWord: ''
     };
   },
   watch: {
@@ -523,202 +532,15 @@ export default {
       this.$store.state.routename = a;
     },
     Menus(val) {
-      // console.log(val)
+      console.log(val)
     }
   },
   destroyed() {
     clearInterval(this.userTime)
     clearInterval(this.touristTime)
-    window.removeEventListener("keydown", (e)=> {
-      let nextCode,nextTime = '';
-      let lastTime = this.lastTime;
-      let code = this.code === undefined ? '' : this.code;
-      let shift = e.shiftKey
-      if (window.event) {// IE
-        nextCode = e.keyCode
-      } else if (e.which) {// Netscape/Firefox/Opera
-        nextCode = e.which
-      }
-      nextTime = new Date().getTime();
-      if (nextCode === 229) {
-        return
-      }
-      // console.log('eeeee', shift, nextCode, code, this.code)
-      //字母上方 数字键0-9 对应键码值 48-57; 数字键盘 数字键0-9 对应键码值 96-105
-      if((nextCode >= 48 && nextCode <= 57) || (nextCode >= 96 && nextCode <= 105)){
-      let codes = {
-        '48': 48,
-        '49': 49,
-        '50': 50,
-        '51': 51,
-        '52': 52,
-        '53': 53,
-        '54': 54,
-        '55': 55,
-        '56': 56,
-        '57': 57,
-        '96': 48,
-        '97': 49,
-        '98': 50,
-        '99': 51,
-        '100': 52,
-        '101': 53,
-        '102': 54,
-        '103': 55,
-        '104': 56,
-        '105': 57,
-      }
-        nextCode = codes[nextCode];
-        nextTime = new Date().getTime();
-      }
-      // 第二次输入延迟两秒，删除之前的数据重新计算
-      if(nextTime && lastTime && nextTime-lastTime> 30){
-        // 特殊字符处理
-        if (shift && nextCode == 16) {
-          return
-        }
-        code = String.fromCharCode(nextCode);
-      }else{
-        // 特殊字符处理
-        if (shift && nextCode == 16) {
-          return
-        }
-        if (shift && nextCode == 50) {
-          code += '@'
-        } else {
-          code += String.fromCharCode(nextCode)
-        }
-      }
-      // 保存数据
-      this.nextCode = nextCode;
-      this.lastTime = nextTime;
-      this.code = code;
-      // 键入Enter
-      if(e.which == 13) {
-        // 判断 code 长度（这里就获取到条码值了，以下业务自由发挥）
-        if (this.code.length < 3) { // 此处处理输入框键盘触发扫码接口（画面制作等等界面的输入框）
-          return
-        }
-        let $this = this
-        code = code.trim()
-        MaterialMistakeProofing(code).then(res => {
-          if (res.data.code === 0) {
-            $this.message_Success($this, '扫码成功')
-          } else {
-            $this.confirm_Pop2($this, res.data.msg)
-          }
-          //键入回车务必清空code值
-          code = ''
-          this.code = ''
-          return false;
-        })
-      }
-    }, false)
   },
   
   mounted() {
-    /* 添加全局扫码枪 */
-    window.addEventListener("keydown", (e)=> {
-      let nextCode,nextTime = '';
-      let lastTime = this.lastTime;
-      let code = this.code === undefined ? '' : this.code;
-      let shift = e.shiftKey
-      if (window.event) {// IE
-        nextCode = e.keyCode
-      } else if (e.which) {// Netscape/Firefox/Opera
-        nextCode = e.which
-      }
-      nextTime = new Date().getTime();
-      if (nextCode === 229) {
-        return
-      }
-      // console.log('eeeee', shift, nextCode, code, this.code)
-      //字母上方 数字键0-9 对应键码值 48-57; 数字键盘 数字键0-9 对应键码值 96-105
-      if((nextCode >= 48 && nextCode <= 57) || (nextCode >= 96 && nextCode <= 105)){
-      let codes = {
-        '48': 48,
-        '49': 49,
-        '50': 50,
-        '51': 51,
-        '52': 52,
-        '53': 53,
-        '54': 54,
-        '55': 55,
-        '56': 56,
-        '57': 57,
-        '96': 48,
-        '97': 49,
-        '98': 50,
-        '99': 51,
-        '100': 52,
-        '101': 53,
-        '102': 54,
-        '103': 55,
-        '104': 56,
-        '105': 57,
-      }
-        nextCode = codes[nextCode];
-        nextTime = new Date().getTime();
-      }
-      // 第二次输入延迟两秒，删除之前的数据重新计算
-      if(nextTime && lastTime && nextTime-lastTime> 30){
-        // 特殊字符处理
-        if (shift && nextCode == 16) {
-          return
-        }
-        code = String.fromCharCode(nextCode);
-      }else{
-        // 特殊字符处理(shift键)
-        if (shift && nextCode == 16) {
-          return
-        }
-        if (shift && nextCode == 50) {
-          code += '@'
-        } else{
-          // 特殊字符处理
-          if (nextCode === 189) {
-            code += '-'
-          } else {
-            code += String.fromCharCode(nextCode)
-          }
-        }
-      }
-      // 保存数据
-      this.nextCode = nextCode;
-      this.lastTime = nextTime;
-      this.code = code;
-      // 键入Enter
-      if(e.which == 13) {
-        // 判断 code 长度（这里就获取到条码值了，以下业务自由发挥）
-        if (this.code.length < 3) { // 此处处理输入框键盘触发扫码接口（画面制作等等界面的输入框）
-          return
-        }
-        let $this = this
-        code = code.trim()
-        // this.$nextTick(() => {
-        //   if ($this.$store.state.msgboxShow) {
-        //     $this.$store.commit('setMsgboxShow', false)
-        //   }
-        // })
-        MaterialMistakeProofing(code).then(res => {
-          if (res.data.code === 0) {
-            $this.message_Success($this, '扫码成功')
-            if ($this.$store.state.msgboxShow) {
-              $this.$store.commit('setMsgboxShow', false)
-            }
-          } else {
-            // $this.confirm_Pop2($this, res.data.msg)
-            $this.message_Error($this, res.data.msg)
-          }
-          //键入回车务必清空code值
-          code = ''
-          this.code = ''
-          return false;
-        })
-      }
-    }, false)
-
-    /* 结束 */
     // this.$nextTick(() => {
     //     this.lang = JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
     // })
@@ -727,13 +549,7 @@ export default {
     if (a < 1) {
       a = 0.8
     }
-    $('.v-toolbar').css({
-      zoom: a
-    })
     //  }else{
-    //  $('.v-toolbar').css({
-    //      zoom:1
-    //  })
     //  }
     let screen = JSON.parse(sessionStorage.getItem('screen'))
     if (!screen) {
@@ -748,7 +564,7 @@ export default {
 
     for (let i = 0; i < $('.nav-item').length; i++) {
       width += $('.nav-item')[i].cliWidth
-      // console.log($('.nav-item')[i])
+      console.log($('.nav-item')[i])
       if (width >= (window.screen.width - (150 * a))) {
         Menusone.push(this.Menus[i])
       } else {
@@ -912,7 +728,7 @@ export default {
           method: 'get',
           url: '/api/app/GetAppVersion',
         }).then(res => {
-          // console.log(res)
+          console.log(res)
           this.appVersion = res.data
           // var ww = res.data + ';' + 'msgHubFun()'
           // eval(ww);
@@ -955,7 +771,7 @@ export default {
     //下载图片
     downloadIamge(url, name) {
       // 将图片的src属性作为URL地址
-      // console.log(url)
+      console.log(url)
       var a = document.createElement('a')
       var event = new MouseEvent('click')
       a.download = name || '下载图片名称'
@@ -971,8 +787,8 @@ export default {
       this.localData.Main_Record_ChangePassword = languages[currentLang].Main_Record_ChangePassword
     },
     changemenu() {
-      // console.log('menu', this.Menus)
-      // console.log('123', this.Menus2)
+      console.log('menu', this.Menus)
+      console.log('123', this.Menus2)
     },
 
     // 修改自适应
@@ -1019,7 +835,6 @@ export default {
       var self = this
       //二次开发图表实时刷新调用客户端方法 接收值
       window.$.connection.subchart.client.ReceivedRealyData = function (content) {
-        console.log('websocket接口测试', 1);
         setTimeout(() => {    //同时调用多次会直接替换延迟50毫秒保证每次替换的值都有被监听到
           self.$store.state.typeNum = '2'                      //图表类型监听
           self.$store.state.contentData = content.Data   //图表监听动态数值 弹窗使用
@@ -1028,7 +843,6 @@ export default {
       };
       //二次开发图表历史查询调用客户端方法  接收值
       window.$.connection.subchart.client.ReceivedQueryData = function (content) {
-        console.log('websocket接口测试', 2);
         setTimeout(() => {
           self.$store.state.typeNum = '1'                       //图表类型监听
           self.$store.state.contentData = content.Data   //图表监听动态数值 弹窗使用
@@ -1036,13 +850,11 @@ export default {
         }, 50)
       };
       window.$.connection.redisMonitor.client.RecivedRedisControlChanged = function(name,value,arr,b){
-        console.log('websocket接口测试', 3);
-        // console.log("下拉框",name,value,arr,b)
+        console.log("下拉框",name,value,arr,b)
         self.functionA(arr)
       }
       //二次开发报警控件实时值调用客户端方法 接收值
       window.$.connection.redisMonitor.client.ReceivedAlarms = function (name, value) {
-        console.log('websocket接口测试', 4);
         let data = {
           name: name,
           value: value
@@ -1053,7 +865,6 @@ export default {
       }
       //主页面报警提醒消息实时值调用方法 接收值
       window.$.connection.redisMonitor.client.ReceivedDeviceMessageRemind = (content) => {
-        // console.log('websocket接口测试', 5);
         this.vulnerablePartNum = content.vulnerablePartNum > 99 ? '99+' : content.vulnerablePartNum
         this.pointInspectionNum = content.pointInspectionNum > 99 ? '99+' : content.pointInspectionNum
         this.maintainNum = content.vulnerablePartNum > 99 ? '99+' : content.maintainNum
@@ -1063,7 +874,7 @@ export default {
         if (this.TotalNum == 0) {
           this.TotalNum = this.TotalNum
           if (document.querySelector('.warn_infoImg') != undefined) {
-            // document.querySelector('.warn_infoImg').src = require('../../assets/images/6d9a1ee3e274d5e414e1475c0bae615.png')
+            document.querySelector('.warn_infoImg').src = require('../../assets/images/6d9a1ee3e274d5e414e1475c0bae615.png')
             document.querySelector('.warn_text').style.background = '#999'
             document.querySelector('.warn_text').innerHTML = this.TotalNum
           }
@@ -1076,46 +887,8 @@ export default {
           }
         }
       }
-      // 瑞舟工位管理-弹窗管理
-      window.$.connection.ruiZhouHub.client.SentPopupInfoMethod = (obj) => {
-        console.log('瑞舟弹窗管理.websocket回调', obj);
-        if (window.cachedSignalId === obj.ID) return
-        window.cachedSignalId = obj.ID
-        this.setServiceSignal(obj.Info)
-      };
-
-      // 瑞舟首件报表提示-弹窗管理
-      window.$.connection.ruiZhouHub.client.SentSendFristarticleTootip = (obj) => {
-        console.log('首件报表弹窗管理.websocket回调', obj);
-        if (window.cachedTootipId === obj.ID) return
-        window.cachedTootipId = obj.ID
-        this.openServiceSignal(obj.Toptip)
-      };
-      // 瑞舟工位看板 (已更换为定时器)
-      // window.$.connection.ruiZhouHub.client.SentProcessTotipMethod = (obj) => {
-      //   setTimeout(() => {
-      //     console.log('过程提示')
-      //     self.$store.state.processData = obj
-      //   }, 50);
-      // };
-
-      // window.$.connection.ruiZhouHub.client.SentServiceStatusMethod = (obj) => {
-      //   setTimeout(() => {
-      //     console.log('设备状态')
-      //     self.$store.state.deviceData = obj
-      //   }, 50);
-      // };
-
-      // window.$.connection.ruiZhouHub.client.SentOrderTypeMethod = (obj) => {
-      //   setTimeout(() => {
-      //     console.log('产品型号')
-      //     self.$store.state.productType = obj
-      //   }, 50);
-      // };
-
       //二次开发页面脚本事件调用方法
        window.$.connection.chart.client.ReceivedExecuteScript = function (name, value) {
-        console.log('websocket接口测试', 7);
 
         //              name = [
         //                  {
@@ -1124,7 +897,7 @@ export default {
         // Value: "Red"
        //                  }
         //              ]
-        // console.log('脚本数据', name)
+        console.log('脚本数据', name)
         setTimeout(() => {
           self.$store.state.scriptData = ''
           self.$store.state.scriptData = name
@@ -1132,7 +905,6 @@ export default {
       }
       //二次开发页面实时监听变量点 接收值
       window.$.connection.redisMonitor.client.RecivedRedisChanged = function (name, value) {
-        console.log('websocket接口测试', 8);
         self.$store.state.monitorShow = value   //流动控件监听  弹窗使用
         self.$store.state.monitorName = name
         //变化时推送变量触发组件方法
@@ -1144,81 +916,37 @@ export default {
           self.$store.state.varChange = data  //监听变量变化
         }, 50)
       }
+    // 消息提示
+      window.$.connection.redisMonitor.client.BatchReach = (value) => {
+        this.tipShow = true;
+        this.tipWord = value
+      }
       //二次开发页面查询控件定时触发调用方法
       this.msgHub.client.ReceivedQueryTrigger = function (content) {
-        console.log('websocket接口测试', 9);
         setTimeout(() => {
           self.$store.state.setTiemValue = content  //图表定时触发监听 弹窗使用
         }, 50)
       };
-        // console.log("触发1",this.$route)
-        // console.time();
+        console.log("触发1",this.$route)
+        console.time();
       //websockets建立连接在Vuex监听
       window.$.connection.hub.start().done(() => {
-        console.log('websocket接口测试', 10);
-        // console.timeEnd();
-        //  console.log("触发",this.$route)
+        console.timeEnd();
+         console.log("触发",this.$route)
          
         setTimeout(() => {
           this.$store.state.websocketsShow = 'true'
-          // console.log("web改变了")
+          console.log("web改变了")
           window.$.connection.subchart.server.joinView(`${this.$route.params.pathMatch}`, localStorage.getItem('currentLang'))
         }, 50)
       }).fail(function () {
-        // console.log("Connect fail")
+        console.log("Connect fail")
       });
     },
-    // 瑞舟工位管理-弹窗管理
-    setServiceSignal(obj) {
-
-      this.$alert(
-        obj.Tootip, 
-        '提示', 
-        {
-          customClass: 'confirmDialog confirmDialog2',
-          confirmButtonText: '确认',
-          closeOnClickModal: false,
-          dangerouslyUseHTMLString: true,
-          type: 'warning',
-          callback: () => {
-            window.cachedSignalId = null
-            console.log('下发参数', obj);
-            this.$api.locationManagement.setServiceSignal(obj.Single).then(ref => {
-              console.log('下发结果', ref.data);
-              if (ref.data.code === 1) this.confirm_Pop2(this, ref.data.msg)
-            }, err => {
-              console.log('下发失败', err);
-            })
-          }
-        }
-      )
-    },
-    // 瑞舟首件报表提示-弹窗管理
-    openServiceSignal(tooltip) {
-      // if (this._isOpenedServiceSignal) return
-      // this._isOpenedServiceSignal = true
-      this.$alert(
-        tooltip,
-        '提示',
-        {
-          customClass: 'confirmDialog confirmDialog2',
-          confirmButtonText: '确认',
-          closeOnClickModal: false,
-          dangerouslyUseHTMLString: true,
-          type: 'warning',
-          callback:() => {
-            window.cachedTootipId = null
-          }
-        }
-      )
-    },
-    testFun1() {
-    },
-
     //查询id
     fff(id) {
       //注册在路径在的id是用于二次开发页面 控件是否有权限的参数
-      // console.log('eeeeeefff', id)
+      console.log('eeeeeefff', id)
     },
     //按钮初始化权限信息
     powerBtn() {
@@ -1238,6 +966,7 @@ export default {
         method: 'post',
         url: `/api/Main/Main_GetProjectInfo`,
       }).then(res => {
+        console.log("saffasafsasfasfsd")
         if (res.data.data.HasConfig == 1) {
           this.TitleText = res.data.data.Config.TitleText
           document.querySelector('.logo').src = `/images/${res.data.data.Config.TitleLogo}`
@@ -1362,7 +1091,7 @@ export default {
         UserName: name,
         argPassword: '网页注销',
       }).then((res) => {
-        // console.log('sss', res.data.data)
+        console.log('sss', res.data.data)
       })
     },
     //点击出现换行导航栏
@@ -1466,7 +1195,7 @@ export default {
     //页面监听路由是同页面发生改变
     sad1(item) {
       this.aaa = item.title;
-      // console.log('页面监听路由是同页面发生改变', item)
+      console.log('页面监听路由是同页面发生改变', item)
       //主菜单只有一个子菜单的情况
       if (item.children.length === 0) {
         this.$router.push('/');
@@ -1536,7 +1265,7 @@ export default {
         url: '/api/Main/Main_GetMenuKey?argUserID=' + this.userid,
         // argUserID: this.userid
       }).then(ress => {
-        // console.log(ress.data.data)
+        console.log(ress.data.data)
         //游客信息
         this.$axios({
           method: 'post',
@@ -1556,7 +1285,7 @@ export default {
         }).then(res => {
           sessionStorage.setItem('MenuInfo', JSON.stringify(res.data.data));
         }).catch(err => {
-          // console.log('res缓存请求err')
+          console.log('res缓存请求err')
         });
 
         //缓存变量类型
@@ -1566,7 +1295,7 @@ export default {
         }).then(res => {
           sessionStorage.setItem('variable', JSON.stringify(res.data.data));
         }).catch(err => {
-          // console.log('res缓存请求err')
+          console.log('res缓存请求err')
         });
 
 
@@ -1580,7 +1309,7 @@ export default {
             }
           })
           this.Menus = ress.data.data;
-          // console.log(ress.data.data)
+          console.log(ress.data.data)
 
           if (this.Menus.length != 0) {
 
@@ -1597,7 +1326,7 @@ export default {
               this.$router.push({ path: onePath, query: { id: oneId } });
             }
             let i = 0;
-            // console.log(this.Menus)
+            console.log(this.Menus)
             for (i in this.Menus) {
               // console.log(this.Menus)
               if (this.Menus[i].children && this.Menus[i].children.length > 0) {
@@ -1606,18 +1335,18 @@ export default {
             }
             //计算第一行个数
             var cliWidth = document.body.clientWidth - 60;
-            // console.log("cliWidth", cliWidth)
+            console.log("cliWidth", cliWidth)
             let MenusArr = []
             for (let j = 0; j < this.Menus.length; j++) {
               MenusArr.push(this.Menus[j].title)
             }
             var MenusSum = 0
             var MenusIndex = 0
-            // for (let m = 0; m < $('.header-nav').find('.nav-item').length; m++) {
-            //   console.log($('.header-nav').find('.nav-item')[m])
-            // }
-            // console.log($($('.header-nav')[0]).children())
-            // console.log("MenusArr", MenusArr)
+            for (let m = 0; m < $('.header-nav').find('.nav-item').length; m++) {
+              console.log($('.header-nav').find('.nav-item')[m])
+            }
+            console.log($($('.header-nav')[0]).children())
+            console.log("MenusArr", MenusArr)
             let a11111 = Number(parseFloat(window.screen.width / 1920).toFixed(2))
             if (a11111 < 1) {
               a11111 = 0.8
@@ -1704,7 +1433,7 @@ export default {
       }
       for (let i = 0; i < $('.nav-item').length; i++) {
         width += $('.nav-item')[i].clientWidth
-        // console.log($('.nav-item')[i].clientWidth)
+        console.log($('.nav-item')[i].clientWidth)
         if (width <= (window.screen.width / a - (150))) {
           Menusone.push(this.Menus[i])
         } else {
@@ -2737,13 +2466,4 @@ export default {
 // .v-toolbar{
 //     display: none;
 // }
-
-.test-btn {
-  position: fixed;
-  top: 0;
-  left: 0;
-  padding: 20px;
-  z-index: 99999;
-  background: green;
-}
 </style>

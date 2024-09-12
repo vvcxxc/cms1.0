@@ -16,13 +16,13 @@
             row-class-name="high-light"
             height="100%"
             width="100%"
-            :style="{'font-size': 14*zoom + 'px'}"
+            :style="{'font-size': 14 + 'px'}"
              :header-cell-style="{
                  background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',
                  color:($store.state.color=='grey')?'#000':'#fff',
                  'border-left':'1px solid #cccccc',
-                 height: 50*zoom+'px',
-                'font-size': 14*zoom + 'px',
+                 height: 50+'px',
+                'font-size': 14 + 'px',
                  padding:'0'
             }"
         >
@@ -36,7 +36,7 @@
                 :key="key"
                 :label="value"
                 align="left"
-                :min-width="180*zoom"
+                :min-width="180"
                 :show-overflow-tooltip="true"
             >
                 <template slot-scope="scope">
@@ -54,13 +54,13 @@
                  <el-table-column 
                    prop="Condition" 
                    :label="lang.AlarmRecord_HT_AlarmPointManageUC_Condition"  
-                   :min-width="220*zoom"
+                   :min-width="220"
                    :show-overflow-tooltip="true"
                    >
                    <template slot-scope="scope">
                     <div class="item">
                         <div class="itemcover" v-if="!bjshow" @click="itcover"></div>
-                        <select name="" id="" :style="{width:178*zoom+'px',height:30*zoom+'px',fontSize:15*zoom+'px',textIndent:'0.5em'}" v-model="scope.row.Condition" @change="haschange(scope)">
+                        <select name="" id="" :style="{width:178+'px',height:30+'px',fontSize:15+'px',textIndent:'0.5em'}" v-model="scope.row.Condition" @change="haschange(scope)">
                             <option :value="item" v-for="(item,index) in scope.row.ConditionList" :key="index">{{item}}</option>
                         </select>
                     </div>
@@ -69,36 +69,36 @@
               <el-table-column 
                   prop="Limit" 
                   :label="lang.AlarmRecord_HT_AlarmPointManageUC_Limit"  
-                  :min-width="220*zoom"
+                  :min-width="220"
                   :show-overflow-tooltip="true">
                    <template slot-scope="scope">
                     <div class="item">
                         <div class="itemcover" v-if="!bjshow" @click="itcover"></div>
-                        <input type="text" :style="{width:178*zoom+'px',height:30*zoom+'px',fontSize:15*zoom+'px',textIndent:'0.5em'}" v-model="scope.row.Limit"  @change="haschange(scope)">
+                        <input type="text" :style="{width:178+'px',height:30+'px',fontSize:15+'px',textIndent:'0.5em'}" v-model="scope.row.Limit"  @change="haschange(scope)">
                     </div>
                 </template>
              </el-table-column>
              <el-table-column 
                 prop="Text" 
                 :label="lang.AlarmRecord_HT_AlarmPointManageUC_AlarmText"  
-                :min-width="220*zoom"
+                :min-width="220"
                 :show-overflow-tooltip="true">
                    <template slot-scope="scope">
                     <div class="item">
                         <div class="itemcover" v-if="!bjshow" @click="itcover"></div>
-                        <input type="text" :style="{width:178*zoom+'px',height:30*zoom+'px',fontSize:15*zoom+'px',textIndent:'0.5em'}" v-model="scope.row.Text" @change="haschange(scope)">
+                        <input type="text" :style="{width:178+'px',height:30+'px',fontSize:15+'px',textIndent:'0.5em'}" v-model="scope.row.Text" @change="haschange(scope)">
                     </div>
                 </template>
              </el-table-column>
             <el-table-column 
                 prop="Level" 
                 :label="lang.AlarmRecord_HT_AlarmPointManageUC_AlarmLevel"  
-                :min-width="220*zoom"
+                :min-width="220"
                 :show-overflow-tooltip="true">
                    <template slot-scope="scope">
                     <div class="item">
                         <div class="itemcover" v-if="!bjshow" @click="itcover"></div>
-                        <select name="" id="" :style="{width:178*zoom+'px',height:30*zoom+'px',fontSize:15*zoom+'px',textIndent:'0.5em'}" v-model="scope.row.Level" @change="haschange(scope)">
+                        <select name="" id="" :style="{width:178+'px',height:30+'px',fontSize:15+'px',textIndent:'0.5em'}" v-model="scope.row.Level" @change="haschange(scope)">
                             <option value="H">H</option>
                             <option value="HH">HH</option>
                             <option value="L">L</option>
@@ -136,7 +136,6 @@ export default {
             buttonarr:[],
             bjid:"",
             bjshow:'',
-            zoom: 1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
@@ -176,8 +175,7 @@ export default {
         }
     },
     mounted(){
-        this.zoom = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
- this.jurisdiction = this.$store.state.btnPowerData
+     this.jurisdiction = this.$store.state.btnPowerData
      this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
      this.buttonarr.forEach((item)=>{
          if(item.RightName == '报警点管理-编辑表格'){

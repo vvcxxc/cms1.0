@@ -16,12 +16,12 @@
             ></div>
             <div
                 class="tiptop"
-                :style="{zoom}"
+               
             >
                 <img :src="gth" alt />
                 <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
             </div>
-            <div class="tipcontanin" :style="{zoom}">
+            <div class="tipcontanin">
                 <div class="tipword"><span>{{tipword}}</span></div>
                 <div class="tipdetermine" @click="tip1">{{lang.MessageBox_Confrim}}</div>
             </div>
@@ -395,20 +395,12 @@ import tenPop from './tendenConterPop.vue'
             }
         },
   mounted(){
-    this.zoom1 = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
      this.zoom = 1
      let that = this
      $('body')[0].addEventListener("mousemove",function(){
          that.atooltip()
      })
     setTimeout(()=>{
-        // console.log("asdasdsa",$('.conterbox').find('.el-input'))
-        $('.conterbox').find('.el-input').css('zoom',this.zoom1)
-        $(".el-button--primary,.el-input__inner").css({height: 40*this.zoom+'px',fontSize: 14*this.zoom+'px'})
-        $(".el-input__icon").css({lineHeight: 40*this.zoom+'px'})
-        $(".el-select-dropdown__item,.el-table").css({fontSize: 14*this.zoom+'px'})
-        $(".el-table tr").css({height: 40*this.zoom+'px',fontSize: 14*this.zoom+'px'})
-       that.sx()
        this.atooltip()
     })
     var fool = document.querySelectorAll('.fool_conter')
@@ -489,23 +481,9 @@ import tenPop from './tendenConterPop.vue'
 
   methods: {
       tip1(){
- this.tipchange = false;
-  this.loading1 = false
+        this.tipchange = false;
+        this.loading1 = false
       },
-                                        sx(){
-                                            
-                                        
-            let that = this
-            setTimeout(()=>{
-for(let i=0;i<$('.el-picker-panel').length;i++){
-                $('.el-picker-panel')[i].style.zoom = that.zoom1
-            }
-            for(let i=0;i<$('.el-select-dropdown').length;i++){
-                $('.el-select-dropdown')[i].style.zoom = that.zoom1
-            }
-            })
-              
-        },
         atooltip(){
            let that = this
             setTimeout(()=>{
@@ -539,11 +517,8 @@ for(let i=0;i<$('.atooltip').length;i++){
             class="timeLast"
             v-model={this.Newtime}
             type="datetime"
-              click={this.sx()}
-            onFocus={this.sx}
             disabled={this.RealShow}
             change={this.aaa()}
-             blur={this.sx()}
             placeholder="选择日期时间">
         </el-date-picker>
      )
@@ -551,7 +526,6 @@ for(let i=0;i<$('.atooltip').length;i++){
 
     //表头时间改变
    aaa(){
-       this.sx()
        if(this.Newtime.length != 19){
            var year = this.Newtime.getFullYear();        //获取当前月
            var month = this.Newtime.getMonth() + 1;
@@ -1073,7 +1047,7 @@ for(let i=0;i<$('.atooltip').length;i++){
                                sum=sum+parseFloat(pnum[w])
                         }
                        this.curveArr[j].numP =(sum / this.curveLineValue[j].data.length).toString().length > 5 ? (sum / this.curveLineValue[j].data.length).toFixed(this.getnumlen(this.curveArr[j].Newtext)) : (sum / this.curveLineValue[j].data.length)
-                        console.log(this.curveArr[j])
+                        // console.log(this.curveArr[j])
                           if(this.curveLineValue[j].data.length>=30){
                               this.curveLineValue[j].data.shift(1)
                           }

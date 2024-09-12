@@ -69,10 +69,6 @@ export default {
         };
     },
     mounted(){
-this.a1 = Number(parseFloat(window.screen.width/1920).toFixed(2))
-    if(this.a1 <1){
-        this.a1  = 0.8
-    }
     },
     methods: {
        handleEdit2(a,b){

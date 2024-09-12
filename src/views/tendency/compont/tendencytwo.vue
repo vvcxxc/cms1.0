@@ -37,23 +37,8 @@ export default {
             this.init()
 	},
 	mounted(){
-		this.zoom = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
-	  this.zoom = 1
 	},
 	methods:{
-		                                  sx(){
-                                        
-            let that = this
-            setTimeout(()=>{
-for(let i=0;i<$('.el-picker-panel').length;i++){
-                $('.el-picker-panel')[i].style.zoom = that.zoom1
-            }
-            for(let i=0;i<$('.el-select-dropdown').length;i++){
-                $('.el-select-dropdown')[i].style.zoom = that.zoom1
-            }
-            })
-              
-        },
 		axiosSet2(){
 			this.$refs.mychild22.axiosSet()
 			this.$refs.mychild23.axiosSet()

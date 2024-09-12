@@ -3478,6 +3478,7 @@ setTimeout(resolve,index*0.001);
                         data: end
                     })
                         .then(res => {
+                           console.log("res",JSON.parse(res.data.data))
                            var a2 = [];
                              if (res.data.data !== '无数据') {
                                a2 = JSON.parse(res.data.data);
@@ -10997,18 +10998,18 @@ $(
                                 }
                             }
             
-                          this.initMainChart();
+                          
                         });
                     });
               
             }
             },100)
-            // var that = this
-            //  setImmediate(()=>{
-            //       this.$nextTick(() => {
-            //                     that.initMainChart();
-            //                 });
-            //  },500)
+            var that = this
+             setImmediate(()=>{
+                  this.$nextTick(() => {
+                                that.initMainChart();
+                            });
+             },500)
         },
         //赋值
         gitValue() {

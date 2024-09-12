@@ -2400,10 +2400,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     },
 
     mounted() {
-        this.a11 = Number(parseFloat(window.screen.width / 1920).toFixed(2));
-        if (this.a11 < 1) {
-            this.a11 = 0.8;
-        }
         setTimeout(() => {
             let a = this.a11 * 120 + 'px';
             $('.table-container').css({

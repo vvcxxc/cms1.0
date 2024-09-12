@@ -10994,18 +10994,18 @@ $(
                                 }
                             }
             
-                          this.initMainChart();
+                          
                         });
                     });
               
             }
             },100)
-            // var that = this
-            //  setImmediate(()=>{
-            //       this.$nextTick(() => {
-            //                     that.initMainChart();
-            //                 });
-            //  },500)
+            var that = this
+             setImmediate(()=>{
+                  this.$nextTick(() => {
+                                that.initMainChart();
+                            });
+             },500)
         },
         //赋值
         gitValue() {

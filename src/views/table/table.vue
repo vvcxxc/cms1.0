@@ -789,7 +789,7 @@ export default {
 }
 .tabledata {
     background: #F2F2F2;
-    width: calc(100% - 20px);
+    width: calc(100%-20px);
     table {
         width: 100%;
         background-color: #ffffff;
@@ -812,7 +812,7 @@ export default {
 }
 .tabledata11 {
     background: #F2F2F2;
-    width: calc(100% - 20px);
+    width: calc(100%-20px);
     table {
         width: 100%;
         background-color: #ffffff;
@@ -973,7 +973,7 @@ select {
 }
 .img {
     width: 100%;
-    height: calc(100% - 60px);
+    height: calc(100% -60px);
 }
 .xz {
     background-color: #F2F2F2 !important;

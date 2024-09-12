@@ -6,22 +6,20 @@
  * @LastEditTime: 2021-02-22 09:36:01
  -->
 <template>
-    <div
-        class="public-table"
-        @click="changeselect = false"
-      
-    >
-            <div class="loadcover" element-loading-spinner="el-icon-loading"
-            element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
+    <div class="public-table" @click="changeselect = false">
+        <div
+            class="loadcover"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.4)"
+            v-loading="this.$store.state.isShow"
+            v-show="this.$store.state.isShow"
+            style="position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
-    left: 0;"></div>
-        <div
-            class="look"
-            v-show="offdecive"
-            @click="selectword3 = false"
-        >
+    left: 0;"
+        ></div>
+        <div class="look" v-show="offdecive" @click="selectword3 = false">
             <div class="looktop" :style="{ height: a11 * 60 + 'px' }"></div>
             <div
                 class="lookhead"
@@ -35,7 +33,7 @@
                     { colordiv: $store.state.color == 'grey' }
                 ]"
             >
-                {{lang.FileManage_AddAssociatedEquipment}}
+                {{ lang.FileManage_AddAssociatedEquipment }}
                 <img
                     :src="no2"
                     alt
@@ -68,25 +66,22 @@
                     <div
                         class="search"
                         :style="{
-                          zoom:a11
+                            zoom: a11
                         }"
                     >
-                        <span
-                            class="sblx1"
-                           
-                            >{{lang.EquipmentAccount_EquipmentType1}}</span
-                        >
-                        <div
-                            class="seleword2"
-                         
-                            @click.stop="selectword2"
-                        >
+                        <span class="sblx1">{{
+                            lang.EquipmentAccount_EquipmentType1
+                        }}</span>
+                        <div class="seleword2" @click.stop="selectword2">
                             <div class="seleword1">
                                 {{ oneselect }}
                                 <img :src="xiala" alt />
                             </div>
                         </div>
-                        <div class="selectword selectword2" v-show="selectword3">
+                        <div
+                            class="selectword selectword2"
+                            v-show="selectword3"
+                        >
                             <el-tree
                                 :data="data7"
                                 @node-click="handleNodeClic7"
@@ -117,16 +112,19 @@
                             :placeholder="lang.AlarmRecord_Time_Keyword"
                             v-model="projectkeyword"
                         />
-                        <span class="lookfor1"  @click="lookforsearch"
-                            >{{lang.AlarmRecord_Time_Select}}</span
-                        >
+                        <span class="lookfor1" @click="lookforsearch">{{
+                            lang.AlarmRecord_Time_Select
+                        }}</span>
                     </div>
-                    <div class="table" :style="{
+                    <div
+                        class="table"
+                        :style="{
                             width: 950 * a11 + 'px',
                             height: 340 * a11 + 'px'
-                        }">
+                        }"
+                    >
                         <el-table
-                              :data="projectlistdata"
+                            :data="projectlistdata"
                             height="100%"
                             border
                             highlight-current-row
@@ -150,7 +148,9 @@
                             }"
                         >
                             <template slot="empty">
-                                <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
+                                <span>{{
+                                    lang.SCMSConsoleWebApiMySql_NoData
+                                }}</span>
                             </template>
                             <el-table-column
                                 prop="DeviceName"
@@ -176,37 +176,43 @@
                     </div>
                 </div>
             </div>
-            <div class="cancel" :style="{
+            <div
+                class="cancel"
+                :style="{
                     height: 40 * a11 + 'px',
                     lineHeight: 40 * a11 + 'px',
                     width: 100 * a11 + 'px',
                     right: 150 * a11 + 'px',
                     bottom: 10 + 'px',
                     fontSize: 14 * a11 + 'px'
-                }" @click="cancel11">{{lang.PopupCommon_Cancel}}</div>
-            <div     :style="{
+                }"
+                @click="cancel11"
+            >
+                {{ lang.PopupCommon_Cancel }}
+            </div>
+            <div
+                :style="{
                     height: 40 * a11 + 'px',
                     lineHeight: 40 * a11 + 'px',
                     width: 100 * a11 + 'px',
                     right: 30 * a11 + 'px',
                     bottom: 10 + 'px',
                     fontSize: 14 * a11 + 'px'
-                }"  class="pre" @click="pre1">{{lang.PopupCommon_Sure}}</div>
+                }"
+                class="pre"
+                @click="pre1"
+            >
+                {{ lang.PopupCommon_Sure }}
+            </div>
         </div>
         <div
             class="search-container"
             :style="{
-                zoom:a11
+                zoom: a11
             }"
         >
-            <span class="sblx" 
-                >{{lang.EquipmentAccount_EquipmentType1}}</span
-            >
-            <div
-                class="seleword"
-              
-                @click.stop="selectword1"
-            >
+            <span class="sblx">{{ lang.EquipmentAccount_EquipmentType1 }}</span>
+            <div class="seleword" @click.stop="selectword1">
                 <div class="seleword1 seleword11">
                     {{ Meter }}
                     <img :src="xiala" alt />
@@ -241,12 +247,12 @@
                 :style="{
                     marginLeft: 230 + 'px'
                 }"
-                >{{lang.FileManage_AddTime1}}</span
+                >{{ lang.FileManage_AddTime1 }}</span
             >
 
             <el-date-picker
                 v-model="value1"
-              @focus="sx()"
+                @focus="sx()"
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                 value-format="yyyy-MM-dd HH:mm:ss"
@@ -257,34 +263,21 @@
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
                 value-format="yyyy-MM-dd HH:mm:ss"
-              @focus="sx()"
+                @focus="sx()"
             ></el-date-picker>
             <input
-               
                 type="text"
-               :placeholder="lang.AlarmRecord_Time_Keyword"
+                :placeholder="lang.AlarmRecord_Time_Keyword"
                 v-model="keyword"
             />
-            <div
-                class="sad"
-                @click="sad"
-               
-            >
-                {{lang.RoleManage_Query}}
+            <div class="sad" @click="sad">
+                {{ lang.RoleManage_Query }}
             </div>
-            <div
-                class="add"
-                @click="add"
-               
-            >
-                {{lang.RoleManage_Add}}
+            <div class="add" @click="add">
+                {{ lang.RoleManage_Add }}
             </div>
-            <div
-                class="move"
-                @click="del"
-               
-            >
-                {{lang.RoleManage_Delete}}
+            <div class="move" @click="del">
+                {{ lang.RoleManage_Delete }}
             </div>
         </div>
         <div class="table-container table-container1">
@@ -294,7 +287,7 @@
                 stripe
                 height="100%"
                 tooltip-effect="dark"
-                :style="{ fontSize: a11 * 15 + 'px', width:'100% '}"
+                :style="{ fontSize: a11 * 15 + 'px', width: '100% ' }"
                 @select="select"
                 :row-style="{ height: 50 * a11 + 'px' }"
                 @select-all="selectall"
@@ -310,11 +303,11 @@
                 }"
             >
                 <template slot="empty">
-                    <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
+                    <span>{{ lang.SCMSConsoleWebApiMySql_NoData }}</span>
                 </template>
                 <el-table-column
                     type="selection"
-                    :width="a11>1?60*a11+'px':60+'px'"
+                    :width="a11 > 1 ? 60 * a11 + 'px' : 60 + 'px'"
                     :show-overflow-tooltip="true"
                     fixed
                 ></el-table-column>
@@ -332,25 +325,30 @@
                 <el-table-column
                     prop="name"
                     :label="lang.RoleManage_Operation"
-                      :width="215 * a11"
-                   
+                    :width="300 * a11"
                     fixed
                 >
                     <template slot-scope="scope">
                         <!-- <i class="el-icon-share"></i> -->
+                        <button class="img"
+                            :disabled="!scope.row.CanWatch"
+                            @click="viewDoc(scope.$index, scope.row)"
+                        >
+                            <div>查看</div>
+                        </button>
                         <div
                             class="img"
-                            :style="{zoom:a11}"
+                            :style="{ zoom: a11 }"
                             @click="handleEdit11(scope.$index, scope.row)"
                         >
-                           <div> {{lang.FileManage_Download}}</div> 
+                            <div>{{ lang.FileManage_Download }}</div>
                         </div>
                         <div
                             class="img"
- :style="{zoom:a11}"
+                            :style="{ zoom: a11 }"
                             @click="handleEdit1(scope.$index, scope.row)"
                         >
-                            <img   :src="pensoil" alt />
+                            <img :src="pensoil" alt />
                             {{ scope.row.phone }}
                         </div>
                     </template>
@@ -369,11 +367,21 @@
                     :show-overflow-tooltip="true"
                 >
                     <template slot-scope="scope">
-                        <span v-if="scope.row.DataType == 1">{{lang.FileManage_OperationManual}}</span>
-                        <span v-else-if="scope.row.DataType == 2">{{lang.FileManage_InstallationInstructions}}</span>
-                        <span v-else-if="scope.row.DataType == 3">{{lang.FileManage_MaintenanceManual}}</span>
-                        <span v-else-if="scope.row.DataType == 4">{{lang.FileManage_CommonProblemsAndCountermeasures}}</span>
-                        <span v-else-if="scope.row.DataType == 5">{{lang.FileManage_EquipmentDrawings}}</span>
+                        <span v-if="scope.row.DataType == 1">{{
+                            lang.FileManage_OperationManual
+                        }}</span>
+                        <span v-else-if="scope.row.DataType == 2">{{
+                            lang.FileManage_InstallationInstructions
+                        }}</span>
+                        <span v-else-if="scope.row.DataType == 3">{{
+                            lang.FileManage_MaintenanceManual
+                        }}</span>
+                        <span v-else-if="scope.row.DataType == 4">{{
+                            lang.FileManage_CommonProblemsAndCountermeasures
+                        }}</span>
+                        <span v-else-if="scope.row.DataType == 5">{{
+                            lang.FileManage_EquipmentDrawings
+                        }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -405,23 +413,44 @@
         <div class="pages-container" :style="{ zoom: a11 }">
             <div class="page">
                 <div class="pageword">
-                    {{lang.DataGrid_Reaction_HT_ATotalOf}}
-                    <span>{{PageData.TotalCount}}</span>{{lang.DataGrid_Reaction_HT_RecordsAndTheCurrent}}
-                    <span>{{PageData.PageIndex}}</span>{{lang.DataGrid_Reaction_HT_Page}}
-                    <span>{{PageData.TotalPage}}</span>{{lang.DataGrid_Reaction_HT_RecordsAnd}}
-                    <span>{{PageData.PageSize}}</span>{{lang.DataGrid_Reaction_HT_PerPage}}
+                    {{ lang.DataGrid_Reaction_HT_ATotalOf }}
+                    <span>{{ PageData.TotalCount }}</span
+                    >{{ lang.DataGrid_Reaction_HT_RecordsAndTheCurrent }}
+                    <span>{{ PageData.PageIndex }}</span
+                    >{{ lang.DataGrid_Reaction_HT_Page }}
+                    <span>{{ PageData.TotalPage }}</span
+                    >{{ lang.DataGrid_Reaction_HT_RecordsAnd }}
+                    <span>{{ PageData.PageSize }}</span
+                    >{{ lang.DataGrid_Reaction_HT_PerPage }}
                 </div>
                 <div class="pageoperation">
-                    <span class="btn" @click="start">{{lang.DataGrid_Reaction_FirstPage}}</span>
-                        <span class="btn" :class="{nopage:!PageData.LastEnabled}" @click="abck">{{lang.DataGrid_Reaction_LastPage}}</span>
-                    <span class="btn" :class="{nopage:!PageData.NextEnabled}" @click="next">{{lang.DataGrid_Reaction_NextPage}}</span>
-                    <span class="btn" @click="end">{{lang.DataGrid_Reaction_EndPage}}</span>
+                    <span class="btn" @click="start">{{
+                        lang.DataGrid_Reaction_FirstPage
+                    }}</span>
+                    <span
+                        class="btn"
+                        :class="{ nopage: !PageData.LastEnabled }"
+                        @click="abck"
+                        >{{ lang.DataGrid_Reaction_LastPage }}</span
+                    >
+                    <span
+                        class="btn"
+                        :class="{ nopage: !PageData.NextEnabled }"
+                        @click="next"
+                        >{{ lang.DataGrid_Reaction_NextPage }}</span
+                    >
+                    <span class="btn" @click="end">{{
+                        lang.DataGrid_Reaction_EndPage
+                    }}</span>
                     <div class="inputnumber">
-                        {{lang.DataGrid_Reaction_The}}
-                        <input type="text" v-model="nowpage" /> {{lang.DataGrid_Reaction_Page}}
+                        {{ lang.DataGrid_Reaction_The }}
+                        <input type="text" v-model="nowpage" />
+                        {{ lang.DataGrid_Reaction_Page }}
                     </div>
 
-                    <span class="btn" @click="jump">{{lang.DataGrid_Reaction_TurnPage}}</span>
+                    <span class="btn" @click="jump">{{
+                        lang.DataGrid_Reaction_TurnPage
+                    }}</span>
                 </div>
             </div>
         </div>
@@ -435,19 +464,19 @@
                     class="head"
                     v-if="sestion == 1"
                     :class="{ fcolor: $store.state.color == 'grey' }"
-                    >{{lang.FileManage_AddEquipmentData}}</span
+                    >{{ lang.FileManage_AddEquipmentData }}</span
                 >
                 <span
                     class="head"
                     v-else-if="sestion == 2"
                     :class="{ fcolor: $store.state.color == 'grey' }"
-                    >{{lang.FileManage_ViewSOP}}</span
+                    >{{ lang.FileManage_ViewSOP }}</span
                 >
                 <span
                     class="head"
                     v-else-if="sestion == 3"
                     :class="{ fcolor: $store.state.color == 'grey' }"
-                    >{{lang.FileManage_EditEquipmentData}}</span
+                    >{{ lang.FileManage_EditEquipmentData }}</span
                 >
                 <img
                     :src="no2"
@@ -461,8 +490,8 @@
             <div class="sestioncontain">
                 <div class="overflow">
                     <div class="fl">
-                        <div class="margin" >
-                            <span>{{lang.FileManage_DataTitle}}</span>
+                        <div class="margin">
+                            <span>{{ lang.FileManage_DataTitle }}</span>
                             <input
                                 type="text"
                                 v-if="sestion == 1"
@@ -481,7 +510,9 @@
                             />
                         </div>
                         <div class="margin">
-                            <span>{{lang.EquipmentAccount_EquipmentName}}</span>
+                            <span>{{
+                                lang.EquipmentAccount_EquipmentName
+                            }}</span>
                             <div v-if="sestion == 1" class="input1">
                                 <span>{{ meaddtable.DeviceName }}</span>
                                 <div class="inputimg" @click="getdevice">
@@ -504,7 +535,7 @@
                         <div class="margin">
                             <div class="twoge">
                                 <a href="javascript:;" class="file">
-                                    {{lang.FileManage_Upload}}
+                                    {{ lang.FileManage_Upload }}
                                     <form>
                                         <input
                                             type="file"
@@ -515,14 +546,20 @@
                                         />
                                     </form>
                                 </a>
-                                <div class="nosc" @click="nosc">{{lang.RoleManage_Delete}}</div>
+                                <div class="nosc" @click="nosc">
+                                    {{ lang.RoleManage_Delete }}
+                                </div>
                             </div>
-                            <span class="sc">{{lang.FileManage_DataUpload}}</span>
+                            <span class="sc">{{
+                                lang.FileManage_DataUpload
+                            }}</span>
                         </div>
                     </div>
                     <div class="zr">
-                        <div class="margin" >
-                            <span class="me">{{lang.FileManage_DataType}}</span>
+                        <div class="margin">
+                            <span class="me">{{
+                                lang.FileManage_DataType
+                            }}</span>
                             <select
                                 name
                                 id
@@ -566,44 +603,47 @@
                         </div>
                     </div>
 
-                        <textarea
-                            name
-                            id
-                            v-if="sestion == 1"
-                            v-model="filename"
-                            disabled
-                        ></textarea>
-                        <textarea
-                            name
-                            id
-                            v-else-if="sestion == 2"
-                            placeholder
-                            v-model="filename"
-                            disabled
-                        ></textarea>
-                        <textarea
-                            name
-                            id
-                            disabled
-                            v-else-if="sestion == 3"
-                            :placeholder="!filename?'':lang.EquipmentAccount_EquipmentRemarkTag"
-                            v-model="filename"
-                        ></textarea>
-                 
+                    <textarea
+                        name
+                        id
+                        v-if="sestion == 1"
+                        v-model="filename"
+                        disabled
+                    ></textarea>
+                    <textarea
+                        name
+                        id
+                        v-else-if="sestion == 2"
+                        placeholder
+                        v-model="filename"
+                        disabled
+                    ></textarea>
+                    <textarea
+                        name
+                        id
+                        disabled
+                        v-else-if="sestion == 3"
+                        :placeholder="
+                            !filename
+                                ? ''
+                                : lang.EquipmentAccount_EquipmentRemarkTag
+                        "
+                        v-model="filename"
+                    ></textarea>
                 </div>
                 <div
                     class="Preservation"
                     v-if="sestion == 1 || sestion == 3"
                     @click="nopre($event)"
                 >
-                    {{lang.PopupCommon_Save}}
+                    {{ lang.PopupCommon_Save }}
                 </div>
                 <div
                     class="cancel"
                     @click="cancel"
                     v-if="sestion == 1 || sestion == 3"
                 >
-                    {{lang.PopupCommon_Cancel}}
+                    {{ lang.PopupCommon_Cancel }}
                 </div>
             </div>
         </div>
@@ -616,9 +656,11 @@
                 <sapn
                     v-if="select1 == 1"
                     :class="{ fcolor: $store.state.color == 'grey' }"
-                    >{{lang.EquipmentAccount_SelectEquipmentType}}</sapn
+                    >{{ lang.EquipmentAccount_SelectEquipmentType }}</sapn
                 >
-                <sapn v-if="select1 == 2">{{lang.SCMSConsoleWebApiMySql_SelectInstallPosition}}</sapn>
+                <sapn v-if="select1 == 2">{{
+                    lang.SCMSConsoleWebApiMySql_SelectInstallPosition
+                }}</sapn>
                 <div class="img" @click="cancel2">
                     <img
                         :src="no2"
@@ -678,35 +720,38 @@
                 v-if="sestion == 3"
                 @click="Preservation2"
             >
-               {{lang.PopupCommon_Sure}}
+                {{ lang.PopupCommon_Sure }}
             </div>
             <div
                 class="Preservation Preservation1"
                 v-if="sestion == 2"
                 @click="Preservation3"
             >
-                {{lang.PopupCommon_Sure}}
+                {{ lang.PopupCommon_Sure }}
             </div>
-            <div class="cancel cancle1" @click="cancel2">{{lang.PopupCommon_Cancel}}</div>
+            <div class="cancel cancle1" @click="cancel2">
+                {{ lang.PopupCommon_Cancel }}
+            </div>
         </div>
-        <div
-            class="tip"
-            v-show="tipchange"
-        >
-         <div
+        <div class="tip" v-show="tipchange">
+            <div
                 class="tiphead"
                 style="position:absolute;width: 380px;height: 40px;"
             ></div>
             <div class="tiptop">
                 <img :src="gth" alt />
-                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
+                <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
             </div>
             <div class="tipcontanin">
-                <div class="tipword">{{tipword}}</div>
-                <div class="tipdetermine" @click="tip1" v-if="deltrue">{{lang.MessageBox_Confrim}}</div>
+                <div class="tipword">{{ tipword }}</div>
+                <div class="tipdetermine" @click="tip1" v-if="deltrue">
+                    {{ lang.MessageBox_Confrim }}
+                </div>
                 <div class="delclass" v-if="!deltrue">
-                    <div class="one" @click="no1">{{lang.MessageBox_NO}}</div>
-                    <div class="two" @click="yes1">{{lang.MessageBox_YES}}</div>
+                    <div class="one" @click="no1">{{ lang.MessageBox_NO }}</div>
+                    <div class="two" @click="yes1">
+                        {{ lang.MessageBox_YES }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -714,18 +759,45 @@
         <div class="cover3" v-if="changetrue"></div>
         <div class="cover2" v-if="tipchange"></div>
         <div class="cover4" v-if="offdecive"></div>
+        <div
+            class="tip2"
+            v-show="showFile"
+            style="left: 0!important;top:0!important;"
+        >
+            <div class="tiptop" style="width:100%">
+                <span>预览</span>
+                <img
+                    class="close"
+                    :src="no"
+                    alt
+                    @click.stop="showFile = false"
+                />
+            </div>
+            <div class="tipcontanin">
+                <img v-if="type === 'img'" :src="fileUrl" class="viewer" />
+                <div
+                    v-else-if="type === 'doc'"
+                    ref="file"
+                    style="height: 100%;overflow:auto;"
+                ></div>
+                <iframe
+                    v-else
+                    :src="fileUrl"
+                    width="100%"
+                    height="100%"
+                    frameborder="0"
+                ></iframe>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import MySearch from '../public/search01.vue';
-// import MyPage from '../public/Pages.vue';
 import XLSX from 'xlsx';
+let docx = require('docx-preview');
+window.JSZip = require('jszip');
 export default {
-    components: {
-        // MySearch,
-        // MyPage
-    },
+    components: {},
     data() {
         return {
             a1: 1,
@@ -768,7 +840,7 @@ export default {
                 {
                     label: '设备图纸',
                     value: 5
-                },
+                }
             ],
             taskname: '',
             offdecive: false,
@@ -877,24 +949,29 @@ export default {
             filename: '',
             guid: '',
             filesize: '',
-            jurisdiction:[],
-            buttonarr:[],
-            cxid:'',
-            cxshow:true,
-            tjid:'',
-            tjshow:true,
-            scid:'',
-            scshow:true,
-            xzid:'',
-            xzshow:true,
-            xgid:'',
-            xgshow:true,
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
+            jurisdiction: [],
+            buttonarr: [],
+            cxid: '',
+            cxshow: true,
+            tjid: '',
+            tjshow: true,
+            scid: '',
+            scshow: true,
+            xzid: '',
+            xzshow: true,
+            xgid: '',
+            xgshow: true,
+            showFile: false,
+            fileUrl: '',
+            type: '',
+            lang: JSON.parse(localStorage.getItem('languages'))[
+                localStorage.getItem('currentLang')
+            ]
         };
     },
 
     created() {
-        this.getLangData()
+        this.getLangData();
         this.getEquipmentType();
         this.req(1);
         this.time4 = this.getNowTime();
@@ -920,54 +997,58 @@ export default {
 
     methods: {
         getLangData() {
-            this.sametimearr = [
+            (this.sametimearr = [
                 this.lang.FileManage_OperationManual,
                 this.lang.FileManage_InstallationInstructions,
                 this.lang.FileManage_MaintenanceManual,
                 this.lang.FileManage_CommonProblemsAndCountermeasures,
-                this.lang.FileManage_EquipmentDrawings,
-            ],
-            this.supermin = [
-                {
-                    label: this.lang.FileManage_OperationManual,
-                    value: 1
-                },
-                {
-                    label: this.lang.FileManage_InstallationInstructions,
-                    value: 2
-                },
-                {
-                    label: this.lang.FileManage_MaintenanceManual,
-                    value: 3
-                },
-                {
-                    label: this.lang.FileManage_CommonProblemsAndCountermeasures,
-                    value: 4
-                },
-                {
-                    label: this.lang.FileManage_EquipmentDrawings,
-                    value: 5
-                },
-            ]
-            this.person1 = [this.lang.ProcessParameterReport_HT_Yes, this.lang.ProcessParameterReport_HT_No]
-            this.warry = this.lang.EquipmentAccount_Inside
-            this.device = this.lang.EquipmentAccount_Used
-            this.Meter1 = this.lang.AlarmRecord_HT_Unlimited
-            this.Meter2 = this.lang.AlarmRecord_HT_Unlimited
-            this.Preservation = this.lang.EquipmentAccount_ClickSelect
-            this.Preservation1 = this.lang.EquipmentAccount_ClickSelect
-            this.Preservation5 = this.lang.EquipmentAccount_ClickSelect
-            this.meaddtable.DataType = 1
-            this.meaddtable.DeviceName = this.lang.EquipmentAccount_ClickSelect
+                this.lang.FileManage_EquipmentDrawings
+            ]),
+                (this.supermin = [
+                    {
+                        label: this.lang.FileManage_OperationManual,
+                        value: 1
+                    },
+                    {
+                        label: this.lang.FileManage_InstallationInstructions,
+                        value: 2
+                    },
+                    {
+                        label: this.lang.FileManage_MaintenanceManual,
+                        value: 3
+                    },
+                    {
+                        label: this.lang
+                            .FileManage_CommonProblemsAndCountermeasures,
+                        value: 4
+                    },
+                    {
+                        label: this.lang.FileManage_EquipmentDrawings,
+                        value: 5
+                    }
+                ]);
+            this.person1 = [
+                this.lang.ProcessParameterReport_HT_Yes,
+                this.lang.ProcessParameterReport_HT_No
+            ];
+            this.warry = this.lang.EquipmentAccount_Inside;
+            this.device = this.lang.EquipmentAccount_Used;
+            this.Meter1 = this.lang.AlarmRecord_HT_Unlimited;
+            this.Meter2 = this.lang.AlarmRecord_HT_Unlimited;
+            this.Preservation = this.lang.EquipmentAccount_ClickSelect;
+            this.Preservation1 = this.lang.EquipmentAccount_ClickSelect;
+            this.Preservation5 = this.lang.EquipmentAccount_ClickSelect;
+            this.meaddtable.DataType = 1;
+            this.meaddtable.DeviceName = this.lang.EquipmentAccount_ClickSelect;
         },
         nosc() {
             this.file = '';
             this.filename = '';
-              document.getElementById('uploadFile').value=''
+            document.getElementById('uploadFile').value = '';
         },
         cancel11() {
-            this.aid = ''
-            this.wantword = ''
+            this.aid = '';
+            this.wantword = '';
             this.offdecive = false;
         },
         gettimenowtime() {
@@ -1011,7 +1092,10 @@ export default {
 
             for (i in this.selectname) {
                 if (this.a2 == 1) {
-                    if (this.selectname[i].NodeName == this.lang.EquipmentAccount_EquipmentType) {
+                    if (
+                        this.selectname[i].NodeName ==
+                        this.lang.EquipmentAccount_EquipmentType
+                    ) {
                         this.selectname[i].NID =
                             '11111111-1111-1111-1111-111111111111';
                     }
@@ -1035,7 +1119,7 @@ export default {
             this.data7 = [];
             this.data7.push(this.selectname[0]);
             this.selectword3 = !this.selectword3;
-                       $(`.selectword2`).css({
+            $(`.selectword2`).css({
                 left:
                     $('.sblx1')[0].offsetLeft +
                     $('.sblx1')[0].clientWidth +
@@ -1056,7 +1140,7 @@ export default {
                 console.log(this.meaddtable);
                 if (!this.meaddtable.DeviceName) {
                     this.tipword = this.lang.FileManage_SelectEquipment;
-                     setTimeout(() => {
+                    setTimeout(() => {
                         $('.tip').css({
                             zoom: this.a11,
                             left: `calc(50% - ${($('.tip').width() / 2) *
@@ -1076,19 +1160,18 @@ export default {
                     this.tipword = this.lang.FileManage_SelectEquipment;
                     setTimeout(() => {
                         $('.tip').css({
-                            zoom: this.a11,
-                          
+                            zoom: this.a11
                         });
                         this.tipchange = true;
                         this.move('tip', 'tiphead');
                     });
                     this.pyyd1 = true;
-                    return
+                    return;
                 }
                 console.log(this.wantnowdata);
                 this.meaddtable.AID = this.aid;
                 this.meaddtable.DeviceName = this.wantword;
-                this.cancel11()
+                this.cancel11();
             }
         },
         handleRowChange1(row, event, column) {
@@ -1212,10 +1295,19 @@ export default {
 
             this.file = event.target.files[0];
             this.filesize = event.target.files[0].size;
-            if (event.target.files[0].size > 20971520) {
-                this.filename = '文件不能大于20M';
-            } else {
-                this.filename = event.target.files[0].name;
+            this.filename = event.target.files[0].name;
+            if (event.target.files[0].size > 62914560) {
+                this.tipword = '该文件大于60M，后续无法通过预览查看，请下载预览'
+                this.tipchange = true;
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) * this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) * this.a11}px)`
+                    });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
             }
         },
         newguid() {
@@ -1237,17 +1329,17 @@ export default {
             }).then(res => {
                 console.log(res);
                 this.tipword = this.lang.FormulaManage_HT_DeletedSuccessfully;
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pyyd1 = true;
                 this.argID = [];
                 this.deltrue = true;
@@ -1257,49 +1349,49 @@ export default {
         del() {
             if (!this.scshow) {
                 this.tipword = this.lang.NoOperationAuthority;
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
                 return;
             }
             if (this.argID.length !== 0) {
                 this.tipword = this.lang.EquipmentAccount_SureToDelete;
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pyyd1 = true;
                 this.deltrue = false;
             } else {
                 this.deltrue = true;
                 this.tipword = this.lang.EquipmentAccount_CheckTheDeleteItem;
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pyyd1 = true;
             }
         },
@@ -1322,7 +1414,10 @@ export default {
         },
 
         tip1() {
-            if (this.tipword == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect) {
+            if (
+                this.tipword ==
+                this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect
+            ) {
                 this.$axios
                     .post(`/api/FileManage/FileManage_GstDeviceDataInitTime`)
                     .then(res => {
@@ -1341,7 +1436,7 @@ export default {
                     console.log(res);
                     this.projectlistdata = res.data.data;
                     this.projectlistdata1 = res.data.data;
-                         setTimeout(() => {
+                    setTimeout(() => {
                         $('.look').css({
                             width: this.a11 * 1120 + 'px',
                             height: 600 * this.a11 + 'px',
@@ -1356,12 +1451,11 @@ export default {
                             paddingTop: 30 * this.a11 + 'px'
                         });
                         $('.tinput1').css({
-                            marginLeft: 230 + 'px',
-                          
+                            marginLeft: 230 + 'px'
                         });
                         this.offdecive = true;
                         this.move('look', 'looktop');
-                    })
+                    });
                     this.pdyd3 = true;
                     this.selectword3 = false;
                     this.projectkeyword = '';
@@ -1369,9 +1463,9 @@ export default {
         },
         nopre(event) {
             let afname;
-            var $this = this
+            var $this = this;
             if (!$this.filename) {
-                afname = "";
+                afname = '';
             } else {
                 afname = $this.filename;
             }
@@ -1392,7 +1486,7 @@ export default {
             console.log($this.filesize);
             console.log($this.file);
             if ($this.sestion == 1) {
-                if ($this.filesize < 20971520 && $this.filesize) {
+                if ($this.filesize) {
                     //   alert("123")
                     event.preventDefault(); //取消默认行为
                     $this.guid = $this.newguid();
@@ -1404,81 +1498,22 @@ export default {
                         url: `/api/FileManage/FileManage_UpLoad?argGuid={${$this.guid}}`,
                         data: formData
                     }).then(res => {
+                        console.log('=====FileManage_UpLoad', res.data)
                         let a = $this.meaddtable.DataType;
-                        // if (a == 'FileManage_OperationManual') {
-                        //     a = 1;
-                        // } else if (a == $this.lang.FileManage_InstallationInstructions) {
-                        //     a = 2;
-                        // } else if (a == $this.lang.FileManage_MaintenanceManual) {
-                        //     a = 3;
-                        // } else if (a == $this.lang.FileManage_CommonProblemsAndCountermeasures) {
-                        //     a = 4;
-                        // } else if (a == $this.lang.FileManage_EquipmentDrawings) {
-                        //     a = 5;
-                        // }
-                        $this.$axios
-                            .post(
-                                `/api/FileManage/FileManage_AddDeviceData?argDataTitle=${$this.meaddtable.DataTitle}&argDataType=${a}&argAID=${$this.meaddtable.AID}&argAddPerson=${$this.abc}&argImportFileName=${afname}&argGuid=${$this.guid}`
-                            )
-                            .then(res1 => {
-                                this.filesize  = 0
-                                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: $this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                $this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                $this.a11}px)`
-                        });
-                        $this.tipchange = true;
-                        $this.move('tip', 'tiphead');
-                    });
-                                $this.pyyd1 = true;
-                                console.log(res1);
-                                if (res1.data.code == 1) {
-                                    if (res1.data.msg == 'AID不能为空') {
-                                        $this.tipword = $this.lang.FileManage_SelectEquipmentName;
-                                    } else {
-                                        $this.tipword = res1.data.msg;
-                                    }
-                                } else {
-                                    $this.tipword = $this.lang.EquipmentAccount_SuccessfullyAdded;
-                                    $this.changetrue = false;
-                                    $this.getsetime();
-                                }
-                            });
-                    });
-                    //创建 formData 对象
-                } else {
-                    $this.guid = $this.newguid();
-                    let a = $this.meaddtable.DataType;
-                    // if (a == 'FileManage_OperationManual') {
-                    //     a = 1;
-                    // } else if (a == $this.lang.FileManage_InstallationInstructions) {
-                    //     a = 2;
-                    // } else if (a == $this.lang.FileManage_MaintenanceManual) {
-                    //     a = 3;
-                    // } else if (a == $this.lang.FileManage_CommonProblemsAndCountermeasures) {
-                    //     a = 4;
-                    // } else if (a == $this.lang.FileManage_EquipmentDrawings) {
-                    //     a = 5;
-                    // }
-                    $this.$axios
-                        .post(
+                        $this.$axios.post(
                             `/api/FileManage/FileManage_AddDeviceData?argDataTitle=${$this.meaddtable.DataTitle}&argDataType=${a}&argAID=${$this.meaddtable.AID}&argAddPerson=${$this.abc}&argImportFileName=${afname}&argGuid=${$this.guid}`
                         )
                         .then(res1 => {
-                             setTimeout(() => {
-                        $('.tip').css({
-                            zoom: $this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                $this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                $this.a11}px)`
-                        });
-                        $this.tipchange = true;
-                        $this.move('tip', 'tiphead');
-                    });
+                            this.filesize = 0;
+                            setTimeout(() => {
+                                $('.tip').css({
+                                    zoom: $this.a11,
+                                    left: `calc(50% - ${($('.tip').width() / 2) * $this.a11}px)`,
+                                    top: `calc(50% - ${($('.tip').height() / 2) * $this.a11}px)`
+                                });
+                                $this.tipchange = true;
+                                $this.move('tip', 'tiphead');
+                            });
                             $this.pyyd1 = true;
                             console.log(res1);
                             if (res1.data.code == 1) {
@@ -1493,108 +1528,152 @@ export default {
                                 $this.getsetime();
                             }
                         });
+                        
+                    });
+                    //创建 formData 对象
+                } else {
+                    $this.guid = $this.newguid();
+                    let a = $this.meaddtable.DataType;
+                    $this.$axios.post(
+                        `/api/FileManage/FileManage_AddDeviceData?argDataTitle=${$this.meaddtable.DataTitle}&argDataType=${a}&argAID=${$this.meaddtable.AID}&argAddPerson=${$this.abc}&argImportFileName=&argGuid=${$this.guid}`
+                    ).then(res1 => {
+                        setTimeout(() => {
+                            $('.tip').css({
+                                zoom: $this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) * $this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) * $this.a11}px)`
+                            });
+                            $this.tipchange = true;
+                            $this.move('tip', 'tiphead');
+                        });
+                        $this.pyyd1 = true;
+                        console.log(res1);
+                        if (res1.data.code == 1) {
+                            if (res1.data.msg == 'AID不能为空') {
+                                $this.tipword = $this.lang.FileManage_SelectEquipmentName;
+                            } else {
+                                $this.tipword = res1.data.msg;
+                            }
+                        } else {
+                            $this.tipword = $this.lang.EquipmentAccount_SuccessfullyAdded;
+                            $this.changetrue = false;
+                            $this.getsetime();
+                        }
+                    });
                 }
             } else if ($this.sestion == 3) {
-                
                 if ($this.filesize < 20971520 && $this.filesize) {
                     event.preventDefault(); //取消默认行为
                     let formData = new FormData();
                     // 向 formData 对象中添加文件
                     formData.append('file', $this.file);
 
-                    $this.$axios({
-                        method: 'post',
-                        url: `/api/FileManage/FileManage_UpLoad?argGuid={${$this.meaddtable.DID}}`,
-                        data: formData
-                    }).then(res => {
-                        let a = $this.meaddtable.DataType;
-                            this.filesize  = 0
-                        // if (a == 'FileManage_OperationManual') {
-                        //     a = 1;
-                        // } else if (a == $this.lang.FileManage_InstallationInstructions) {
-                        //     a = 2;
-                        // } else if (a == $this.lang.FileManage_MaintenanceManual) {
-                        //     a = 3;
-                        // } else if (a == $this.lang.FileManage_CommonProblemsAndCountermeasures) {
-                        //     a = 4;
-                        // } else if (a == $this.lang.FileManage_EquipmentDrawings) {
-                        //     a = 5;
-                        // }
-                        // console.log($this.meaddtable);
-                        let c = JSON.stringify($this.tableData1);
-                        let b = JSON.stringify(c);
-                        for (let i = 0; i < c.length; i++) {
-                            if (!$this.meaddtable.DataTitle) {
-                                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: $this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                $this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                $this.a11}px)`
-                        });
-                        $this.tipchange = true;
-                        $this.move('tip', 'tiphead');
-                    });
-                                $this.pyyd1 = true;
-                                $this.tipword = $this.lang.FileManage_DataTitleIsEmpty;
-                                return;
-                            } else if (
-                                $this.meaddtable.DataTitle == c[i].DataTitle
-                            ) {
-                                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: $this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                $this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                $this.a11}px)`
-                        });
-                        $this.tipchange = true;
-                        $this.move('tip', 'tiphead');
-                    });
-                                $this.pyyd1 = true;
-                                $this.tipword = $this.lang.FileManage_DataTitleIsExist;
-                                console.log(c[i].DataTitle);
-                                return;
-                            }
-                        }
-                        if (
-                            $this.tipword !== $this.lang.FileManage_DataTitleIsExist ||
-                            $this.tipword !== $this.lang.FileManage_DataTitleIsEmpty
-                        ) {
-                            $this.$axios
-                                .post(
-                                    `/api/FileManage/FileManage_ModifyDeviceData?argDataTitle=${$this.meaddtable.DataTitle}&argDataType=${a}&argAID=${$this.meaddtable.AID}&argImportFileName=${afname}&argDataID=${$this.meaddtable.DID}`
-                                )
-                                .then(res1 => {
-                                     setTimeout(() => {
-                        $('.tip').css({
-                            zoom: $this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                $this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                $this.a11}px)`
-                        });
-                        $this.tipchange = true;
-                        $this.move('tip', 'tiphead');
-                    });
+                    $this
+                        .$axios({
+                            method: 'post',
+                            url: `/api/FileManage/FileManage_UpLoad?argGuid={${$this.meaddtable.DID}}`,
+                            data: formData
+                        })
+                        .then(res => {
+                            let a = $this.meaddtable.DataType;
+                            this.filesize = 0;
+                            let c = JSON.stringify($this.tableData1);
+                            let b = JSON.stringify(c);
+                            for (let i = 0; i < c.length; i++) {
+                                if (!$this.meaddtable.DataTitle) {
+                                    setTimeout(() => {
+                                        $('.tip').css({
+                                            zoom: $this.a11,
+                                            left: `calc(50% - ${($(
+                                                '.tip'
+                                            ).width() /
+                                                2) *
+                                                $this.a11}px)`,
+                                            top: `calc(50% - ${($(
+                                                '.tip'
+                                            ).height() /
+                                                2) *
+                                                $this.a11}px)`
+                                        });
+                                        $this.tipchange = true;
+                                        $this.move('tip', 'tiphead');
+                                    });
                                     $this.pyyd1 = true;
-                                    if(res.data.code == 0){
-   $this.tipword = $this.lang.FormulaManage_HT_FormulaSetting_ModifiedSuccessfully;
-                                    }else{
-                                    //   $this.tipword = res.data.msg  
-                                      $this.tipword = res1.data.data
-                                    }
-                                 
-                                    $this.changetrue = false;
-                                    $this.getsetime();
-                                })
-                                .catch(error => {
-                                    console.log(error);
-                                });
-                        }
-                    });
+                                    $this.tipword =
+                                        $this.lang.FileManage_DataTitleIsEmpty;
+                                    return;
+                                } else if (
+                                    $this.meaddtable.DataTitle == c[i].DataTitle
+                                ) {
+                                    setTimeout(() => {
+                                        $('.tip').css({
+                                            zoom: $this.a11,
+                                            left: `calc(50% - ${($(
+                                                '.tip'
+                                            ).width() /
+                                                2) *
+                                                $this.a11}px)`,
+                                            top: `calc(50% - ${($(
+                                                '.tip'
+                                            ).height() /
+                                                2) *
+                                                $this.a11}px)`
+                                        });
+                                        $this.tipchange = true;
+                                        $this.move('tip', 'tiphead');
+                                    });
+                                    $this.pyyd1 = true;
+                                    $this.tipword =
+                                        $this.lang.FileManage_DataTitleIsExist;
+                                    console.log(c[i].DataTitle);
+                                    return;
+                                }
+                            }
+                            if (
+                                $this.tipword !==
+                                    $this.lang.FileManage_DataTitleIsExist ||
+                                $this.tipword !==
+                                    $this.lang.FileManage_DataTitleIsEmpty
+                            ) {
+                                $this.$axios
+                                    .post(
+                                        `/api/FileManage/FileManage_ModifyDeviceData?argDataTitle=${$this.meaddtable.DataTitle}&argDataType=${a}&argAID=${$this.meaddtable.AID}&argImportFileName=${afname}&argDataID=${$this.meaddtable.DID}`
+                                    )
+                                    .then(res1 => {
+                                        setTimeout(() => {
+                                            $('.tip').css({
+                                                zoom: $this.a11,
+                                                left: `calc(50% - ${($(
+                                                    '.tip'
+                                                ).width() /
+                                                    2) *
+                                                    $this.a11}px)`,
+                                                top: `calc(50% - ${($(
+                                                    '.tip'
+                                                ).height() /
+                                                    2) *
+                                                    $this.a11}px)`
+                                            });
+                                            $this.tipchange = true;
+                                            $this.move('tip', 'tiphead');
+                                        });
+                                        $this.pyyd1 = true;
+                                        if (res.data.code == 0) {
+                                            $this.tipword =
+                                                $this.lang.FormulaManage_HT_FormulaSetting_ModifiedSuccessfully;
+                                        } else {
+                                            //   $this.tipword = res.data.msg
+                                            $this.tipword = res1.data.data;
+                                        }
+
+                                        $this.changetrue = false;
+                                        $this.getsetime();
+                                    })
+                                    .catch(error => {
+                                        console.log(error);
+                                    });
+                            }
+                        });
                     //创建 formData 对象
                 } else {
                     //  $this.guid = $this.newguid();
@@ -1615,42 +1694,49 @@ export default {
                     let b = JSON.stringify(c);
                     for (let i = 0; i < c.length; i++) {
                         if (!$this.meaddtable.DataTitle) {
-                             setTimeout(() => {
-                        $('.tip').css({
-                            zoom: $this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                $this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                $this.a11}px)`
-                        });
-                        $this.tipchange = true;
-                        $this.move('tip', 'tiphead');
-                    });
+                            setTimeout(() => {
+                                $('.tip').css({
+                                    zoom: $this.a11,
+                                    left: `calc(50% - ${($('.tip').width() /
+                                        2) *
+                                        $this.a11}px)`,
+                                    top: `calc(50% - ${($('.tip').height() /
+                                        2) *
+                                        $this.a11}px)`
+                                });
+                                $this.tipchange = true;
+                                $this.move('tip', 'tiphead');
+                            });
                             $this.pyyd1 = true;
-                            $this.tipword = $this.lang.FileManage_DataTitleIsEmpty;
+                            $this.tipword =
+                                $this.lang.FileManage_DataTitleIsEmpty;
                             return;
                         } else if (
                             $this.meaddtable.DataTitle == c[i].DataTitle
                         ) {
-                             setTimeout(() => {
-                        $('.tip').css({
-                            zoom: $this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                $this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                $this.a11}px)`
-                        });
-                        $this.tipchange = true;
-                        $this.move('tip', 'tiphead');
-                    });
+                            setTimeout(() => {
+                                $('.tip').css({
+                                    zoom: $this.a11,
+                                    left: `calc(50% - ${($('.tip').width() /
+                                        2) *
+                                        $this.a11}px)`,
+                                    top: `calc(50% - ${($('.tip').height() /
+                                        2) *
+                                        $this.a11}px)`
+                                });
+                                $this.tipchange = true;
+                                $this.move('tip', 'tiphead');
+                            });
                             $this.pyyd1 = true;
-                            $this.tipword = $this.lang.FileManage_DataTitleIsExist;
+                            $this.tipword =
+                                $this.lang.FileManage_DataTitleIsExist;
                             console.log(c[i].DataTitle);
                             return;
                         }
                     }
                     if (
-                        $this.tipword !== $this.lang.FileManage_DataTitleIsExist ||
+                        $this.tipword !==
+                            $this.lang.FileManage_DataTitleIsExist ||
                         $this.tipword !== $this.lang.FileManage_DataTitleIsEmpty
                     ) {
                         $this.$axios
@@ -1662,19 +1748,26 @@ export default {
                                     setTimeout(() => {
                                         $('.tip').css({
                                             zoom: $this.a11,
-                                            left: `calc(50% - ${($('.tip').width() / 2) *
+                                            left: `calc(50% - ${($(
+                                                '.tip'
+                                            ).width() /
+                                                2) *
                                                 $this.a11}px)`,
-                                            top: `calc(50% - ${($('.tip').height() / 2) *
+                                            top: `calc(50% - ${($(
+                                                '.tip'
+                                            ).height() /
+                                                2) *
                                                 $this.a11}px)`
                                         });
                                         $this.tipchange = true;
                                         $this.move('tip', 'tiphead');
                                     });
                                     $this.pyyd1 = true;
-                                    if(res1.data.code == 0){
-                                        $this.tipword = $this.lang.FormulaManage_HT_FormulaSetting_ModifiedSuccessfully;
-                                    }else{
-                                      $this.tipword = res1.data.msg  
+                                    if (res1.data.code == 0) {
+                                        $this.tipword =
+                                            $this.lang.FormulaManage_HT_FormulaSetting_ModifiedSuccessfully;
+                                    } else {
+                                        $this.tipword = res1.data.msg;
                                     }
                                     $this.changetrue = false;
                                     $this.getsetime();
@@ -1682,15 +1775,21 @@ export default {
                                     setTimeout(() => {
                                         $('.tip').css({
                                             zoom: $this.a11,
-                                            left: `calc(50% - ${($('.tip').width() / 2) *
+                                            left: `calc(50% - ${($(
+                                                '.tip'
+                                            ).width() /
+                                                2) *
                                                 $this.a11}px)`,
-                                            top: `calc(50% - ${($('.tip').height() / 2) *
+                                            top: `calc(50% - ${($(
+                                                '.tip'
+                                            ).height() /
+                                                2) *
                                                 $this.a11}px)`
                                         });
                                         $this.tipchange = true;
                                         $this.move('tip', 'tiphead');
                                         $this.pyyd1 = true;
-                                        $this.tipword = res1.data.msg
+                                        $this.tipword = res1.data.msg;
                                     });
                                 }
                             })
@@ -1708,30 +1807,30 @@ export default {
         },
         jump() {
             if (!this.isPositiveInteger(this.nowpage)) {
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pyyd1 = true;
-                this.tipword =  this.lang.RoleManage_HT_PEAPositiveInteger;
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                this.tipword = this.lang.RoleManage_HT_PEAPositiveInteger;
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 return;
             } else {
                 if (
@@ -1743,17 +1842,17 @@ export default {
                         this.nowpage > this.PageData.TotalPage
                     ) {
                         this.tipword = this.lang.DataGrid_Reaction_HT_PEThePageNumber;
-                         setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
+                        setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
                         });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
                         this.pyyd1 = true;
                         return;
                     }
@@ -1811,44 +1910,47 @@ export default {
             let ss = JSON.stringify(this.antable);
             this.tableData1 = JSON.parse(ss);
         },
-                 sx(){
-            let that = this
-            setTimeout(()=>{
-for(let i=0;i<$('.el-picker-panel').length;i++){
-                $('.el-picker-panel')[i].style.zoom = that.a11
-            }
-            })
-              
+        sx() {
+            let that = this;
+            setTimeout(() => {
+                for (let i = 0; i < $('.el-picker-panel').length; i++) {
+                    $('.el-picker-panel')[i].style.zoom = that.a11;
+                }
+            });
         },
         Preservation2() {
             this.Preservation = this.Preservation1;
-            if (this.Preservation1 == this.lang.EquipmentAccount_EquipmentType) {
+            if (
+                this.Preservation1 == this.lang.EquipmentAccount_EquipmentType
+            ) {
                 this.tipword = this.lang.EquipmentAccount_SelectEquipmentType1;
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pyyd1 = true;
-            } else if (this.Preservation5 == this.lang.EquipmentAccount_InstallPosition) {
+            } else if (
+                this.Preservation5 == this.lang.EquipmentAccount_InstallPosition
+            ) {
                 this.tipword = this.lang.EquipmentAccount_SelectInstallPosition;
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pyyd1 = true;
             } else {
                 this.cancel1 = false;
@@ -1872,51 +1974,55 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         },
         Preservation3() {
             this.Preservation = this.Preservation1;
-            if (this.pen.DeviceType == this.lang.EquipmentAccount_EquipmentType) {
+            if (
+                this.pen.DeviceType == this.lang.EquipmentAccount_EquipmentType
+            ) {
                 this.tipword = this.lang.EquipmentAccount_SelectEquipmentType1;
                 this.pen.DeviceType = this.lang.EquipmentAccount_ClickSelect;
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pyyd1 = true;
-            } else if (this.pen.InstallationLocation == this.lang.EquipmentAccount_InstallPosition) {
+            } else if (
+                this.pen.InstallationLocation ==
+                this.lang.EquipmentAccount_InstallPosition
+            ) {
                 this.tipword = this.lang.EquipmentAccount_SelectInstallPosition;
                 this.pen.InstallationLocation = this.lang.EquipmentAccount_ClickSelect;
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pyyd1 = true;
             } else {
                 this.cancel1 = false;
             }
         },
-   move(name, namehead) {
-          //  $(`.${name}`).addClass('center')
-           let left = ($(`.${name}`).width())/2+'px'
-           let top = ($(`.${name}`).height())/2+'px'
-             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+        move(name, namehead) {
+            //  $(`.${name}`).addClass('center')
+            let left = $(`.${name}`).width() / 2 + 'px';
+            let top = $(`.${name}`).height() / 2 + 'px';
+            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
             $(`.${name}`)[0].addEventListener('mousedown', function(e) {
-                
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
-                    $(`.${name}`).removeClass('center')
+                    $(`.${name}`).removeClass('center');
                     window.event.stopPropagation();
                     var x = 0;
                     var y = 0;
@@ -1932,7 +2038,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     isDown = true;
                     var pdmove = false;
 
-                     
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
@@ -1948,9 +2053,9 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         //计算移动后的左偏移量和顶部的偏移量
                         var nl = nx - (x - l);
                         var nt = ny - (y - t);
-                        console.log(nx)
-                        console.log(x)
-                        console.log(l)
+                        console.log(nx);
+                        console.log(x);
+                        console.log(l);
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
@@ -1996,63 +2101,99 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             });
             this.pdyd2 = true;
         },
+        viewDoc(index, row) {
+            console.log('viewDoc++++++++++',row)
+            this.$axios
+                .post('/api/FileManage/FileManage_SetDownLoad?argID=' + row.DID)
+                .then(res => {
+                    if (res.data.code === 0) {
+                        let nameList = res.data.data.split('.');
+                        let type = nameList[nameList.length - 1];
+                        if (!['docx', 'jpg', 'png', 'jpeg', 'pdf', 'txt'].includes(type)) {
+                            this.tipword = '不支持查看的文件格式';
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                            return;
+                        } else if (['docx'].includes(type)) {
+                            this.type = 'doc';
+                            this.$axios({
+                                method: 'get',
+                                responseType: 'blob', // 因为是流文件，所以要指定blob类型
+                                url: './download/' + res.data.data
+                            }).then(({ data }) => {
+                                docx.renderAsync(data, this.$refs.file);
+                            });
+                        } else {
+                            if (['png', 'jpg', 'jpeg', 'gif', 'tif', 'webp', 'svg'].includes(type)) {
+                                this.type = 'img';
+                            } else {
+                                this.type = 'other';
+                            }
+                            this.fileUrl = './download/' + res.data.data;
+                        }
+                        setTimeout(() => {
+                            $('.tip2').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip2').width() / 2) * this.a11}px)`,
+                                top: `calc(50% - ${($('.tip2').height() / 2) * this.a11}px)`
+                            });
+                            this.showFile = true;
+                            this.move('tip2', 'tiptop');
+                        });
+                    } else {
+                        this.tipword = res.data.msg;
+                        setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) * this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) * this.a11}px)`
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                    }
+                });
+            console.log(index, row);
+        },
         handleEdit11(a, b) {
             if (!this.xzshow) {
                 this.tipword = this.lang.NoOperationAuthority;
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
                 return;
             }
             console.log(b);
             if (b.FileName == null) {
                 this.tipword = this.lang.FileManage_DataFileNotExist;
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pyyd1 = true;
             } else {
-                //  var data = require(`../../download/f617b2a2-a3b1-bc20-6a59-12c2a4ee47fe/bj.png`)
-                // this.$axios({
-                //                 method: 'get',
-                //                 url: `..\\nginx-1.17.3\\html\\Page\\dist\\download\\${b.FileName}`,
-                //             }).then(res => {
-
-                //               console(res)
-                //             })
-                // console.log(data);
                 this.$axios
                     .post(
                         `/api/FileManage/FileManage_SetDownLoad?argID=${b.DID}`
                     )
                     .then(res => {
                         console.log('1102===>', res);
-                        //         console.log(res)
-                        //         this.$axios({
-                        //         method: 'get',
-                        //         url: `/download/${b.FileName}`,
-                        //     }).then(res => {
-
-                        //       console.log(res)
-                        //     })
-                        
                         var aa = document.createElement('a');
                         aa.href = `/download/${b.FileName}`;
                         aa.setAttribute('download', b.FileName);
@@ -2064,17 +2205,17 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         handleEdit1(a, b) {
             if (!this.xgshow) {
                 this.tipword = this.lang.NoOperationAuthority;
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
                 return;
             }
@@ -2140,17 +2281,17 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         add() {
             if (!this.tjshow) {
                 this.tipword = this.lang.NoOperationAuthority;
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
                 return;
             }
@@ -2189,7 +2330,10 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             let j = 1;
             for (i in this.selectname) {
                 if (this.a1 == 1) {
-                    if (this.selectname[i].NodeName == this.lang.EquipmentAccount_EquipmentType) {
+                    if (
+                        this.selectname[i].NodeName ==
+                        this.lang.EquipmentAccount_EquipmentType
+                    ) {
                         this.selectname[i].NID =
                             '11111111-1111-1111-1111-111111111111';
                     }
@@ -2225,7 +2369,9 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         cancel2() {
             if (this.Preservation == this.lang.EquipmentAccount_EquipmentType) {
                 this.Preservation = this.lang.EquipmentAccount_ClickSelect;
-            } else if (this.Preservation5 == this.lang.EquipmentAccount_InstallPosition) {
+            } else if (
+                this.Preservation5 == this.lang.EquipmentAccount_InstallPosition
+            ) {
                 this.Preservation5 = this.lang.EquipmentAccount_ClickSelect;
             } else {
                 this.cancel1 = false;
@@ -2274,18 +2420,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                             for (i in this.tableData1) {
                                 let a = i;
                                 this.tableData1[i].Number = ++a;
-                                // if (this.tableData1[i].DataType == 1) {
-                                //     this.tableData1[i].DataType = this.lang.FileManage_OperationManual;
-                                // } else if (this.tableData1[i].DataType == 2) {
-                                //     this.tableData1[i].DataType = this.lang.FileManage_InstallationInstructions;
-                                // } else if (this.tableData1[i].DataType == 3) {
-                                //     this.tableData1[i].DataType = this.lang.FileManage_MaintenanceManual;
-                                // } else if (this.tableData1[i].DataType == 4) {
-                                //     this.tableData1[i].DataType =
-                                //         this.lang.FileManage_CommonProblemsAndCountermeasures;
-                                // } else if (this.tableData1[i].DataType == 5) {
-                                //     this.tableData1[i].DataType = this.lang.FileManage_EquipmentDrawings;
-                                // }
                                 this.tableData1[i].AddTime = this.gettime(
                                     this.tableData1[i].AddTime
                                 );
@@ -2316,10 +2450,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                                 function(key) {
                                     that.tableData1.forEach(item => {
                                         if (item.AID == key) {
-                                            item.DataPath =
-                                                res1.data.data.Equipment[
-                                                    key
-                                                ].DevicePath;
+                                            item.DataPath = res1.data.data.Equipment[key].DevicePath;
                                         }
                                     });
                                 }
@@ -2333,17 +2464,17 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                             // })
                         });
                     } else {
-                         setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
+                        setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
                         });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
                         this.pyyd1 = true;
                         this.tipword = res.data.msg;
                         this.tableData1 = [];
@@ -2383,17 +2514,17 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         },
         sad(a) {
             if (!this.cxshow && a !== 1) {
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.tipword = this.lang.NoOperationAuthority;
                 this.pdyd3 = true;
                 return;
@@ -2403,17 +2534,17 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                 new Date(this.value2).getTime()
             ) {
                 this.tipword = this.lang.AlarmRecord_HT_TheQueryDate;
-                 setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
+                setTimeout(() => {
+                    $('.tip').css({
+                        zoom: this.a11,
+                        left: `calc(50% - ${($('.tip').width() / 2) *
+                            this.a11}px)`,
+                        top: `calc(50% - ${($('.tip').height() / 2) *
+                            this.a11}px)`
                     });
+                    this.tipchange = true;
+                    this.move('tip', 'tiphead');
+                });
                 this.pdyd3 = true;
                 return;
             }
@@ -2440,22 +2571,32 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         res.data.data.DataList[i].number = ++i;
                         a = --i;
                         if (res.data.data.DataList[a].DeviceStatus == 1) {
-                            res.data.data.DataList[a].DeviceStatus = this.lang.EquipmentAccount_Used;
+                            res.data.data.DataList[
+                                a
+                            ].DeviceStatus = this.lang.EquipmentAccount_Used;
                         } else if (
                             res.data.data.DataList[a].DeviceStatus == 2
                         ) {
-                            res.data.data.DataList[a].DeviceStatus = this.lang.EquipmentAccount_Stopped;
+                            res.data.data.DataList[
+                                a
+                            ].DeviceStatus = this.lang.EquipmentAccount_Stopped;
                         } else if (
                             res.data.data.DataList[a].DeviceStatus == 3
                         ) {
-                            res.data.data.DataList[a].DeviceStatus = this.lang.EquipmentAccount_Abandoned;
+                            res.data.data.DataList[
+                                a
+                            ].DeviceStatus = this.lang.EquipmentAccount_Abandoned;
                         }
                         if (res.data.data.DataList[a].QualityStatus == 1) {
-                            res.data.data.DataList[a].QualityStatus = this.lang.EquipmentAccount_Inside;
+                            res.data.data.DataList[
+                                a
+                            ].QualityStatus = this.lang.EquipmentAccount_Inside;
                         } else if (
                             res.data.data.DataList[a].QualityStatus == 2
                         ) {
-                            res.data.data.DataList[a].QualityStatus = this.lang.EquipmentAccount_Outside;
+                            res.data.data.DataList[
+                                a
+                            ].QualityStatus = this.lang.EquipmentAccount_Outside;
                         }
                     }
                     this.tableData = res.data.data.DataList;
@@ -2554,10 +2695,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     },
 
     mounted() {
-        this.a11 = Number(parseFloat(window.screen.width / 1920).toFixed(2));
-        if (this.a11 < 1) {
-            this.a11 = 0.8;
-        }
         setTimeout(() => {
             let a = this.a11 * 120 + 'px';
             $('.table-container').css({
@@ -2664,7 +2801,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     }
 };
 </script>
-
 <style lang="scss" scoped>
 .sp4 {
     margin-left: 10px;
@@ -2902,6 +3038,13 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     display: inline-block;
     margin-left: 10px;
     left: 10px;
+
+    &:disabled{
+        div{
+            color: #606266;
+            cursor: not-allowed;
+        }
+    }
     img {
         width: 24px;
         height: 24px;
@@ -3328,7 +3471,8 @@ textarea {
     position: relative;
     top: -60px;
 }
-.tip {
+.tip,
+.tip2 {
     position: fixed;
     width: 380px;
     height: 200px;
@@ -3380,7 +3524,7 @@ textarea {
     .delclass {
         width: 330px;
         line-height: 30px;
-           position: absolute;
+        position: absolute;
         bottom: 10px;
         height: 30px;
         .one {
@@ -3401,6 +3545,45 @@ textarea {
             background-color: #f3e3ad;
             text-align: center;
             color: #eeb764;
+        }
+    }
+}
+.tip2 {
+    position: fixed;
+    width: 1000px;
+    height: 800px;
+    z-index: 100999999;
+    top: 0;
+    left: 0;
+    box-shadow: 0px 0px 8px black;
+    background-color: #f3f3f4;
+    user-select: none;
+    .tiptop {
+        text-align: center;
+        line-height: 40px;
+        background-color: #386df0;
+        img {
+            margin: auto;
+            vertical-align: middle;
+            position: relative;
+
+            &.close {
+                position: absolute;
+                right: 20px;
+                top: 10px;
+            }
+        }
+        span {
+            line-height: 40px;
+            top: unset;
+            vertical-align: middle;
+        }
+    }
+    .tipcontanin {
+        .viewer {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
     }
 }
@@ -3504,7 +3687,6 @@ textarea {
 }
 .selectword2 {
     position: absolute !important;
-   
 }
 .import {
     border: 1px solid #fda100;
@@ -3778,7 +3960,7 @@ textarea {
     color: #ffffff;
     border-radius: 3px;
     text-align: center;
-     
+
     line-height: 34px;
 }
 select {
@@ -3792,10 +3974,10 @@ select {
     cursor: pointer;
     width: 100px;
     height: 34px;
-   right: 150px;
+    right: 150px;
     bottom: 35px;
     background-color: #999999;
-     position: absolute;
+    position: absolute;
     color: #ffffff;
     border-radius: 3px;
     text-align: center;
@@ -3953,7 +4135,7 @@ select {
     background-color: #eeeeee;
     box-shadow: 0px 0px 8px black;
     select {
-        width: 200px ;
+        width: 200px;
         option {
             display: none;
         }
@@ -4069,7 +4251,7 @@ select {
             input {
                 height: 30px;
                 text-indent: 0.5em;
-                width: 200px ;
+                width: 200px;
                 margin-right: 10px;
                 border: none;
             }
@@ -4123,9 +4305,9 @@ select {
         line-height: 34px;
     }
     .table {
-        width: 100% ;
+        width: 100%;
         margin-left: 23px;
-        height: 320px ;
+        height: 320px;
         border: 1px solid #ccc;
     }
 }
@@ -4306,17 +4488,16 @@ img {
 }
 .selectword2 {
     position: absolute !important;
-  
 }
 .sblx {
     display: inline-block;
 }
-.sblx1{
+.sblx1 {
     display: inline-block;
 }
 .img {
-    div{
-        font-size:14px;
+    div {
+        font-size: 14px;
     }
 }
 </style>

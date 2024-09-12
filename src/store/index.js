@@ -55,11 +55,8 @@ export default new Vuex.Store({
     screentype:1,//自适应类型
     div:'',
     dittop:'',
-    processData: '',
-    deviceData: '',
-    productType: '',
-    zoom:1,
-    msgboxShow: false,
+    zoom:1
+    
   },
   mutations: {
     move(name) {
@@ -183,9 +180,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     },
     showLoading(state) {
       state.LOADING = true
-    },
-    setMsgboxShow(state, n) {
-      state.msgboxShow = n
     },
     hideLoading(state) {
       state.LOADING = false

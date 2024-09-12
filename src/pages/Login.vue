@@ -294,11 +294,7 @@ export default {
                 }else{
                     user = null
                     sessionStorage.setItem('userInfo', JSON.stringify(user));
-                    
-                    if(res.data.msg === '该用户不属于当前班次'){
-                         $('.errText').css('display','block')
-                         this.errText = '该用户不属于当前班次'
-                     } else if(username=='' || password == ''){
+                     if(username=='' || password == ''){
                          $('.errText').css('display','block')
                          this.errText = this.localData.Login_HintMessage_Empty
                      }else{

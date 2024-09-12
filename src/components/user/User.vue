@@ -42,7 +42,7 @@
                     <div class="coverleft" v-if="pd1" @click="pd"></div>
                     <div class="rolename">
                         <span>{{lang.UserManage_DateGrid_Account}}</span>
-                        <input type="text" v-model="rolenumber" />
+                        <input type="text" v-model="rolenumber" :disabled="IsDomain"/>
                     </div>
                     <div class="rolediscrle">
                         <span>{{lang.UserManage_DateGrid_UserName}}</span>
@@ -50,11 +50,11 @@
                     </div>
                     <div class="rolediscrle">
                         <span>{{lang.UserManage_UserWindow_Password}}</span>
-                        <input type="password" v-model="rolepassword" :placeholder="lang.UserManage_UserWindow_PasswordHint" />
+                        <input type="password" v-model="rolepassword" :placeholder="lang.UserManage_UserWindow_PasswordHint" :disabled="IsDomain" />
                     </div>
                     <div class="rolediscrle">
                         <span>{{lang.UserManage_UserWindow_ConfirmPassword}}</span>
-                        <input type="password" v-model="rolesecond" :placeholder="lang.UserManage_UserWindow_ConfirmPasswordHint" />
+                        <input type="password" v-model="rolesecond" :placeholder="lang.UserManage_UserWindow_ConfirmPasswordHint" :disabled="IsDomain"/>
                     </div>
                     <div class="rolediscrle">
                         <span>{{lang.UserManage_Phone}}</span>
@@ -63,6 +63,16 @@
                     <div class="rolediscrle">
                         <span>{{lang.UserManage_Email}}</span>
                         <input type="text" v-model="roleemail" />
+                    </div>
+                    <div class="rolediscrle">
+                        <span>班次</span>
+                         <select v-model="ShiftStr"   >
+                            <option
+                                :value="item"
+                                v-for="(item,index) in shiftsList"
+                                :key="index"
+                            >{{item}}</option>
+                        </select>
                     </div>
                 </div>
                 <div class="setdataright">
@@ -154,6 +164,7 @@ export default {
     },
     data() {
         return {
+            IsDomain:true,
             SCMSRoleName: '',
             select: 1,
             tipchange: false,
@@ -162,7 +173,9 @@ export default {
             gth: require('../../assets/images/icon_gth.png'),
             no: require('../../assets/images/no.png'),
             no2: require('../../assets/images/no2.png'),
+            ShiftList: [],
             rolename: '',
+            Shift: null,
             roleemail: '',
             rolenumber: '',
             rolepassword: '',
@@ -183,8 +196,10 @@ export default {
                 UserAccount: '用户账号',
                 UserName: '用户名称',
                 RoleName: '角色名称',
+                Shift: '班次',
                 Phone: '手机',
-                Email: '邮箱'
+                Email: '邮箱',
+                Shift:'班次'
             },
             data: [],
             pageData: {
@@ -210,6 +225,7 @@ export default {
             deldata: '',
             adddata: '',
             zoom:1,
+            a11: 1,
             argUserData: {},
             enddata: {},
             argUserId: '',
@@ -220,20 +236,39 @@ export default {
             bbb: 1,
             PowerBtnArr:[],  //权限按钮数据
             AllPowerBtnArr:[],
-            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
+            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
+            shiftsList:[],
+            ShiftStr:''
         };
     },
 
     created() {
         this.getLangData()
+        this.getShift()
         this.req(1);
         this.bigmnue();
     },
     mounted() {
-          this.zoom = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
         this.rolesetion();
+        this.getShiftList();
+    },
+    watch:{
+ShiftStr(n){
+    console.log(n)
+}
     },
     methods: {
+        getShift(){
+            this.$axios
+                .post(
+                    `/api/UserManage/UserManage_GetShifts `
+                )
+                .then(res => {
+                    if(res.data.code === 0){
+                        this.shiftsList=res.data.data;
+                    }
+                })
+        },
         getLangData() {
             this.searchList = [
                 {
@@ -247,8 +282,10 @@ export default {
                 UserAccount: this.lang.UserManage_UserAccount,
                 UserName: this.lang.UserManage_UserName,
                 RoleName: this.lang.UserManage_RoleName,
+                Shift: '班次',
                 Phone: this.lang.UserManage_Phone,
-                Email: this.lang.UserManage_Email
+                Email: this.lang.UserManage_Email,
+                UserType:this.lang.UserManage_UserType,
             }
         },
         nowchange() {
@@ -378,7 +415,13 @@ export default {
             this.aaa = 1;
             this.data1 = data;
             this.select = 2;
-            this.text = this.lang.UserManage_HT_UserWindow_TitleNameModify;
+            if(data.IsDomain){
+               this.text = this.lang.UserManage_HT_UserWindow_TitleNameDomainModify;
+            }else{
+               this.text = this.lang.UserManage_HT_UserWindow_TitleNameModify;
+              
+            }
+         
             this.argUserId = data.UserID;
             this.SCMSRoleName = data.RoleName;
             this.nowchange();
@@ -397,19 +440,19 @@ export default {
                     console.log('sss', this.argRightIDList);
                     this.rolenumber = data.UserAccount;
                     this.roleemail = data.Email;
+                    this.ShiftStr = data.Shift;
+                    this.IsDomain = data.IsDomain
                     this.phone = data.Phone;
                     this.rolename = data.UserName;
-                         setTimeout(() => {
-                            $('.setdata').css({
-                                zoom: this.a11,
-                                left: `calc(50% - ${($('.setdata').width() / 2) *
-                                    this.a11}px)`,
-                                top: `calc(50% - ${($('.setdata').height() / 2) *
-                                    this.a11}px)`
-                            });
-                              this.changemenu = true;
-                            this.move('setdata', 'setdatahead1');
+                    setTimeout(() => {
+                        $('.setdata').css({
+                            zoom: this.a11,
+                            left: `calc(50% - ${($('.setdata').width() / 2) * this.a11}px)`,
+                            top: `calc(50% - ${($('.setdata').height() / 2) * this.a11}px)`
                         });
+                        this.changemenu = true;
+                        this.move('setdata', 'setdatahead1');
+                    });
                 
                     this.pdyd1 = true;
 
@@ -832,7 +875,9 @@ export default {
             this.rolepassword = '';
             this.rolesecond = '';
             this.roleemail = '';
+            this.ShiftStr = '';
             this.phone = '';
+            this.IsDomain = false
             this.argRightIDList = [];
             console.log(this.rolenamedata)
             if(this.rolenamedata.length !==0){
@@ -939,13 +984,16 @@ export default {
         },
         over() {
             if (this.select == 1) {
+                console.log("this.Shift;",this.ShiftStr)
                 this.argUserData.RoleId = this.RoleId;
                 this.argUserData.UserAccount = this.rolenumber;
                 this.argUserData.UserName = this.rolename;
                 this.argUserData.PassWord = this.rolepassword;
                 this.argUserData.ConfirmPassWord = this.rolesecond;
                 this.argUserData.Email = this.roleemail;
+                this.argUserData.Shift = this.Shift;
                 this.argUserData.Phone = this.phone;
+                this.argUserData.Shift = this.ShiftStr;
                 this.enddata.argUserData = this.argUserData;
                 this.argRightIDList = [...new Set(this.argRightIDList)];
                 this.enddata.argRightIDList = this.argRightIDList;
@@ -980,6 +1028,8 @@ export default {
                         this.rolepassword = '';
                         this.rolesecond = '';
                         this.roleemail = '';
+                        this.ShiftStr  = '';
+                        this.IsDomain = false;
                         this.phone = '';
                         this.argRightIDList = [];
                         this.$refs.tree.setCheckedKeys([]);
@@ -996,6 +1046,7 @@ export default {
                 this.argUserData.PassWord = this.rolepassword;
                 this.argUserData.ConfirmPassWord = this.rolesecond;
                 this.argUserData.Email = this.roleemail;
+                this.argUserData.Shift = this.ShiftStr;
                 this.argUserData.Phone = this.phone;
                 this.enddata.argUserData = this.argUserData;
                 this.argRightIDList = [...new Set(this.argRightIDList)];
@@ -1052,7 +1103,10 @@ export default {
                         this.rolepassword = '';
                         this.rolesecond = '';
                         this.roleemail = '';
+                        this.ShiftStr = '';
+                        this.IsDomain = false
                         this.phone = '';
+                        this.Shift = null;
                         this.argRightIDList = [];
                         this.$refs.tree.setCheckedKeys([]);
                           this.$refs.tree1.setCheckedKeys([]);
@@ -1435,7 +1489,7 @@ export default {
             color: #737373;
             margin-right: 20px;
         }
-        input {
+        input ,select{
             width: 200px;
             height: 40px;
             text-indent: 0.5em;

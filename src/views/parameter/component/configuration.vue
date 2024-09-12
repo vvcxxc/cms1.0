@@ -212,14 +212,10 @@ export default {
             }],
             selectVale:'模糊匹配',
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
-            zoomValue: 0
+            zoomValue: 1
         };
     },
     created(){
-        this.$nextTick(() => {
-            this.zoomValue = Number(parseFloat(window.screen.width/1920).toFixed(2)) <= 0.9 ? 0.9 : Number(parseFloat(window.screen.width/1920).toFixed(2))
-
-        })
         this.getLangData()
         this.getDate1()
         this.allConfigure()
@@ -1401,7 +1397,7 @@ export default {
 }
 .tabledata {
     padding:0 2%;
-    width: calc(100% - 20px);
+    width: calc(100%-20px);
     position: relative;
     overflow: hidden;
     .someLeft{

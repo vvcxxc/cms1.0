@@ -118,7 +118,7 @@
                 <el-table-column prop="CloseRemarks" :label="lang.MaintenanceManage_Remark" :width="150*zoom" :show-overflow-tooltip="true"></el-table-column>
             </el-table>
         </div>
-        <div class="pages-container" :style="{zoom}">
+        <div class="pages-container">
             <div class="page">
                 <div class="pageword">
                     {{lang.DataGrid_Reaction_HT_ATotalOf}}
@@ -142,7 +142,7 @@
             </div>
         </div>
         <div class="sestion" ref="kongtiao1" v-if="setionchange" :style="{width:800*zoom+'px',height:800*zoom+'px',left:590*zoom1+'px',top:120*zoom1+'px'}">
-            <div class="sestionheader"   :class="{colordiv:$store.state.color=='grey'}" :style="{zoom}">
+            <div class="sestionheader"   :class="{colordiv:$store.state.color=='grey'}">
                 <div
                     class="sestionheader1"
                     @mousedown="mouseDownHandleelse1($event)"
@@ -153,7 +153,7 @@
                  <img :src="no2" alt class="no" @click.stop="setionchange = false" v-if="$store.state.color=='grey'" />
                 <img :src="no" alt class="no" @click.stop="setionchange = false" v-else />
             </div>
-            <div class="sestioncontain" :style="{zoom}">
+            <div class="sestioncontain">
                 <div class="homesetion">
                     <div class="hometop">
                         <p class="hometop-title">{{lang.MaintenanceManage_MaintenanceInfo}}</p>

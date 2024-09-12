@@ -12,7 +12,7 @@
             :class="{ active: activeIndex == index }"
             v-for="(item, index) in nav"
             :key="index"
-             :style="{fontSize:16*zoom+'px',paddingTop:zoom<1?languages+'px':languages*zoom+'px',paddingBottom:zoom<1?languages+'px':languages*zoom+'px'}"
+             :style="{fontSize:16+'px',paddingTop:languages+'px',paddingBottom:languages+'px'}"
             @click="tabActive(index)"
         >
             <div class="border"></div>
@@ -132,17 +132,19 @@ export default {
                         name: '操作记录'
                     },
                 ],
-                SYC_OrderManagement_Module:[
-                     {
-                        name: '订单管理'
+                ProductionManage:[
+                    {
+                        name: '生产计划'
                     },
                     {
-                        name: '历史订单'
+                        name: '历史计划'
+                    },
+                    {
+                        name: '操作记录'
                     },
                 ]
             },
             nav: [],
-            zoom:1,
             activeIndex: 0,
             languages:20
         };
@@ -150,12 +152,12 @@ export default {
     created() {
         this.getLangData()
         let path = this.$route.path.substr(1);
+        console.log("------",path)
         this.nav = this.navList[path];
     },
     mounted(){
         this.width = window.screen.width
-          this.color = this.$store.state.color;
-          this.zoom = (window.screen.width/1920)>1?(window.screen.width/1920):1
+        this.color = this.$store.state.color;
     },
     methods: {
         getLangData() {
@@ -166,11 +168,7 @@ export default {
                 this.languages = 20
                 
             }else{
-                if(this.zoom<=1){
- this.languages = 35
-                }else{
- this.languages = 45
-                }
+                this.languages = 35
                
             }
             this.navList.AlarmRecord = [
@@ -272,6 +270,17 @@ export default {
             this.navList.VulnerablePartManage = [
                 {
                     name: languages[currentLang].VulnerablePartManage_VulnerablePartsAccount
+                },
+                {
+                    name: languages[currentLang].EquipmentAccount_OperationRecord
+                }
+            ]
+            this.navList.ProductionManage = [
+                {
+                    name: '生产计划'
+                },
+                {
+                    name: '历史计划'
                 },
                 {
                     name: languages[currentLang].EquipmentAccount_OperationRecord

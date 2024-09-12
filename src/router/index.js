@@ -10,115 +10,75 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Home from '../views/Home.vue';
-const Index = () =>
-    import('@/pages/Index.vue');
+const Index = () => import('@/pages/Index.vue');
 
 const EquipmentOverview = () =>
     import('@/views/overview/equipmentOverview.vue');
-const CustomerVue = () =>
-    import('@/views/customer/customer.vue');
+const CustomerVue = () => import('@/views/customer/customer.vue');
 
-const cuAll = () =>
-    import('@/views/customer/cuAll.vue');
+const cuAll = () => import('@/views/customer/cuAll.vue');
 
-const TendencyVue = () =>
-    import('@/views/tendency/tendency.vue');
-const tapwater = () =>
-    import('@/views/tapwater/tapwater.vue');
-const steam = () =>
-    import('@/views/tapwater/steam.vue');
+const TendencyVue = () => import('@/views/tendency/tendency.vue');
+const tapwater = () => import('@/views/tapwater/tapwater.vue');
+const steam = () => import('@/views/tapwater/steam.vue');
 const powerdistribution = () =>
     import('@/views/powerdistribution/powerdistribution.vue');
-const powerhistory = () =>
-    import('@/views/powerdistribution/powerhistory.vue');
+const powerhistory = () => import('@/views/powerdistribution/powerhistory.vue');
 
-const Monitorsurface = () =>
-    import('@/views/Monitor/Monitorsurface.vue');
-const Monitordiagram = () =>
-    import('@/views/Monitor/Monitordiagram.vue');
+const Monitorsurface = () => import('@/views/Monitor/Monitorsurface.vue');
+const Monitordiagram = () => import('@/views/Monitor/Monitordiagram.vue');
 
-const Alarm = () =>
-    import('@/views/alarm/alarm.vue');
-const Alarm1 = () =>
-    import('@/views/antheralarm/alarm.vue');
+const Alarm = () => import('@/views/alarm/alarm.vue');
+const Alarm1 = () => import('@/views/antheralarm/alarm.vue');
 const Spotinspection = () =>
     import('@/views/Spotinspection/Spotinspection.vue');
-const maintain = () =>
-    import('@/views/maintain/maintain.vue');
-const Repair = () =>
-    import('@/views/Repair/Repair.vue');
-const quality = () =>
-    import('@/views/quality/quality.vue');
-const cpk = () =>
-    import('@/views/cpk/cpk.vue');
-const history = () =>
-    import('@/views/history/history.vue');
-const table = () =>
-    import('@/views/table/table.vue');
-const File = () =>
-    import('@/views/File/File.vue');
+const maintain = () => import('@/views/maintain/maintain.vue');
+const Repair = () => import('@/views/Repair/Repair.vue');
+const quality = () => import('@/views/quality/quality.vue');
+const cpk = () => import('@/views/cpk/cpk.vue');
+const history = () => import('@/views/history/history.vue');
+const table = () => import('@/views/table/table.vue');
+const File = () => import('@/views/File/File.vue');
 const Vulnerableparts = () =>
     import('@/views/Vulnerableparts/Vulnerableparts.vue');
-const AlarmAnalysis = () =>
-    import('@/views/alarmAnalysis/alarmAnalysis.vue');
-const Equipment = () =>
-    import('@/views/equipment/equipment.vue');
-const Log = () =>
-    import('@/views/log/log.vue');
-const User = () =>
-    import('@/views/user/user.vue');
-const Role = () =>
-    import('@/views/role/role.vue');
-const Login = () =>
-    import('../pages/Login.vue');
-const SteamMeterRecord = () =>
-    import('@/views/record/steamMeterRecord.vue');
+const AlarmAnalysis = () => import('@/views/alarmAnalysis/alarmAnalysis.vue');
+const Equipment = () => import('@/views/equipment/equipment.vue');
+const Log = () => import('@/views/log/log.vue');
+const User = () => import('@/views/user/user.vue');
+const Role = () => import('@/views/role/role.vue');
+const Login = () => import('../pages/Login.vue');
+const SteamMeterRecord = () => import('@/views/record/steamMeterRecord.vue');
 const SteamMeterAnalysis = () =>
     import('@/views/record/steamMeterAnalysis.vue');
-const WaterAnalysis = () =>
-    import('@/views/record/waterAnalysis.vue');
-const WaterRecord = () =>
-    import('@/views/record/waterRecord.vue');
+const WaterAnalysis = () => import('@/views/record/waterAnalysis.vue');
+const WaterRecord = () => import('@/views/record/waterRecord.vue');
 const Reportform = () =>
     import('@/views/parameter/component/configuration.vue');
-const Reportform1 = () =>
-    import('@/views/parameter/component/statement.vue');
-const sparepart = () =>
-    import('@/views/sparepart/sparepart.vue');
-const formula = () =>
-    import(`@/views/Rzdn/Formula/Formula.vue`);
-//班次管理
-const shiftManagement = () =>
-    import(`@/views/Rzdn/FlightManagement/FlightManagement.vue`);
-const materialInfoManageModule = () =>
-    import(`@/views/Rzdn/Formula/MaterialManagement.vue`);
-
-const guidingBookManager = () =>
-    import(`@/views/Rzdn/Formula/BookManagement.vue`);
-
-// const formula = () =>
-//     import(`@/views/formula/formula.vue`);
-const scheduleMange = () =>
-    import(`@/views/scheduleManage/scheduleMange2.vue`)
-const FormManage = () =>
-    import(`@/views/FormManage/FormManage.vue`)
-const WebVideoCtrl = () =>
-    import(`@/views/WebVideoCtrl/WebVideoCtrl.vue`)
+const Reportform1 = () => import('@/views/parameter/component/statement.vue');
+const sparepart = () => import('@/views/sparepart/sparepart.vue');
+const formula = () => import(`@/views/formula/formula.vue`);
+const scheduleMange = () => import(`@/views/scheduleManage/scheduleMange2.vue`);
+const FormManage = () => import(`@/views/FormManage/FormManage.vue`);
+const MaterialManagement = () =>
+    import(`@/views/MaterialManagement/MaterialManagement.vue`);
+const QualityMonitoring = () =>
+    import(`@/views/QualityMonitoring/QualityMonitoring.vue`);
+const MaterialManagement2 = () =>
+    import(`@/views/MaterialManagement/MaterialManagement2.vue`);
+const MaterialManagement3 = () =>
+    import(`@/views/MaterialManagement/MaterialManagement3.vue`);
+const WebVideoCtrl = () => import(`@/views/WebVideoCtrl/WebVideoCtrl.vue`);
+const OEE = () => import(`@/views/oee/OEE.vue`);
+const UnqualifiedStatistics = () =>
+    import(`@/views/unqualifiedStatistics/UnqualifiedStatistics.vue`);
+const QualityInspection = () =>
+    import(`@/views/qualityInspection/QualityInspection.vue`);
 // const Customreport = () =>
 //     import(`@/views/Customreport/Customreport.vue`);
-const OrderManange = () =>
-    import(`@/views/Rzdn/OrderManage/index.vue`);
-const SpcAnaly = () =>
-    import(`@/views/Rzdn/SpcAnaly/index.vue`)
-const SpcSetting = () =>
-    import(`@/views/Rzdn/SpcSetting/index.vue`)
-const OrderManagement = () =>
-    import('@/views/orderManagement/orderManagement.vue');
-
-
 
 Vue.use(VueRouter);
-const routes = [{
+const routes = [
+    {
         path: '/',
         redirect: '/onePath'
     },
@@ -127,14 +87,42 @@ const routes = [{
         component: Login
     },
 
-
     {
         path: '/home',
         component: Index,
-        children: [{
+        children: [
+            {
                 path: '/overview',
                 component: EquipmentOverview
             },
+            {
+                path: '/MaterialManagement',
+                component: MaterialManagement
+            },
+            {
+                path: '/MaterielConfigure',
+                component: MaterialManagement2
+            },
+            {
+                path: '/MaterielBom',
+                component: MaterialManagement3
+            },
+            {
+                path: '/OeeStatistics',
+                component: OEE
+            },
+            {
+                path: '/Unqualified',
+                component: UnqualifiedStatistics
+            },
+            {
+                path: '/InspectionReportManagement',
+                component: QualityInspection
+            },
+            // {
+            //     path: '/QualityMonitoring',
+            //     component: QualityMonitoring
+            // },
             {
                 path: '/FormManage',
                 component: FormManage
@@ -224,14 +212,14 @@ const routes = [{
             },
             {
                 path: '/ProcessParaReport',
-                component: Reportform
+                component: QualityMonitoring
             },
             {
                 path: '/ProcessConfigure',
                 component: Reportform1
             },
             {
-                path: '/SYC_FormulaInfoManager_Module',
+                path: '/Formula',
                 component: formula
             },
 
@@ -261,8 +249,8 @@ const routes = [{
             },
 
             {
-                path: "/SteamTrendCurve",
-                component: steam,
+                path: '/SteamTrendCurve',
+                component: steam
             },
             {
                 path: '/TapWaterTrendCurve',
@@ -301,59 +289,57 @@ const routes = [{
                 component: scheduleMange
             },
             {
-                path: '/SYC_OrderManagement_Module',
-                component: OrderManange
-            },
-            {
-                path: '/SYC_AnalysisModel_Module',
-                name: 'SPCAnaly',
-                component: SpcAnaly
-            },
-            {
-                path: '/SYC_SPCSetUpModel_Module',
-                component: SpcSetting
-            },
-            {
-                path: '/ProductionType',
-                component: OrderManagement
-            },
-            {
                 path: '/MsgPush',
                 component: () => import('@/views/push-message/index.vue'),
-                children: [{
+                children: [
+                    {
                         path: '/MsgPush/alarm-message',
-                        component: () => import('@/views/push-message/alarm-message.vue')
+                        component: () =>
+                            import('@/views/push-message/alarm-message.vue')
+                    },
+                    {
+                        path: '/MsgPush/todo-message',
+                        component: () =>
+                            import('@/views/push-message/todo-message.vue')
                     },
                     {
                         path: '/MsgPush/push-log',
-                        component: () => import('@/views/push-message/push-log.vue')
+                        component: () =>
+                            import('@/views/push-message/push-log.vue')
                     },
+                    {
+                        path: '/MsgPush/alarm-message1',
+                        component: () =>
+                            import('@/views/push-message/alarm-message1.vue')
+                    }
                 ]
             },
             {
-                path: '/LocationReport', // 工位报表
-                component: () => import('@/views/Rzdn/LocationManagement/LocationReport.vue')
-            }, {
-                path: '/FirstArticleReport', // 首件
-                component: () => import('@/views/Rzdn/LocationManagement/FirstArtifactsReport.vue')
-            }, {
-                path: '/ReadInstructor', // 指导书
-                component: () => import('@/views/Rzdn/LocationManagement/InstructionBook.vue')
-            }, {
-                path: '/LocationSetting', // 工位配置
-                component: () => import('@/views/Rzdn/LocationManagement/LocationConfig.vue')
+                path: '/EquipmentStatusStatistics',
+                component: () => import('@/views/deviceStatus/deviceStatus.vue')
             },
             {
-                path: '/ShiftManagement', // 班次管理
-                component: shiftManagement
+                path: '/OutputStatic',
+                component: () => import('@/views/outputStatic/outputStatic.vue')
             },
             {
-                path: '/SYC_MaterialInfoManager_Module', // 物料管理
-                component: materialInfoManageModule
+                path: '/ProductionManage',
+                component: () =>
+                    import('@/views/productionManage/productionManage.vue')
             },
             {
-                path: '/SYC_GuidingBookManager_Module', // 物料管理
-                component: guidingBookManager
+                path: '/ThroughputStatistic',
+                component: () =>
+                    import('@/views/productionStatic/productionStatic.vue')
+            },
+            {
+                path: '/NewTrendSeriesAlarm',
+                component: () =>
+                    import('@/views/tendencyAlarm/tendencyAlarm.vue')
+            },
+            {
+                path: '/VideoRotation',
+                component: () => import('@/views/station/station.vue')
             },
             // {
             //     path: '/cuAll',
@@ -362,11 +348,9 @@ const routes = [{
             {
                 path: '/*',
                 component: CustomerVue
-            },
-
+            }
         ]
-    },
-
+    }
 ];
 
 const router = new VueRouter({

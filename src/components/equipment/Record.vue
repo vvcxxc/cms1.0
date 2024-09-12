@@ -10,7 +10,7 @@
         class="public-table"
      
     >
-      			<div class="loadcover" element-loading-spinner="el-icon-loading"
+        <div class="loadcover" element-loading-spinner="el-icon-loading"
             element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
     width: 100%;
     height: 100%;
@@ -63,7 +63,7 @@ export default {
         return {
             tipchange1: false,
             tip: 'noData',
-
+            a11: 1,
             w: '',
             gth: require('../../assets/images/gth.png'),
             searchList: [
@@ -124,10 +124,6 @@ export default {
         this.req(1);
     },
     mounted() {
-        this.a11 = Number(parseFloat(window.screen.width / 1920).toFixed(2));
-        if (this.a11 < 1) {
-            this.a11 = 0.8;
-        }
     },
     methods: {
         getLangData() {

@@ -39,8 +39,7 @@ export default {
 		}
 	},
 	mounted(){
-		this.zoom = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
-	    let a = 30*this.zoom+'px'
+        let a = 30*this.zoom+'px'
 		$('.Two_1').css({
 			height:`calc(50% - ${a})`
 		})
@@ -90,19 +89,6 @@ watch:{
 	this.init()  
   },
 	methods:{
-		                                  sx(){
-                                        
-            let that = this
-            setTimeout(()=>{
-for(let i=0;i<$('.el-picker-panel').length;i++){
-                $('.el-picker-panel')[i].style.zoom = that.zoom1
-            }
-            for(let i=0;i<$('.el-select-dropdown').length;i++){
-                $('.el-select-dropdown')[i].style.zoom = that.zoom1
-            }
-            })
-              
-        },
 		child2(){
 			if(this.child2Show){
 				this.child2Show = false

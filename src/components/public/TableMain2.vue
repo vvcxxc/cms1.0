@@ -50,11 +50,11 @@
             </el-table-column>
            <el-table-column prop="name" :label="lang.RoleManage_Operation"  :width="200*zoom" >
                  <template slot-scope="scope">
-                      <div class="img" :style="{zoom}" @click="handleEdit2(scope.$index, scope.row)">
+                      <div class="img" @click="handleEdit2(scope.$index, scope.row)">
                             <img :src="pensoil" alt />
                             <!-- {{scope.row.phone}} -->
                         </div>
-                            <div :style="{zoom}" class="img" @click="handleEdit1(scope.$index, scope.row)"  v-show="scope.row.UserAccount !== 'SuperAdmin'&& scope.row.UserAccount !== 'guest'">
+                            <div class="img" @click="handleEdit1(scope.$index, scope.row)"  v-show="scope.row.UserAccount !== 'SuperAdmin'&& scope.row.UserAccount !== 'guest'">
                             <img :src="dell" alt />
                         </div>
                     </template>

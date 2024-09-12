@@ -63,7 +63,7 @@
             <div class="btn pointer add" @click="add">
                 <div class="addimg">
                     <img :src="addfile" alt />
-                </div>{{lang.RoleManage_Add}}
+                </div>{{lang.UserManage_AddCMSUser}}
             </div>
             <!-- <div class="btn pointer export" @click="exportTable">导出</div> -->
         </div>
@@ -328,7 +328,7 @@ span {
     .btn {
         @extend %flex;
         justify-content: center;
-        width: 120px;
+        min-width: 120px;
         height: 40px;
         background-color: #4270e4;
         border-radius: 4px;

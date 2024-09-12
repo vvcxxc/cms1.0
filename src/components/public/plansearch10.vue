@@ -112,7 +112,7 @@ export default {
           this.xgid = item.RightID
          }else if(item.RightName == "删除按钮"){
           this.scid = item.RightID
-         }else if(item.RightName == "CPK分析"){
+         }else if(item.RightName == "质量管理-CPK分析"){
           this.cpkid = item.RightID
          }
      })

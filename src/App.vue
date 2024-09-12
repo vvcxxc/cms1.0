@@ -24,8 +24,13 @@ export default {
 			for (; e < 0; t /= 10, e++);
 			return Math.round(v * t) / t;
 		},
-		 
 	},
+    beforeCreate() {
+        let zoom = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920;
+        this.$nextTick(()=>{
+            document.querySelector('body').setAttribute('style', 'zoom:' + zoom)
+        })
+    },
 	mounted() {
 		let that =  this
 		// Number.prototype.tocyxFixed = function(length) {

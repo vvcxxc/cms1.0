@@ -205,7 +205,7 @@ export default {
                     });
                   }
                     //下发事件
-                // e.path[0].style.background='rgba(255,255,255,0.7)'
+                e.path[0].style.background='rgba(255,255,255,0.7)'
                 self.jurisdictionShow(item).then(val => { 
                 self.$parent.scriptData(Typearr,'点动按钮',item,'1','','')
               })
@@ -288,7 +288,7 @@ export default {
            }
               //执行下发事件
               setTimeout(function(){
-                // e.path[0].style.background='rgba(255,255,255,0)'
+                e.path[0].style.background='rgba(255,255,255,0)'
               },200)
               this.item = ''
               this.e1 = ''
@@ -768,12 +768,6 @@ export default {
   cursor: pointer;
   box-sizing: border-box;
   position:relative;
-  .conten:active {
-    box-shadow: 4px 4px 20px #3c99c9 inset !important;
-  }
-  .contenText:active {
-    box-shadow: 4px 4px 20px #3c99c9 inset !important;
-  }
 }
 .PressButton7a:hover{
   background-color: #71A2C7ff !important;
@@ -794,9 +788,6 @@ export default {
   width:calc(100% + 4px);
   height:calc(100% + 4px);
   background:rgba(255,255,255,0);
-  &:active {
-    box-shadow: 4px 4px 20px #3c99c9 inset !important;;
-  }
 }
 
 .commerPop_outPop{

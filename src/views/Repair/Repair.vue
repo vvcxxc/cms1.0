@@ -7,7 +7,7 @@
  -->
 <template>
 	<div class="alarm-container">
-	 <aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200*(width/1920)+'px'}]">
+	 <aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200+'px'}]">
 			<left-nav @tabComponent="tabComponent"></left-nav>
 		</aside>
 		<section class="content-container" ref="content" >
@@ -32,7 +32,6 @@ export default {
 		return {
 			componentName: 'Agency',
 			zoomValue: 0,
-			   width:1920,
             zoom: 1,
 		};
 	},
@@ -40,17 +39,6 @@ export default {
 		
 	},
 	mounted(){
-     this.width = window.screen.width
-        this.zoom = this.width / 1920 < 0.8 ? 0.8 : this.width / 1920
-			setTimeout(()=>{
-		$('.alarm-container').css({
-        marginTop:$('.v-toolbar').height()*$('.v-toolbar')[0].style.zoom+10+'px'
-		});
-		let a = 200*(this.width/1920)+'px'
-		$('.content-container').css({
-				width:`calc(100% - ${a})`
-		})
-		})
 	},
 	methods: {
 		tabComponent(index) {

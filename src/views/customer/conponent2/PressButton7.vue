@@ -9,17 +9,21 @@
 <div>
    <div v-for="(item,index) in dataValue" :key="index">
   <div
-      v-if="show" name="pressbutton" :class="item.class" class="PressButton7a" @mouseup="upFun(item,$event)" 
-      @mousedown="downFun(item,$event)"  @dblclick="opendb(item)" @contextmenu.prevent
+      v-if="show" name="pressbutton" :class="item.class" class="PressButton7a" @mouseup.stop="upFun(item,$event)" 
+      @mousedown.stop="downFun(item,$event)"  @dblclick="opendb(item)" @contextmenu.prevent
       :style="'position:absolute;' + 'left:' + item.left + 'px; top:' + item.top 
       + 'px; boxSizing:border-box; text-align:center; line-height:' + (item.height - item.BorderThickness*2) 
       + 'px; width:'+ item.width + 'px; height:'+ item.height + 'px; borderRadius:' 
       + item.radiusLeft + 'px ' + item.radiusTop + 'px ' + item.radiusRight + 'px ' 
       + item.radiusButton + 'px; fontFamily:'+ item.family + '; fontSize:'+ item.fontSize 
-      + 'px; opacity:' + item.opacity + '; background:' + item.BorderBrush + '; transform:rotate(' 
-      + item.rotate + 'deg);padding:' + item.BorderThickness + 'px;overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow + ';zIndex:'+ item.ZIndex"> 
+      + 'px; opacity:' + item.opacity + '; transform:rotate(' 
+      + item.rotate + 'deg);' + ';overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow + ';zIndex:'+ item.ZIndex
+      + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
+      + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`
+      /* + `;${item.showBorder ? `border: ${item.BorderThickness}px solid ${item.borderStyle}` : `padding: ${item.BorderThickness}px`}`
+      + `;${item.showBack ? `border: ${item.BorderThickness}px solid ${item.borderStyle}`: `background: ${item.BorderBrush}`}` */ ">
 
-      <span class="contenText" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto;line-height:'
+      <span class="contenText" style="display: flex; justify-content:center; align-items: center" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto;line-height:'
       +item.height + 'px;color:'+item.Foreground + ';fontWeight:'+item.Blod">{{item.text}}</span>
 
       <div class="conten" :style="'width:100%;height:100%;background:' + item.Background + ';borderRadius:' 
@@ -28,7 +32,7 @@
         
       </div>
 
-        <div class="pressButton_box"></div>
+        <div class="pressButton_box 55"></div>
   </div>
 
 <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
@@ -217,8 +221,9 @@ export default {
                   }
 
                   //下发事件
-              e.path[0].style.background='rgba(255,255,255,0.7)'
+              // e.path[0].style.background='rgba(255,255,255,0.7)'
               self.jurisdictionShow(item).then(val => { 
+                console.log("11111111111111")
                 self.$parent.scriptData(Typearr,'点动按钮',item,'1','','')
               })
 
@@ -276,6 +281,7 @@ export default {
                   }
               });
               }else{
+                console.log("进来吧")
                 self.pressFun(item,'2')
               }
            }else if(e.which == 3){  //鼠标右键松开
@@ -295,15 +301,16 @@ export default {
            }
             //执行下发事件
               setTimeout(function(){
-                e.path[0].style.background='rgba(255,255,255,0)'
+                // e.path[0].style.background='rgba(255,255,255,0)'
               },200)
 
-        },200)
+        },600)
 
   },
 
     //点动下发事件
   pressFun(item,type){
+      console.log('这里很奇怪')
      if(item.ControlType != ''){
       if(!this.CanExcuteShow){
         //0为false 1为true 
@@ -361,8 +368,17 @@ export default {
         "Value":valueShow
       }
       arr.push(value)
-        //请求接口
-            this.$axios({
+         //请求接口
+                           //请求接口
+                            this.$axios({
+                                  method:'post',
+                                  url:`/api/base/CheckTags`,
+                                  data:arr
+                             }).then((res1)=>{
+                                  if(res1.data.code === 0){
+                                this.commerPopShow = false
+                                //  this.commerPopShow1value =  '该账户无操作权限'
+                        this.$axios({
                   method: 'post',
                   url: '/api/Base/PostIOServiceTest',
                   data:arr
@@ -371,6 +387,13 @@ export default {
               }).catch(function(error) {
                     // console.log(error);
                 });
+                                  }else{
+                       console.log("res1",res1)
+                               this.commerPopShow1 = true   
+                               this.commerPopShow1value = res1.data.msg
+                                  }
+                               
+                              })
       }else{
         this.commerPopShow1 = true
       }
@@ -479,23 +502,29 @@ export default {
                       backgroundColor = '-webkit-linear-gradient('+lagel1+'deg'+backgroundColor+')';
               }
                 //边框色渐变
+                let showLinear = false
+                let linearStyle = ''
                 if(borderbrushArr.ColorType == 'SolidColor'){
                     borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                 }else{
-                        borderColor = ''
+                        // 此处为渐变色
+                      let linearColor = ''
                         lagel3 = borderbrushArr.Data.Angel.toFixed(0)
                     for(var f2=0;f2<borderbrushArr.Data.GradientStops.length;f2++){
                         gradient3 = borderbrushArr.Data.GradientStops[f2]
-                        borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                        linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
                     }
-                        borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
+                        // borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
+                        showLinear = true
+                        borderColor = 'transparent'
+                        linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
                 }
               //背景色渐变
               if(backgroundArr.ColorType == 'SolidColor'){
                   backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                   if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                        backColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
-                    }
+                    // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                  }
               }else{
                       backColor = ''
                       lagel2 = backgroundArr.Data.Angel.toFixed(0)
@@ -534,7 +563,9 @@ export default {
                  Shadow:Shadow,
                  Shadow2:Shadow2,
                   Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                ZIndex:this.ZIndex
+                  ZIndex:this.ZIndex,
+                  showLinear,
+                  linearStyle
                }
                   this.dataValue.push(value)
                   break;
@@ -587,22 +618,28 @@ export default {
                           backgroundColor = '-webkit-linear-gradient('+lagel1+'deg'+backgroundColor+')';
                   }
                     //边框色渐变
+                    let showLinear = false
+                    let linearStyle = ''
                     if(borderbrushArr.ColorType == 'SolidColor'){
                         borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                     }else{
-                            borderColor = ''
+                              // 此处为渐变色
+                        let linearColor = ''
                             lagel3 = borderbrushArr.Data.Angel.toFixed(0)
                         for(var f1=0;f1<borderbrushArr.Data.GradientStops.length;f1++){
                             gradient3 = borderbrushArr.Data.GradientStops[f1]
-                            borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                            linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
                         }
-                            borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
+                            // borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
+                          showLinear = true
+                          borderColor = 'transparent'
+                          linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
                     }
                   //背景色渐变
                   if(backgroundArr.ColorType == 'SolidColor'){
                       backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                       if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                        backColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                        // backColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                     }
                   }else{
                           backColor = ''
@@ -641,7 +678,9 @@ export default {
                     Shadow:Shadow,
                     Shadow2:Shadow2,
                      Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                    ZIndex:this.ZIndex
+                    ZIndex:this.ZIndex,
+                    showLinear,
+                    linearStyle
                   }
                       this.dataValue.push(value5)
                }
@@ -684,22 +723,28 @@ export default {
 
 
             //边框色渐变
+            let showLinear = false
+            let linearStyle = ''
            if(borderbrushArr.ColorType == 'SolidColor'){
                borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
            }else{
-                     borderColor = ''
+                     // 此处为渐变色
+                     let linearColor = ''
                      lagel3 = borderbrushArr.Data.Angel.toFixed(0)
                  for(var f=0;f<borderbrushArr.Data.GradientStops.length;f++){
                    gradient3 = borderbrushArr.Data.GradientStops[f]
-                   borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                   linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
                }
-                   borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
+                  //  borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
+                  showLinear = true
+                  borderColor = 'transparent'
+                  linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
            }
           //背景色渐变
           if(backgroundArr.ColorType == 'SolidColor'){
               backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
               if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                  backColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                  // backColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
               }
           }else{
                   backColor = ''
@@ -755,7 +800,9 @@ export default {
                     Shadow:Shadow,
                     Shadow2:Shadow2,
                      Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                    ZIndex:this.ZIndex
+                    ZIndex:this.ZIndex,
+                    showLinear,
+                    linearStyle
                   }
                       this.dataValue.push(value8)
          }
@@ -775,11 +822,20 @@ export default {
   cursor: pointer;
   box-sizing: border-box;
   position:relative;
+  .conten:active {
+    box-shadow: 4px 4px 20px #3c99c9 inset !important;
+  }
+  .contenText:active {
+    box-shadow: 4px 4px 20px #3c99c9 inset !important;
+  }
 }
 
 .PressButton7a:hover{
+  // background-color: #71A2C7ff !important;
+  // background: #71A2C7ff !important;
   background-color: #71A2C7ff !important;
-  background: #71A2C7ff !important;
+  background: #4EBAF3ff !important;
+  border-color: #71A2C7 !important;
 }
 
 .PressButton7a:hover .conten{
@@ -796,6 +852,9 @@ export default {
   width:calc(100% + 4px);
   height:calc(100% + 4px);
   background:rgba(255,255,255,0);
+  &:active {
+    box-shadow: 4px 4px 20px #3c99c9 inset !important;;
+  }
 }
 
 .commerPop_outPop{

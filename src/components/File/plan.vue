@@ -7,11 +7,11 @@
  -->
 <template>
     <div
-        class="public-table" :class="{blackBlueBg: $store.state.color === 'blackBlue'}"
+        class="public-table"
         @click="changeselect = false"
       
     >
-      			<div class="loadcover" element-loading-spinner="el-icon-loading"
+            <div class="loadcover" element-loading-spinner="el-icon-loading"
             element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
     width: 100%;
     height: 100%;
@@ -136,9 +136,15 @@
                             }"
                             @row-click="handleRowChange1"
                             :header-cell-style="{
-                                background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#344C8F' : '#5a6c98'),
-                                color:($store.state.color=='grey')?'#000':'#fff',
-                                'border-left': $store.state.color==='blackBlue' ? '1px solid #8B98B8' : '1px solid #cccccc',
+                                background:
+                                    $store.state.color == 'grey'
+                                        ? '#D9DBDE'
+                                        : '#E1EDFA',
+                                color:
+                                    $store.state.color == 'grey'
+                                        ? '#000'
+                                        : '#769DE7',
+                                'border-left': '1px solid #cccccc',
                                 height: 50 * a11 + 'px',
                                 padding: '0'
                             }"
@@ -239,8 +245,6 @@
             >
 
             <el-date-picker
-                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                 v-model="value1"
               @focus="sx()"
                 type="datetime"
@@ -249,8 +253,6 @@
             ></el-date-picker>
             <span class="demonstration">-</span>
             <el-date-picker
-                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                 v-model="value2"
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -299,9 +301,10 @@
                 border
                 highlight-current-row
                 :header-cell-style="{
-                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
-                    color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                    background:
+                        $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
+                    color: $store.state.color == 'grey' ? '#000' : '#fff',
+                    'border-left': '1px solid #cccccc',
                     height: 50 * a11 + 'px',
                     padding: '0'
                 }"
@@ -1418,6 +1421,7 @@ export default {
                                 `/api/FileManage/FileManage_AddDeviceData?argDataTitle=${$this.meaddtable.DataTitle}&argDataType=${a}&argAID=${$this.meaddtable.AID}&argAddPerson=${$this.abc}&argImportFileName=${afname}&argGuid=${$this.guid}`
                             )
                             .then(res1 => {
+                                this.filesize  = 0
                                  setTimeout(() => {
                         $('.tip').css({
                             zoom: $this.a11,
@@ -1491,6 +1495,7 @@ export default {
                         });
                 }
             } else if ($this.sestion == 3) {
+                
                 if ($this.filesize < 20971520 && $this.filesize) {
                     event.preventDefault(); //取消默认行为
                     let formData = new FormData();
@@ -1503,6 +1508,7 @@ export default {
                         data: formData
                     }).then(res => {
                         let a = $this.meaddtable.DataType;
+                            this.filesize  = 0
                         // if (a == 'FileManage_OperationManual') {
                         //     a = 1;
                         // } else if (a == $this.lang.FileManage_InstallationInstructions) {
@@ -1577,7 +1583,8 @@ export default {
                                     if(res.data.code == 0){
    $this.tipword = $this.lang.FormulaManage_HT_FormulaSetting_ModifiedSuccessfully;
                                     }else{
-                                      $this.tipword = res.data.msg  
+                                    //   $this.tipword = res.data.msg  
+                                      $this.tipword = res1.data.data
                                     }
                                  
                                     $this.changetrue = false;
@@ -2884,91 +2891,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
     }
     .page-container {
         height: 60px;
-    }
-
-    &.blackBlueBg{
-        .el-tree{
-            background: #1D2846;
-            color: #C6CAD8;
-        }
-
-        .seleword,.seleword2{
-            background: #1D2846;
-            border: 1px solid #445992;
-            color: #C6CAD8;
-        }
-        .nosc{
-            background-color: #4F5871;
-            color: #fff;
-        }
-        .search-container{
-            background: #0B1530;
-            border-color: #38415A;
-            color: #E4E4E4;
-            .selectword{
-                background: #1D2846;
-                border: 1px solid #445992;
-            }
-            .add{
-                background-color: transparent;
-                border: 1px solid #46BE05;
-                color: #46BE05;
-            }
-            .move{
-                background-color: #4F5871;
-                border: 1px solid #4F5871;
-                color: #fff;
-            }
-        }
-        .table-container{
-            border-color: transparent;
-        }
-        .img{
-            border-color: #5C6A95;
-            background-color: transparent;
-        }
-
-        .look{
-            background: #233056;
-
-            .lookselect{
-                background: #28355B;
-                border-color: #445992;
-                color: #fff;
-
-                .table{
-                    border-color: #2A3058;
-                }
-                .el-table--border th.gutter:last-of-type{
-                    background-color: #344c8f;
-                }
-            }
-        }
-
-        .sestion{
-            border-color: transparent;
-
-            .sestioncontain{
-                background: #233056;
-            }
-            span{
-                color:#fff;
-            }
-
-           select{
-                background: #1D2846!important;
-                border-color: #445992;
-
-                &:focus{
-                    border-color: #B2C0E4
-                }
-            }
-            .input1{
-                color: #C6CAD8;
-                background: #35446D;
-                border-color: #445992;
-            }
-        }
     }
 }
 .table-container .img {

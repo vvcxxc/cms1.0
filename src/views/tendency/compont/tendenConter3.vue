@@ -7,9 +7,9 @@
  TODO:重构
  -->
 <template>
- <div class="conterbox" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+ <div class="conterbox">
       <div class="conterbox2load" v-show="loading1" v-loading="loading1"></div>
-           <div class="tip" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" ref="kongtiao2" v-show="tipchange" :style="{width: 380*zoom+'px',height:220*zoom+'px'}">
+           <div class="tip" ref="kongtiao2" v-show="tipchange" :style="{width: 380*zoom+'px',height:220*zoom+'px'}">
             <div
                 class="tiphead"
                 style="position:absolute;width: 380px;height: 40px;"
@@ -34,7 +34,7 @@
                 <el-button class="dro" type="primary">
                     <span class="drotext">{{text}}</span><i class="el-icon-caret-bottom el-icon--right caret"></i>
                 </el-button>
-                <el-dropdown-menu slot="dropdown" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+                <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
                     @click.native="curveName(index)"
                     v-for="(item,index) in curveIDTo" :key="index">
@@ -45,8 +45,6 @@
 		<div class="staTime">
             <el-date-picker
              @focus='sx'
-                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                 :disabled="showTime"
                 v-model="Sstime"
                 type="datetime"
@@ -57,8 +55,6 @@
 		<div class="endTime" >
 			<el-date-picker
              @focus='sx'
-                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                 :disabled="showTime"
 				v-model="Eetime"
 				type="datetime"
@@ -129,25 +125,7 @@ export default {
           lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
 		}
 	},
-    computed:{
-        theme(){
-            return this.$store.state.color === 'blackBlue'
-        },
-    },
     watch:{
-        theme(val){
-            let newOpt = this.myChart.getOption()
-            if(val){
-                newOpt.tooltip[0].backgroundColor = '#4B5166'
-                newOpt.tooltip[0].borderColor = '#4B5166'
-                newOpt.tooltip[0].textStyle.color = '#fff'
-            }else{
-                newOpt.tooltip[0].backgroundColor = '#fff'
-                newOpt.tooltip[0].borderColor = '#333'
-                newOpt.tooltip[0].textStyle.color = '#000'
-            }
-            this.myChart.setOption(newOpt)
-        },
         curveIDTo(n,o){
             this.curveName(this.ide)
         },
@@ -396,8 +374,8 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
             $(`.${name}`)[0].addEventListener('mousedown', function(e) {
                 
-                console.log(e.target.className.toLocaleLowerCase());
-                console.log(namehead)
+                // console.log(e.target.className.toLocaleLowerCase());
+                // console.log(namehead)
                 if (e.target.className.toLocaleLowerCase() == namehead) {
                     $(`.${name}`).removeClass('center')
                     window.event.stopPropagation();
@@ -431,9 +409,9 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         //计算移动后的左偏移量和顶部的偏移量
                         var nl = nx - (x - l);
                         var nt = ny - (y - t);
-                        console.log(nx)
-                        console.log(x)
-                        console.log(l)
+                        // console.log(nx)
+                        // console.log(x)
+                        // console.log(l)
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
@@ -444,21 +422,18 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                     });
                 }
             });
-        },  
-        getColor(color){
-            return /^\#/.test(color) && color.length !== 9 ? color : '#' + color.slice(3)
-        },  
+        },    
     //请求曲线图表设置
      axiosSet(){
           this.$axios({
           method:"post",
           url:"/api/NewTrendChart/QueryChartSetting",
           }).then((res)=>{
-            this.color2 = this.getColor(res.data.data.ChartBackground)
-            this.color3 = this.getColor(res.data.data.CursorColor)
-            this.color4 = this.getColor(res.data.data.LineColor)
-            this.color5 = this.getColor(res.data.data.XForeground)
-            this.color6 = this.getColor(res.data.data.YForeground)
+            this.color2 = '#' + res.data.data.ChartBackground.slice(3)
+            this.color3 = '#' + res.data.data.CursorColor.slice(3)
+            this.color4 = '#' + res.data.data.LineColor.slice(3)
+            this.color5 = '#' + res.data.data.XForeground.slice(3)
+            this.color6 = '#' + res.data.data.YForeground.slice(3)
             this.value2 = res.data.data.XFontFamily
             this.value3 = res.data.data.YFontFamily
             this.value5 = res.data.data.XFontSize
@@ -557,7 +532,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
             gid:data
             }).then((res)=>{
                 
-                console.log("res",res)
+                // console.log("res",res)
                 this.Stime = []
                 var curveLength = 0
                 for(var i=0;i<res.data.data.length;i++){
@@ -596,6 +571,10 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                         MaxValue:res.data.data[i].MaxValue,
                         MinValue:res.data.data[i].MinValue,
                         Type:res.data.data[i].Type,
+                        Rule:res.data.data[i].Rule,
+                        Decimal:res.data.data[i].Decimal,
+                        DecimalMaxValue:res.data.data[i].DecimalMaxValue,
+                        DecimalMinValue:res.data.data[i].DecimalMinValue,
                     }
                      var Line = {
                         name:res.data.data[i].DisplayName,
@@ -869,7 +848,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         
         // 基于准备好的dom，初始化echarts实例
         this.myChart = this.$echarts.init(this.$refs.tendency)
-        console.log("adadsasddsadsa")
+        // console.log("adadsasddsadsa")
         let a  = this.myChart.getOption()
         if(a){
             if(a.legend[0].selected){
@@ -889,7 +868,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         //   this.myChart.setOption(a)
 
        })
-       console.log(this.curveLineName2)
+    //    console.log(this.curveLineName2)
         if(text == 1){
             this.myChart.clear()
          }
@@ -897,7 +876,7 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         if(!this.$store.state.showTime){
          toolbox = {
                 feature: {
-                  	dataZoom: {
+                    dataZoom: {
 						yAxisIndex: 'none',
                         title:{
                             zoom:this.lang.NewTrendChart_Actions_Zoom,
@@ -938,11 +917,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
                             "color": this.color3
                         }
                     },
-                borderColor: this.$store.state.color === 'blackBlue' ? '#4B5166' : '#333',
-                backgroundColor: this.$store.state.color === 'blackBlue' ? '#4B5166' : '#fff',
-                textStyle:{
-                    color: this.$store.state.color === 'blackBlue' ? '#fff' : '#000'
-                }
             },
             color:this.curveLineColor,
             legend: {
@@ -1019,18 +993,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
         overflow: auto
     }
     .conterbox{
-        &.blackBlueBg{
-            .conter_head{
-                .xl{
-                    .dro{
-                        background: #1D2846;
-                        border-color: #445992!important;
-                        color: #C6CAD8;
-                    }
-                }
-            }
-        }
-
         .colortip{
             background-color: #EFEFF0 !important;
         }
@@ -1062,17 +1024,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
 	width:100%;
 	height:100%;
 	background:#fff;
-
-    &.blackBlueBg{
-        .conter_head{
-            .bottom{
-                .conButton{
-                    border-color: transparent;
-                }
-            }
-        }
-    }
-
 	.conter_head{
 		width:100%;
 		height:70px;

@@ -39,7 +39,7 @@
                   <div class="matrixgrid-set" :data-name="cell.TagName" v-if="Marry.length!==0">
                     <input type="text" v-model="cell.Value"
                       :style="`background-image: ${item.fontColor};-webkit-background-clip: ${item.backgroundClip}; 
-                              -webkit-text-fill-color: ${item.textFillColor};`"
+                              -webkit-text-fill-color: ${item.textFillColor};text-decoration: ${item.TextDecorations};`"
                         @focus="focusFun(item)"
                         @input="inputFun(item)"
                         @blur="blurFun(cell,item, $event)"
@@ -57,7 +57,7 @@
     </div>
 
     <!-- 读写框数值是否符合提示弹窗 -->
-    <div v-show="TextBoxShow" style="width: 100%; height: 100%; position: fixed; z-index: 997">
+    <!-- <div v-show="TextBoxShow" style="width: 100%; height: 100%; position: fixed; z-index: 997">
       <div v-if="TextBoxShow" class="TextBoxPop_outPop">
         <div class="TextBoxPop_outHead">
           <i class="warning el-icon-warning"></i>
@@ -68,10 +68,10 @@
           <div @click="Pop_ConfigFun" class="TextBoxPop_confirm"> {{lang.MessageBox_Confrim}} </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 权限弹窗 -->
-    <div v-show="commerPopShow1" style="width: 100%;height: 100%;position: fixed;z-index: 2147483647;">
+    <!-- <div v-show="commerPopShow1" style="width: 100%;height: 100%;position: fixed;z-index: 2147483647;">
       <div v-if="commerPopShow1" class="commerPop_outPop">
         <div class="commerPop_outHead">
           <i class="warning el-icon-warning"></i>
@@ -84,7 +84,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
   </div>
 </template>
@@ -163,9 +163,10 @@ export default {
     },
     //确定
     Pop_ConfigFun() {
-      document.querySelector('.TextBoxPop_outPop').style.display = 'none';
-      document.querySelector('.TextBoxPop_conter').style.textAlign = 'none';
-      this.TextBoxShow = false;
+      // document.querySelector('.TextBoxPop_outPop').style.display = 'none';
+      // document.querySelector('.TextBoxPop_conter').style.textAlign = 'none';
+      // this.TextBoxShow = false;
+      this.$emit('shownotip')
     },
     // 关闭键盘
     closeshow() {
@@ -173,7 +174,8 @@ export default {
     },
     //确认
     Jurisdiction() {
-      this.commerPopShow1 = false;
+      // this.commerPopShow1 = false;
+      this.$emit('shownotip')
     },
     //权限配置请求接口
     jurisdictionShow(item) {
@@ -219,17 +221,26 @@ export default {
     blurFun(cell, item) {
       if (this.isOriginal) {
         item.isShow = true;
+        console.log(cell)
+        console.log(item)
         //恢复原来值
-        this.originalFun({...item,...cell});
+        // setTimeout(() => {
+            this.originalFun({...item,...cell});
+        // }, 2000);
+      
       }
     },
     //恢复原来值
     originalFun(item) {
+       
       for(let i=0; i<this.cla.length; i++){
         if(item.class === this.cla[i]){
           let currentNode = this.dataValue[i].gridList[item.Row][item.Column]
           let idx = this.varArr.indexOf(item.TagName)
           let val = this.ValueArr[idx]
+          console.log(this.ValueArr)
+          console.log("val",this.varArr)
+          console.log("val",val)
           currentNode.Value = val
         }
       }
@@ -323,7 +334,8 @@ export default {
           if (EventType.length) {
             self.jurisdictionShow(item).then((val) => {
               if (self.CanExcuteShow) {
-                self.commerPopShow1 = true;
+                // self.commerPopShow1 = true;
+                self.$emit('showtip',self.lang.NoOperationAuthority)
                 return;
               } else {
                 for (var j = 0; j < EventType.length; j++) {
@@ -338,7 +350,8 @@ export default {
           if (EventType1.length) {
             self.jurisdictionShow(item).then((val) => {
               if (self.CanExcuteShow) {
-                self.commerPopShow1 = true;
+                // self.commerPopShow1 = true;
+                self.$emit('showtip',self.lang.NoOperationAuthority)
                 return;
               } else {
                 for (var j1 = 0; j1 < EventType1.length; j1++) {
@@ -380,7 +393,8 @@ export default {
         if (EventType.length) {
           self.jurisdictionShow(item).then((val) => {
             if (self.CanExcuteShow) {
-              self.commerPopShow1 = true;
+              // self.commerPopShow1 = true;
+              self.$emit('showtip',self.lang.NoOperationAuthority)
               return;
             } else {
               for (var j = 0; j < EventType.length; j++) {
@@ -395,7 +409,8 @@ export default {
         if (EventType1.length) {
           self.jurisdictionShow(item).then((val) => {
             if (self.CanExcuteShow) {
-              self.commerPopShow1 = true;
+              // self.commerPopShow1 = true;
+              self.$emit('showtip',self.lang.NoOperationAuthority)
               return;
             } else {
               for (var j1 = 0; j1 < EventType1.length; j1++) {
@@ -421,7 +436,8 @@ export default {
         if (EventType.length) {
           this.jurisdictionShow(item).then((val) => {
             if (this.CanExcuteShow) {
-              this.commerPopShow1 = true;
+              // this.commerPopShow1 = true;
+              this.$emit('showtip',this.lang.NoOperationAuthority)
               return;
             } else {
               for (var j = 0; j < EventType.length; j++) {
@@ -444,7 +460,8 @@ export default {
       if (item.TagName != '') {
         this.jurisdictionShow(item).then((val) => {
           if (this.CanExcuteShow) {
-            this.commerPopShow1 = true;
+            // this.commerPopShow1 = true;
+            this.$emit('showtip',this.lang.NoOperationAuthority)
             return;
           } else {
             var ss = JSON.parse(sessionStorage.getItem('variable'));
@@ -464,6 +481,14 @@ export default {
                 arr.push(value);
                 this.isOriginal = false; //下发禁止离焦触发
                 //请求接口 //下发数据
+                                  this.$axios({
+                                  method:'post',
+                                  url:`/api/base/CheckTags`,
+                                  data:arr
+                             }).then((res1)=>{
+                                  if(res1.data.code === 0){
+                          this.$emit('shownotip')
+                           
                 this.$axios({
                   method: 'post',
                   url: '/api/Base/PostIOServiceTest',
@@ -471,71 +496,77 @@ export default {
                 }).then((res) => {
                   if (res.data.data == true) {
                     item.isShow = true;
-                    this.isOriginal = true;
-                    setTimeout(() => {
-                      e.path[0].blur();
-                    }, 300);
+                    this.isOriginal = false;
+                    // setTimeout(() => {
+                    //   e.path[0].blur();
+                    // }, 300);
                   } else {
-                    this.TextBoxShow = true;
-                    setTimeout(() => {
-                      document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-                      document.querySelector('.TextBoxPop_conter').style.textAlign = 'center';
-                      document.querySelector('.TextBoxPop_conter').innerHTML = this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail;
-                    });
+                      this.isOriginal = true;
+                      this.$emit('showtip',this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
                     //恢复原来值
                     setTimeout(() => {e.path[0].blur();}, 300);
                   }
                 }).catch((error) => {
-                  this.TextBoxShow = true;
-                  setTimeout(() => {
-                    document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-                    document.querySelector('.TextBoxPop_conter').style.textAlign = 'center';
-                    document.querySelector('.TextBoxPop_conter').innerHTML = this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail;
-                  });
+                    this.$emit('showtip',this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
+                      this.isOriginal = true;
                   //恢复原来值
                   setTimeout(() => {
                     e.path[0].blur();
                   }, 300);
                 });
+                                  }else{
+  this.$emit('showtip',res1.data.msg)
+    this.isOriginal = true;
+                  //恢复原来值
+                  setTimeout(() => {
+                    e.path[0].blur();
+                  }, 300);
+                                  }
+                               
+                              })
+            
+
               } else {
-                this.TextBoxShow = true;
-                setTimeout(() => {
-                  document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-                  document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${this.lang['二进制变量']}${this.lang.SCMSExplorerData_ProtocolDataType_Bool}`;
-                });
+                this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+this.lang['二进制变量']+this.lang.SCMSExplorerData_ProtocolDataType_Bool)
               }
-            }else if(variableName == this.lang['有符号8位整型']){
-              this.judgeFun(issVal,127,-128,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-              return
-            }else if(variableName == this.lang['无符号8位整型']){
-              this.judgeFun(issVal,255,0,item.MaxValue,item.MinValue,variableName,{...parent,...item},'整',e)
-              return
-            }else if(variableName == this.lang['有符号16位整型']){
-                this.judgeFun(issVal,32767,-32768,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-                return
-            }else if(variableName == this.lang['无符号16位整型']){
-                this.judgeFun(issVal,65535,0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-                return
-            }else if(variableName == this.lang['有符号32位整型']){
-                this.judgeFun(issVal,2147483647,-2147483648,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-                return
-            }else if(variableName == this.lang['无符号32位整型'] || variableName == this.lang['定时器']){
-                this.judgeFun(issVal,4294967295,0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-                return
-            }else if(variableName == this.lang['有符号64位整型']){
-              this.judgeFun(issVal,"9223372036854775807","-9223372036854775808",item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-              return
-            }else if(variableName == this.lang['无符号64位整型']){
-              this.judgeFun(issVal,"18446744073709551615",0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-                return
-            }else if(variableName == this.lang['F32位浮点数IEEE754']){
-              this.judgeFun(issVal,3.40282347E+38,-3.40282347E+38,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'浮',e)
-              return
-            }else if(variableName == this.lang['F64位浮点数IEEE754']){
-              this.judgeFun(issVal,1.7976931348623157E+308,-1.7976931348623157E+308,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'浮',e)
-              return
+            // }else if(variableName == this.lang['有符号8位整型']){
+            //   this.judgeFun(issVal,127,-128,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+            //   return
+            // }else if(variableName == this.lang['无符号8位整型']){
+            //   this.judgeFun(issVal,255,0,item.MaxValue,item.MinValue,variableName,{...parent,...item},'整',e)
+            //   return
+            // }else if(variableName == this.lang['有符号16位整型']){
+            //     this.judgeFun(issVal,32767,-32768,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+            //     return
+            // }else if(variableName == this.lang['无符号16位整型']){
+            //     this.judgeFun(issVal,65535,0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+            //     return
+            // }else if(variableName == this.lang['有符号32位整型']){
+            //     this.judgeFun(issVal,2147483647,-2147483648,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+            //     return
+            // }else if(variableName == this.lang['无符号32位整型'] || variableName == this.lang['定时器']){
+            //     this.judgeFun(issVal,4294967295,0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+            //     return
+            // }else if(variableName == this.lang['有符号64位整型']){
+            //   this.judgeFun(issVal,"9223372036854775807","-9223372036854775808",item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+            //   return
+            // }else if(variableName == this.lang['无符号64位整型']){
+            //   this.judgeFun(issVal,"18446744073709551615",0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+            //     return
+            // }else if(variableName == this.lang['F32位浮点数IEEE754']){
+            //   this.judgeFun(issVal,3.40282347E+38,-3.40282347E+38,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'浮',e)
+            //   return
+            // }else if(variableName == this.lang['F64位浮点数IEEE754']){
+            //   this.judgeFun(issVal,1.7976931348623157E+308,-1.7976931348623157E+308,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'浮',e)
+            //   return
             }else{
-              this.filtrateVariable({...parent, item}, issVal, e)
+              
+              let TagName = JSON.parse(JSON.stringify(item.TagName))
+              let data11 = {...parent, ...item}
+              data11.TagName = TagName
+              //  console.log(5454)
+              // console.log(data11)
+              this.filtrateVariable(data11, issVal, e)
               return;
             }
           }
@@ -567,6 +598,7 @@ export default {
         min = min == null ? '' : this.toFixed(min).toString();
         let val = this.toFixed(Number(text)).toString()
          let type12 = ''
+           let type11 = JSON.parse(JSON.stringify(type))
              let lang = JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
              console.log(lang)
              for(let i in lang){
@@ -585,12 +617,13 @@ export default {
           if (res.data.code == 0) {
             resolve(true);
           } else {
-            this.TextBoxShow = true;
-            setTimeout(() => {
-              document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-              document.querySelector('.TextBoxPop_conter').style.textAlign = 'center';
-              document.querySelector('.TextBoxPop_conter').innerHTML = `${res.data.msg}`;
-            });
+            this.$emit('showtip',res.data.msg)
+            // this.TextBoxShow = true;
+            // setTimeout(() => {
+            //   document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+            //   document.querySelector('.TextBoxPop_conter').style.textAlign = 'center';
+            //   document.querySelector('.TextBoxPop_conter').innerHTML = `${res.data.msg}`;
+            // });
             resolve(false);
           }
         });
@@ -599,6 +632,14 @@ export default {
     //下发接口
     tagAxios(arr, item, e) {
       //请求接口 //下发数据
+                             this.$axios({
+                                  method:'post',
+                                  url:`/api/base/CheckTags`,
+                                  data:arr
+                             }).then((res1)=>{
+                                  if(res1.data.code === 0){
+                                this.$emit('shownotip')
+                            
       this.$axios({
         method: 'post',
         url: '/api/Base/PostIOServiceTest',
@@ -607,33 +648,37 @@ export default {
         this.isOriginal = true; //下发允许离焦触发
         if (res.data.data == true) {
           item.isShow = true;
-          setTimeout(() => {
-            e.path[0].blur();
-          }, 300);
+            this.isOriginal = false;
+          // setTimeout(() => {
+          //   e.path[0].blur();
+          // }, 300);
         } else {
-          this.TextBoxShow = true;
-          setTimeout(() => {
-            document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-            document.querySelector('.TextBoxPop_conter').style.textAlign = 'center';
-            document.querySelector('.TextBoxPop_conter').innerHTML = this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail;
-          });
+          this.$emit('showtip',this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
+            this.isOriginal = true;
           //恢复原来值
           setTimeout(() => {
             e.path[0].blur();
           }, 300);
         }
       }).catch((error) => {
-        this.TextBoxShow = true;
-        setTimeout(() => {
-          document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-          document.querySelector('.TextBoxPop_conter').style.textAlign = 'center';
-          document.querySelector('.TextBoxPop_conter').innerHTML = this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail;
-        });
+        this.$emit('showtip',this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
+          this.isOriginal = true;
         //恢复原来值
         setTimeout(() => {
           e.path[0].blur();
         }, 300);
       });
+                                  }else{
+                                      this.isOriginal = true;
+                                      
+                        this.$emit('showtip',res1.data.msg)
+                          setTimeout(() => {
+          e.path[0].blur();
+        }, 300);
+                                  }
+                               
+                              })
+
     },
     //筛选共同下发的变量
     filtrateVariable(item, text2, e){
@@ -731,11 +776,12 @@ export default {
     judgeFun(num, max, min, MaxValue, MinValue, TagType, item, type, e) {
       var text2 = Number(num);
       if (num.length == 0) {
-        this.TextBoxShow = true;
-        setTimeout(() => {
-          document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-          document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
-        });
+         this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Integer+min+'-'+max)
+        // this.TextBoxShow = true;
+        // setTimeout(() => {
+        //   document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+        //   document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
+        // });
         return;
       }
 
@@ -748,20 +794,22 @@ export default {
         });
       } else {
         if (isNaN(text2)) {
-          this.TextBoxShow = true;
-          setTimeout(() => {
-            document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-            document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
-          });
+          this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Integer+min+'-'+max)
+          // this.TextBoxShow = true;
+          // setTimeout(() => {
+          //   document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+          //   document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
+          // });
           return;
         }
 
         if (text2 == '' && text2 != 0) {
-          this.TextBoxShow = true;
-          setTimeout(() => {
-            document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-            document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
-          });
+          this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Integer+min+'-'+max)
+          // this.TextBoxShow = true;
+          // setTimeout(() => {
+          //   document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+          //   document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
+          // });
           return;
         }
 
@@ -769,17 +817,18 @@ export default {
           if (type == '整') {
             let indexNum = num.indexOf('.');
             if (indexNum != -1) {
-              this.TextBoxShow = true;
-              setTimeout(() => {
-                document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-                document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
-              });
+              this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Integer+min+'-'+max)
+              // this.TextBoxShow = true;
+              // setTimeout(() => {
+              //   document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+              //   document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
+              // });
               return;
             }
           }
           if (MaxValue != null) {
             if (text2 > MaxValue) {
-              this.TextBoxShow = true;
+              // this.TextBoxShow = true;
               setTimeout(() => {
                 document.querySelector('.TextBoxPop_outPop').style.display = 'block';
                 let msg = this.lang.HMI_HT_HMIUserControlViewModel_InputGreaterThanMaximumValue;
@@ -791,12 +840,13 @@ export default {
                 let str2 = msg.slice(lastL, lastR);
                 msg = msg.replace(str1, `<${text2}>`);
                 msg = msg.replace(str2, `<${MaxValue}>`);
-                document.querySelector('.TextBoxPop_conter').innerHTML = `${msg}`;
+                this.$emit('showtip',msg)
+                // document.querySelector('.TextBoxPop_conter').innerHTML = `${msg}`;
               });
               return;
             }
             if (text2 < MinValue) {
-              this.TextBoxShow = true;
+              // this.TextBoxShow = true;
               setTimeout(() => {
                 document.querySelector('.TextBoxPop_outPop').style.display = 'block';
                 let msg = this.lang.HMI_HT_HMIUserControlViewModel_InputLessThanMinimumValue;
@@ -808,7 +858,8 @@ export default {
                 let str2 = msg.slice(lastL, lastR);
                 msg = msg.replace(str1, `<${text2}>`);
                 msg = msg.replace(str2, `<${MinValue}>`);
-                document.querySelector('.TextBoxPop_conter').innerHTML = `${msg}`;
+                this.$emit('showtip',msg)
+                // document.querySelector('.TextBoxPop_conter').innerHTML = `${msg}`;
               });
               return;
             }
@@ -816,11 +867,12 @@ export default {
 
           this.filtrateVariable(item, text2, e)
         } else {
-          this.TextBoxShow = true;
-          setTimeout(() => {
-            document.querySelector('.TextBoxPop_outPop').style.display = 'block';
-            document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
-          });
+          this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Integer+min+'-'+max)
+          // this.TextBoxShow = true;
+          // setTimeout(() => {
+          //   document.querySelector('.TextBoxPop_outPop').style.display = 'block';
+          //   document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`;
+          // });
         }
       }
     },
@@ -904,6 +956,7 @@ export default {
     },
     //条件判断方法
     judgeFun1(data) {
+      
       if (data.length) {
         for (var i = 0; i < this.textBbockArr.length; i++) {
           if (data[i].Value == null) {

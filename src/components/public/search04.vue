@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-29 16:34:35
  -->
 <template>
-    <div class="search-container juese" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+    <div class="search-container juese">
         <div class="search-left">
             <div class="search-item" v-for="(item, index) in searchList" :key="index">
                 <div
@@ -63,7 +63,7 @@
             <div class="btn pointer add" @click="add">
                 <div class="addimg">
                     <img :src="addfile" alt />
-                </div>{{lang.RoleManage_Add}}
+                </div>{{lang.UserManage_AddCMSUser}}
             </div>
             <!-- <div class="btn pointer export" @click="exportTable">导出</div> -->
         </div>
@@ -308,13 +308,6 @@ export default {
     background-color: #ddd;
     width: 100%;
     position: relative;
-
-    &.blackBlueBg{
-        .add{
-            background-color: transparent!important;;
-            border: 2px solid #46BE05;
-        }
-    }
 }
 span {
     position: absolute;
@@ -335,7 +328,7 @@ span {
     .btn {
         @extend %flex;
         justify-content: center;
-        width: 120px;
+        min-width: 120px;
         height: 40px;
         background-color: #4270e4;
         border-radius: 4px;

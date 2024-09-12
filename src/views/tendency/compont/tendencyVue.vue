@@ -7,8 +7,9 @@
  * TODO:重构
  -->
 <template>
-<div v-loading="loading1" class="conterbox container" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
-       <div class="tip" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" ref="kongtiao2" v-show="tipchange" :style="{width: 380*zoom+'px',height:220*zoom+'px'}">
+<div  class="conterbox container">
+    <div class="loading1cover" v-show="loading1" v-loading="loading1"></div>
+       <div class="tip" ref="kongtiao2" v-show="tipchange" :style="{width: 380*zoom+'px',height:220*zoom+'px'}">
             <div
                 class="tiphead"
                 style="position:absolute;width: 380px;height: 40px;"
@@ -66,10 +67,9 @@
                     :data="curveArr"
                     prop=Newtime
                     tooltip-effect="dark"
-                     :header-cell-style="{
-                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+                     :header-cell-style="{background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',
                     color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                    'border-left':'1px solid #cccccc',
                     height:50*zoom1+'px',
                     fontSize: 14*zoom1+'px',
                     padding:'0'}">
@@ -148,7 +148,7 @@
                     <div class="operate">{{lang.NewTrendChart_SingleChartUC_Operate}}</div>
                 </div>
                 <div class="top_middle">
-                 <div @click="curveName(index,1,undefind,undefind,undefind,undefind,'表格点击')" class="top_conter" :class="{'current-row': activeRow === index}" v-for="(item,index) in curveID" :key="index">
+                 <div @click="curveName(index,1,undefind,undefind,undefind,undefind,'表格点击')" class="top_conter" v-for="(item,index) in curveID" :key="index">
                   <div class="curvename">{{item.Name}}</div>
                   <div class="curvei">
                       <div @click.stop="edit(item)" class="edit_box">
@@ -216,7 +216,6 @@ import tenPop from './tendenConterPop.vue'
      curveLineValue:[],
      LocalStorage:[],
      curveLineData:[],
-     activeRow: 0,
      lineData:[],
      Stime:[],
      serDate:[],
@@ -260,28 +259,11 @@ import tenPop from './tendenConterPop.vue'
      formatterValue:'{value}',
      zoom:1,
       zoom1:1,
-     lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
+     lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
+     refreshTime: 1000,
     }
   },
-    computed:{
-        theme(){
-            return this.$store.state.color === 'blackBlue'
-        },
-    },
   watch:{
-    theme(val){
-        let newOpt = this.myChart.getOption()
-        if(val){
-            newOpt.tooltip[0].backgroundColor = '#4B5166'
-            newOpt.tooltip[0].borderColor = '#4B5166'
-            newOpt.tooltip[0].textStyle.color = '#fff'
-        }else{
-            newOpt.tooltip[0].backgroundColor = '#fff'
-            newOpt.tooltip[0].borderColor = '#333'
-            newOpt.tooltip[0].textStyle.color = '#000'
-        }
-        this.myChart.setOption(newOpt)
-    },
       //查询监听
      qeShow(n,o){
          this.axiosHistory()
@@ -312,7 +294,7 @@ import tenPop from './tendenConterPop.vue'
              if(this.curveID.length !=0){
                  this.time2 = window.setInterval(() => {
                  this.getDate()
-                },1000)
+                },this.refreshTime)
              }
              this.Showindex = 1
              this.formatterValue = '{value}%'
@@ -330,7 +312,7 @@ import tenPop from './tendenConterPop.vue'
              if(this.curveID.length !=0){
                  this.time2 = window.setInterval(() => {
                  this.getDate()
-                },1000)
+                },this.refreshTime)
              }
              this.Showindex = 0
               this.formatterValue = '{value}'
@@ -358,7 +340,7 @@ import tenPop from './tendenConterPop.vue'
                if(this.curveID.length != 0){
                    this.time2 = window.setInterval(() => {
                        this.getDate()
-                   },1000)
+                   },this.refreshTime)
                }
                 if(this.PopdataShow){
                     // 历史
@@ -420,7 +402,7 @@ import tenPop from './tendenConterPop.vue'
          that.atooltip()
      })
     setTimeout(()=>{
-        console.log("asdasdsa",$('.conterbox').find('.el-input'))
+        // console.log("asdasdsa",$('.conterbox').find('.el-input'))
         $('.conterbox').find('.el-input').css('zoom',this.zoom1)
         $(".el-button--primary,.el-input__inner").css({height: 40*this.zoom+'px',fontSize: 14*this.zoom+'px'})
         $(".el-input__icon").css({lineHeight: 40*this.zoom+'px'})
@@ -435,7 +417,7 @@ import tenPop from './tendenConterPop.vue'
             fool[i].style.background = '#fff'
         }
     }
-        console.log("asdasdasdsadasdasd11111111")
+        // console.log("asdasdasdsadasdasd11111111")
        
     //图表自适应大小
     this.$nextTick(()=>{
@@ -553,8 +535,6 @@ for(let i=0;i<$('.atooltip').length;i++){
     renderHeader (h, { column, $index }) {
      return (
         <el-date-picker
-            key={this.$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'}
-            popper-class={this.$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'}
             size="mini"
             class="timeLast"
             v-model={this.Newtime}
@@ -625,8 +605,8 @@ for(let i=0;i<$('.atooltip').length;i++){
            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
             $(`.${name}`)[0].addEventListener('mousedown', function(e) {
                 
-                console.log(e.target.className.toLocaleLowerCase());
-                console.log(namehead)
+                // console.log(e.target.className.toLocaleLowerCase());
+                // console.log(namehead)
                 if (e.target.className.toLocaleLowerCase() == namehead) {
                     $(`.${name}`).removeClass('center')
                     window.event.stopPropagation();
@@ -660,9 +640,9 @@ for(let i=0;i<$('.atooltip').length;i++){
                         //计算移动后的左偏移量和顶部的偏移量
                         var nl = nx - (x - l);
                         var nt = ny - (y - t);
-                        console.log(nx)
-                        console.log(x)
-                        console.log(l)
+                        // console.log(nx)
+                        // console.log(x)
+                        // console.log(l)
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
@@ -674,20 +654,17 @@ for(let i=0;i<$('.atooltip').length;i++){
                 }
             });
         },
-        getColor(color){
-            return /^\#/.test(color) && color.length !== 9 ? color : '#' + color.slice(3)
-        },
     //请求曲线图表设置
      axiosSet(){
           this.$axios({
           method:"post",
           url:"/api/NewTrendChart/QueryChartSetting",
           }).then((res)=>{
-            this.color2 = this.getColor(res.data.data.ChartBackground)
-            this.color3 = this.getColor(res.data.data.CursorColor)
-            this.color4 = this.getColor(res.data.data.LineColor)
-            this.color5 = this.getColor(res.data.data.XForeground)
-            this.color6 = this.getColor(res.data.data.YForeground)
+            this.color2 = '#' + res.data.data.ChartBackground.slice(3)
+            this.color3 = '#' + res.data.data.CursorColor.slice(3)
+            this.color4 = '#' + res.data.data.LineColor.slice(3)
+            this.color5 = '#' + res.data.data.XForeground.slice(3)
+            this.color6 = '#' + res.data.data.YForeground.slice(3)
             this.value2 = res.data.data.XFontFamily
             this.value3 = res.data.data.YFontFamily
             this.value5 = res.data.data.XFontSize
@@ -965,7 +942,7 @@ for(let i=0;i<$('.atooltip').length;i++){
                         this.curveLineValue[j].data.push(res.data.data[i].Points[j].Value)
                         this.historyValue = false
                     }
-                    console.log(this.curveLineValue)
+                    // console.log(this.curveLineValue)
                 }
                 this.$nextTick(function(){
                     this.drawLine(0);
@@ -1093,9 +1070,10 @@ for(let i=0;i<$('.atooltip').length;i++){
                          var sum =0
                          var pnum = this.curveLineValue[j].data
                          for(var w=0;w<pnum.length;w++){
-                               sum=sum+pnum[w]
+                               sum=sum+parseFloat(pnum[w])
                         }
-                       this.curveArr[j].numP =(sum / this.curveLineValue[j].data.length).toString().length > 5 ? (sum / this.curveLineValue[j].data.length).toFixed(4) : (sum / this.curveLineValue[j].data.length)
+                       this.curveArr[j].numP =(sum / this.curveLineValue[j].data.length).toString().length > 5 ? (sum / this.curveLineValue[j].data.length).toFixed(this.getnumlen(this.curveArr[j].Newtext)) : (sum / this.curveLineValue[j].data.length)
+                        console.log(this.curveArr[j])
                           if(this.curveLineValue[j].data.length>=30){
                               this.curveLineValue[j].data.shift(1)
                           }
@@ -1108,17 +1086,26 @@ for(let i=0;i<$('.atooltip').length;i++){
                 });
             }
         },
+    getnumlen(data){
+if(data.includes('.')){
+var x = String(data).indexOf(".")+1;//得到小数点的位置
+var y = String(data).length - x;//小数点的位数
+return y
+}else{
+    return 0
+}
 
+    },
      timeaxiosAA(data,ind,data1){
                this.drawLine(1);
                 // console.log("时间11111111111")
                this.axiosReal(data,ind)
                    this.time2 = window.setInterval(() => {
                          this.getDate()
-                     },1000)
+                     },this.refreshTime)
                this.timer = window.setInterval(() => {
                    this.axiosReal(data,ind)
-                    },1000)
+                    },this.refreshTime)
                     var typename
                     var lineType
                     this.curveArr = []
@@ -1213,6 +1200,10 @@ for(let i=0;i<$('.atooltip').length;i++){
                         MaxValue:res.data.data[i].MaxValue,
                         MinValue:res.data.data[i].MinValue,
                         Type:res.data.data[i].Type,
+                        Rule:res.data.data[i].Rule,
+                        Decimal:res.data.data[i].Decimal,
+                        DecimalMaxValue:res.data.data[i].DecimalMaxValue,
+                        DecimalMinValue:res.data.data[i].DecimalMinValue,
 
                     }
                      var Line = {
@@ -1234,12 +1225,12 @@ for(let i=0;i<$('.atooltip').length;i++){
                     if(this.realArr.length){
                         this.time2 = window.setInterval(() => {
                             this.getDate()
-                        },1000)
+                        },this.refreshTime)
                     }
                     this.timer = window.setInterval(() => {
                         // console.log('realArr==>',this.realArr)
                         this.axiosReal(this.realArr,1)
-                    },1000)
+                    },this.refreshTime)
                }
             }).catch(function (error) {
                     console.log(error);
@@ -1334,7 +1325,28 @@ for(let i=0;i<$('.atooltip').length;i++){
                      this.PopdataShow = false
                     this.axiosAll(index,0)
                 }
-                this.activeRow = index
+               if(text != 1){
+
+                   var conterTop1 = document.querySelectorAll('.top_conter')
+                 
+                      for(var f=0;f<conterTop1.length;f++){
+                          if( f % 2 == 0){
+                              conterTop1[f].style.background = '#fff'
+                          }else{
+                              conterTop1[f].style.background = '#EAEDEE'
+                          }
+                      }
+                      if(conterTop1[index]){
+                          conterTop1[index].style.background = '#D4DEFB'
+                      }
+                var curvname1 = document.querySelectorAll('.top_conter>.curvename')
+                for(var k=0;k< curvname1.length;k++){
+                  curvname1[k].style.borderRight = '0px'
+                }
+                if(curvname1[index]){
+                    curvname1[index].style.borderRight = '1px solid #fff' 
+                }
+               }
         }else{
                 this.NumS =0 
                 if(this.curveID[index]){
@@ -1356,7 +1368,23 @@ for(let i=0;i<$('.atooltip').length;i++){
                 this.axiosAll(index,1)
                 }
                
-                this.activeRow = index
+                var conterTop = document.querySelectorAll('.top_conter')
+              
+                    for(var j=0;j<conterTop.length;j++){
+                        if( j % 2 == 0){
+                            conterTop[j].style.background = '#fff'
+                        }else{
+                             conterTop[j].style.background = '#EAEDEE'
+                        }
+                    }
+                if(conterTop[index]){
+                    conterTop[index].style.background = '#D4DEFB'
+                }
+                var curvname = document.querySelectorAll('.top_conter>.curvename')
+                for(var d=0;d< curvname.length;d++){
+                  curvname[d].style.borderRight = '0px'
+                }
+                curvname[index].style.borderRight = '1px solid #fff'
             }
       },
         inpClick(index){
@@ -1443,7 +1471,7 @@ for(let i=0;i<$('.atooltip').length;i++){
     drawLine(text){
         
         // 基于准备好的dom，初始化echarts实例
-        this.myChart = this.$echarts.init(this.$refs.tendency)
+        if (!this.myChart) this.myChart = this.$echarts.init(this.$refs.tendency);
            let formatter = "{value}"
          
         if(this.$store.state.Showtext == 1){
@@ -1459,7 +1487,7 @@ for(let i=0;i<$('.atooltip').length;i++){
         if(!this.$store.state.showTime){
          toolbox = {
                 feature: {
-                   	dataZoom: {
+                    dataZoom: {
 						yAxisIndex: 'none',
                         title:{
                             zoom:this.lang.NewTrendChart_Actions_Zoom,
@@ -1488,17 +1516,24 @@ for(let i=0;i<$('.atooltip').length;i++){
             tooltip: {
                 trigger: 'axis',  
                 confine: true,
-                formatter:this.formatterShow == true ? '{b0}<br /><span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#5087f0;"></span>曲线1:{c0}<br/><span style ="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#7eebfa;"></span>曲线2:{c1}<br/><span style ="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#faeb74;"></span>曲线3:{c2}<br/>' : '',
+                // formatter:this.formatterShow == true ? '{b0}<br /><span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#5087f0;"></span>曲线1:{c0}<br/><span style ="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#7eebfa;"></span>曲线2:{c1}<br/><span style ="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#faeb74;"></span>曲线3:{c2}<br/>' : '',
+                formatter: function (value, index) {
+                    var html = [`${value[0].name}<br/>`]
+                    for (var i = 0, iLen = value.length; i < iLen; i++) {
+                        var item = value[i];
+                        html.push(`
+                            <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${item.color};"></span>
+                                ${item.seriesName}:${item.value}
+                            <br/>
+                        `)
+                    }
+                    return html.join("")
+                },
                 "axisPointer": {
 					"lineStyle": {
 						"color": this.color3
 					}
 				},
-                borderColor: this.$store.state.color === 'blackBlue' ? '#4B5166' : '#333',
-                backgroundColor: this.$store.state.color === 'blackBlue' ? '#4B5166' : '#fff',
-                textStyle:{
-                    color: this.$store.state.color === 'blackBlue' ? '#fff' : '#000'
-                }
            },
             legend: {
                 top: '-100%'
@@ -1561,7 +1596,7 @@ for(let i=0;i<$('.atooltip').length;i++){
             }],
             series:this.curveLineValue
         },true);
-        console.log("this.curveLineValue",this.curveLineValue)
+        // console.log("this.curveLineValue",this.curveLineValue)
         this.$store.state.oksh = false
     }
   }
@@ -1591,10 +1626,10 @@ for(let i=0;i<$('.atooltip').length;i++){
         }
      
         .el-table__header-wrapper{
-            background: #5A6C98;
+            background: #5A6C98 !important;
         }
         .el-table th{
-            background: #5A6C98;
+            background: #5A6C98 !important;
         }
         .el-table thead{
             background: #5A6C98;
@@ -1665,30 +1700,6 @@ for(let i=0;i<$('.atooltip').length;i++){
                 width:80% !important;
             }
         }
-
-    &.blackBlueBg{
-        .left_bottom{
-            .el-table{
-                th{
-                    background-color: #18254E;
-                }
-            }
-        }
-        .el-table__row:nth-of-type(odd){
-            background-color: #0E1732!important;
-
-            td{
-                border-color: transparent;
-            }
-        }
-        .el-table__row:nth-of-type(even){
-            background-color: #121C3A!important;
-
-            td{
-                border-color: transparent;
-            }
-        }
-    }
 }
 </style>
 
@@ -1703,94 +1714,6 @@ for(let i=0;i<$('.atooltip').length;i++){
     width:100%;
     height:calc(100% - 30px);
     overflow: hidden;
-
-    &.blackBlueBg{
-        .deletePop{
-            background: #2A3E76;
-            color: #fff;
-        }
-        .conter_left{
-            border-color: #38415A;
-            background-color: transparent;
-
-            .left_bottom{
-                background: #081027;
-
-                .bottom_top{
-                    background-color: #1E2743;
-                    border-color: #38415A;
-                    color: #9AA3BE;
-
-                    .i_left,.i_left2,.i_right,.i_right2{
-                        background-color: #54689E;
-                    }
-                }
-            }
-        }
-        .conter_right{
-            border-color: #38415A;
-
-            .right_head{
-                background-color: transparent;
-
-                .text{
-                    color: #386DF0;
-                    border-color: #386DF0;
-                    background-color: transparent;
-                }
-            }
-
-            .right_conter{
-                border-color: #2A3058;
-                background-color: #0E1732;
-
-                .conter_top{
-                    border-color: transparent;
-
-                    .top_head{
-                        background-color: #18254E;
-
-                        .curve{
-                            border-color: #304171;
-                        }
-                    }
-                    .top_middle{
-                        .top_conter{
-                            border-bottom-color: transparent;
-
-                            &.current-row{
-                                background-color: #273E7E!important;
-
-                                .curvename{
-                                    border-right: 1px solid #000;
-                                }
-                            }
-
-                            &:nth-child(even){
-                                background-color: #121C3A;
-                            }
-                            &:nth-child(odd){
-                                background-color: #0E1732;
-                            }
-
-                            .curvename{
-                                color: #9AA3BE;
-                            }
-                        }
-                    }
-
-                    .edit_box,.delete_box{
-                        background-color: transparent;
-                        border-color: #5C6A95;
-                    }
-                }
-                .fool_out{
-                    background-color: #46BE05;
-                }
-            }
-        }
-    }
-
     .tenpop{
         position: absolute;
         top:80px;
@@ -2253,17 +2176,8 @@ for(let i=0;i<$('.atooltip').length;i++){
                   width:100%;
                   height:90%;
 
-                .top_conter{
-                    &.current-row{
-                        background-color: #D4DEFB!important;
-
-                        .curvename{
-                            border-right: 1px solid #fff;
-                        }
-                    }
-                }
                 .top_conter:nth-child(1){
-                    //   background: #D4DEFB;
+                      background: #D4DEFB;
                   }
                   .top_conter:nth-child(2n){
                       background: #EAEDEE
@@ -2445,5 +2359,13 @@ for(let i=0;i<$('.atooltip').length;i++){
             color: #eeb764;
         }
     }
+}
+.loading1cover{
+    position: fixed;
+    z-index: 100000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 </style>

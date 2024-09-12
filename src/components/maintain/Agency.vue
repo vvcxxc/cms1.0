@@ -6,7 +6,7 @@
  * @LastEditTime: 2020-08-06 17:46:58
  -->
 <template>
-    <div class="public-table bygl" @click="changeselect = false" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+    <div class="public-table bygl" @click="changeselect = false" >
           			<div class="loadcover" element-loading-spinner="el-icon-loading"
             element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
     width: 100%;
@@ -58,10 +58,9 @@
                             highlight-current-row
                             style="width: 100%"
                             @row-click="handleRowChange1"
-                           :header-cell-style="[{
-                            background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
-                            color:($store.state.color=='grey')?'#000':'#fff',
-                            'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                           :header-cell-style="[{background:(($store.state.color=='grey')?'#D9DBDE':'#E1EDFA')},
+                           {color:(($store.state.color=='grey')?'#000':'#769DE7')}, 
+                           {'border-left':'1px solid #cccccc',
                             height:50*zoom+'px',
                             fontSize: 14*zoom+'px',
                            padding:'0'}]"
@@ -115,8 +114,6 @@
             <span class="sp1 title" >{{lang.MaintenanceManage_ThisTimeStartTime1}}</span>
 
             <el-date-picker
-                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                 v-model="value1"
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -125,8 +122,6 @@
             ></el-date-picker>
             <span class="demonstration" :style="{fontSize: 16*1+'px'}">-</span>
             <el-date-picker
-                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                 v-model="value2"
                 type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -149,9 +144,9 @@
                 border
                 highlight-current-row
                 :header-cell-style="{
-                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
+                    background:($store.state.color=='grey')?'#D9DBDE':'#5a6c98',
                     color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                    'border-left':'1px solid #cccccc',
                     height:50*zoom+'px',
                     fontSize: 14*zoom+'px',
                     padding:'0'}"
@@ -2441,14 +2436,8 @@ this.$store.commit('move')
                 .then(res => {
                     console.log(res);
                     if (res.data.code == 0) {
-                        res.data.data.DataList = res.data.data.DataList.filter(function(
-                            item
-                        ) {
-                            return item.Status < 4;
-                        });
-                        this.tableData1 = res.data.data.DataList;
                               if(res.data.data.length==0){
-                         
+                         this.tableData1 = [];
                             this.PageData ={
                             PageSize: 50,
                             TotalCount: 0,
@@ -2458,6 +2447,12 @@ this.$store.commit('move')
                             NextEnabled: false
                         }
                               }else{
+                                   res.data.data.DataList = res.data.data.DataList.filter(function(
+                            item
+                        ) {
+                            return item.Status < 4;
+                        });
+                        this.tableData1 = res.data.data.DataList;
    this.PageData = res.data.data.ParameterList;
                               }
                         let i = 0;
@@ -2862,6 +2857,7 @@ this.$store.commit('move')
     }
 };
 </script>
+
 <style lang='scss' scoped>
 .margin1 {
     // height: 36px;
@@ -3206,114 +3202,6 @@ this.$store.commit('move')
     }
     .page-container {
         height: 60px;
-    }
-
-    &.blackBlueBg{
-        .el-tree{
-            background: #1D2846;
-            color: #C6CAD8;
-        }
-
-        .seleword,.seleword2{
-            background: #1D2846;
-            border: 1px solid #445992;
-            color: #C6CAD8;
-        }
-        .search-container{
-            background: #0B1530;
-            border-color: #38415A;
-            color: #E4E4E4;
-            .selectword{
-                background: #1D2846;
-                border: 1px solid #445992;
-            }
-            .add{
-                background-color: transparent;
-                border: 1px solid #46BE05;
-                color: #46BE05;
-            }
-            .move{
-                background-color: #4F5871;
-                border: 1px solid #4F5871;
-                color: #fff;
-            }
-        }
-        .table-container{
-            border-color: transparent;
-        }
-        .img{
-            border-color: #5C6A95;
-            background-color: transparent;
-        }
-
-        .boxsad{
-            background: #233056;
-            color: #fff;
-        }
-
-        .look{
-            background: #233056;
-
-            .lookselect{
-                background: #28355B;
-                border-color: #445992;
-                color: #fff;
-
-                .table{
-                    border-color: #2A3058;
-                }
-                .el-table--border th.gutter:last-of-type{
-                    background-color: #344c8f;
-                }
-            }
-        }
-
-        select{
-            background: #1D2846!important;
-            border-color: #445992;
-
-            &:disabled{
-                background: #35446D!important;
-                border-color: #445992;
-            }
-
-            &:focus{
-                border-color: #B2C0E4
-            }
-        }
-        .showtext{
-            color: #fff;
-        }
-        .el-checkbok{
-            color: #fff;
-
-            &:disabled{
-                color: #6D789A;
-            }
-        }
-
-        .sestion{
-            border-color: transparent;
-
-            .sestioncontain{
-                background: #233056;
-            }
-            span{
-                color:#fff;
-            }
-            .input1{
-                color: #C6CAD8;
-                background: #35446D;
-                border-color: #445992;
-            }
-            .hometop-title{
-                background-color: transparent;
-            }
-
-            .line{
-                background-color: #445992;
-            }
-        }
     }
 }
 .table-container .img {

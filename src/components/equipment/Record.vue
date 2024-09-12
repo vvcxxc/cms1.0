@@ -8,7 +8,7 @@
 <template>
     <div
         class="public-table"
-      :class="{blackBlueBg: $store.state.color === 'blackBlue'}"
+     
     >
       			<div class="loadcover" element-loading-spinner="el-icon-loading"
             element-loading-background="rgba(0, 0, 0, 0.4)"  v-loading="this.$store.state.isShow" v-show="this.$store.state.isShow" style="position: absolute;
@@ -31,7 +31,7 @@
         <div class="pages-container">
             <my-page :pageData="PageData" @req="req"></my-page>
         </div>
-        <div class="tip" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" v-show="tipchange1">
+        <div class="tip" v-show="tipchange1">
             <div class="tiptop">
                 <div
                     class="tiphead"

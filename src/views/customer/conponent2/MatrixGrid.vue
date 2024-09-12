@@ -464,7 +464,14 @@ export default {
                 };
                 arr.push(value);
                 this.isOriginal = false; //下发禁止离焦触发
-                //请求接口 //下发数据
+               //请求接口 //下发数据
+                                  this.$axios({
+                                  method:'post',
+                                  url:`/api/base/CheckTags`,
+                                  data:arr
+                             }).then((res1)=>{
+                                  if(res1.data.code === 0){
+                                this.commerPopShow = false
                 this.$axios({
                   method: 'post',
                   url: '/api/Base/PostIOServiceTest',
@@ -472,10 +479,10 @@ export default {
                 }).then((res) => {
                   if (res.data.data == true) {
                     item.isShow = true;
-                    this.isOriginal = true;
-                    setTimeout(() => {
-                      e.path[0].blur();
-                    }, 300);
+                    this.isOriginal = false;
+                    // setTimeout(() => {
+                    //   e.path[0].blur();
+                    // }, 300);
                   } else {
                     this.TextBoxShow = true;
                     setTimeout(() => {
@@ -483,6 +490,7 @@ export default {
                       document.querySelector('.TextBoxPop_conter').style.textAlign = 'center';
                       document.querySelector('.TextBoxPop_conter').innerHTML = this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail;
                     });
+                       this.isOriginal = true;
                     //恢复原来值
                     setTimeout(() => {e.path[0].blur();}, 300);
                   }
@@ -494,10 +502,26 @@ export default {
                     document.querySelector('.TextBoxPop_conter').innerHTML = this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail;
                   });
                   //恢复原来值
+                     this.isOriginal = true;
                   setTimeout(() => {
                     e.path[0].blur();
                   }, 300);
                 });
+                                  }else{
+         this.TextBoxShow = true
+                              setTimeout(()=>{
+                                document.querySelector('.TextBoxPop_outPop').style.display='block'
+                                document.querySelector('.TextBoxPop_conter').style.textAlign='center'
+                                document.querySelector('.TextBoxPop_conter').innerHTML=res1.data.msg
+                              })
+                              //恢复原来值
+                                 this.isOriginal = true;
+                              setTimeout(()=>{
+                                    e.path[0].blur()
+                              },300)
+                                  }
+                               
+                              })
               } else {
                 this.TextBoxShow = true;
                 setTimeout(() => {
@@ -505,36 +529,36 @@ export default {
                   document.querySelector('.TextBoxPop_conter').innerHTML = `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${this.lang['二进制变量']}${this.lang.SCMSExplorerData_ProtocolDataType_Bool}`;
                 });
               }
-            }else if(variableName == this.lang['有符号8位整型']){
-              this.judgeFun(issVal,127,-128,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-              return
-            }else if(variableName == this.lang['无符号8位整型']){
-              this.judgeFun(issVal,255,0,item.MaxValue,item.MinValue,variableName,{...parent,...item},'整',e)
-              return
-            }else if(variableName == this.lang['有符号16位整型']){
-                this.judgeFun(issVal,32767,-32768,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-                return
-            }else if(variableName == this.lang['无符号16位整型']){
-                this.judgeFun(issVal,65535,0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-                return
-            }else if(variableName == this.lang['有符号32位整型']){
-                this.judgeFun(issVal,2147483647,-2147483648,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-                return
-            }else if(variableName == this.lang['无符号32位整型'] || variableName == this.lang['定时器']){
-                this.judgeFun(issVal,4294967295,0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-                return
-            }else if(variableName == this.lang['有符号64位整型']){
-              this.judgeFun(issVal,"9223372036854775807","-9223372036854775808",item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-              return
-            }else if(variableName == this.lang['无符号64位整型']){
-              this.judgeFun(issVal,"18446744073709551615",0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
-                return
-            }else if(variableName == this.lang['F32位浮点数IEEE754']){
-              this.judgeFun(issVal,3.40282347E+38,-3.40282347E+38,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'浮',e)
-              return
-            }else if(variableName == this.lang['F64位浮点数IEEE754']){
-              this.judgeFun(issVal,1.7976931348623157E+308,-1.7976931348623157E+308,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'浮',e)
-              return
+            // }else if(variableName == this.lang['有符号8位整型']){
+            //   this.judgeFun(issVal,127,-128,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+            //   return
+            // }else if(variableName == this.lang['无符号8位整型']){
+            //   this.judgeFun(issVal,255,0,item.MaxValue,item.MinValue,variableName,{...parent,...item},'整',e)
+            //   return
+            // }else if(variableName == this.lang['有符号16位整型']){
+            //     this.judgeFun(issVal,32767,-32768,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+            //     return
+            // }else if(variableName == this.lang['无符号16位整型']){
+            //     this.judgeFun(issVal,65535,0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+            //     return
+            // }else if(variableName == this.lang['有符号32位整型']){
+            //     this.judgeFun(issVal,2147483647,-2147483648,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+            //     return
+            // }else if(variableName == this.lang['无符号32位整型'] || variableName == this.lang['定时器']){
+            //     this.judgeFun(issVal,4294967295,0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+            //     return
+            // }else if(variableName == this.lang['有符号64位整型']){
+            //   this.judgeFun(issVal,"9223372036854775807","-9223372036854775808",item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+            //   return
+            // }else if(variableName == this.lang['无符号64位整型']){
+            //   this.judgeFun(issVal,"18446744073709551615",0,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'整',e)
+            //     return
+            // }else if(variableName == this.lang['F32位浮点数IEEE754']){
+            //   this.judgeFun(issVal,3.40282347E+38,-3.40282347E+38,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'浮',e)
+            //   return
+            // }else if(variableName == this.lang['F64位浮点数IEEE754']){
+            //   this.judgeFun(issVal,1.7976931348623157E+308,-1.7976931348623157E+308,item.MaxValue,item.MinValue,variableName,{...parent, ...item},'浮',e)
+            //   return
             }else{
               this.filtrateVariable(item, issVal, e)
               return;
@@ -567,6 +591,7 @@ export default {
         max = max == null ? '' : this.toFixed(max).toString();
         min = min == null ? '' : this.toFixed(min).toString();
             let type12 = ''
+              let type11 = JSON.parse(JSON.stringify(type))
              let lang = JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
              console.log(lang)
              for(let i in lang){
@@ -598,21 +623,30 @@ export default {
       });
     },
     //下发接口
-    tagAxios(arr, item, e) {
+   tagAxios(arr, item, e) {
       console.log(arr)
-      //请求接口 //下发数据
+              this.$axios({
+                                  method:'post',
+                                  url:`/api/base/CheckTags`,
+                                  data:arr
+                             }).then((res1)=>{
+                                  if(res1.data.code === 0){
+                                this.commerPopShow = false
+                              
+            //请求接口 //下发数据
       this.$axios({
         method: 'post',
         url: '/api/Base/PostIOServiceTest',
         data: arr,
       }).then((res) => {
         console.log(res)
-        this.isOriginal = true; //下发允许离焦触发
+      
         if (res.data.data == true) {
+            this.isOriginal = false; //下发允许离焦触发
           item.isShow = true;
-          setTimeout(() => {
-            e.path[0].blur();
-          }, 300);
+          // setTimeout(() => {
+          //   e.path[0].blur();
+          // }, 300);
         } else {
           this.TextBoxShow = true;
           setTimeout(() => {
@@ -621,6 +655,7 @@ export default {
             document.querySelector('.TextBoxPop_conter').innerHTML = this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail;
           });
           //恢复原来值
+             this.isOriginal = true;
           setTimeout(() => {
             e.path[0].blur();
           }, 300);
@@ -633,10 +668,27 @@ export default {
           document.querySelector('.TextBoxPop_conter').innerHTML = this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail;
         });
         //恢复原来值
+           this.isOriginal = true;
         setTimeout(() => {
           e.path[0].blur();
         }, 300);
       });
+                                  }else{
+                             this.TextBoxShow = true
+                              setTimeout(()=>{
+                                document.querySelector('.TextBoxPop_outPop').style.display='block'
+                                document.querySelector('.TextBoxPop_conter').style.textAlign='center'
+                                document.querySelector('.TextBoxPop_conter').innerHTML=res1.data.msg
+                              })
+                              //恢复原来值
+                                 this.isOriginal = true;
+                              setTimeout(()=>{
+                                    e.path[0].blur()
+                              },300)
+                                  }
+                               
+                              })
+
     },
     //下发的变量
     filtrateVariable(item, text2, e){
@@ -822,7 +874,10 @@ export default {
           list.forEach(element => {
             if(item.TagName === element.Name){
               item.Value = element.Value
-              this.changeStyle(item, data, itemIdx, type)
+              if(item.Value!=='???'){
+                  this.changeStyle(item, data, itemIdx, type)
+              }
+             
             }
           });
         }

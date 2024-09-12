@@ -6,7 +6,7 @@
  * @LastEditTime: 2021-02-26 14:13:37
  -->
 <template>
-    <footer class="v-footer" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+    <footer class="v-footer">
         <span class="timetext">{{newtime}}</span>
     </footer>
 </template>
@@ -24,7 +24,6 @@ export default {
           this.timefoor = window.setInterval(() => {
                 this.getDate()
           },1000)
-          console.log(this.$store.state.color)
     },
     destroyed(){
       clearInterval(this.timefoor);
@@ -74,17 +73,11 @@ export default {
     width: 100%;
     line-height: 30px;
     background-color: #333333;
-    color:#fff;
     position: fixed;
     bottom: 0;
     z-index: 20001;
-
-    &.blackBlueBg{
-        background-color: #222C48;
-        color: #D3D3D3;
-    }
-
     .timetext{
+        color:#fff;
         font-size:20px;
         float:right;
         margin-right:20px; 

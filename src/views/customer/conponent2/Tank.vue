@@ -102,16 +102,31 @@ export default {
       }
     },
     methods: {
-           JoinVarFun(){
+      getPointNum(num, n) {
+			 if(isNaN(num)||num===null){
+		     return null
+	         }else{
+          
+		     return Number(num).toFixed(n)
+             }
+		  },
+                 JoinVarFun(){
             console.log("ffff",this.dataValue)
       },
                //websocket触发该方法
       axioImg2(resArr1){
+         if(resArr1.value=='???'){
+          return
+        }
         let resArr = JSON.parse(JSON.stringify(resArr1))
-        if(resArr.value == 'true'){
+             if(resArr.value == 'true'){
           resArr.value = 1
         }else if(resArr.value == 'false'){
           resArr.value = 0
+        }else if(resArr.value == 'False'){
+           resArr.value = 0
+        }else if(resArr.value == 'True'){
+        resArr.value = 1
         }
 
      this.dataValue.forEach((item)=>{
@@ -130,7 +145,7 @@ export default {
                   if(resArr.name == item.FillTagName){
                       if(Number(resArr.value)+'' !==NaN+''){
                        if(item.TankText){
-                    item.TankText = parseFloat(resArr.value).toFixed(item.DecimalCount)+item.Unit
+                  item.TankText = this.getPointNum(parseFloat(resArr.value),item.DecimalCount)+item.Unit
                      for(let i=0;i<item.TankFillAnimationList.length;i++){
                          if(item.TankFillAnimationList[i].NO!==0){
                         
@@ -266,10 +281,10 @@ export default {
                   }
                       if(item.Fillvalue){
                     if(item.Unit == '%'){
-                 item.TankText =((parseFloat(item.TankLiquidHeight)/parseFloat(item.TankLiquidHeight1))*100).toFixed(item.DecimalCount)+item.Unit
+               item.TankText =this.getPointNum(((parseFloat(item.TankLiquidHeight)/parseFloat(item.TankLiquidHeight1))*100),item.DecimalCount)+item.Unit
              
                     }else{
-                 item.TankText = parseFloat(item.Fillvalue).toFixed(item.DecimalCount)+item.Unit
+                 item.TankText = this.getPointNum(parseFloat(item.Fillvalue),item.DecimalCount)+item.Unit
                     }
                 
                 }
@@ -516,14 +531,19 @@ export default {
               url: '/api/Base/PostRediusTest',
               data: this.resTagName
           }).then(res => {
-                console.log('res',res.data.data)
-          res.data.data.forEach((item)=>{
+              let res1 = res.data.data.filter(item=>item.Value !== '???')
+                 res1.forEach((item)=>{
               if(item.Value == 'true'){
           item.Value = 1
         }else if(item.Value == 'false'){
           item.Value = 0
+        }else if(item.Value == 'False'){
+           item.Value  = 0
+        }else if(item.Value  == 'True'){
+        item.Value  = 1
         }
           })
+      
       
 
               this.dataValue.forEach((item)=>{
@@ -600,7 +620,7 @@ export default {
                  if(item.class == 'Tank59'||item.class == 'Tank2'){
                    console.log(item)
                  }
-              res.data.data.forEach((item1)=>{
+              res1.forEach((item1)=>{
                        if(item.MinName == item1.Name){
             
                   item.Min = parseFloat(item1.Value)
@@ -754,10 +774,10 @@ export default {
                   }
                       if(item.Fillvalue){
                     if(item.Unit == '%'){
-                 item.TankText =((parseFloat(item.TankLiquidHeight)/parseFloat(item.TankLiquidHeight1))*100).toFixed(item.DecimalCount)+item.Unit
+              item.TankText = this.getPointNum(((parseFloat(item.TankLiquidHeight)/parseFloat(item.TankLiquidHeight1))*100),item.DecimalCount)+item.Unit
              
                     }else{
-                 item.TankText = parseFloat(item.Fillvalue).toFixed(item.DecimalCount)+item.Unit
+               item.TankText = this.getPointNum(parseFloat(item.Fillvalue),item.DecimalCount)+item.Unit
                     }
                 
                 }

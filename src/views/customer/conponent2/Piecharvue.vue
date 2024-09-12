@@ -716,14 +716,17 @@ export default {
                  }
                for(let a=0;a<this.valueData.YDataCollection.length;a++){
                  var index = namearr.indexOf(this.valueData.YDataCollection[a].name)
-               
-                 if(index != -1){
+                 Ddata.series[0].data[index].label.formatter = this.valueData.YDataCollection[a].YData[0]==='???'?'???':this.Lableformatter
+                  // this.valueData.YDataCollection[a].YData[0] =  this.valueData.YDataCollection[a].YData[0]==='???'?0:this.valueData.YDataCollection[a].YData[0]
+                if(index != -1){
                    Ddata.series[0].label = this.isInner
-                   Ddata.series[0].data[index].label.formatter = this.Lableformatter
-                   Ddata.series[0].data[index].value = Number(this.valueData.YDataCollection[a].YData[0])
+                  //  Ddata.series[0].data[index].label.formatter = this.Lableformatter
+                  //  Ddata.series[0].data[index].value = Number(this.valueData.YDataCollection[a].YData[0])
+                  Ddata.series[0].data[index].value =this.valueData.YDataCollection[a].YData[0]==='???'?0:this.valueData.YDataCollection[a].YData[0]
                    if(Ddata2.length != 0){
                     //  console.log("adsdasdasdas",Number(this.valueData.YDataCollection[a].YData[0]))
-                      Ddata2.series[0].data[index].value = Number(this.valueData.YDataCollection[a].YData[0])//向内饼图数据
+                      // Ddata2.series[0].data[index].value = Number(this.valueData.YDataCollection[a].YData[0])//向内饼图数据
+                      Ddata2.series[0].data[index].value =this.valueData.YDataCollection[a].YData[0]==='???'?0:this.valueData.YDataCollection[a].YData[0]
                    }
  
                  }

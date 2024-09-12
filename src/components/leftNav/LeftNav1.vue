@@ -10,7 +10,7 @@
         class="left-container"
         ref="tree"
         @mousemove="updateXY"
-        :class="{colordiv:$store.state.color == 'grey', blackBlueBg: $store.state.color === 'blackBlue'}"
+        :class="{colordiv:$store.state.color == 'grey'}"
     >
 
         <!-- <div class="cover13" v-if="tipchange"></div> -->
@@ -1002,32 +1002,6 @@ this.tipchange = true;
 
     position: relative;
     box-sizing: border-box;
-
-    &.blackBlueBg{
-        .el-tree{
-            background-color: transparent;
-        }
-        .div{
-            background-color: #273E7E;
-        }
-        .el-tree-node__children{
-            background-color: #0C1634;
-            color: #9AA3BE;
-
-            &:hover{
-                background-color: #121D3E;
-            }
-
-            &.active{
-                background-color: #0F1B3E;
-                color: #3F81FF;
-
-                .border{
-                    background-color: #3F81FF;
-                }
-            }
-        }
-    }
     .newdiv {
         position: fixed;
         z-index: 99999999;

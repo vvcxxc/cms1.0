@@ -6,8 +6,8 @@
  * @LastEditTime: 2021-04-08 15:25:35
  -->
 <template>
-    <div  v-loading="loading"  ref="head"  class="tapwater" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" :style="{zoom:zoomValue}">
-        <div class="linebox" id="linebox" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+    <div  v-loading="loading"  ref="head"  class="tapwater" :style="{zoom:zoomValue}">
+        <div class="linebox" id="linebox">
             <div class="table clearfix" >
                 <div class="fl">
                     <span>{{lang.ProcessParameterConfigure_ProcessParameterReportUserControl_QueryTimeRange}}</span>
@@ -16,8 +16,6 @@
                             <span class="demonstration"></span>
                         
                             <el-date-picker
-                                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                 @change="stateTime"
                                 @focus="getZoom()"
                                 v-model="value1"
@@ -32,8 +30,6 @@
                         <div class="block">
                             <span class="demonstration"></span>
                             <el-date-picker
-                                :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                                :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                 @change="entTime"
                                 @focus="getZoom()"
                                 v-model="value2"
@@ -45,10 +41,7 @@
                             ></el-date-picker>
                         </div>
                     </div>
-                    <el-select style="margin-left:5px;width:170px" 
-                        v-model="selectVale"  
-                        :popper-append-to-body="false"
-                        @focus="getZoom()" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
+                    <el-select style="margin-left:5px;width:170px" v-model="selectVale"  @focus="getZoom()" :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
                         <el-option
                         v-for="item in selectOptions"
                         :key="item.value"
@@ -219,8 +212,7 @@ export default {
             }],
             selectVale:'模糊匹配',
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
-            zoomValue: 0,
-            skin: ''
+            zoomValue: 0
         };
     },
     created(){
@@ -228,7 +220,6 @@ export default {
             this.zoomValue = Number(parseFloat(window.screen.width/1920).toFixed(2)) <= 0.9 ? 0.9 : Number(parseFloat(window.screen.width/1920).toFixed(2))
 
         })
-        this.skin = this.$store.state.color === 'blackBlue'
         this.getLangData()
         this.getDate1()
         this.allConfigure()
@@ -238,21 +229,14 @@ export default {
             function () {
                 myChart.resize()
             }
-        ); 
+        );
     },
     watch:{
-        theme(val){
-            this.skin = val === 'blackBlue'
-            this.drawLine()
-        },
         VpowerData(val){  //监听按钮权限
             this.powerBtn()
         }
     },
     computed:{
-        theme(){
-            return this.$store.state.color
-        },
         VpowerData() {
             return this.$store.state.btnPowerData;
         },
@@ -271,56 +255,53 @@ export default {
             this.selectVale = this.lang.ProcessParameterReport_HT_FuzzyMatching
        },
         //关闭弹窗提示
-      clonePopFun(){
-         this.isTipsPop = false
-      },
-      //筛选按钮数据
-       powerBtn(){
-                  var powerData = this.$store.state.btnPowerData
-                  var pagePower = this.$route.query.id
-                  var btnData = []
-                  this.powerDataAll
-                  //获取按钮权限ID
-                  for(let i=0;i<powerData.length;i++){
-                      var Children = powerData[i].Children
-                      for(let j=0;j<Children.length;j++){
-                          if(Children[j].RightID == pagePower){
-                             btnData = Children[j].Children
-                          }
-                      }
-                  }
-                  for(let i1=0;i1<btnData.length;i1++){
-                      if(btnData[i1].RightName == '导出按钮'){
-                          this.exportId = btnData[i1].RightID
-                      }
-                      if(btnData[i1].RightName == '查询按钮'){
-                         this.queryId = btnData[i1].RightID
-                      }
-                  }
-       },
-        //该用户是否有权限
-        isPower(id){
-          return new Promise((resolve, reject) => {
-                var argUserID 
+        clonePopFun() {
+            this.isTipsPop = false
+        },
+        // 筛选按钮数据
+        powerBtn() {
+            var powerData = this.$store.state.btnPowerData
+            var btnList = [] // 按钮数据列表
+            var btnObj = {} // 按钮对象是为了能根据key快速查询对应的按钮数据
+            // 获取按钮权限ID
+            for (let i = 0, iLen = powerData.length; i < iLen; i++) {
+                const Children = powerData[i].Children;
+                for (let n = 0, nLen = Children.length; n < nLen; n++) {
+                    const item = Children[n];
+                    if (item.RightID === this.$route.query.id) {
+                        btnList = item.Children;
+                        break
+                    }
+                }
+                if (btnList.length) break;
+            }
+            btnList.forEach((item) => {
+                btnObj[item.RightDesc] = item
+            });
+
+            this.exportId = btnObj['参数报表-导出按钮'].RightID
+            this.queryId = btnObj['参数报表-查询按钮'].RightID
+        },
+        // 该用户是否有权限
+        isPower(id) {
+            if (!id) {
+                this.$message.warning('ID不能为空');
+                return;
+            }
+            return new Promise((resolve, reject) => {
                 var userinfo = JSON.parse(sessionStorage.getItem('userInfo1'));
                 var sightseerInfo1 = JSON.parse(sessionStorage.getItem('sightseerInfo1'));
-                if(userinfo != null){
-                    argUserID = userinfo.SCMSUserID
-                }else{
-                    argUserID = sightseerInfo1.SCMSUserID
-                }
-                var argRightID = id
-                this.$axios({                      //权限配置请求接口
+                var argUserID = (userinfo != null) ? argUserID = userinfo.SCMSUserID : argUserID = sightseerInfo1.SCMSUserID
+                this.$axios({ // 权限配置请求接口
                     method: 'post',
-                    url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${argUserID}&argRightID=${argRightID}`,
-                    argUserID:argUserID,
-                    argRightID:argRightID,
-                }) .then(res => {
-                      console.log('是否权限',res)
-                      resolve(res.data.data)
+                    url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${argUserID}&argRightID=${id}`,
+                }).then(res => {
+                    resolve(res.data.data)
+                },err => {
+                    console.log('该用户是否有权限-报错', err)
+                })
             })
-          })
-      },
+        },
           //懒加载
           menu() {
             var hei = document.querySelector('.sometable').scrollHeight
@@ -470,12 +451,11 @@ export default {
             var tryDom = document.querySelectorAll('.try')
             for(let f=0;f<tryDom.length;f++){
                 tryDom[f].classList.remove('tryActive')
-                // tryDom[f].style.background = '#fff'
-                tryDom[f].classList.add('try-normal')
+                tryDom[f].style.background = '#fff'
             }
             e.path[0].classList.add('tryActive')
             var domColor = $( e.path[0]).css('border-color')
-            // $( e.path[0]).css('background',domColor)
+            $( e.path[0]).css('background',domColor)
 
             this.loading = true
             this.Sid= []
@@ -754,7 +734,7 @@ export default {
                     
                     this.$nextTick(()=>{
                         $($('.try')[0]).addClass('tryActive')    //激活当前工序高亮
-                        // $($('.try')[0]).css('background','#808080')
+                        $($('.try')[0]).css('background','#808080')
                     })
 
                }).catch(err => {
@@ -803,40 +783,28 @@ export default {
                       if(res.data.data.color){
                         if(res.data.data.color.length == tryDom.length){
                             for(let i=0;i<res.data.data.color.length;i++){
-                                $(tryDom[i]).removeClass('try-normal')
-                                $(tryDom[i]).removeClass('try-success')
-                                $(tryDom[i]).removeClass('try-danger')
                                 if(res.data.data.color[i] == 0){
-                                    $(tryDom[i]).addClass('try-normal')
-                                    // $(tryDom[i]).css('borderColor','#808080')
-                                    // $(tryDom[i]).css('color','#808080')
+                                    $(tryDom[i]).css('borderColor','#808080')
+                                    $(tryDom[i]).css('color','#808080')
                                 }else if(res.data.data.color[i] == 1){
-                                    $(tryDom[i]).addClass('try-success')
-                                    // $(tryDom[i]).css('borderColor','#7ABD7A')
-                                    // $(tryDom[i]).css('color','#7ABD7A')
+                                    $(tryDom[i]).css('borderColor','#7ABD7A')
+                                    $(tryDom[i]).css('color','#7ABD7A')
                                 }else if(res.data.data.color[i] == 2){
-                                    $(tryDom[i]).addClass('try-danger')
-                                    // $(tryDom[i]).css('borderColor','#F96363')
-                                    // $(tryDom[i]).css('color','#F96363')
+                                    $(tryDom[i]).css('borderColor','#F96363')
+                                    $(tryDom[i]).css('color','#F96363')
                                 }
                                 this.defaultColor()
                             }
 
                         }else{   //不是查询产品码恢复默认颜色
-                            $('.try').addClass('try-normal')
-                            $('.try').removeClass('try-success')
-                            $('.try').removeClass('try-danger')
-                            // $('.try').css('borderColor','#808080')
-                            // $('.try').css('color','#808080')
+                            $('.try').css('borderColor','#808080')
+                            $('.try').css('color','#808080')
                             this.defaultColor()
                         }
                     }
                   }else{
-                        $('.try').addClass('try-normal')
-                        $('.try').removeClass('try-success')
-                        $('.try').removeClass('try-danger')
-                        // $('.try').css('borderColor','#808080')
-                        // $('.try').css('color','#808080')
+                        $('.try').css('borderColor','#808080')
+                        $('.try').css('color','#808080')
                         this.defaultColor()
                   }
                   console.log('res报表数据',res)
@@ -1202,7 +1170,6 @@ export default {
             myChart = echarts.init(document.getElementById('myChart'));// 绘制图表
             myChart.clear()
             myChart.setOption({
-                color: this.skin ? ['#F0B95C', '#5EC75E', '#EFEF70'] : ['red', 'green', 'blue'],
                  title: {
                     text: ''
                 },
@@ -1210,15 +1177,8 @@ export default {
                     trigger: 'axis'
                 },
                 legend: {
-                    data: [
-                        this.lang.CruxParameterConfigure_CruxParameterConfigureUserControl_DataGrid_Upper, 
-                        this.proName, 
-                        this.lang.CruxParameterConfigure_CruxParameterConfigureUserControl_DataGrid_Lower
-                    ],
-                    icon: 'line',
-                    textStyle: {
-                        color: this.skin ? '#9AA3BE' : '#333'
-                    }
+                    data: [this.lang.CruxParameterConfigure_CruxParameterConfigureUserControl_DataGrid_Upper, this.proName, this.lang.CruxParameterConfigure_CruxParameterConfigureUserControl_DataGrid_Lower],
+                    icon: 'line'
                 },
                 grid: {
                     left: '4%',
@@ -1230,45 +1190,24 @@ export default {
                     type: 'category',
                     data: this.ProductIDArr,
                     axisLine: { show: true }, //轴线不显示
-                    axisLabel: {
-                        color: this.skin ? '#9AA3BE' : '#999'
-                    },
-                    axisLine:{
-                        lineStyle:{
-                            color: this.skin ? '#4C5777' : '#333'
-                        }
-                    }
                 },
                 yAxis: {
                     type: 'value',
                     min: 'dataMin',
                     max: 'dataMax',
-                    splitLine:{
-                        lineStyle:{
-                            color: this.skin ? '#25335A' : '#ccc'
-                        }
-                    },
-                    axisLabel: {
-                        color: this.skin ? '#9AA3BE' : '#999'
-                    },
-                    axisLine:{
-                        lineStyle:{
-                            color: this.skin ? '#4C5777' : '#333'
-                        }
-                    }
                 },
                 series: [
                     {
                         symbol: "none",
                         name: this.lang.CruxParameterConfigure_CruxParameterConfigureUserControl_DataGrid_Upper,
                         type: 'line',
-                        animation:false ,
+                          animation:false ,
                         data: this.UpperArr,
                          itemStyle : { 
                             normal : { 
                                 lineStyle:{ 
-                                    color: this.skin ? '#F0B95C' : 'red', //改变折线颜色
-                                    width:2,
+                                    color:'red', //改变折线颜色
+                                    width:1,
                                 } 
                             } 
                         },
@@ -1278,18 +1217,19 @@ export default {
                         name: this.proName,
                         type: 'line',
                         data: this.pidArr,
-                        animation:false ,
+                          animation:false ,
+                        color: 'green',
                           itemStyle : { 
                             normal : { 
                                 lineStyle:{ 
-                                    color: this.skin ? '#5EC75E' : 'green', //改变折线颜色
-                                    width:2,
+                                    color:'green', //改变折线颜色
+                                    width:1,
                                 } 
                             } 
                         },
                     },
-                    {
-                        symbol: "none",
+                       {
+                           symbol: "none",
                         name: this.lang.ProcessParameterConfigure_ProcessParameterReportUserControl_Lower,
                         type: 'line',
                         data: this.LowerArr,
@@ -1297,8 +1237,8 @@ export default {
                         itemStyle : { 
                             normal : { 
                                 lineStyle:{ 
-                                    color: this.skin ? '#EFEF70' : 'blue', //改变折线颜色
-                                    width:2,
+                                    color:'blue', //改变折线颜色
+                                    width:1,
                                 } 
                             } 
                         },
@@ -1373,76 +1313,6 @@ export default {
 .clearfix {
     zoom: 1;
 }
-.blackBlueBg .color1{
-    color: #9AA3BE!important;
-}
-.blackBlueBg .color2{
-    color: #EB4444!important;
-}
-.tabledata .someLeft .try.someLeftText{
-    background: transparent;
-    border-color: #38415A;
-    color: #fff;
-}
-.blackBlueBg .someLeft .someLeftText{
-    background: transparent;
-    border-color: #38415A;
-    color: #fff;
-}
-.someLeft .try-normal{
-    background: transparent;
-    border-color: #808080;
-    color: #808080;
-}
-.blackBlueBg .someLeft .try.try-normal{
-    background: transparent;
-    border-color: #4F5871;
-    color: #fff;
-}
-.tabledata .someLeft .try.try-success{
-    border-color: #7ABD7A;
-    color: #7ABD7A;
-}
-.blackBlueBg .tabledata .someLeft .try{
-    color: #fff;
-}
-.blackBlueBg .someLeft .try.try-success{
-    border-color: #46BE05;
-    color: #46BE05;
-}
-.tabledata .someLeft .try.try-danger{
-    background: #F96363;
-    color: #F96363;
-}
-.blackBlueBg .someLeft .try.try-danger{
-    background: #EB4444;
-    color: #EB4444;
-}
-.tabledata .someLeft .try.tryActive{
-    background: #808080;
-    border-color: #fff;
-}
-.blackBlueBg .someLeft .try.tryActive{
-    background: #4F5871;
-    border-color: #38415A;
-    color: #fff;
-}
-.someLeft .tryActive.try-success{
-    background: #7ABD7A;
-    color: #fff;
-}
-.blackBlueBg .someLeft .tryActive.try-success{
-    background: #46BE05;
-    color: #fff;
-}
-.someLeft .tryActive.try-danger{
-    background: #F96363;
-    color: #fff;
-}
-.blackBlueBg .someLeft .tryActive.try-danger{
-    background: #EB4444;
-    color: #fff;
-}
 .tapwater {
     position: fixed;
     top: 100px;
@@ -1452,87 +1322,6 @@ export default {
     min-width:1280px;
     overflow: auto;
     background-color: #eeeeee;
-
-    &.blackBlueBg{
-        background-color: #06091F;
-        .sometable{
-            border-color: #435382;
-        }
-        // .someLeft{
-        //     .try{
-        //         color: #fff;
-        //         border-color: #4F5871;
-        //         background-color: transparent;
-
-        //         &.tryActive{
-        //             border-color: transparent;;
-        //             background-color: #4F5871;
-        //         }
-        //     }
-        // }
-
-        .linebox{
-            color: #E4E4E4;
-            background: #081027 ;
-            border: 1px solid #38415A;
-        }
-        .fl, .fr, .table{
-            background: #0B1530;
-            color: #E4E4E4;
-        }
-        .query{
-            background: #386DF0;
-        }
-        .export{
-            color: #386DF0;
-            background-color: transparent;
-            border-color: #386DF0;
-        }
-        table{
-            tr{
-                background-color: transparent!important;;
-            }
-            td, th{
-                background-color: #506998!important;
-            }
-            .tbody1{
-                div{
-                    background-color: #506998!important;
-                }
-            }
-            .reporData{
-                td{
-                    color: #9AA3BE;
-                    border-color: #435382;
-                    background-color: #081027!important;
-                }
-            }
-        }
-
-        .table2{
-            tr, th{
-                background-color: #4FA0CF!important;
-
-                td{
-                    background-color: transparent!important;;
-                }
-            }
-
-            .reporData{
-                background-color: transparent!important;
-                td{
-                    border-color: #435382;
-                }
-            }
-        }
-        .color1{
-            color: #9AA3BE;
-        }
-        .color2{
-            color: #eb4444;
-        }
-    }
-
     .linebox {
         height: 950px;
         width: 100%;
@@ -1612,7 +1401,7 @@ export default {
 }
 .tabledata {
     padding:0 2%;
-    width: calc(100%-20px);
+    width: calc(100% - 20px);
     position: relative;
     overflow: hidden;
     .someLeft{
@@ -1647,7 +1436,7 @@ export default {
             display: none;
         }
     }
-    .someLeft .try:hover:before{
+    .someLeft .try:active:before{
         display: block;
     }
     .someLeft .tryActive{
@@ -1679,7 +1468,8 @@ export default {
     }
 }
 .txt{
-    width: 300px;
+    // width: 300px;
+    max-width: 120px;
     text-indent: 1em;
     margin-left: 10px;
     height: 40px;

@@ -16,15 +16,18 @@
       @mouseup="seupClick(item,$event)"
       :style="'width:' + item.width + 'px; height:' + item.height + 'px; position:absolute; left:' 
       + item.left + 'px; top:' + item.top + 'px; transform:rotate(' + item.rotate + 'deg); opacity:' + item.opacity 
-      + '; fontFamily:' + item.fontFamily + '; fontSize:' + item.FontSize + 'px; background:' + item.BorderBrush
-      + ';textAlign:center; lineHeight:' + (item.height - item.BorderThickness * 2) 
-      + 'px;zIndex:'+item.ZIndex+';boxSizing:border-box;padding:'+ item.BorderThickness 
-      + 'px;overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow">
+      + '; fontFamily:' + item.fontFamily + '; fontSize:' + item.FontSize + 'px;'
+      + 'textAlign:center; lineHeight:' + (item.height - item.BorderThickness * 2) 
+      + 'px;zIndex:'+item.ZIndex+';boxSizing:border-box;'
+      + 'overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow
+      + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
+      + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`
+      /* + `;${item.showBorder ? `border: ${item.BorderThickness}px solid ${item.borderStyle}` : `padding: ${item.BorderThickness}px`}`  */">
             <div :class="item.class" name="datatextblock" class="DataTextBlock121aa" 
             :style="'color:'+ item.Foreground +';width:100%;height:100%;background:' 
             + item.Background +';boxShadow:'+item.Shadow+';fontWeight:' + item.Blod 
             + ';text-decoration:' + item.TextDecorations +';'">
-              {{text}}</div>
+              {{item.text}}</div>
       </div>
     </div>
    <!-- 天 -->
@@ -110,7 +113,7 @@
     </div>
 
     <!-- 权限弹窗 -->
-    <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+    <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
           <div v-if="commerPopShow1" class="commerPop_outPop">
             <div class="commerPop_outHead">
                 <i class="warning el-icon-warning"></i>
@@ -121,7 +124,7 @@
                 <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">确定</div>
             </div>
             </div>
-    </div>
+    </div> -->
 
 </div>
 </template>
@@ -255,7 +258,8 @@ export default {
 
     //确认
     Jurisdiction(){
-        this.commerPopShow1 = false
+        // this.commerPopShow1 = false
+        this.$emit('shownotip')
     },
     //权限按钮请求
     jurisdictionShow(item){
@@ -308,7 +312,8 @@ export default {
               if(EventType.length){
                self.jurisdictionShow(item).then(val => { 
                   if(self.CanExcuteShow){
-                    self.commerPopShow1 = true
+                    // self.commerPopShow1 = true
+                    self.$emit('showtip',self.lang.NoOperationAuthority)
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -322,7 +327,8 @@ export default {
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                          self.commerPopShow1 = true
+                          // self.commerPopShow1 = true
+                          self.$emit('showtip',self.lang.NoOperationAuthority)
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -355,7 +361,8 @@ export default {
               if(EventType.length){
                 self.jurisdictionShow(item).then(val => { 
                      if(self.CanExcuteShow){
-                        self.commerPopShow1 = true
+                        // self.commerPopShow1 = true
+                        self.$emit('showtip',self.lang.NoOperationAuthority)
                         return
                     }else{
                       for(var j=0;j<EventType.length;j++){
@@ -369,7 +376,8 @@ export default {
                if(EventType1.length){
                  self.jurisdictionShow(item).then(val => { 
                        if(self.CanExcuteShow){
-                        self.commerPopShow1 = true
+                        // self.commerPopShow1 = true
+                        self.$emit('showtip',self.lang.NoOperationAuthority)
                         return
                       }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -1117,7 +1125,7 @@ export default {
                           resValue = 0
                       }else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                             resValue = data[i].Value
-                      }else if(typeof(Number(resValueNumber)) == 'number'){
+                      }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
                         resValue = Number(data[i].Value)
                       }else{
                         resValue = data[i].Value
@@ -1129,7 +1137,7 @@ export default {
                       }
                       else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                             ArrValue =  ColorAnimationList[i].Compare
-                      }else if(typeof(Number(resValueNumber)) == 'number'){
+                      }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
                         ArrValue = Number( ColorAnimationList[i].Compare)
                       }else{
                         ArrValue =  ColorAnimationList[i].Compare
@@ -1259,6 +1267,14 @@ export default {
         }
         return arr
   },
+        getPointNum(num, n) {
+			 if(isNaN(num)||num===null){
+		     return null
+	         }else{
+           
+		     return Number(num).toFixed(n)
+             }
+		  },
    //条件判断方法
   judgeFun3(data){
       if(data == []){
@@ -1275,7 +1291,7 @@ export default {
               var fix = Number(this.digit[i])
               var num = data[i].Value
               Number(num).toFixed(fix)
-                    document.querySelector(Dom).innerHTML =  Number(num).toFixed(fix)
+                   document.querySelector(Dom).innerHTML = this.getPointNum(Number(num),fix)
               }else{
                   var num1 = data[i].Value
                   var value = /Date/
@@ -1560,22 +1576,28 @@ export default {
                 Shadow = InnerShadow
             }
               //边框色渐变
+              let showLinear = false
+              let linearStyle = ''
                if(borderbrushArr.ColorType == 'SolidColor'){
                    borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                }else{
-                       borderColor = ''
+                      // 此处为渐变色
+                      let linearColor = ''
                        lagel1 = borderbrushArr.Data.Angel.toFixed(0)
                    for(var f1=0;f1<borderbrushArr.Data.GradientStops.length;f1++){
                        gradient1 = borderbrushArr.Data.GradientStops[f1]
-                       borderColor = borderColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
+                       linearColor = linearColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
                    }
-                       borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
+                      //  borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
+                      showLinear = true
+                      borderColor = 'transparent'
+                      linearStyle = `linear-gradient(-${Number(lagel1) - 90}deg ${linearColor}) 1`;
                }
              //背景色渐变
             if(backgroundArr.ColorType == 'SolidColor'){
                 backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                  if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                    borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                    // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                 }
             }else{
                     backColor = ''
@@ -1623,7 +1645,10 @@ export default {
                   Shadow:Shadow,
                   Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
                   TextDecorations:this.textblockData[i].PropertyList.TextDecorations == 'False' ? 'none' : 'underline',
-                  ZIndex:this.ZIndex
+                  ZIndex:this.ZIndex,
+                  text:this.Sarr.includes(this.textblockData[i].Name)?'Loading...':'数值显示',
+                  showLinear,
+                  linearStyle
                 }
                 this.dataValue.unshift(value)
           }
@@ -1694,7 +1719,8 @@ export default {
         if(this.data.Data.DataAnimationList.length == 0){
             this.jurisdictionShow(item).then(val => { 
                   if(this.CanExcuteShow){
-                     this.commerPopShow1 = true
+                    //  this.commerPopShow1 = true
+                    self.$emit('showtip',self.lang.NoOperationAuthority)
                       return
                   }else{
                       //脚本事件
@@ -1716,7 +1742,8 @@ export default {
              if(this.data.Data.DataAnimationList[i].ElementName == this.textClass ){
                this.jurisdictionShow(item).then(val => { 
                  if(this.CanExcuteShow){
-                    this.commerPopShow1 = true
+                    // this.commerPopShow1 = true
+                    self.$emit('showtip',self.lang.NoOperationAuthority)
                      return
                  }else{
                    //脚本事件
@@ -1745,7 +1772,8 @@ export default {
               if(EventType.length){
                 this.jurisdictionShow(item).then(val => { 
                     if(this.CanExcuteShow){
-                            this.commerPopShow1 = true
+                            // this.commerPopShow1 = true
+                            self.$emit('showtip',self.lang.NoOperationAuthority)
                             return
                       }else{
                         for(var j3=0;j3<EventType.length;j3++){
@@ -1787,10 +1815,10 @@ export default {
     cursor: pointer;
     box-sizing: border-box;
 }
-.DataTextBlock121aa1:hover{
-  background-color: #BEE6FD !important;
-  background: #BEE6FD !important;
-}
+// .DataTextBlock121aa1:hover{
+//   background-color: #BEE6FD !important;
+//   background: #BEE6FD !important;
+// }
  .showWindow2,
  .showWindow{
   position: fixed;

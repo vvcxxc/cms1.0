@@ -231,7 +231,7 @@ export default{
                                 data[f].Value = true
                             }
                         }
-                    }else if(typeof(data[f].Value) == 'number'){
+                    }else if(typeof(data[f].Value) == 'number'&&Number(data[f].Value)){
                         if(data[f].Value == 0){
                             data[f].Value = false
                         }else{
@@ -510,8 +510,17 @@ export default{
                         "Name" : item.TagName,
                         "Value": valueShow
                     }
-                    arr.push(value)
-                    this.$axios({
+                  arr.push(value)
+                       //请求接口
+                            this.$axios({
+                                  method:'post',
+                                  url:`/api/base/CheckTags`,
+                                  data:arr
+                             }).then((res1)=>{
+                                  if(res1.data.code === 0){
+                                this.commerPopShow = false
+                                 this.commerPopShow1value =  '该账户无操作权限'
+                   this.$axios({
                     method: 'post',
                     url: '/api/Base/PostIOServiceTest',
                     data: arr
@@ -524,7 +533,14 @@ export default{
                     }).catch(function(error) {
                         console.log('err',error);
                     });
-             }else{
+                                  }else{
+                       console.log("res1",res1)
+                               this.commerPopShow1 = true   
+                               this.commerPopShow1value = res1.data.msg
+                                  }
+                               
+                              })
+                                           }else{
                      var iptCheck = document.querySelector(`.aa${item.class}ipt`).checked
                      if(iptCheck == true){
                          document.querySelector(`.aa${item.class}ipt`).checked = false

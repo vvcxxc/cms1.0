@@ -7,7 +7,7 @@
  -->
 <template>
     <div
-        class="public-table  sbtz" :class="{blackBlueBg: $store.state.color === 'blackBlue'}"
+        class="public-table  sbtz"
         @click="changeselect = false"
     >
       			<div class="loadcover" element-loading-spinner="el-icon-loading"
@@ -18,7 +18,7 @@
     left: 0;"></div>
         <div
             class="search-container"
-            :class="{ colordiv: $store.state.color == 'grey', blackBlueBg: $store.state.color === 'blackBlue'}"
+            :class="{ colordiv: $store.state.color == 'grey' }"
             :style="{
                 zoom:a11
             }"
@@ -131,9 +131,10 @@
                 height="100%"
                 tooltip-effect="dark"
                 :header-cell-style="{
-                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
-                    color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                    background:
+                        $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
+                    color: $store.state.color == 'grey' ? '#000' : '#fff',
+                    'border-left': '1px solid #cccccc',
                     height: 50*a11+'px',
                     padding: '0'
                 }"
@@ -623,8 +624,6 @@
                             <template>
                                 <div class="block">
                                     <el-date-picker
-                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="sesstion.PurchaseTime"
                                         type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -633,8 +632,6 @@
                                         v-if="sestion == 1"
                                     ></el-date-picker>
                                     <el-date-picker
-                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="pen.PurchaseTime"
                                         type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -643,8 +640,6 @@
                                         v-if="sestion == 2"
                                     ></el-date-picker>
                                     <el-date-picker
-                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="time1"
                                         type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -684,8 +679,6 @@
                             <template>
                                 <div class="block">
                                     <el-date-picker
-                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="sesstion.CheckTime"
                                         type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -694,8 +687,6 @@
                                         v-if="sestion == 1"
                                     ></el-date-picker>
                                     <el-date-picker
-                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="pen.CheckTime"
                                         type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -704,8 +695,6 @@
                                         v-if="sestion == 2"
                                     ></el-date-picker>
                                     <el-date-picker
-                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="time2"
                                         type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -806,8 +795,6 @@
                             <template>
                                 <div class="block">
                                     <el-date-picker
-                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="sesstion.EnableTime"
                                         type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -816,8 +803,6 @@
                                         v-if="sestion == 1"
                                     ></el-date-picker>
                                     <el-date-picker
-                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="pen.EnableTime"
                                         type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -826,8 +811,6 @@
                                         v-if="sestion == 2"
                                     ></el-date-picker>
                                     <el-date-picker
-                                        :key="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
-                                        :popper-class="$store.state.color === 'blackBlue' ? 'blackBlueBg' : 'normal'"
                                         v-model="time3"
                                         type="datetime"
                                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
@@ -987,7 +970,7 @@
             </div>
             <div class="cancel cancle1" @click="cancel2">{{lang.PopupCommon_Cancel}}</div>
         </div>
-        <div class="tip" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" v-show="tipchange">
+        <div class="tip" v-show="tipchange">
             <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
             <div class="tiptop">
                 <img :src="gth" alt />
@@ -3931,7 +3914,7 @@ for(let i=0;i<$('.atooltip').length;i++){
     }
 };
 </script>
-<style lang='scss'>
+<style>
 .margin .el-input__inner{
     text-indent: 0.5em;
     width: 230px;
@@ -4074,41 +4057,6 @@ for(let i=0;i<$('.atooltip').length;i++){
     height: 60px;
     line-height: 60px;
     padding: 0px 22px 0px 22px;
-
-    &.blackBlueBg{
-        color: #E4E4E4;
-        
-        .seleword{
-            background: #1D2846;
-            border: 1px solid #445992;
-            color: #C6CAD8;
-        }
-        .selectword{
-            background: #1D2846;
-            border: 1px solid #445992;
-            
-            .el-tree{
-                background: #1D2846;
-                color: #C6CAD8;
-            }
-        }
-        .add{
-            background-color: transparent;
-            border: 1px solid #46BE05;
-            color: #46BE05;
-        }
-        .move{
-            background-color: #4F5871;
-            border: 1px solid #4F5871;
-            color: #fff;
-        }
-        .file,.export{
-            border-color: #FDAE22;
-            color: #FDAE22;
-            background-color: transparent;
-        }
-    }
-
     select {
         height: 40px;
         text-indent: 0.5em;
@@ -4219,49 +4167,6 @@ for(let i=0;i<$('.atooltip').length;i++){
     }
     .page-container {
         height: 60px;
-    }
-
-    &.blackBlueBg{
-        .table-container{
-            border-color: transparent;
-        }
-
-        .sestion{
-            border-color: transparent;
-            .sestioncontain{
-                background: #222D50;
-            }
-            span{
-                color: #fff;
-            }
-        }
-        .el-tree{
-            background: #1D2846;
-            color: #C6CAD8;
-        }
-        .Choice{
-            background: #222D50;
-            .choicecontant{
-                background: #28355B;
-                border: 1px solid #445992;
-                .el-tree{
-                    background: #28355B;
-                }
-            }
-        }
-        .homesetion{
-            .hometop-title{
-                background-color: transparent;
-            }
-        }
-        .line{
-            background-color: #445992;
-        }
-        .input1{
-            color: #C6CAD8;
-            background: #35446D;
-            border-color: #445992;
-        }
     }
 }
 .table-container .img {

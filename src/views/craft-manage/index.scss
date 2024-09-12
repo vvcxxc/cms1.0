@@ -1,0 +1,109 @@
+.flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+// 重写饿了吗
+::v-deep .el-table {
+	th {
+		color: white;
+		background-color: #5A6C98;
+		border-right: 1px solid #EBEEF5 !important;
+	}
+	td {
+		border-right: 1px solid #EBEEF5 !important;
+	}
+}
+
+::v-deep .el-dialog {
+  // margin: 0 !important;
+  // margin-top: 0 !important;
+  .el-dialog__header {
+    height: 50px;
+    padding: 0;
+    line-height: 50px;
+    text-align: center;
+    background: #386DF0;
+    .el-dialog__title {
+      color: #FFFFFF;
+    }
+    .el-dialog__close {
+      margin: -8px -11px 0 0;
+      font-size: 30px;
+      color: white;
+    }
+  }
+  .el-dialog__body {
+    padding: 10px 40px 30px 40px;
+    background: #EEEEEE;
+  }
+  // .el-form-item__label {
+  //   padding: 0 30px 0 0;
+  // }
+  .el-input__inner {
+    height: 36px;
+    border-radius: 0;
+  }
+  .el-date-editor.el-input, .el-date-editor.el-input__inner {
+    width: 100%;
+  }
+  .el-select {
+    width: 100%;
+  }
+
+	.el-dialog__footer {
+    padding: 0 20px 20px 20px;
+    background-color: #EEEEEE;
+  }
+}
+
+// 图标
+.icon-eye {
+	width: 20px;
+	height: 20px;
+	background-image: url("~@/assets/images/eye.png");
+	background-size:100% 100%;
+	background-repeat:no-repeat;
+}
+.icon-eye-close {
+	width: 20px;
+	height: 20px;
+	background-image: url("~@/assets/images/eye-close.png");
+	background-size:100% 100%;
+	background-repeat:no-repeat;
+}
+
+.icon-sort-arrow {
+	width: 25px;
+  height: 25px;
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  background-color: green;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+
+// 各种按钮
+.btn-add {
+  color: #70B603;
+  cursor: pointer;
+  .text {
+    line-height: 14px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+.btn-del {
+  color: #027DB4;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}

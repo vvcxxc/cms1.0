@@ -5,7 +5,7 @@
     <div class="individual-choice component-content" :class="last ? 'last-compoennt-content' : ''">
       <div class="component-title">
         {{formData.componentAttribute.title}}
-        <span class="font-2" v-if="formData.componentAttribute && !formData.componentAttribute.required">(选填)</span>
+        <span class="font-2" v-if="formData.componentAttribute && !formData.componentAttribute.required">({{lang.EquipmentAccount_Optional}})</span>
         <el-tooltip 
           class="item" 
           effect="dark" 
@@ -19,29 +19,31 @@
         </el-tooltip>
       </div>
       <div class="component-value">
-          <label class="input-group" v-if="formData.componentAttribute.theme==='select'">
+          <div class="input-group" v-if="formData.componentAttribute.theme==='select'">
             <el-select v-model="formData.value.Value2.value" placeholder="请选择" @change="handleChange" @focus="setMinWidthEmpty">
               <el-option
                 v-for="item in formData.componentAttribute.option"
                 :key="item.key"
-                :label="item.text"
                 :value="item.text"
                 :style="{width:selectOptionWidth}"
                 >
+                {{item.text}}
               </el-option>
             </el-select>
-          </label>
+          </div>
           <div class="input-group" v-else>
-            <div 
+            <span 
               v-for="item in formData.componentAttribute.option" 
               :key="item.key"
               class="select-item"
               :class="formData.value.Value2.key == item.key ? 'select-active' : ''"
               @click="selectChange(item)"
+              ref="option"
+              :style="{height: maxHeight}"
             >
               {{item.text}}
               <i class="icon el-icon-check"></i>
-            </div>
+            </span>
           </div>
       </div>
     </div>
@@ -63,15 +65,17 @@ export default {
   },
   data() {
     return {
+      maxHeight: 'unset',
       selectOptionWidth: 0,
       thresholdFeedback: this.formData.componentAttribute.thresholdFeedback,
-      warning: require('../../../assets/images/warning.png')
+      warning: require('../../../assets/images/warning.png'),
+      lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
     }
   },
   methods: {
     setMinWidthEmpty(event){
       this.$nextTick(() => {
-        this.selectOptionWidth = event.srcElement.offsetWidth + "px";
+        // this.selectOptionWidth = event.srcElement.offsetWidth + "px";
       });
     },
     handleChange(item){
@@ -89,28 +93,27 @@ export default {
       let isErr = false;
       for(let i=0; i<this.thresholdFeedback.length;i++){
         let {condition, value} = this.thresholdFeedback[i]
-        if(isErr){
-          return
-        }
-        if(condition === '数值范围'){
-          let numberRange = value.split(",")
-          if(val !== "" && !isNaN(Number(val)) && val >= Number(numberRange[0]) && val <= Number(numberRange[1])){
-            isErr = true
-          }
-        }else if(condition === '文本序列'){
-          let textRange = value.split(",")
-          if(textRange.some(text=> val === text)){
-            isErr = true
-          }
-        }else{
-          //数值
-          if(!isNaN(Number(val))){
-            if(val !== "" && eval(`${val.toString()}${condition}${value}`)){
+        if(!isErr){
+          if(condition === '数值范围'){
+            let numberRange = value.split(",")
+            if(val !== "" && !isNaN(Number(val)) && val >= Number(numberRange[0]) && val <= Number(numberRange[1])){
               isErr = true
             }
-          }else if(isNaN(Number(val)) && condition === "=="){ //文本只对==有效
-            if(val !== "" && val === value){
+          }else if(condition === '文本序列'){
+            let textRange = value.split(",")
+            if(textRange.some(text=> val === text)){
               isErr = true
+            }
+          }else{
+            //数值
+            if(!isNaN(Number(val))){
+              if(val !== "" && eval(`${val.toString()}${condition}${value}`)){
+                isErr = true
+              }
+            }else if(isNaN(Number(val)) && condition === "=="){ //文本只对==有效
+              if(val !== "" && val === value){
+                isErr = true
+              }
             }
           }
         }
@@ -137,13 +140,63 @@ export default {
   },
   mounted(){
     this.checkData(this.formData.value.Value2.value)
+    //设置高度
+    let heightArr = [];
+    if(Array.isArray(this.$refs.option)){
+      this.$refs.option.forEach(item=>{
+        heightArr.push(item.clientHeight)
+      })
+      setTimeout(()=>{
+        this.maxHeight = Math.max(...heightArr) + 'px'
+      })
+    }
   }
 }
 </script>
+<style lang='scss'>
+.individual-choice{
+  .el-select{
+    .el-input__inner{
+      color: #333;
+      font-size: 14px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+
+      &:hover{
+        border: 1px solid #c0c4cc;
+      }
+
+      &:focus{
+        border: 1px solid #409EFF;
+      }
+    }
+  }
+}
+.el-select-dropdown__item{
+  width: 100%!important;
+  height: auto!important;
+  color: #333;
+  font-size: 14px;
+  font-family: 'PingFang-SC-Medium';
+  padding: 8px 20px;
+  line-height: 26px;
+  position: relative;
+  white-space: unset;
+  overflow: unset;
+  text-overflow: unset;
+  height: auto;
+  box-sizing: border-box;
+  cursor: pointer;
+  max-width: 580px;
+  word-break: break-all;
+}
+</style>
 <style lang='scss' scoped>
   .component-content{
     position: relative;
-    padding: 10px 16px;
+    padding: 8px 26px;
     flex-wrap: wrap;
     display: flex;
     flex-direction: row;
@@ -152,20 +205,20 @@ export default {
     overflow: hidden;
 
     .component-title{
-      line-height: 28px;
-      font-family: Source Han Sans CN;
+      line-height: 20px;
       font-size: 14px;
       font-weight: 400;
       color: #7C7F8E;
-      min-width: 300px;
+      vertical-align: middle;
       padding: 8px 0;
+      box-sizing: border-box;
+      max-width: 190px;
 
       .font-2 {
-          font-family: PingFang SC;
           font-size: 12px;
           font-weight: 500;
           line-height: 20px;
-          color: #7C7F8E;
+          color: #999;
       }
 
       .icon-warning{
@@ -182,30 +235,30 @@ export default {
       flex: 1;
 
       .input-group{
+        height: auto;
         flex: 1;
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
         align-items: center;
-        min-width: 116px;
-        color: #000;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        color: #222;
         // background: #f8f8f8;
         // padding: 6px 9px 6px 0;
         box-sizing: border-box;
 
         .select-item{
+          font-size: 16px;
+          line-break: anywhere;
           margin: 0 0 6px 6px;
           width: 112px;
           height: auto;
           min-height: 38px;
-          padding: 5px 9px;
-          font-family: PingFang SC;
-          font-size: 12px;
-          font-weight: 500;
+          padding: 5px 6px;
           box-sizing: border-box;
           line-height: 1;
           position: relative;
           color: #7C7F8E;
+          font-family: PingFang SC;
           border: 2px solid #E2E2E2;
           display: flex;
           align-items: center;
@@ -232,8 +285,8 @@ export default {
         }
 
         .el-select{
-          width: 100%;
-          background: #f8f8f8;
+          width: 230px;
+          background: #fff;
         }
         input{
           flex: 1;
@@ -250,7 +303,6 @@ export default {
         }
       }
       .unit{
-        font-family: Source Han Sans CN;
         font-size: 14px;
         line-height: 20px;
         font-weight: 400;

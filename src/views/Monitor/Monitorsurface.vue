@@ -641,7 +641,7 @@ export default {
 }
 .tabledata {
     padding: 10px;
-    width: calc(100%-20px);
+    width: calc(100% - 20px);
     table {
         width: 100%;
         background-color: #ffffff;

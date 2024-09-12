@@ -7,7 +7,7 @@
    TODO:主要是用来做历史记录的
  -->
 <template>
-<div class="tendenCOnter" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+<div class="tendenCOnter">
 <tendencyTwo ref="mychild32"  :ide="ide1" :ShowtextTo="Showtext1" :curveIDTo="curveID1" :timeShowTo="timeShow1" :showTime="show1" class="Two_1" :id='qscxchart1'></tendencyTwo>
 <tendencyTwo ref="mychild4"  :ide="ide2" :ShowtextTo="Showtext1" :curveIDTo="curveID1" :timeShowTo="timeShow1" :showTime="show1" class="Two_2" :id='qscxchart2'></tendencyTwo>
 <tendencyTwo ref="mychild5"  :ide="ide3" :ShowtextTo="Showtext1" :curveIDTo="curveID1" :timeShowTo="timeShow1" :showTime="show1" class="Two_3" :id='qscxchart3'></tendencyTwo>
@@ -161,15 +161,6 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
 		margin:auto;
     height:100%;
 		background-color: #EEEEEE;
-
-		&.blackBlueBg{
-			background-color: #081027;
-
-			.Two_1,.Two_2,.Two_3,.Two_4{
-				background-color: #081027;
-				border-color: #38415A;
-			}
-		}
 
 		.Two_1{
 			float: left;

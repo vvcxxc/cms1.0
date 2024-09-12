@@ -6,17 +6,14 @@
  * @LastEditTime: 2019-11-27 14:53:55
  -->
 <template>
-	<div class="alarm-container">
-
-		<aside class="left-container" :class="{ colordiv: $store.state.color == 'grey' }"
-			:style="[{ width: 200 * (width / 1920) + 'px' }]">
+	<div class="alarm-container" >
+		
+	<aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200*(width/1920)+'px'}]">
 			<left-nav @tabComponent="tabComponent"></left-nav>
 		</aside>
 		<section class="content-container">
 
-			<keep-alive>
-				<component :is="componentName"></component>
-			</keep-alive>
+			<keep-alive><component :is="componentName"></component></keep-alive>
 		</section>
 	</div>
 </template>
@@ -26,34 +23,31 @@ import LeftNav from '../../components/leftNav/LeftNav.vue';
 import CurrentAlarm from '../../components/alarm/CurrentAlarm.vue';
 import AlarmPoint from '../../components/alarm/AlarmPoint.vue';
 import HistoryAlarm from '../../components/alarm/HistoryAlarm.vue';
-
 export default {
 	components: {
 		LeftNav,
 		CurrentAlarm,
 		HistoryAlarm,
-		AlarmPoint,
+		AlarmPoint
 	},
 	data() {
 		return {
 			componentName: 'CurrentAlarm',
-			width: 1920,
+			width: 1920
 		};
 	},
-	created() {
-
-	},
-	mounted() {
-		setTimeout(() => {
+	created() {},
+	mounted(){
+		setTimeout(()=>{
 			$('.alarm-container').css({
-				marginTop: $('.v-toolbar').height() * $('.v-toolbar')[0].style.zoom + 10 + 'px'
+					marginTop:$('.v-toolbar').height()*$('.v-toolbar')[0].style.zoom+10+'px'
 			});
-			let a = $('.left-container').width() + 'px'
+			let a = $('.left-container').width()+'px'
 			$('.content-container').css({
-				width: `calc(100% - ${a})`
+				width:`calc(100% - ${a})`
 			})
 		})
-		console.log("--------------", window.screen.width)
+		console.log("--------------",window.screen.width)
 		this.width = window.screen.width
 	},
 	methods: {
@@ -83,7 +77,6 @@ export default {
 	padding: 20px 10px;
 	box-sizing: border-box;
 }
-
 aside {
 	// width: 20%;
 	width: 200px;
@@ -92,17 +85,15 @@ aside {
 	box-sizing: border-box;
 	// border: 1px solid #e4e4e4;
 }
-
 .content-container {
 	flex: 1;
 	// width: 80%;
-
+	
 	background-color: #fff;
 	border: 1px solid #e4e4e4;
 	border-left: none;
 }
-
-.colordiv {
-	background-color: #D9DBDE;
+.colordiv{
+ background-color: #D9DBDE;
 }
 </style>

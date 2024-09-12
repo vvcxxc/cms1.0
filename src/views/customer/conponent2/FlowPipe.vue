@@ -82,8 +82,9 @@ export default {
       },
       axioImg2(resArr){
           let resArr1 = JSON.parse(JSON.stringify(resArr))
-      
-       
+         if(resArr1.value == '???'){
+             return
+         }
         //   this.axio()
         
               this.dataValue.forEach((item)=>{
@@ -192,7 +193,7 @@ export default {
                                   delete(item.time)
                             }else{
                                 
-                             item.isflow = false
+                            //  item.isflow = false
                             }
                             }
                             }
@@ -544,7 +545,7 @@ export default {
               data: this.resTagName
           }).then(res => {
               console.log("res11",res)
-
+let res1 = res.data.data.filter(item=>item.Value !== '???')
              
                 this.dataValue.forEach((item)=>{
                     if(item.class == 'FlowPipe23'){
@@ -610,12 +611,12 @@ export default {
                 }
                 })
             })
-              if(res.data.data.length!==0){
+              if(res1.length!==0){
            this.dataValue.forEach((item)=>{
           this.data.Data.FlowPipeAnimationList.forEach((item1)=>{
                 if(item.class == item1.ElementName){
                   
-                     res.data.data.forEach((item2)=>{
+                     res1.forEach((item2)=>{
                            if(item1.SpeedTagName == item2.Name){
                                 item.FlowSpeed =  item2.Value
                                  item.FlowSpeed1 =  item2.Value

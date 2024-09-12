@@ -6,8 +6,7 @@
  * @LastEditTime: 2019-12-01 19:01:37
  -->
 <template>
-    <div class="left-container"
-        :class="{ colordiv: $store.state.color == 'grey', blackBlueBg: $store.state.color === 'blackBlue' }">
+    <div class="left-container" :class="{ colordiv: $store.state.color == 'grey' }">
         <div class="nav" :class="{ active: activeIndex == index }" v-for="(item, index) in nav" :key="index"
             :style="{ fontSize: 16 * zoom + 'px', paddingTop: zoom < 1 ? languages + 'px' : languages * zoom + 'px', paddingBottom: zoom < 1 ? languages + 'px' : languages * zoom + 'px' }"
             @click="tabActive(index)">
@@ -25,7 +24,15 @@ export default {
             width: '',
             navList: {
                 AlarmRecord: [
-
+                    {
+                        name: '实时报警'
+                    },
+                    {
+                        name: '历史报警'
+                    },
+                    {
+                        name: '报警点管理'
+                    }
                 ],
                 AlarmRecord1: [
                     {
@@ -119,7 +126,37 @@ export default {
                     {
                         name: '操作记录'
                     },
-                ]
+                ],
+                MsgPush: [
+                    {
+                        name: '报警消息'
+                    },
+                    {
+                        name: '代办消息'
+                    },
+                    {
+                        name: '推送日志'
+                    }
+                ],
+                PreparationVoucher: [
+                    {
+                        name: '待办备料'
+                    },
+                    {
+                        name: '备料记录'
+                    }
+                ],
+                BoilerVoucher: [
+                    {
+                        name: '投料订单'
+                    },
+                    {
+                        name: '锅组投料'
+                    },
+                    {
+                        name: '历史订单'
+                    }
+                ],
             },
             nav: [],
             zoom: 1,
@@ -131,7 +168,6 @@ export default {
         this.getLangData()
         let path = this.$route.path.substr(1);
         this.nav = this.navList[path];
-
     },
     mounted() {
         this.width = window.screen.width
@@ -154,27 +190,17 @@ export default {
                 }
 
             }
-            let isBSystem = eval(sessionStorage.getItem('isBSystem'));
-            this.navList.AlarmRecord = isBSystem ? [
+            this.navList.AlarmRecord = [
                 {
-                    name: '实时报警'
+                    name: languages[currentLang].AlarmRecord_Time
                 },
                 {
-                    name: '历史报警'
-                },
-
-            ] : [
-                {
-                    name: '实时报警'
+                    name: languages[currentLang].AlarmRecord_History
                 },
                 {
-                    name: '历史报警'
-                },
-                {
-                    name: '报警点管理'
+                    name: languages[currentLang].AlarmRecord_HT_AlarmPointManageUC_AlarmPointManagement
                 }
             ]
-
             this.navList.AlarmRecord1 = [
                 {
                     name: languages[currentLang].AlarmRecord_Time
@@ -268,6 +294,17 @@ export default {
                     name: languages[currentLang].EquipmentAccount_OperationRecord
                 }
             ]
+            this.navList.MsgPush = [
+                {
+                    name: languages[currentLang].MsgPush_Alarm
+                },
+                {
+                    name: languages[currentLang].PushMessage_ToDoMessage
+                },
+                {
+                    name: languages[currentLang].PushMessage_PushLog
+                }
+            ]
         },
         tabActive(index) {
             this.$emit('tabComponent', index);
@@ -300,30 +337,10 @@ export default {
 
             .border {
                 position: absolute;
-                left: 0px;
+                left: -5px;
                 width: 5px;
                 height: 100%;
                 background-color: #4270e4;
-            }
-        }
-    }
-
-    &.blackBlueBg {
-        .nav {
-            background-color: #0C1634;
-            color: #9AA3BE;
-
-            &:hover {
-                background-color: #121D3E;
-            }
-
-            &.active {
-                background-color: #0F1B3E;
-                color: #3F81FF;
-
-                .border {
-                    background-color: #3F81FF;
-                }
             }
         }
     }

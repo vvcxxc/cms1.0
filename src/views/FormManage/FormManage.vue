@@ -96,6 +96,7 @@
                 >
                     <left-nav
                         @getleftdata="getleftdata"
+                        @getleftdata1="getleftdata1"
                         :class="{ colordiv: $store.state.color == 'grey' }"
                     ></left-nav>
                 </aside>
@@ -177,6 +178,7 @@
                                 :key="index"
                                 :label="item.Title"
                                 :prop="item.Key"
+                                :show-overflow-tooltip="true"
                                 :width="
                                     ColumnInfos.length > 8
                                         ? 170 * zoomValue + 'px'
@@ -371,7 +373,7 @@
                     <div class="cancel" @click="hideModel">
                         {{ lang.PopupCommon_Cancel }}
                     </div>
-                    <div class="pre" @click="submitChange">提交</div>
+                    <div class="pre" @click="submitChange">{{lang.MaintenanceManage_Submit}}</div>
                 </div>
             </div>
         </div>
@@ -449,7 +451,7 @@ export default {
             changeData: false,
             formID: '',
             editData: [],
-            exceptionColumn:[],
+            exceptionColumn: [],
             user: '',
 
             leftlist: '',
@@ -533,7 +535,7 @@ export default {
             Number(parseFloat(window.screen.width / 1920).toFixed(2)) <= 0.7
                 ? 0.7
                 : Number(parseFloat(window.screen.width / 1920).toFixed(2));
-        let width = 200 * this.zoomValue + 'px';
+        let width = 220 * this.zoomValue + 'px';
         let width1 = 110 * this.zoomValue + 'px';
         this.nowwidth = `calc(100% - ${width})`;
         this.elwidth = `calc(100% - ${width1})`;
@@ -797,6 +799,9 @@ export default {
             this.leftlist = data;
             this.formID = data.SCMSAppFormID;
         },
+        getleftdata1(){
+            this.tabledata = []
+        },
         selectall(row) {
             this.delarr = JSON.parse(JSON.stringify(row));
         },
@@ -840,6 +845,7 @@ export default {
                     // console.log(res.data.data.AppFormDatas)
                     this.ColumnInfos = res.data.data.ColumnInfos;
                     this.AppFormDatas = res.data.data.AppFormDatas;
+                    console.log(this.ColumnInfos, this.AppFormDatas)
                     this.tabledata = [];
                     let uparr = [];
                     this.ColumnInfos.forEach(item => {
@@ -858,7 +864,6 @@ export default {
                     this.AppFormDatas.forEach(item1 => {
                         item1.push.apply(item1, uparr);
                     });
-                    // console.log(this.AppFormDatas);
                     this.delarr = [];
                     this.AppFormDatas.forEach((item1, index1) => {
                         let obj = {};
@@ -882,6 +887,7 @@ export default {
                                     let data = JSON.parse(
                                         JSON.stringify(item2.Value)
                                     );
+                                    item2.Value2 = data
                                     item2.Value = parseFloat(
                                         item2.Value
                                     ).toString();
@@ -900,6 +906,7 @@ export default {
                                         let data = JSON.parse(
                                             JSON.stringify(item2.Value)
                                         );
+                                        item2.Value2 = data
                                         item2.Value = parseFloat(
                                             item2.Value
                                         ).toString();
@@ -914,6 +921,8 @@ export default {
                                             item2.Value = data1;
                                         }
                                     }
+                                }else{
+                                    item2.Value2 = item2.Value
                                 }
                             }
 
@@ -1005,6 +1014,7 @@ export default {
             });
         },
         selectRow(row, event, column) {
+            console.log(JSON.parse(JSON.stringify(row)))
             this.selectedRow = JSON.parse(JSON.stringify(row));
 
             // console.log(this.selectedRow)
@@ -1025,6 +1035,7 @@ export default {
             this.nowmedia = JSON.parse(JSON.stringify(item));
         },
         change(item) {
+            console.log(this.qxarr[1], this.lang.NoOperationAuthority)
             if (!this.qxarr[1]) {
                 setTimeout(() => {
                     this.tipword = this.lang.NoOperationAuthority;
@@ -1037,10 +1048,7 @@ export default {
                 return;
             }
 
-            if (
-                this.selectedRow &&
-                this.selectedRow.SCMSAppFormDataID == undefined
-            ) {
+            if (this.selectedRow && this.selectedRow.SCMSAppFormDataID == undefined) {
                 this.changeData = false;
                 this.tipword = this.lang.APPFormManage_NoModifyData;
                 $('.tip').css({
@@ -1049,26 +1057,21 @@ export default {
                 this.tipchange = true;
                 return;
             }
+            this.exceptionColumn = []
             this.$axios({
                 method: 'post',
                 url: '/api/AppForm/GetSCMSFormDesignDatas',
                 data: [this.formID]
             }).then(res => {
                 if (res.data.code === 0) {
-                    console.log(JSON.parse(res.data.data[0].Data))
                     //重置编辑列表数组
                     this.editData = [];
-                    this.exceptionColumn = []
-                    let componentList = JSON.parse(res.data.data[0].Data)
-                        .componentList;
+                    let componentList = JSON.parse(res.data.data[0].Data).componentList;
 
                     //整体数据
                     componentList.forEach(item => {
                         let data = JSON.parse(JSON.stringify(item));
-                        if (
-                            this.selectedRow[item.id] ||
-                            item.type === 'foldList'
-                        ) {
+                        if (this.selectedRow[item.id] || item.type === 'foldList') {
                             if (item.componentList) {
                                 item.componentList.forEach(com => {
                                     com.value = cloneDeep(
@@ -1084,6 +1087,7 @@ export default {
                             this.editData.push(data);
                         }
                     });
+                    console.log(this.editData, this.AppFormDatas)
                     setTimeout(() => {
                         this.changeData = true;
                         this.move('lookw', 'looktop');
@@ -1122,13 +1126,13 @@ export default {
                         item.value.Value2.length === 0
                     ) {
                         this.tipchange = true;
-                        this.tipword = '必填项不能为空';
+                        this.tipword = this.lang.APPFormManage_RequiredNoEmpty;
                         return false;
                     }
                 } else {
                     if (item.componentAttribute.required && val === '') {
                         this.tipchange = true;
-                        this.tipword = '必填项不能为空';
+                        this.tipword = this.lang.APPFormManage_RequiredNoEmpty;
                         return false;
                     }
                 }
@@ -1142,7 +1146,7 @@ export default {
                         )
                     ) {
                         this.tipchange = true;
-                        this.tipword = '必填项不能为空';
+                        this.tipword = this.lang.APPFormManage_RequiredNoEmpty;
                         return false;
                     }
                 }
@@ -1150,14 +1154,16 @@ export default {
             return true;
         },
         exception({type, id}){
+            let list = [...new Set(this.exceptionColumn)]
             if(type === "add"){
-                this.exceptionColumn.push(id)
+                list.push(id)
             }else{
-                let index = this.exceptionColumn.indexOf(id)
+                let index = list.indexOf(id)
                 if(index >= 0){
-                    this.exceptionColumn.splice(index, 1)
+                    list.splice(index, 1)
                 }
             }
+            this.exceptionColumn = [...list]
         },
         //编辑表单提交事件
         submitChange() {
@@ -1507,8 +1513,14 @@ export default {
                                 });
                                 item2.Value = choice;
                             }
-                            if (item2.Type == 'individualChoice') {
-                                item2.Value = JSON.parse(item2.Value).value;
+                               if (item2.Type == 'individualChoice') {
+                                if (item2.Value !== '') {
+                                    item2.Value2 = JSON.parse(item2.Value);
+                                    item2.Value = JSON.parse(item2.Value).value;
+                                } else {
+                                    item2.Value = '';
+                                    item2.Value2 = {};
+                                }
                             }
                         });
 
@@ -1636,6 +1648,9 @@ aside {
 .left-container {
     margin-right: 20px;
 }
+.el-table{
+    color: #222;
+}
 .tip {
     position: fixed;
     width: 380px;
@@ -1717,9 +1732,16 @@ aside {
         }
     }
 }
-
+.cover11{
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
 .look {
-    z-index: 30;
+    z-index: 1001;
     width: 673px;
     height: 710px;
     top: 150px;
@@ -1770,6 +1792,7 @@ aside {
             width: 100%;
             height: 100%;
             overflow: auto;
+            font-family: PingFang SC;
 
             .last-compoennt-content {
                 border-bottom-left-radius: 6px !important;

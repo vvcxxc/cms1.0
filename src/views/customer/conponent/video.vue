@@ -14,7 +14,7 @@
             class='divvideo'
           :style="'position:absolute;' + 'left:' + item.PropertyList.Left + 'px; top:' + item.PropertyList.Top  + 'px; width:'+ item.PropertyList.Width + 'px; height:'+ item.PropertyList.Height + 'px;'+'RotateAngle:'+item.PropertyList.RotateAngle+';Opacity:'+(parseInt(item.PropertyList.Opacity)/100)+';zIndex:'+item.PropertyList.ZIndex"
         >
-     <Video2 ref="videoe" :dataId="dataId" :data="data" :play="item.PropertyList" :name='name' :id="item.Name"></Video2>
+     <Video2 @showtip="showtip" @shownotip="shownotip"  ref="videoe" :dataId="dataId" :data="data" :play="item.PropertyList" :name='name' :id="item.Name"></Video2>
      </div> 
 </div>
 </template>
@@ -55,6 +55,12 @@ export default {
       console.log("asdasd>",this.$refs[this.refClass])
     },
     methods:{
+             showtip(a){
+         this.$emit('showtip',a)
+        },
+        shownotip(){
+     this.$emit('shownotip')
+        },
         videoFun(name,src){
             for(let i=0;i<this.$refs.videoe.length;i++){
                 this.$refs.videoe[i].intovideo(name,src)

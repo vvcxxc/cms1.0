@@ -6,9 +6,9 @@
  * @LastEditTime: 2020-08-06 18:02:55
  -->
 <template>
-    <div class="container" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+    <div class="container">
         <div class="cover12" v-if="tipchange"></div>
-        <div class="tip" ref="kongtiao8" :class="{blackBlueBg: $store.state.color === 'blackBlue'}" v-show="tipchange" :style="{zoom:a11}">
+        <div class="tip" ref="kongtiao8" v-show="tipchange" :style="{zoom:a11}">
               <div
                 class="tiphead"
                 style="position:absolute;width: 380px;height: 40px;"
@@ -54,9 +54,9 @@
                         highlight-current-row
                         :row-style="{ height: 50 * a11 + 'px' }"
                         :header-cell-style="{
-                            background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
-                            color:($store.state.color=='grey')?'#000':'#fff',
-                            'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                            background: $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
+                            color: $store.state.color == 'grey' ? '#000' : '#fff',
+                            'border-left': '1px solid #cccccc',
                             height: 50 * a11 + 'px',
                             padding: '0'
                         }"
@@ -118,10 +118,11 @@
                         highlight-current-row
                         @row-click="handleRowChange1"
                          :row-style="{ height: 50 * a11 + 'px' }"
-                    :header-cell-style="{
-                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
-                    color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                      :header-cell-style="{
+                    background:
+                        $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
+                    color: $store.state.color == 'grey' ? '#000' : '#fff',
+                    'border-left': '1px solid #cccccc',
                     height: 50 * a11 + 'px',
                     padding: '0'
                 }"
@@ -235,10 +236,11 @@
                             }"
                         highlight-current-row
                         @row-click="handleRowChange2"
-                        :header-cell-style="{   
-                        background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#18254E' : '#5a6c98'),
-                        color:($store.state.color=='grey')?'#000':'#fff',
-                        'border-left': $store.state.color==='blackBlue' ? '1px solid #304171' : '1px solid #cccccc',
+                                    :header-cell-style="{
+                    background:
+                        $store.state.color == 'grey' ? '#D9DBDE' : '#5a6c98',
+                    color: $store.state.color == 'grey' ? '#000' : '#fff',
+                    'border-left': '1px solid #cccccc',
                     height: 50 * a11 + 'px',
                     padding: '0'
                 }"
@@ -283,7 +285,7 @@
                 </div>
             </div>
         </div>
-        <div class="onework" v-show="onework">
+        <div class="onework"  v-show="onework">
             <div class="oneworkhead" :class="{colordiv:$store.state.color=='grey'}">
                 <div
                     class="oneworktop"
@@ -410,9 +412,10 @@
                          :style="{ fontSize: a11 * 15 + 'px', width: '100%' }"
                  :row-style="{ height: 50 * a11 + 'px' }"
                  :header-cell-style="{
-                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#344C8F' : '#5a6c98'),
-                    color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left': $store.state.color==='blackBlue' ? '1px solid #8B98B8' : '1px solid #cccccc',
+                    background:
+                        $store.state.color == 'grey' ? '#D9DBDE' : '#E1EDFA',
+                    color: $store.state.color == 'grey' ? '#000' : '#769DE7',
+                    'border-left': '1px solid #cccccc',
                     height: 50 * a11 + 'px',
                     padding: '0'
                 }"
@@ -498,9 +501,9 @@
                             @row-click="mewant"
                             highlight-current-row
                             :header-cell-style="{
-                                background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#344C8F' : '#5a6c98'),
-                                color:($store.state.color=='grey')?'#000':'#fff',
-                                'border-left': $store.state.color==='blackBlue' ? '1px solid #8B98B8' : '1px solid #cccccc',
+                                background: $store.state.color=='grey' ? '#D9DBDE' : '#E1EDFA',
+                                color: $store.state.color=='grey' ? '#000' : '#769DE7',
+                                borderLeft:'1px solid #cccccc',
                                 height:'50px',
                                 padding:'0'
                             }"
@@ -698,9 +701,10 @@
                                 :style="{ fontSize: a11 * 15 + 'px', width: '100%' }"
                  :row-style="{ height: 50 * a11 + 'px' }"
                  :header-cell-style="{
-                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#344C8F' : '#5a6c98'),
-                    color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left': $store.state.color==='blackBlue' ? '1px solid #8B98B8' : '1px solid #cccccc',
+                    background:
+                        $store.state.color == 'grey' ? '#D9DBDE' : '#E1EDFA',
+                    color: $store.state.color == 'grey' ? '#000' : '#769DE7',
+                    'border-left': '1px solid #cccccc',
                     height: 50 * a11 + 'px',
                     padding: '0'
                 }"
@@ -749,7 +753,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="btn tran-part" :style="{zoom:a11}">
+                    <div class="btn" :style="{zoom:a11}">
                         <div class="add" @click="addwantproject">{{lang.ProcessParameterConfigure_AddWorkProject1_Add}}</div>
                         <div class="remove" @click="removeproject">{{lang.ProcessParameterConfigure_AddWorkProject1_Remove}}</div>
                     </div>
@@ -767,9 +771,10 @@
                                  :style="{ fontSize: a11 * 15 + 'px', width: '100%' }"
                  :row-style="{ height: 50 * a11 + 'px' }"
                  :header-cell-style="{
-                    background:($store.state.color=='grey')?'#D9DBDE':($store.state.color==='blackBlue' ? '#344C8F' : '#5a6c98'),
-                    color:($store.state.color=='grey')?'#000':'#fff',
-                    'border-left': $store.state.color==='blackBlue' ? '1px solid #8B98B8' : '1px solid #cccccc',
+                    background:
+                        $store.state.color == 'grey' ? '#D9DBDE' : '#E1EDFA',
+                    color: $store.state.color == 'grey' ? '#000' : '#769DE7',
+                    'border-left': '1px solid #cccccc',
                     height: 50 * a11 + 'px',
                     padding: '0'
                 }"
@@ -1603,14 +1608,14 @@ export default {
                 a[i].ProjectValueTagName = a[i].Name;
                 a[i].Unit = '//';
                 a[i].DataType = a[i].DateType;
-                if (
-                    a[i].DateType == this.lang['F64位浮点数IEEE754'] ||
-                    a[i].DateType == this.lang['F32位浮点数IEEE754']
-                ) {
-                    a[i].Digit = 2;
-                } else {
-                    a[i].Digit = '';
-                }
+                // if (
+                //     a[i].DateType == this.lang['F64位浮点数IEEE754'] ||
+                //     a[i].DateType == this.lang['F32位浮点数IEEE754']
+                // ) {
+                //     a[i].Digit = 2;
+                // } else {
+                //     a[i].Digit = '';
+                // }
             }
             this.adata = a;
         },
@@ -1638,14 +1643,14 @@ export default {
                 a[i].ProjectValueTagName = a[i].Name;
                 a[i].Unit = '//';
                 a[i].DataType = a[i].DateType;
-                if (
-                    a[i].DateType == this.lang['F64位浮点数IEEE754'] ||
-                    a[i].DateType == this.lang['F32位浮点数IEEE754']
-                ) {
-                    a[i].Digit = 2;
-                } else {
-                    a[i].Digit = '';
-                }
+                // if (
+                //     a[i].DateType == this.lang['F64位浮点数IEEE754'] ||
+                //     a[i].DateType == this.lang['F32位浮点数IEEE754']
+                // ) {
+                //     a[i].Digit = 2;
+                // } else {
+                //     a[i].Digit = '';
+                // }
             }
             this.projectlistdata2 = a;
             console.log(a);
@@ -3877,97 +3882,7 @@ this.newblue = true;
     }
 };
 </script>
-<style lang="scss">
-.container{
-    &.blackBlueBg{
-        .lookselect,.Unqualifiedsetinon{
-            .el-table__body-wrapper{
-                background-color: #1A2544!important;
-                
-                tr{
-                    td{
-                        background-color: #1A2544!important;
-                        border-bottom-color: #445992!important;
-                    }
-                }
-            }
-        }
-        .el-table{
-            tr{
-                &.current-row{
-                    &>td{
-                        background-color: #273E7E!important;
-                        border-color: transparent;
-                    }
-                }
-                td{
-                    background-color: #0E1732;
-                    border-color: transparent;
-                    border-bottom-color: #1D2B55;
-                }
-            }
-        }
-        .el-table--border th.gutter:last-of-type{
-            background-color: #344c8f;
-            border-bottom-color: #344c8f;
-        }
-        .el-table--striped .el-table__body tr.el-table__row--striped td{
-            background-color: #121C3A;
-            border-bottom-color: #1D2B55;
-        }
-        .el-table--enable-row-hover .el-table__body tr:hover > td{
-            background-color: #2A3A65;
-        }
-        .el-checkbox__label{
-            color: #fff;
-        }
-        .el-checkbox__input.is-checked + .el-checkbox__label{
-            color: #fff;
-        }
-        .el-checkbox__inner::after{
-            content: '';
-            border-color: #84D063;
-        }
 
-        .el-checkbox__input.is-checked .el-checkbox__inner{
-            background-color: #18254E;
-            border-color: #445992;
-        }
-        .el-checkbox__input.is-focus .el-checkbox__inner{
-            border-color: #B2C0E4;
-        }
-
-        .Unqualifiedsetinon{
-            .el-radio__input{
-                & + .el-radio__label{
-                    color: #fff;
-                }
-
-                .el-radio__inner{
-                    background: #18254E;
-                    border-color: #445992;
-                }
-            }
-
-            .add{
-                background-color: transparent!important;
-                border: 1px solid #46BE05!important;
-                color: #46BE05!important;
-            }
-            .change{
-                background-color: transparent!important;
-                border: 1px solid #FDA917!important;
-                color: #FDA917!important;
-            }
-            .del{
-                background-color: #4F5871!important;
-                border: 1px solid #4F5871!important;
-                color: #fff!important;
-            }
-        }
-    }
-}
-</style>
 <style lang="scss" scoped>
 .spword1 {
     top: -130px !important;
@@ -4987,186 +4902,6 @@ this.newblue = true;
     background-color: #ececec;
     padding: 20px;
     width: 100%;
-
-    &.blackBlueBg{
-        background-color: #06091F;
-
-        .table{
-            background-color: #081027;
-
-            .up{
-                background-color: transparent;
-                border-color: #5C6A95;
-            }
-            
-            .firsthead{
-                color: #4270E4;
-            }
-            .firsttable{
-                border-color: #1E244B;
-                background: #081027;
-            }
-            .firstselect{
-                background: #0B1530;
-                border: 1px solid #38415A;
-
-                .firstadd{
-                    color: #46BE05;
-                    border-color: #46BE05;
-                    background-color: transparent;
-                }
-                .firstchange{
-                    color: #FDAE22;
-                    border-color: #FDAE22;
-                    background-color: transparent;
-                }
-                .nosix{
-                    color: #4270E4;
-                    border-color: #4270E4;
-                    background-color: transparent;
-                }
-                .firstdel{
-                    background: #4F5871;
-                    border-color: #4F5871;
-                }
-            }
-        }
-
-        .onework,.twowork,.look,.newblue,.changpro{
-            color: #fff;
-            background: #233056;
-
-            .select{
-                background-color: transparent;
-                border-color: #fff;
-                color: #fff;
-            }
-        }
-
-        .page{
-            .btn{
-                &.nopage{
-                    border-color: #2E437E!important;
-                    color: #8798C9!important;
-                }
-            }
-        }
-
-        input,textarea{
-            color: #C6CAD8;
-            background: #1D2846;
-            border-color: #445992;
-
-            &:focus{
-                border-color: #B2C0E4;
-            }
-
-            &:disabled{
-                background-color: #35446D;
-                border-color: #445992;
-                color: #8798C9;
-            }
-
-            &::-webkit-input-placeholder{
-                color: #8798C9;
-            }
-        }
-
-        .lookselect{
-            background: #28355B;
-            border-color: #445992;
-
-            .search{
-                color: #fff;
-            }
-
-            .table{
-                border-color: transparent;
-                background-color: #28355B;
-                padding: 0;
-            }
-
-            select{
-                background: #1D2846;
-                border-color: #445992;
-                color: #C6CAD8;
-
-                &:focus{
-                    border-color: #B2C0E4;
-                }
-            }
-            .lookfor1{
-                background-color: transparent;
-                color:#fff;
-                border-color: #fff;
-            }
-        }
-
-        .addsomepro{
-            background: #222D50;
-
-            .onecentent,.twocontent{
-                background: #28355B;
-                border: 1px solid #445992;
-
-                .selectword{
-                    color: #4270E4;
-                }
-            }
-        }
-
-        .twowork{
-            .twoworkcontent{
-                .inp1{
-                    .select{
-                        background-color: transparent;
-                        border-color: #fff;
-                        color: #fff;
-                    }
-                }
-                .txtselect{
-                    color: #fff;
-                }
-                .newtxtselect{
-                    background-color: transparent!important;
-                    border-color: #fff!important;
-                    color: #fff!important;
-                }
-            }
-        }
-
-        .bluerspan{
-            background-color: transparent;
-            border-color: #fff;
-            color: #fff;
-        }
-
-        .tran-part{
-            color: #fff!important;
-            border: 0!important;
-        }
-
-        .Unqualified{
-            background: #233056;
-
-            .Unqualifiedsetinon{
-                background: #28355B;
-                border-color: #445992;
-                color: #fff;
-
-                .table1,.table2{
-                    border-color: transparent;
-                }
-
-                .select{
-                    background-color: transparent;
-                    border-color: #fff;
-                    color: #fff;
-                }
-            }
-        }
-    }
-
     .table {
         width: 100%;
         height: 100%;

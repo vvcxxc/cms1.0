@@ -6,7 +6,7 @@
  * @LastEditTime: 2019-11-27 14:53:55
  -->
 <template>
-    <div class="alarm-container" :class="{blackBlueBg: $store.state.color === 'blackBlue'}">
+    <div class="alarm-container" >
         <aside class="left-container" ref="left" :class="{colordiv:$store.state.color=='grey'}" @click="yc">
          <left-nav @tabComponent="tabComponent" @tabledata="tabledata" :class="{colordiv:$store.state.color=='grey'}"></left-nav>
         </aside>

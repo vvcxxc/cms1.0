@@ -19,7 +19,7 @@
                 + 'px; boxSizing:border-box; text-align:center;line-height:' + (item.height-1)
                 + 'px; width:'+ item.width + 'px; height:'+ item.height + 'px;'+ ';opacity:' 
                 + item.opacity + 'overflow:hidden;zIndex:'+(Number(item.ZIndex)+1) 
-                + ';padding:'+item.BorderThickness+'px;background:'+item.borderColor+';transform:rotate(' + item.rotate + 'deg);boxShadow:'+item.Shadow"
+                + ';padding:'+item.BorderThickness+'px;background:'+item.borderColor+';transform:rotate(' + item.rotate + 'deg);boxShadow:'+item.Shadow + `;${item.showBorder ? `border: ${item.BorderThickness}px solid ${item.borderStyle}` : `padding: ${item.BorderThickness}px`}`"
             >
             <el-date-picker
                 v-if="show"
@@ -31,7 +31,9 @@
                 :style="'text-align:center;width:100%; height:100%;'
                 + ';opacity:' + item.opacity + 'overflow:hidden;zIndex:'+item.ZIndex"
                 v-model="item.value"
+                type="datetime"
                 :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate"
+                default-time="12:00:00"
             ></el-date-picker>
             </div>
         </div>
@@ -429,6 +431,8 @@ export default {
                     backgroundColor = '-webkit-linear-gradient('+lagel1+'deg'+backgroundColor+')';
             }
                 //边框色渐变
+                let showBorder = false
+                let borderStyle = ''
                 if(borderbrushArr.ColorType == 'SolidColor'){
                     borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                 }else{
@@ -447,6 +451,8 @@ export default {
                 backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                     if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
                     borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                    showBorder = true
+                    borderStyle = `#${borderbrushArr.Data.Color.slice(3)}`
                 }
             }else{
                     backColor = ''
@@ -466,7 +472,9 @@ export default {
                 backgroundColor:backgroundColor,
                 clipText:clipText,
                 borderColor:borderColor,
-                backColor:backColor
+                backColor:backColor,
+                showBorder,
+                borderStyle
             }
             return value
          },
@@ -597,6 +605,8 @@ export default {
                                     disabled:false,
                                     ZIndex:this.ZIndex,
                                     family:this.textblockData[i].PropertyList.FontFamily,
+                                    showBorder: colorData.showBorder,
+                                    borderStyle: colorData.borderStyle
                                 };
                                 this.dataValue.push(value5);
 

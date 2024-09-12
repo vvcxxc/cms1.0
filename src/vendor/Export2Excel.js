@@ -367,6 +367,7 @@ export function export_json_to_excel({
   autoWidth = true,
   bookType = "xlsx"
 } = {}) {
+  
   /* original data */
   filename = filename || "excel-list"
   data = [...data]
@@ -559,6 +560,7 @@ export function export_json_to_excel({
   // dataInfo["A1"].s = style;
 
   // excel标题样式
+
 
  wb.SheetNames.pop();
  wb.SheetNames.pop();

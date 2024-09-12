@@ -5,7 +5,7 @@
     <div class="multi-line-text component-content" :class="last ? 'last-compoennt-content' : ''">
       <div class="component-title">
         {{formData.componentAttribute.title}}
-        <span class="font-2" v-if="formData.componentAttribute && !formData.componentAttribute.required">(选填)</span>
+        <span class="font-2" v-if="formData.componentAttribute && !formData.componentAttribute.required">({{lang.EquipmentAccount_Optional}})</span>
         <el-tooltip 
           class="item" 
           effect="dark" 
@@ -41,7 +41,8 @@ export default {
   },
   data() {
     return {
-      warning: require('../../../assets/images/warning.png')
+      warning: require('../../../assets/images/warning.png'),
+      lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
     }
   },
   methods: {
@@ -54,22 +55,21 @@ export default {
 <style lang='scss' scoped>
   .component-content{
     position: relative;
-    padding: 10px 16px;
+    padding: 8px 26px;
     overflow: hidden;
 
     .component-title{
       align-items: center;
-      font-family: Source Han Sans CN;
       font-size: 14px;
       font-weight: 400;
       color: #7C7F8E;
       line-height: 28px;
+      font-family: Source Han Sans CN;
 
       .font-2 {
-          font-family: PingFang SC;
           font-size: 12px;
           font-weight: 500;
-          color: #7C7F8E;
+          color: #999;
       }
 
       .icon-warning{
@@ -84,19 +84,19 @@ export default {
       margin-top: 10px;
       position: relative;
       font-size: 14px;
-      font-family: DIN;
       font-weight: 500;
-      color: #7C7F8E;
 
       textarea{
         padding: 10px 12px;
         width: 100%;
         height: 120px;
-        color: #7C7F8E;
+        color: #333;
         background: #F6F6F6;
         border-radius: 4px;
         border: 0;
         resize: none;
+        font-size: 14px;
+        font-family: Source Han Sans CN;
       }
     }
 

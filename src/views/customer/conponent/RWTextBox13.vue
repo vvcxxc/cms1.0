@@ -18,10 +18,12 @@
       class="RWTextBox13a contenBox" type="text" 
       :style="'width:' + item.width + 'px; height:' +item.height + 'px; position:absolute; left:' 
       + item.left + 'px; top:' + item.top + 'px; transform:rotate(' + item.rotate + 'deg); opacity:' 
-      + item.opacity + '; fontFamily:' + item.fontFamily + '; fontSize:' + item.FontSize + 'px; background:' 
-      + item.BorderBrush + '; fontWeight:' + item.Blod +';boxSizing:border-box; padding:'+ item.BorderThickness 
-      + 'px;overflow:hidden;white-space:nowrap;boxShadow:' + item.Shadow+';zIndex:'+item.ZIndex">
-
+      + item.opacity + '; fontFamily:' + item.fontFamily + '; fontSize:' + item.FontSize + 'px;'
+      + 'fontWeight:' + item.Blod +';boxSizing:border-box;'
+      + 'overflow:hidden;white-space:nowrap;boxShadow:' + item.Shadow+';zIndex:'+ item.ZIndex
+      + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
+      + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`
+      /* `;${item.showBorder ? `border: ${item.BorderThickness}px solid ${item.borderStyle}` : `padding: ${item.BorderThickness}px`}` */ ">
         <div class="conten" 
         :style="'width:100%;height:100%;background:' + item.Background + ';boxShadow:' 
         + item.Shadow + ';boxSizing:border-box;fontSize:' +item.FontSize + 'px'">
@@ -39,7 +41,7 @@
     </div>
   </div>
     <!-- 读写框数值是否符合提示弹窗 -->
-    <div v-show="TextBoxShow" style="width:100%;height:100%;position:fixed;z-index:997">
+    <!-- <div v-show="TextBoxShow" style="width:100%;height:100%;position:fixed;z-index:997">
         <div v-if="TextBoxShow" class="TextBoxPop_outPop">
           <div class="TextBoxPop_outHead">
               <i class="warning el-icon-warning"></i>
@@ -50,9 +52,9 @@
             <div @click="Pop_ConfigFun" class="TextBoxPop_confirm">{{lang.MessageBox_Confrim}}</div>
         </div>
         </div>
-    </div>
+    </div> -->
      <!-- 权限弹窗 -->
-    <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
+    <!-- <div v-show="commerPopShow1" style="width:100%;height:100%;position:fixed;z-index:2147483647">
         <div v-if="commerPopShow1" class="commerPop_outPop">
           <div class="commerPop_outHead">
               <i class="warning el-icon-warning"></i>
@@ -63,7 +65,7 @@
               <div class="commerPop_yes" @click="Jurisdiction()" style="width:310px;margin-left:25px">{{lang.MessageBox_Confrim}}</div>
           </div>
         </div>
-    </div>
+    </div> -->
    </div>
 </template>
 <script>
@@ -139,6 +141,13 @@ var result = arr.some(item=>{
       }
     },
     methods: {
+    getPointNum(num, n) {
+      if(isNaN(num)||num===null){
+        return null
+      }else{
+        return Number(num).toFixed(n)
+      }
+    },
     getnum(value,keyclass){
     let classarrr = ''
      this.dataValue.forEach((item)=>{
@@ -157,9 +166,10 @@ var result = arr.some(item=>{
     },
      //确定
       Pop_ConfigFun(){
-        document.querySelector('.TextBoxPop_outPop').style.display = 'none'
-        document.querySelector('.TextBoxPop_conter').style.textAlign='none'
-        this.TextBoxShow= false
+        // document.querySelector('.TextBoxPop_outPop').style.display = 'none'
+        // document.querySelector('.TextBoxPop_conter').style.textAlign='none'
+        // this.TextBoxShow= false
+        this.$emit('shownotip')
       },
       // 关闭键盘
       closeshow(){
@@ -167,7 +177,8 @@ var result = arr.some(item=>{
       },
       //确认
       Jurisdiction(){
-          this.commerPopShow1 = false
+          // this.commerPopShow1 = false
+           this.$emit('shownotip')
       },
     //权限配置请求接口
      jurisdictionShow(item){
@@ -223,7 +234,7 @@ var result = arr.some(item=>{
                 for(let j=0;j<this.digitArr.length;j++){
                    if(this.digitArr[j].name == item.class){
                      if(this.digitArr[j].digit != null && this.digitArr[j].digit.length != 0){
-                       item.text = Number(this.ValueArr[i]).toFixed(this.digitArr[j].digit)
+                       item.text = this.getPointNum(Number(this.ValueArr[i]),this.digitArr[j].digit)
                      }else{
                        item.text = this.ValueArr[i]
                      }
@@ -296,7 +307,8 @@ var result = arr.some(item=>{
               if(EventType.length){
                self.jurisdictionShow(item).then(val => { 
                   if(self.CanExcuteShow){
-                    self.commerPopShow1 = true
+                    // self.commerPopShow1 = true
+                     self.$emit('showtip',self.lang.NoOperationAuthority) 
                     return
                   }else{
                     for(var j=0;j<EventType.length;j++){
@@ -310,7 +322,8 @@ var result = arr.some(item=>{
                   if(EventType1.length){
                      self.jurisdictionShow(item).then(val => { 
                          if(self.CanExcuteShow){
-                          self.commerPopShow1 = true
+                          // self.commerPopShow1 = true
+                           self.$emit('showtip',self.lang.NoOperationAuthority) 
                           return
                         }else{
                           for(var j1=0;j1<EventType1.length;j1++){
@@ -357,7 +370,8 @@ var result = arr.some(item=>{
                 self.jurisdictionShow(item).then(val => { 
                   // console.log(self.CanExcuteShow)
                      if(self.CanExcuteShow){
-                        self.commerPopShow1 = true
+                        // self.commerPopShow1 = true
+                         self.$emit('showtip',self.lang.NoOperationAuthority) 
                         return
                     }else{
                       for(var j=0;j<EventType.length;j++){
@@ -371,7 +385,8 @@ var result = arr.some(item=>{
                if(EventType1.length){
                  self.jurisdictionShow(item).then(val => { 
                        if(self.CanExcuteShow){
-                        self.commerPopShow1 = true
+                        // self.commerPopShow1 = true
+                         self.$emit('showtip',self.lang.NoOperationAuthority) 
                         return
                       }else{
                         for(var j1=0;j1<EventType1.length;j1++){
@@ -397,7 +412,8 @@ var result = arr.some(item=>{
            if(EventType.length){
              this.jurisdictionShow(item).then(val => { 
                   if(this.CanExcuteShow){
-                         this.commerPopShow1 = true
+                        //  this.commerPopShow1 = true
+                         this.$emit('showtip',this.lang.NoOperationAuthority) 
                          return
                    }else{
                      for(var j=0;j<EventType.length;j++){
@@ -421,7 +437,8 @@ var result = arr.some(item=>{
          if(item.TagName != ''){
            this.jurisdictionShow(item).then(val => { 
               if(this.CanExcuteShow){
-                    this.commerPopShow1 = true
+                    // this.commerPopShow1 = true
+                     this.$emit('showtip',this.lang.NoOperationAuthority) 
                     return
               }else{
                 
@@ -443,48 +460,53 @@ var result = arr.some(item=>{
                           arr.push(value)
                           this.isOriginal = false  //下发禁止离焦触发
                           //请求接口 //下发数据
-                         this.$axios({
+                               //请求接口
+                            this.$axios({
+                                  method:'post',
+                                  url:`/api/base/CheckTags`,
+                                  data:arr
+                             }).then((res1)=>{
+                                  if(res1.data.code === 0){
+                            this.$axios({
                                method: 'post',
                                url: '/api/Base/PostIOServiceTest',
                                data:arr
                            }).then(res => {
                              if(res.data.data == true){
                                  item.isShow = true
-                                 this.isOriginal = true
-                                setTimeout(()=>{
-                                    e.path[0].blur()
-                                },300)
+                                 this.isOriginal = false
+                                // setTimeout(()=>{
+                                //     e.path[0].blur()
+                                // },300)
                              }else{
-                                this.TextBoxShow = true
-                                setTimeout(()=>{
-                                  document.querySelector('.TextBoxPop_outPop').style.display='block'
-                                  document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                                  document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
-                                })
+              this.$emit('showtip',this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
                                //恢复原来值
                                setTimeout(()=>{
+                                     this.isOriginal = true
                                     e.path[0].blur()
                                 },300)
                              }
                            }).catch((error)=> {
-                              this.TextBoxShow = true
-                              setTimeout(()=>{
-                                document.querySelector('.TextBoxPop_outPop').style.display='block'
-                                document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                                document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
-                              })
+                             this.$emit('showtip',this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
                               //恢复原来值
+                                  this.isOriginal = true
                               setTimeout(()=>{
                                     e.path[0].blur()
                               },300)
                            });
+                                  }else{
+              this.isOriginal = true
+         this.$emit('showtip',res1.data.msg)
+                              //恢复原来值
+                              setTimeout(()=>{
+                                    e.path[0].blur()
+                              },300)
+                                  }
+                               
+                              })
+
                        }else{
-                          this.TextBoxShow = true
-                          setTimeout(()=>{
-                            document.querySelector('.TextBoxPop_outPop').style.display='block'
-                            // document.querySelector('.TextBoxPop_conter').innerHTML='请输入正确的【二进制变量】值，如true、false、0和1！'
-                            document.querySelector('.TextBoxPop_conter').innerHTML= `${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${this.lang['二进制变量']}${this.lang.SCMSExplorerData_ProtocolDataType_Bool}`
-                          })
+                           this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+this.lang['二进制变量']+this.lang.SCMSExplorerData_ProtocolDataType_Bool)
                        }
                    }else if(variableName == this.lang['有符号8位整型']){
                      this.judgeFun(item.text,127,-128,item.MaxValue,item.MinValue,variableName,item,'整',e)
@@ -523,30 +545,54 @@ var result = arr.some(item=>{
                         return
                    }else if(variableName == this.lang['时间']){
                      if(item.text==''){
-                        this.TextBoxShow = true
-                        setTimeout(()=>{
-                          document.querySelector('.TextBoxPop_outPop').style.display='block'
-                          // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【时间】值，如12:00:00`
-                         document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${this.lang['时间']}${this.lang.SCMSExplorerData_ProtocolDataType_Time}`
-                        })
+                        this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+this.lang['时间']+this.lang.SCMSExplorerData_ProtocolDataType_Time)
+                        // this.TextBoxShow = true
+                        // setTimeout(()=>{
+                        //   document.querySelector('.TextBoxPop_outPop').style.display='block'
+                        //   // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【时间】值，如12:00:00`
+                        //  document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${this.lang['时间']}${this.lang.SCMSExplorerData_ProtocolDataType_Time}`
+                        // })
                         return
                      }
                      var time = moment('2020-02-02 '+ item.text).format('LTS')
                         if(time == 'Invalid date'){
-                           this.TextBoxShow = true
-                           setTimeout(()=>{
-                             document.querySelector('.TextBoxPop_outPop').style.display='block'
-                            //  document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【时间】值，如12:00:00`
-                             document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${this.lang['时间']}${this.lang.SCMSExplorerData_ProtocolDataType_Time}`
-                           })
+                           this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+this.lang['时间']+this.lang.SCMSExplorerData_ProtocolDataType_Time)
+                          //  this.TextBoxShow = true
+                          //  setTimeout(()=>{
+                          //    document.querySelector('.TextBoxPop_outPop').style.display='block'
+                          //   //  document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【时间】值，如12:00:00`
+                          //    document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${this.lang['时间']}${this.lang.SCMSExplorerData_ProtocolDataType_Time}`
+                          //  })
                      }else{
+                       let Max = item.MaxValue;
+                       let Min = item.MinValue
+                       if(Max){
+                         Max = Number(Max)
+                       }else{
+                         Max = ''
+                       }
+                         if(Min){
+                         Min = Number(Min)
+                       }else{
+                         Min = ''
+                       }
                         var value4 = {
                              "Name":item.TagName,
-                               "Value":time
+                               "Value":time,
+                               Max:Max,
+                               Min:Min
                           }
                             arr.push(value4)
                             this.isOriginal = false  //下发禁止离焦触发
                           //请求接口 //下发数据
+                              //请求接口
+                            this.$axios({
+                                  method:'post',
+                                  url:`/api/base/CheckTags`,
+                                  data:arr
+                             }).then((res1)=>{
+                                  if(res1.data.code === 0){
+                             this.$emit('shownotip')
                          this.$axios({
                                method: 'post',
                                url: '/api/Base/PostIOServiceTest',
@@ -554,34 +600,37 @@ var result = arr.some(item=>{
                            }).then(res => {
                               if(res.data.data==true){
                                   item.isShow = true
-                                  item.isOriginal = true
-                                  setTimeout(()=>{
-                                    e.path[0].blur()
-                                },300)
+                                  item.isOriginal = false
+                                //   setTimeout(()=>{
+                                //     e.path[0].blur()
+                                // },300)
                               }else{
-                                  this.TextBoxShow = true
-                                  setTimeout(()=>{
-                                    document.querySelector('.TextBoxPop_outPop').style.display='block'
-                                    document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                                    document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
-                                  })
+                               this.$emit('showtip',this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
                                   //恢复原来值
                                   setTimeout(()=>{
+                                        this.isOriginal = true
                                     e.path[0].blur()
                                 },300)
                               }
                            }).catch((error)=> {
-                             this.TextBoxShow = true
-                              setTimeout(()=>{
-                                document.querySelector('.TextBoxPop_outPop').style.display='block'
-                                document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                                document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
-                              })
+                             this.$emit('showtip',this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
                              //恢复原来值
                               setTimeout(()=>{
+                                    this.isOriginal = true
                                     e.path[0].blur()
                               },300)
                            });
+                                  }else{
+ this.$emit('showtip',res1.data.msg)
+    this.isOriginal = true
+                              //恢复原来值
+                              setTimeout(()=>{
+                                    e.path[0].blur()
+                              },300)
+                                  }
+                               
+                              })
+
                      }
                       return
                    }else if(variableName == this.lang['日期时间']){
@@ -606,7 +655,15 @@ var result = arr.some(item=>{
                           }
                             arr.push(value3)
                             this.isOriginal = false  //下发禁止离焦触发
-                          //请求接口 //下发数据
+                            //请求接口 //下发数据
+                                          //请求接口
+                            this.$axios({
+                                  method:'post',
+                                  url:`/api/base/CheckTags`,
+                                  data:arr
+                             }).then((res1)=>{
+                                  if(res1.data.code === 0){
+                               this.$emit('shownotip')
                          this.$axios({
                                method: 'post',
                                url: '/api/Base/PostIOServiceTest',
@@ -614,35 +671,36 @@ var result = arr.some(item=>{
                            }).then(res => {
                              if(res.data.data == true){
                                  item.isShow = true
-                                 this.isOriginal = true
-                                 setTimeout(()=>{
-                                    e.path[0].blur()
-                                 },300)
+                                 this.isOriginal = false
+                                //  setTimeout(()=>{
+                                //     e.path[0].blur()
+                                //  },300)
                              }else{
-                               this.TextBoxShow = true
-                                setTimeout(()=>{
-                                  document.querySelector('.TextBoxPop_outPop').style.display='block'
-                                  document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                                  document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
-                                })
+                                 this.$emit('showtip',this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
                                //恢复原来值
+                                   this.isOriginal = true
                                 setTimeout(()=>{
                                     e.path[0].blur()
                                 },300)
                              }
                            }).catch((error)=> {
-                              this.TextBoxShow = true
-                              setTimeout(()=>{
-                                document.querySelector('.TextBoxPop_outPop').style.display='block'
-                                document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                                document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
-                              })
-                               //恢复原来值
+                              this.$emit('showtip',this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)                               //恢复原来值
+                                  this.isOriginal = true
                               setTimeout(()=>{
                                     e.path[0].blur()
                               },300)
                            });
-                           return
+                                  }else{
+       this.$emit('showtip',res1.data.msg)
+       this.isOriginal = true
+                              //恢复原来值
+                              setTimeout(()=>{
+                                    e.path[0].blur()
+                              },300)
+                                  }
+                               
+                              })
+                          return
                    }
                   }
            })
@@ -675,55 +733,67 @@ var result = arr.some(item=>{
                 if( res.data.code == 0){
                       resolve(true)
                 }else{
-                    this.TextBoxShow = true
-                    setTimeout(()=>{
-                      document.querySelector('.TextBoxPop_outPop').style.display='block'
-                      document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                      document.querySelector('.TextBoxPop_conter').innerHTML=`${res.data.msg}`
-                    })
+                  this.$emit('showtip',res.data.msg)
+                    // this.TextBoxShow = true
+                    // setTimeout(()=>{
+                    //   document.querySelector('.TextBoxPop_outPop').style.display='block'
+                    //   document.querySelector('.TextBoxPop_conter').style.textAlign='center'
+                    //   document.querySelector('.TextBoxPop_conter').innerHTML=`${res.data.msg}`
+                    // })
                       resolve(false)
                 }
             })
           })
       },
-      //下发接口
+           //下发接口
       tagAxios(arr,item,e){
                    //请求接口 //下发数据
-              this.$axios({
+                          //请求接口
+                            this.$axios({
+                                  method:'post',
+                                  url:`/api/base/CheckTags`,
+                                  data:arr
+                             }).then((res1)=>{
+                                  if(res1.data.code === 0){
+                               this.$emit('shownotip')
+    this.$axios({
                     method: 'post',
                     url: '/api/Base/PostIOServiceTest',
                     data:arr
                 }).then(res => {
                    if(res.data.data == true){
                          item.isShow = true
-                         this.isOriginal = true  //下发允许离焦触发
-                         setTimeout(()=>{
-                           e.path[0].blur()
-                         },300)
+                         this.isOriginal = false  //下发允许离焦触发
+                        //  setTimeout(()=>{
+                        //    e.path[0].blur()
+                        //  },300)
                    }else{
-                       this.TextBoxShow = true
-                       setTimeout(()=>{
-                         document.querySelector('.TextBoxPop_outPop').style.display='block'
-                         document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                         document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
-                       })
+                  this.$emit('showtip',this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
+                      this.isOriginal = true
                      //恢复原来值
                       setTimeout(()=>{
                         e.path[0].blur()
                       },300)
                    }
                 }).catch((error)=> {
-                    this.TextBoxShow = true
-                    setTimeout(()=>{
-                      document.querySelector('.TextBoxPop_outPop').style.display='block'
-                      document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                      document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
-                    })
+                    this.$emit('showtip',this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
+                        this.isOriginal = true
                     //恢复原来值
                    setTimeout(()=>{
                         e.path[0].blur()
                    },300)
                 });
+                                  }else{
+                                   this.isOriginal = true
+       this.$emit('showtip',res1.data.msg)
+                              //恢复原来值
+                              setTimeout(()=>{
+                                    e.path[0].blur()
+                              },300)
+                                  }
+                               
+                              })
+             
       },
 
       //数值类型判断
@@ -731,127 +801,141 @@ var result = arr.some(item=>{
         
         if(MaxValue){
              MaxValue = Number(MaxValue)
+        }else{
+          MaxValue = ''
         }
         if(MinValue){
              MinValue = Number(MinValue)
+        }else{
+          MinValue  = ''
         }
+
            var arr = []
            var text2 = Number(num)
-           if(num.length == 0){
-              this.TextBoxShow = true
-              setTimeout(()=>{
-                document.querySelector('.TextBoxPop_outPop').style.display='block'
-                // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
-                document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
-              })
-             return
-           }
-           if(TagType==this.lang['F32位浮点数IEEE754'] || TagType==this.lang['F64位浮点数IEEE754'] || TagType==this.lang['无符号64位整型'] || TagType==this.lang['有符号64位整型']){
-               this.CheckTagFun(TagType,num,MaxValue,MinValue).then(val=>{
-                 if(val){
-                    let value = {
-                      "Name":item.TagName,
-                      "Value":num
-                    }
-                    arr.push(value)
-                    this.isOriginal = false  //下发禁止离焦触发
-                    this.tagAxios(arr,item,e)
-                 }
-               })
+        //    if(num.length == 0){
+        //      this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Integer+min+'-'+max)
+        //       // this.TextBoxShow = true
+        //       // setTimeout(()=>{
+        //       //   document.querySelector('.TextBoxPop_outPop').style.display='block'
+        //       //   // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
+        //       //   document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
+        //       // })
+        //      return
+        //    }
+        //    if(TagType==this.lang['F32位浮点数IEEE754'] || TagType==this.lang['F64位浮点数IEEE754'] || TagType==this.lang['无符号64位整型'] || TagType==this.lang['有符号64位整型']){
+        //        this.CheckTagFun(TagType,num,MaxValue,MinValue).then(val=>{
+        //          if(val){
+        //             let value = {
+        //               "Name":item.TagName,
+        //               "Value":num
+        //             }
+        //             arr.push(value)
+        //             this.isOriginal = false  //下发禁止离焦触发
+        //             this.tagAxios(arr,item,e)
+        //          }
+        //        })
 
-           }else{
+        //    }else{
              
-              if(isNaN(text2)){
-                  this.TextBoxShow = true
-                  setTimeout(()=>{
-                    document.querySelector('.TextBoxPop_outPop').style.display='block'
-                    // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
-                    document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
-                  })
-                  return
-              }
+        //       if(isNaN(text2)){
+        //          this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Integer+min+'-'+max)
+        //           // this.TextBoxShow = true
+        //           // setTimeout(()=>{
+        //           //   document.querySelector('.TextBoxPop_outPop').style.display='block'
+        //           //   // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
+        //           //   document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
+        //           // })
+        //           return
+        //       }
 
-              if(text2 == '' && text2 != 0){
-                this.TextBoxShow = true
-                setTimeout(()=>{
-                  document.querySelector('.TextBoxPop_outPop').style.display='block'
-                  // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
-                  document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
-                })
-                return
-              }
+        //       if(text2 == '' && text2 != 0){
+        //          this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Integer+min+'-'+max)
+        //         // this.TextBoxShow = true
+        //         // setTimeout(()=>{
+        //         //   document.querySelector('.TextBoxPop_outPop').style.display='block'
+        //         //   // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
+        //         //   document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
+        //         // })
+        //         return
+        //       }
 
-              if(text2 >= min && text2<= max){
-                if(type == '整'){
-                  let indexNum = num.indexOf('.')
-                  if(indexNum != -1){
-                    this.TextBoxShow = true
-                      setTimeout(()=>{
-                        document.querySelector('.TextBoxPop_outPop').style.display='block'
-                        // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
-                        document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
-                      })
-                    return
-                  }
-                }
+        //       if(text2 >= min && text2<= max){
+        //         if(type == '整'){
+        //           let indexNum = num.indexOf('.')
+        //           if(indexNum != -1){
+        //              this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Integer+min+'-'+max)
+        //             // this.TextBoxShow = true
+        //             //   setTimeout(()=>{
+        //             //     document.querySelector('.TextBoxPop_outPop').style.display='block'
+        //             //     // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
+        //             //     document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
+        //             //   })
+        //             return
+        //           }
+        //         }
                 
-                if(MaxValue != null){
-                  if(text2 > MaxValue){
-                      this.TextBoxShow = true
-                      setTimeout(()=>{
-                        document.querySelector('.TextBoxPop_outPop').style.display='block'
-                        // document.querySelector('.TextBoxPop_conter').innerHTML=`操作无效，输入值<${text2}>大于最大值<${MaxValue}>!`
-                        let msg = this.lang.HMI_HT_HMIUserControlViewModel_InputGreaterThanMaximumValue
-                        let firstL = msg.indexOf('<')
-                        let firstR = msg.indexOf('>') + 1
-                        let lastL = msg.lastIndexOf('<')
-                        let lastR = msg.lastIndexOf('>') + 1
-                        let str1 = msg.slice(firstL, firstR)
-                        let str2 = msg.slice(lastL, lastR)
-                        msg = msg.replace(str1, `<${text2}>`)
-                        msg = msg.replace(str2, `<${MaxValue}>`)
-                        document.querySelector('.TextBoxPop_conter').innerHTML=`${msg}`
-                      })
-                    return
-                  }
-                  if(text2 < MinValue){
-                      this.TextBoxShow = true
-                      setTimeout(()=>{
-                        document.querySelector('.TextBoxPop_outPop').style.display='block'
-                        // document.querySelector('.TextBoxPop_conter').innerHTML=`操作无效，输入值<${text2}>小于最小值<${MinValue}>!`
-                        let msg = this.lang.HMI_HT_HMIUserControlViewModel_InputLessThanMinimumValue
-                        let firstL = msg.indexOf('<')
-                        let firstR = msg.indexOf('>') + 1
-                        let lastL = msg.lastIndexOf('<')
-                        let lastR = msg.lastIndexOf('>') + 1
-                        let str1 = msg.slice(firstL, firstR)
-                        let str2 = msg.slice(lastL, lastR)
-                        msg = msg.replace(str1, `<${text2}>`)
-                        msg = msg.replace(str2, `<${MinValue}>`)
-                        document.querySelector('.TextBoxPop_conter').innerHTML=`${msg}`
+        //         if(MaxValue != null){
+        //           if(text2 > MaxValue){
+        //               // this.TextBoxShow = true
+        //               setTimeout(()=>{
+        //                 document.querySelector('.TextBoxPop_outPop').style.display='block'
+        //                 // document.querySelector('.TextBoxPop_conter').innerHTML=`操作无效，输入值<${text2}>大于最大值<${MaxValue}>!`
+        //                 let msg = this.lang.HMI_HT_HMIUserControlViewModel_InputGreaterThanMaximumValue
+        //                 let firstL = msg.indexOf('<')
+        //                 let firstR = msg.indexOf('>') + 1
+        //                 let lastL = msg.lastIndexOf('<')
+        //                 let lastR = msg.lastIndexOf('>') + 1
+        //                 let str1 = msg.slice(firstL, firstR)
+        //                 let str2 = msg.slice(lastL, lastR)
+        //                 msg = msg.replace(str1, `<${text2}>`)
+        //                 msg = msg.replace(str2, `<${MaxValue}>`)
+        //                  this.$emit('showtip',msg)
+        //                 // document.querySelector('.TextBoxPop_conter').innerHTML=`${msg}`
+        //               })
+        //             return
+        //           }
+        //           if(text2 < MinValue){
+        //               // this.TextBoxShow = true
+        //               setTimeout(()=>{
+        //                 document.querySelector('.TextBoxPop_outPop').style.display='block'
+        //                 // document.querySelector('.TextBoxPop_conter').innerHTML=`操作无效，输入值<${text2}>小于最小值<${MinValue}>!`
+        //                 let msg = this.lang.HMI_HT_HMIUserControlViewModel_InputLessThanMinimumValue
+        //                 let firstL = msg.indexOf('<')
+        //                 let firstR = msg.indexOf('>') + 1
+        //                 let lastL = msg.lastIndexOf('<')
+        //                 let lastR = msg.lastIndexOf('>') + 1
+        //                 let str1 = msg.slice(firstL, firstR)
+        //                 let str2 = msg.slice(lastL, lastR)
+        //                 msg = msg.replace(str1, `<${text2}>`)
+        //                 msg = msg.replace(str2, `<${MinValue}>`)
+        //                 this.$emit('showtip',msg)
+        //                 // document.querySelector('.TextBoxPop_conter').innerHTML=`${msg}`
 
-                      })
-                    return
-                  }
-                }
+        //               })
+        //             return
+        //           }
+        //         }
                   let value = {
                       "Name":item.TagName,
-                      "Value":text2
+                      "Value":text2,
+                       Min:MinValue,
+                       Max:MaxValue,
                   }
                     arr.push(value)
                     this.isOriginal = false  //下发禁止离焦触发
-                    this.tagAxios(arr,item,e)
+                    this.tagAxios(arr,item,e,)
 
-              }else{
-                this.TextBoxShow = true
-                setTimeout(()=>{
-                  document.querySelector('.TextBoxPop_outPop').style.display='block'
-                  // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
-                  document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
-                })
-              }
+          //     }else{
+          //        this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Integer+min+'-'+max)
+          //       // this.TextBoxShow = true
+          //       // setTimeout(()=>{
+          //       //   document.querySelector('.TextBoxPop_outPop').style.display='block'
+          //       //   // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】整数值，范围为：${min} - ${max}`
+          //       //   document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Integer}${min} - ${max}`
+          //       // })
+          //     }
 
-           }
+          //  }
            
       },
        //日期格式判断
@@ -897,15 +981,18 @@ var result = arr.some(item=>{
             var tt2 = textValue.slice(1,2)
             var tt3 = textValue.slice(2,3)
             if(tt1 == 0&&tt2 == 0&&tt3 == 0){
-                this.TextBoxShow = true
+
+                // this.TextBoxShow = true
                 setTimeout(()=>{
                   document.querySelector('.TextBoxPop_outPop').style.display='block'
                   if(TagType == this.lang['日期时间']){
                       // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】值，如1999-01-01 00:00:00或1999.01.01 00:00:00`
-                      document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Datetime}`
+                      this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Datetime)
+                    //  document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Datetime}`
                   }else{
                     // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】值，如1999-01-01或1999.01.01`
-                    document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Date}`
+                     this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Date)
+                    // document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Date}`
                   }
                 })
                 return
@@ -924,15 +1011,17 @@ var result = arr.some(item=>{
             var tt7 = textValue.slice(3,4)
             showV = false
             if(tt4 == 0&&tt5 == 0&&tt6 == 0 && tt7==0){
-               this.TextBoxShow = true
+              //  this.TextBoxShow = true
                setTimeout(()=>{
                  document.querySelector('.TextBoxPop_outPop').style.display='block'
                  if(TagType == this.lang['日期时间']){
                     // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】值，如1999-01-01 00:00:00或1999.01.01 00:00:00`
-                    document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Datetime}`
+                    this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Datetime)
+                  //  document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Datetime}`
                 }else{
                   // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】值，如1999-01-01或1999.01.01`
-                  document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Date}`
+                 this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Date)
+                //  document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Date}`
                 }
                })
                 return
@@ -943,15 +1032,15 @@ var result = arr.some(item=>{
               showV = true
             }
          }else if(index >=5){
-            this.TextBoxShow = true
+            // this.TextBoxShow = true
             setTimeout(()=>{
               document.querySelector('.TextBoxPop_outPop').style.display='block'
               if(TagType == this.lang['日期时间']){
                     //  document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】值，如1999-01-01 00:00:00或1999.01.01 00:00:00`
-                    document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Datetime}`
+                    this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Datetime)
                  }else{
                     // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】值，如1999-01-01或1999.01.01`
-                    document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Date}`
+                  this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Date)
                  }
             })
              return
@@ -968,15 +1057,15 @@ var result = arr.some(item=>{
              a = moment(textValue).format('YYYY/MM/DD')
           }
           if(a == 'Invalid date'){
-             this.TextBoxShow = true
+            //  this.TextBoxShow = true
              setTimeout(()=>{
                document.querySelector('.TextBoxPop_outPop').style.display='block'
                if(TagType == this.lang['日期时间']){
                     //  document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】值，如1999-01-01 00:00:00或1999.01.01 00:00:00`
-                    document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Datetime}`
+                   this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Datetime)
                 }else{
                   // document.querySelector('.TextBoxPop_conter').innerHTML=`请输入正确的【${TagType}】值，如1999-01-01或1999.01.01`
-                  document.querySelector('.TextBoxPop_conter').innerHTML=`${this.lang.SCMSExplorerData_ProtocolDataType_PECorrect}${TagType}${this.lang.SCMSExplorerData_ProtocolDataType_Date}`
+                  this.$emit('showtip',this.lang.SCMSExplorerData_ProtocolDataType_PECorrect+TagType+this.lang.SCMSExplorerData_ProtocolDataType_Date)
                 }
              })
           }else{
@@ -994,43 +1083,55 @@ var result = arr.some(item=>{
                }
                 arr.push(value)
                 this.isOriginal = false  //下发禁止离焦触发
-               //请求接口  //下发数据
-              this.$axios({
+                  //请求接口  //下发数据
+                             //请求接口
+                            this.$axios({
+                                  method:'post',
+                                  url:`/api/base/CheckTags`,
+                                  data:arr
+                             }).then((res1)=>{
+                                  if(res1.data.code === 0){
+                                this.commerPopShow = false
+                      this.$axios({
                     method: 'post',
                     url: '/api/Base/PostIOServiceTest',
                     data:arr
                 }).then(res => {
                   // console.log("dasdas")
                   if(res.data.data == true){
-                      this.isOriginal = true
+                      this.isOriginal = false
                       item.isShow = true
-                      setTimeout(()=>{
-                        e.path[0].blur()
-                      },300)
+                      // setTimeout(()=>{
+                      //   e.path[0].blur()
+                      // },300)
                   }else{
-                    this.TextBoxShow = true
-                    setTimeout(()=>{
-                      document.querySelector('.TextBoxPop_outPop').style.display='block'
-                      document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                      document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
-                    })
+                   this.$emit('showtip',this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
                      //恢复原来值
+                         this.isOriginal = true
                      setTimeout(()=>{
                         e.path[0].blur()
                      },300)
                   }
                 }).catch((error)=> {
-                    this.TextBoxShow = true
-                    setTimeout(()=>{
-                      document.querySelector('.TextBoxPop_outPop').style.display='block'
-                      document.querySelector('.TextBoxPop_conter').style.textAlign='center'
-                      document.querySelector('.TextBoxPop_conter').innerHTML=this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail
-                    })
+                    this.isOriginal = true
+                this.$emit('showtip',this.lang.FormulaManage_HT_PleaseTryAgainIfYouFail)
                      //恢复原来值
                      setTimeout(()=>{
                         e.path[0].blur()
                      },300)
                 });
+                                  }else{
+                                    
+                       this.$emit('showtip',res1.data.msg)
+                              //恢复原来值
+                              setTimeout(()=>{
+                                this.isOriginal = true
+                                    e.path[0].blur()
+                              },300)
+                                  }
+                               
+                              })
+
           }
       },
 
@@ -1251,7 +1352,7 @@ var result = arr.some(item=>{
 
        //条件判断方法
       judgeFun1(data){
-        console.log(data, this.textBbockArr)
+        // console.log(data, this.textBbockArr)
           this.ElementNameHas = ['1']
               if(data.length){
                 for(var i=0;i<this.textBbockArr.length;i++){
@@ -1275,7 +1376,7 @@ var result = arr.some(item=>{
                                 var index8 = this.cla.indexOf(this.textBbockArr[i])
                                 if(this.dataValue[index8] != undefined){
                                   if(this.dataValue[index8].isShow){
-                                    this.dataValue[index8].text = Number(num).toFixed(fix)
+                                 this.dataValue[index8].text = this.getPointNum(Number(num),fix)
                                   }
                                 }
                               }
@@ -1368,7 +1469,7 @@ var result = arr.some(item=>{
           url:"/api/Base/PostRediusTest?varNameString=" + name,
           data:this.arr
         }).then((res)=>{
-            // console.log(res.data.data)
+            console.log("asdsadr",res.data.data)
             this.resData.push(res.data.data)
             console.log(this.resData)
             this.judgeFun1(res.data.data)
@@ -1378,7 +1479,11 @@ var result = arr.some(item=>{
       },
       //websocket触发该方法
       axioImg2(resArr){
+        console.log("resArr11111111111111",resArr)
+        //  console.log(12)
+        //  console.log(JSON.parse(JSON.stringify(this.resArr)))
         if(this.arr){
+          console.log(this.arr)
           let index = this.arr.indexOf(resArr.name)
           let resShow = false
           if(index != -1){
@@ -1393,6 +1498,8 @@ var result = arr.some(item=>{
           }
         }
         if(this.resData.length){
+          // console.log(11)
+          // console.log(JSON.parse(JSON.stringify(this.resData)))
           for(let z=0;z<this.resData[0].length;z++){
             if(resArr.name == this.resData[0][z].Name){
               this.resData[0][z].Value = resArr.value
@@ -1469,22 +1576,28 @@ var result = arr.some(item=>{
                   Shadow = InnerShadow
               }
                 //边框色渐变
+                let showLinear = false
+                let linearStyle = ''
                if(borderbrushArr.ColorType == 'SolidColor'){
                    borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                }else{
-                       borderColor = ''
+                      // 此处为渐变色
+                      let linearColor = ''
                        lagel1 = borderbrushArr.Data.Angel.toFixed(0)
                    for(var f1=0;f1<borderbrushArr.Data.GradientStops.length;f1++){
                        gradient1 = borderbrushArr.Data.GradientStops[f1]
-                       borderColor = borderColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
+                       linearColor = linearColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
                    }
-                       borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
+                      //  borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
+                      showLinear = true
+                      borderColor = 'transparent'
+                      linearStyle = `linear-gradient(-${Number(lagel1) - 90}deg ${linearColor}) 1`;
                }
               //背景色渐变
               if(backgroundArr.ColorType == 'SolidColor'){
                   backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                   if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                    borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                    // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                 }
               }else{
                       backColor = ''
@@ -1512,6 +1625,7 @@ var result = arr.some(item=>{
                   }
                       backgroundColor = '-webkit-linear-gradient('+lagel2+'deg'+backgroundColor+')';
               } 
+              
                  var value = {
                    width:this.textblockData[i].PropertyList.Width,
                    height:this.textblockData[i].PropertyList.Height,
@@ -1529,14 +1643,16 @@ var result = arr.some(item=>{
                    MinValue:RWDataList[j].MinValue,
                    TagName:RWDataList[j].TagName,
                    TagDataType:RWDataList[j].TagDataType,
-                   text:'读写框',
+                   text:'Loading...',
                    backgroundColor:backgroundColor,
                    BorderBrush:borderColor,
                    BorderThickness:this.textblockData[i].PropertyList.BorderThickness,
                    Shadow:Shadow,
                    TextDecorations:this.textblockData[i].PropertyList.TextDecorations == 'False' ? 'none' : 'underline',
                    ZIndex:this.ZIndex,
-                   isShow:true
+                   isShow:true,
+                    showLinear,
+                    linearStyle,
                  }
                  this.dataValue.push(value)
                  break;
@@ -1567,22 +1683,28 @@ var result = arr.some(item=>{
                           Shadow = InnerShadow
                       }
                         //边框色渐变
+                        let showLinear = false
+                        let linearStyle = ''
                         if(borderbrushArr.ColorType == 'SolidColor'){
                             borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                         }else{
-                                borderColor = ''
+                                // 此处为渐变色
+                                let linearColor = ''
                                 lagel1 = borderbrushArr.Data.Angel.toFixed(0)
                             for(var f2=0;f2<borderbrushArr.Data.GradientStops.length;f2++){
                                 gradient1 = borderbrushArr.Data.GradientStops[f2]
-                                borderColor = borderColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
+                                linearColor = linearColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
                             }
-                                borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
+                                // borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
+                              showLinear = true
+                              borderColor = 'transparent'
+                              linearStyle = `linear-gradient(-${Number(lagel1) - 90}deg ${linearColor}) 1`;
                         }
                       //背景色渐变
                       if(backgroundArr.ColorType == 'SolidColor'){
                           backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                           if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                              borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                              // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                           }
                       }else{
                               backColor = ''
@@ -1634,7 +1756,9 @@ var result = arr.some(item=>{
                           Shadow:Shadow,
                           TextDecorations:this.textblockData[i].PropertyList.TextDecorations == 'False' ? 'none' : 'underline',
                           ZIndex:this.ZIndex,
-                          isShow:true
+                          isShow:true,
+                          showLinear,
+                          linearStyle
                         }
                         this.dataValue.push(value4)
                   }
@@ -1667,22 +1791,28 @@ var result = arr.some(item=>{
                   Shadow = InnerShadow
               }
                 //边框色渐变
+                let showLinear = false
+                let linearStyle = ''
                if(borderbrushArr.ColorType == 'SolidColor'){
                    borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                }else{
-                       borderColor = ''
+                       // 此处为渐变色
+                       let linearColor = ''
                        lagel1 = borderbrushArr.Data.Angel.toFixed(0)
                    for(var f3=0;f3<borderbrushArr.Data.GradientStops.length;f3++){
                        gradient1 = borderbrushArr.Data.GradientStops[f3]
-                       borderColor = borderColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
+                       linearColor = linearColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
                    }
-                       borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
+                      //  borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
+                      showLinear = true
+                      borderColor = 'transparent'
+                      linearStyle = `linear-gradient(-${Number(lagel1) - 90}deg ${linearColor}) 1`;
                }
               //背景色渐变
               if(backgroundArr.ColorType == 'SolidColor'){
                   backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                   if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                    borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                    // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                   }
               }else{
                       backColor = ''
@@ -1734,7 +1864,9 @@ var result = arr.some(item=>{
                    Shadow:Shadow,
                    TextDecorations:this.textblockData[i].PropertyList.TextDecorations == 'False' ? 'none' : 'underline',
                    ZIndex:this.ZIndex,
-                   isShow:true
+                   isShow:true,
+                   showLinear,
+                   linearStyle
                  }
                  this.dataValue.push(value2)
           }
@@ -1799,7 +1931,7 @@ var result = arr.some(item=>{
                   resValue = 0
               }else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                     resValue = Value
-              }else if(typeof(Number(resValueNumber)) == 'number'){
+              }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
                 resValue = Number(Value)
               }else{
                 resValue = Value
@@ -1811,7 +1943,7 @@ var result = arr.some(item=>{
               }
               else if(isNaN(resValueNumber)&&!isNaN(Date.parse(resValueNumber))){
                     ArrValue =  textColorListArr.Compare
-              }else if(typeof(Number(resValueNumber)) == 'number'){
+              }else if(typeof(Number(resValueNumber)) == 'number'&&Number(resValueNumber)){
                 ArrValue = Number( textColorListArr.Compare)
               }else{
                 ArrValue =  textColorListArr.Compare
@@ -1853,10 +1985,10 @@ var result = arr.some(item=>{
 .RWTextBox13a{
   display:inline-block;
 }
-.RWTextBox13a:hover{
-  background-color: #BEE6FD !important;
-  background: #BEE6FD !important;
-}
+// .RWTextBox13a:hover{
+//   background-color: #BEE6FD !important;
+//   background: #BEE6FD !important;
+// }
 .TextBoxPop_outPop{
      display: none;
      width:380px;

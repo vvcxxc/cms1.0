@@ -278,15 +278,8 @@ export default {
                     }
                     var userid = this.$moment().valueOf()
 
-                    // 清除滑块功能的缓存
                     sessionStorage.setItem('userInfo1', JSON.stringify(user));
                     localStorage.setItem('isUser',userid)
-
-                    Object.keys(window.sessionStorage).forEach(item => {
-                        if(item.includes('LineChart')) {
-                            sessionStorage.removeItem(item)
-                        }
-                    })
                     this.$store.state.userId = userid 
                     this.$router.push('/onePath')
                     //登录记录
@@ -301,7 +294,11 @@ export default {
                 }else{
                     user = null
                     sessionStorage.setItem('userInfo', JSON.stringify(user));
-                     if(username=='' || password == ''){
+                    
+                    if(res.data.msg === '该用户不属于当前班次'){
+                         $('.errText').css('display','block')
+                         this.errText = '该用户不属于当前班次'
+                     } else if(username=='' || password == ''){
                          $('.errText').css('display','block')
                          this.errText = this.localData.Login_HintMessage_Empty
                      }else{

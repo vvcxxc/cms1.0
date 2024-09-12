@@ -132,44 +132,14 @@ export default {
                         name: '操作记录'
                     },
                 ],
-                MsgPush: [
-                    {
-                        name: '报警消息'
-                    },
-                    {
-                        name: '代办消息'
-                    },
-                    {
-                        name: '推送日志'
-                    }
-                ],
-                OrderManagement:[
-                    {
+                SYC_OrderManagement_Module:[
+                     {
                         name: '订单管理'
                     },
                     {
-                        name: '订单记录'
+                        name: '历史订单'
                     },
-                ],
-                InspectionRecords:[
-                    {
-                        name: '巡检管理'
-                    },
-                    {
-                        name: '巡检记录'
-                    },
-                    {
-                        name: '不良码管理'
-                    },
-                ],
-                PrintManagement:[
-                    {
-                        name: '打印机管理'
-                    },
-                    {
-                        name: '打印记录'
-                    },
-                ],
+                ]
             },
             nav: [],
             zoom:1,
@@ -305,17 +275,6 @@ export default {
                 },
                 {
                     name: languages[currentLang].EquipmentAccount_OperationRecord
-                }
-            ]
-            this.navList.MsgPush = [
-                {
-                    name: languages[currentLang].MsgPush_Alarm
-                },
-                {
-                    name: languages[currentLang].PushMessage_ToDoMessage
-                },
-                {
-                    name: languages[currentLang].PushMessage_PushLog
                 }
             ]
         },

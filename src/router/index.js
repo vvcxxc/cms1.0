@@ -17,7 +17,7 @@ const EquipmentOverview = () =>
     import('@/views/overview/equipmentOverview.vue');
 const CustomerVue = () =>
     import('@/views/customer/customer.vue');
-    
+
 const cuAll = () =>
     import('@/views/customer/cuAll.vue');
 
@@ -61,8 +61,6 @@ const Vulnerableparts = () =>
     import('@/views/Vulnerableparts/Vulnerableparts.vue');
 const AlarmAnalysis = () =>
     import('@/views/alarmAnalysis/alarmAnalysis.vue');
-const DailyProductionReport = () =>
-    import('@/views/DailyProductionReport/DailyProductionReport.vue');
 const Equipment = () =>
     import('@/views/equipment/equipment.vue');
 const Log = () =>
@@ -88,269 +86,286 @@ const Reportform1 = () =>
 const sparepart = () =>
     import('@/views/sparepart/sparepart.vue');
 const formula = () =>
-    import(`@/views/formula/formula.vue`);
+    import(`@/views/Rzdn/Formula/Formula.vue`);
+//班次管理
+const shiftManagement = () =>
+    import(`@/views/Rzdn/FlightManagement/FlightManagement.vue`);
+const materialInfoManageModule = () =>
+    import(`@/views/Rzdn/Formula/MaterialManagement.vue`);
+
+const guidingBookManager = () =>
+    import(`@/views/Rzdn/Formula/BookManagement.vue`);
+
+// const formula = () =>
+//     import(`@/views/formula/formula.vue`);
 const scheduleMange = () =>
     import(`@/views/scheduleManage/scheduleMange2.vue`)
 const FormManage = () =>
     import(`@/views/FormManage/FormManage.vue`)
-    const WebVideoCtrl = () =>
+const WebVideoCtrl = () =>
     import(`@/views/WebVideoCtrl/WebVideoCtrl.vue`)
 // const Customreport = () =>
 //     import(`@/views/Customreport/Customreport.vue`);
-const pushMessage = () => import('@/views/push-message/index.vue')
-const MaterialManagement = () => import('@/views/material-management/index.vue')
-const BOMManagement = () => import('@/views/BOM-management/index.vue')
-const StationBoard = () => import('@/views/StationBoard/index.vue')
-const FormManageNew = () => import('@/views/FormManageNew/index.vue')
-const ProductionStatistics = () => import('@/views/ProductionStatistics/index.vue')
-const ProductRepair = () => import('@/views/ProductRepair/index.vue')
-const OrderManagement = () => import('@/views/OrderManagement/index.vue')
-const PrinterManagement = () => import('@/views/PrinterManagement/index.vue')
-const InspectionRecords = () => import('@/views/InspectionRecords/index.vue')
+const OrderManange = () =>
+    import(`@/views/Rzdn/OrderManage/index.vue`);
+const SpcAnaly = () =>
+    import(`@/views/Rzdn/SpcAnaly/index.vue`)
+const SpcSetting = () =>
+    import(`@/views/Rzdn/SpcSetting/index.vue`)
+const OrderManagement = () =>
+    import('@/views/orderManagement/orderManagement.vue');
+
+
 
 Vue.use(VueRouter);
 const routes = [{
-    path: '/',
-    redirect: '/onePath'
-},
-{
-    path: '/login',
-    component: Login
-},
-
-
-{
-    path: '/home',
-    component: Index,
-    children: [
-        {
-        path: '/overview',
-        component: EquipmentOverview
+        path: '/',
+        redirect: '/onePath'
     },
     {
-      path:'/FormManage',
-      component:FormManage
-    },
-    {
-        path:'/WebVideoCtrl',
-        component:WebVideoCtrl
-      },
-    {
-        path: '/cpk',
-        component: cpk
-    },
-    {
-        path: '/history',
-        component: history
-    },
-    {
-        path: '/table',
-        component: table
-    },
-    {
-        path: '/NewTrendChart',
-        component: TendencyVue
-    },
-    {
-        path: '/跳转画面',
-        component: CustomerVue
-    },
-    {
-        path: '/温度监测',
-        component: CustomerVue
-    },
-    {
-        path: '/全厂管网图',
-        component: CustomerVue
-    },
-    {
-        path: '/监控主画面',
-        component: CustomerVue
-    },
-    {
-        path: '/AlarmAnalysis',
-        component: AlarmAnalysis
-    },
-    {
-        path: '/WuXiYiFanReport',
-        component: DailyProductionReport
-    },
-    {
-        path: '/AlarmRecord',
-        component: Alarm1
-    },
-    {
-        path: '/AlarmRecord1',
-        component: Alarm
-    },
-    {
-        path: '/PointInspectionManage',
-        component: Spotinspection
-    },
-    {
-        path: '/MaintenanceManage',
-        component: maintain
-    },
-    {
-        path: '/RepairManage',
-        component: Repair
-    },
-    {
-        path: '/QualityMain',
-        component: quality
-    },
-  
-    {
-        path: '/FileManage',
-        component: File
-    },
-  
-    {
-        path: '/VulnerablePartManage',
-        component: Vulnerableparts
-    },
-  
-    {
-        path: '/SparePartsManage',
-        component: sparepart
-    },
-    {
-        path: '/EquipmentAccount',
-        component: Equipment
-    },
-    {
-        path: '/ProcessParaReport',
-        component: Reportform
-    },
-    {
-        path: '/ProcessConfigure',
-        component: Reportform1
-    },
-    {
-        path: '/Formula0',
-        component: formula
-    },
-    {
-        path: '/Formula',
-        component: FormManageNew
-    },
-    {
-        path: '/ProductStatisticDataCollect',
-        component: ProductionStatistics
-    },
-    {
-        path: '/ProductRepair',
-        component: ProductRepair
-    },
-    {
-        path: '/OrderManagement',
-        component: OrderManagement
-    },
-    {
-        path: '/InspectionRecords',
-        component: InspectionRecords
-    },
-    {
-        path: '/PrintManagement',
-        component: PrinterManagement
-    },
-    {
-        path: '/Journal',
-        component: Log
-    },
-    {
-        path: '/权限管理',
-        redirect: '/user'
-    },
-    {
-        path: '/ReportColumnChart',
-        component: Monitordiagram
-    },
-    {
-        path: '/ReportStatistics',
-        component: Monitorsurface
-    },
-    {
-        path: '/HistoryReport',
-        component: powerhistory
-    },
-    {
-        path: '/TemperatureCurve',
-        component: powerdistribution
+        path: '/login',
+        component: Login
     },
 
-    {
-        path: "/SteamTrendCurve",
-        component: steam,
-    },
-    {
-        path: '/TapWaterTrendCurve',
-        component: tapwater
-    },
-    {
-        path: '/权限管理',
-        redirect: '/user'
-    },
-    {
-        path: '/User',
-        component: User
-    },
-    {
-        path: '/Role',
-        component: Role
-    },
-    {
-        path: '/TapWaterReportRecord',
-        component: WaterRecord
-    },
-    {
-        path: '/SteamReportRecord',
-        component: SteamMeterRecord
-    },
-    {
-        path: '/TapWaterMeasureStatistics',
-        component: WaterAnalysis
-    },
-    {
-        path: '/SteamMeasureStatistics',
-        component: SteamMeterAnalysis
-    },
-    {
-        path: '/ScheduleManage',
-        component: scheduleMange
-    },
-    {
-        path: '/MsgPush',
-        component: pushMessage,
-        // children: [
-        //     { path: '/MsgPush/alarm-message', component: () => import('@/views/push-message/alarm-message.vue') },
-        //     { path: '/MsgPush/todo-message', component: () => import('@/views/push-message/todo-message.vue') },
-        //     { path: '/MsgPush/push-log', component: () => import('@/views/push-message/push-log.vue') },
-        // ]
-    },
-    // {
-    //     path: '/cuAll',
-    //     component: cuAll
-    // },
-    {
-        path: '/MaterialManagement',
-        component: MaterialManagement
-    },
-    {
-        path: '/MaterialBOMManagement',
-        component: BOMManagement
-    },
-    {
-        path: '/ManualPosition',
-        component: StationBoard
-    },
-    {
-        path: '/*',
-        component: CustomerVue
-    },
 
-    ]
-},
+    {
+        path: '/home',
+        component: Index,
+        children: [{
+                path: '/overview',
+                component: EquipmentOverview
+            },
+            {
+                path: '/FormManage',
+                component: FormManage
+            },
+            {
+                path: '/WebVideoCtrl',
+                component: WebVideoCtrl
+            },
+            {
+                path: '/cpk',
+                component: cpk
+            },
+            {
+                path: '/history',
+                component: history
+            },
+            {
+                path: '/table',
+                component: table
+            },
+            {
+                path: '/NewTrendChart',
+                component: TendencyVue
+            },
+            {
+                path: '/跳转画面',
+                component: CustomerVue
+            },
+            {
+                path: '/温度监测',
+                component: CustomerVue
+            },
+            {
+                path: '/全厂管网图',
+                component: CustomerVue
+            },
+            {
+                path: '/监控主画面',
+                component: CustomerVue
+            },
+            {
+                path: '/AlarmAnalysis',
+                component: AlarmAnalysis
+            },
+            {
+                path: '/AlarmRecord',
+                component: Alarm1
+            },
+            {
+                path: '/AlarmRecord1',
+                component: Alarm
+            },
+            {
+                path: '/PointInspectionManage',
+                component: Spotinspection
+            },
+            {
+                path: '/MaintenanceManage',
+                component: maintain
+            },
+            {
+                path: '/RepairManage',
+                component: Repair
+            },
+            {
+                path: '/QualityMain',
+                component: quality
+            },
+
+            {
+                path: '/FileManage',
+                component: File
+            },
+
+            {
+                path: '/VulnerablePartManage',
+                component: Vulnerableparts
+            },
+
+            {
+                path: '/SparePartsManage',
+                component: sparepart
+            },
+            {
+                path: '/EquipmentAccount',
+                component: Equipment
+            },
+            {
+                path: '/ProcessParaReport',
+                component: Reportform
+            },
+            {
+                path: '/ProcessConfigure',
+                component: Reportform1
+            },
+            {
+                path: '/SYC_FormulaInfoManager_Module',
+                component: formula
+            },
+
+            {
+                path: '/Journal',
+                component: Log
+            },
+            {
+                path: '/权限管理',
+                redirect: '/user'
+            },
+            {
+                path: '/ReportColumnChart',
+                component: Monitordiagram
+            },
+            {
+                path: '/ReportStatistics',
+                component: Monitorsurface
+            },
+            {
+                path: '/HistoryReport',
+                component: powerhistory
+            },
+            {
+                path: '/TemperatureCurve',
+                component: powerdistribution
+            },
+
+            {
+                path: "/SteamTrendCurve",
+                component: steam,
+            },
+            {
+                path: '/TapWaterTrendCurve',
+                component: tapwater
+            },
+            {
+                path: '/权限管理',
+                redirect: '/user'
+            },
+            {
+                path: '/User',
+                component: User
+            },
+            {
+                path: '/Role',
+                component: Role
+            },
+            {
+                path: '/TapWaterReportRecord',
+                component: WaterRecord
+            },
+            {
+                path: '/SteamReportRecord',
+                component: SteamMeterRecord
+            },
+            {
+                path: '/TapWaterMeasureStatistics',
+                component: WaterAnalysis
+            },
+            {
+                path: '/SteamMeasureStatistics',
+                component: SteamMeterAnalysis
+            },
+            {
+                path: '/ScheduleManage',
+                component: scheduleMange
+            },
+            {
+                path: '/SYC_OrderManagement_Module',
+                component: OrderManange
+            },
+            {
+                path: '/SYC_AnalysisModel_Module',
+                name: 'SPCAnaly',
+                component: SpcAnaly
+            },
+            {
+                path: '/SYC_SPCSetUpModel_Module',
+                component: SpcSetting
+            },
+            {
+                path: '/ProductionType',
+                component: OrderManagement
+            },
+            {
+                path: '/MsgPush',
+                component: () => import('@/views/push-message/index.vue'),
+                children: [{
+                        path: '/MsgPush/alarm-message',
+                        component: () => import('@/views/push-message/alarm-message.vue')
+                    },
+                    {
+                        path: '/MsgPush/push-log',
+                        component: () => import('@/views/push-message/push-log.vue')
+                    },
+                ]
+            },
+            {
+                path: '/LocationReport', // 工位报表
+                component: () => import('@/views/Rzdn/LocationManagement/LocationReport.vue')
+            }, {
+                path: '/FirstArticleReport', // 首件
+                component: () => import('@/views/Rzdn/LocationManagement/FirstArtifactsReport.vue')
+            }, {
+                path: '/ReadInstructor', // 指导书
+                component: () => import('@/views/Rzdn/LocationManagement/InstructionBook.vue')
+            }, {
+                path: '/LocationSetting', // 工位配置
+                component: () => import('@/views/Rzdn/LocationManagement/LocationConfig.vue')
+            },
+            {
+                path: '/ShiftManagement', // 班次管理
+                component: shiftManagement
+            },
+            {
+                path: '/SYC_MaterialInfoManager_Module', // 物料管理
+                component: materialInfoManageModule
+            },
+            {
+                path: '/SYC_GuidingBookManager_Module', // 物料管理
+                component: guidingBookManager
+            },
+            // {
+            //     path: '/cuAll',
+            //     component: cuAll
+            // },
+            {
+                path: '/*',
+                component: CustomerVue
+            },
+
+        ]
+    },
 
 ];
 

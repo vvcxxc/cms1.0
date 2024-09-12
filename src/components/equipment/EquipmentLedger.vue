@@ -1533,16 +1533,6 @@ for(let i=0;i<$('.atooltip').length;i++){
                         ws[a].DeviceStatus = ws[a][this.lang.EquipmentAccount_EquipmentStatus];
                         ws[a].QualityStatus = ws[a][this.lang.EquipmentAccount_WarrantyStatus];
                         ws[a].Remarks = ws[a][this.lang.EquipmentAccount_EquipmentRemark];
-                    
-                        if (typeof (ws[a].CheckTime) == 'number') {
-                            ws[a].CheckTime = this.formatDate(ws[a].CheckTime, '/')
-                        }
-                        if (typeof (ws[a].EnableTime) == 'number') {
-                            ws[a].EnableTime = this.formatDate(ws[a].EnableTime, '/')
-                        }
-                        if (typeof (ws[a].PurchaseTime) == 'number') {
-                            ws[a].PurchaseTime = this.formatDate(ws[a].PurchaseTime, '/')
-                        }
                     }
                     let b = 0;
                     for (b in ws) {

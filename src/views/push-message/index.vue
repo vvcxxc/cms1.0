@@ -1,92 +1,130 @@
-<!--
- * @Description: 报警管理
- * @Date: 2019-11-23 11:54:01
- * @Author: 随风
- * @LastEditors: 随风
- * @LastEditTime: 2019-11-27 14:53:55
- -->
 <template>
-	<div class="alarm-container" ref="alarmContainer">
-		<aside class="left-container"  :class="{colordiv:$store.state.color=='grey'}" :style="[{width:200*(width/1920)+'px'}]">
-			<left-nav @tabComponent="tabComponent"></left-nav>
-		</aside>
-		<section class="content-container" :style="{width: 'calc(100% - ' + 200*zoom + 'px)'}">
-			<component :is="componentName"></component>
-		</section>
-	</div>
-</template>
+  <div class="alarm-container flex" :style="{zoom:zoomValue}">
+    <!-- 导航 -->
+    <div class="tabs">
+      <div 
+        v-for="(item,i) in menuList"
+        :key="i"
+        @click="linkPage(item.path)"
+        class="itme flex" 
+        :class="$route.path === item.path ? 'select-itme' : ''" 
+      >
+        <div class="block"></div>
+        <div class="text font-1">{{item.name}}</div>
+      </div>
+    </div>
 
+    <!-- 内容 -->
+    <div class="container">
+      <router-view></router-view>
+    </div>
+  </div>
+</template>
 <script>
-import LeftNav from '../../components/leftNav/LeftNav.vue'
-import AlarmMsg from '../push-message/alarm-message'
-import TodoMsg from '../push-message/todo-message'
-import MsgLog from '../push-message/push-log'
 export default {
-	components: {
-		LeftNav,
-		AlarmMsg,
-		TodoMsg,
-    MsgLog,
-	},
-	data() {
-		return {
-			componentName: 'AlarmMsg',
-			width: 1920,
-			zoom: 1
-		};
-	},
-	created() {},
-	mounted(){
-		this.width = window.screen.width
-		this.zoom = this.width / 1920 < 0.8 ? 0.8 : this.width / 1920
-		setTimeout(()=>{
-			this.$refs.alarmContainer.style.marginTop = $('.v-toolbar').height() * this.zoom + 10 +'px'
-		})
-		this.color = this.$store.state.color;
-	},
-	methods: {
-		tabComponent(index) {
-			let componentObj = {
-				0: AlarmMsg,
-				1: TodoMsg,
-        2: MsgLog,
-			};
-			this.componentName = componentObj[index];
-		}
-	}
+  components: {},
+  data() {
+    return {
+      lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
+      menuList: [
+        {
+          name: '消息推送',
+          path: '/MsgPush/alarm-message'
+        },
+        {
+          name: '推送日志',
+          path: '/MsgPush/push-log'
+        }
+      ],
+      zoomValue: 0,
+      activeName: 'second',
+    };
+  },
+  mounted() {
+    this.init()
+  },
+  methods: {
+    // 初始化容器尺寸
+    initContainerSize() {
+      this.zoomValue = Number(parseFloat(window.screen.width / 1920).toFixed(2)) <= 0.8 ? 0.8 : Number(parseFloat(window.screen.width / 1920).toFixed(2))
+      var toolbarH = $('.v-toolbar').height();
+      var toolbarZ = $('.v-toolbar')[0].style.zoom;
+      var footerH = $('.v-footer').height();
+      var footerZ = $('.v-footer')[0].style.zoom;
+      var marginTop = toolbarH * toolbarZ + 'px';
+      let height = toolbarH * toolbarZ + footerH * footerZ + 'px';
+      $('.alarm-container').css({marginTop, height:`calc(100% - ${height})`});
+    },
+    // 跳转页面
+    linkPage(path) {
+      if (this.$route.path === path) return;
+      if (!path) {
+        this.$router.push({path: this.menuList[0].path});
+        return;
+      }
+      this.$router.push({path});
+    },
+    init() {
+      this.menuList[0].name = this.lang['报警消息'];
+      this.menuList[1].name = this.lang.PushMessage_PushLog;
+      this.initContainerSize()
+      // console.log('比例', this.zoomValue);
+      this.linkPage(this.menuList[0].path)
+    }
+  }
 };
 </script>
 
 <style lang='scss' scoped>
+@import "@/assets/style/push-message.scss";
 .alarm-container {
-	// width: 100%;
-	// height: 100%;
-	// flex: 1;
-	height: 86vh;
-	overflow: hidden;
-	color: #000;
-	margin-top: 100px;
-	display: flex;
-	background-color: #eee;
-	padding: 20px 10px;
-	box-sizing: border-box;
-}
-aside {
-	// width: 20%;
-	width: 200px;
-	height: 100%;
-	background-color: #e9eeef;
-	box-sizing: border-box;
-	// border: 1px solid #e4e4e4;
-}
-.content-container {
-	flex: 1;
-	// width: 80%;
-	background-color: #fff;
-	border: 1px solid #e4e4e4;
-	border-left: none;
-}
-.colordiv{
- background-color: #D9DBDE;
+  width: 100%;
+  height: 100%;
+  padding: 20px 20px;
+  background: #EEEEEE;
+  .tabs {
+    width: 188px;
+    min-width: 188px;
+    height: 100%;
+    background: #E9EEEF;
+    border: 1px solid #E4E4E4;
+
+    .itme {
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+      background: #F4F7F7;
+      cursor: pointer;
+      .block {
+        width: 5px;
+        min-width: 5px;
+        height: 100%;
+        background: #4270E4;
+        opacity: 0;
+      }
+      .text {
+        width: 100%;
+        height: 100%;
+        padding: 0 0 0 20px;
+      }
+    }
+    .itme:hover, .select-itme {
+      background: #FFFFFF;
+      .block {
+        opacity: 1;
+      }
+      .text {
+        font-weight: bold;
+        color: #4270E4;
+      }
+    }
+
+  }
+
+  .container {
+    width: 100%;
+    height: 100%;
+    background: white;
+  }
 }
 </style>

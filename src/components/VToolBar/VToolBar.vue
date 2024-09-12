@@ -6,8 +6,11 @@
  * @LastEditTime: 2021-04-07 13:47:49
  -->
 <template>
-  <header v-show="!$store.state.fullScreen" class="v-toolbar" @click="yifu = false; showscreen = false"
-    :class="{ colordiv: $store.state.color == 'grey' }">
+  <header
+    class="v-toolbar"
+    @click="yifu = false; showscreen = false"
+    :class="{ colordiv: $store.state.color == 'grey' }"
+  >
     <div @click="warnIfon1" class="v-toolbar__content">
       <div class="header-top">
         <div class="logo-content">
@@ -28,7 +31,11 @@
         <div class="header-screen" @click.stop="screenchange">
           <img src="../../assets/images/tv.png" alt />
         </div>
-        <div class="screen-arr" :class="{ colortip: $store.state.color == 'grey' }" v-show="showscreen">
+        <div
+          class="screen-arr"
+          :class="{ colortip: $store.state.color == 'grey' }"
+          v-show="showscreen"
+        >
           <ul>
             <li @click="activechange('one')">
               <img v-if="activeli == 'one'" src="../../assets/images/screen_selected.png" alt />
@@ -55,7 +62,12 @@
         <div class="warn-info1" @click.stop="yifuchange">
           <img src="../../assets/images/yifu.png" ref="warn_infoImg" />
         </div>
-        <div class="warn_pop1" v-show="yifu" @click.stop="yifu2" :class="{ colortip: $store.state.color == 'grey' }">
+        <div
+          class="warn_pop1"
+          v-show="yifu"
+          @click.stop="yifu2"
+          :class="{ colortip: $store.state.color == 'grey' }"
+        >
           <div class="left">
             <div class="radio">
               <div>
@@ -79,41 +91,73 @@
         </div>
 
         <div @click.stop="login" class="user-info">
-          <img src="~@/assets/images/icon_user_info.png" alt class="user-info-icon" ref="user_infoImg" />
+          <img
+            src="~@/assets/images/icon_user_info.png"
+            alt
+            class="user-info-icon"
+            ref="user_infoImg"
+          />
         </div>
       </div>
       <div class="header-nav">
         <div v-if="header_login" @click.stop="headerFun()" class="header_login">...</div>
-        <div class="nav-item" v-for="(item, index) in Menus" :key="index + 'key1'">
-          <router-link class="link-to" @click.native="sad1(item)"
-            :to="{ path: item.to, query: { id: item.id/* , title: item.title  */ } }"
-            :class="{ 'now': now === item.title ? true : false }">{{ item.title }}</router-link>
-          <div v-if="item.children && item.children.length > 0" class="nav-newItem"
-            :class="{ colortip: $store.state.color == 'grey' }">
-            <div v-for="(newItem, newIndex) in item.children" :key="newIndex + 'key2'" class="newItem"
-              :class="{ colortip: $store.state.color == 'grey' }">
-              <router-link class="link-to" @click="fff(newItem.id)"
-                :to="{ path: newItem.to, query: { id: newItem.id/* , title: newItem.title  */ } }" v-if="item.children"
+        <div class="nav-item" v-for="(item, index) in Menus" :key="index">
+          <router-link
+            class="link-to"
+            @click.native="sad1(item)"
+            :to="{ path: item.to, query: { id: item.id, title: item.title } }"
+            :class="{ 'now': now === item.title ? true : false }"
+          >{{ item.title }}</router-link>
+          <div
+            v-if="item.children && item.children.length > 0"
+            class="nav-newItem"
+            :class="{ colortip: $store.state.color == 'grey' }"
+          >
+            <div
+              v-for="(newItem, newIndex) in item.children"
+              :key="newIndex"
+              class="newItem"
+              :class="{ colortip: $store.state.color == 'grey' }"
+            >
+              <router-link
+                class="link-to"
+                @click="fff(newItem.id)"
+                :to="{ path: newItem.to, query: { id: newItem.id, title: newItem.title } }"
+                v-if="item.children"
                 :class="{ 'nowchildren': nowchildrem === newItem.title ? true : false }"
-                @click.native="sad2(newItem, item)">{{ newItem.title }}</router-link>
+                @click.native="sad2(newItem, item)"
+              >{{ newItem.title }}</router-link>
             </div>
           </div>
         </div>
       </div>
 
       <div v-if="headerNav2Show" class="header-nav header-nav2">
-        <div class="nav-item nav-item1" v-for="(item, index) in Menus2" :key="index + 'key3'">
-          <router-link class="link-to" :to="{ path: item.to, query: { id: item.id/* , title: item.title  */ } }"
-            :class="{ 'now': now === item.title ? true : false }" @click.native.stop="sad1(item)">{{ item.title
-            }}</router-link>
-          <div v-if="item.children && item.children.length > 0" class="nav-newItem"
-            :class="{ colortip: $store.state.color == 'grey' }">
-            <div v-for="(newItem, newIndex) in item.children" :key="newIndex + 'key4'" class="newItem"
-              :class="{ colortip: $store.state.color == 'grey' }">
-              <router-link class="link-to"
-                :to="{ path: newItem.to, query: { id: newItem.id/* , title: newItem.title */ } }" v-if="item.children"
+        <div class="nav-item nav-item1" v-for="(item, index) in Menus2" :key="index">
+          <router-link
+            class="link-to"
+            :to="{ path: item.to, query: { id: item.id, title: item.title } }"
+            :class="{ 'now': now === item.title ? true : false }"
+            @click.native.stop="sad1(item)"
+          >{{ item.title }}</router-link>
+          <div
+            v-if="item.children && item.children.length > 0"
+            class="nav-newItem"
+            :class="{ colortip: $store.state.color == 'grey' }"
+          >
+            <div
+              v-for="(newItem, newIndex) in item.children"
+              :key="newIndex"
+              class="newItem"
+              :class="{ colortip: $store.state.color == 'grey' }"
+            >
+              <router-link
+                class="link-to"
+                :to="{ path: newItem.to, query: { id: newItem.id, title: newItem.title } }"
+                v-if="item.children"
                 :class="{ 'nowchildren': nowchildrem === newItem.title ? true : false }"
-                @click.native.stop="sad2(newItem, item)">{{ newItem.title }}</router-link>
+                @click.native.stop="sad2(newItem, item)"
+              >{{ newItem.title }}</router-link>
             </div>
           </div>
         </div>
@@ -127,11 +171,23 @@
     </div>
 
     <div v-show="wranShow" class="warn_pop" :class="{ colordiv: $store.state.color == 'grey' }">
-      <div v-for="item in warnList" :key="item.Title" @click="warnFun(item)" class="warn_row1">
-        <span class="text">{{ item.Title }}</span>
-        <span class="num">{{ item.Message }}</span>
+      <div @click="warnFun('易损件寿命管理')" class="warn_row1">
+        <span class="text">{{ lang.ToDoWearingParts }}</span>
+        <span class="num">{{ vulnerablePartNum }}</span>
+      </div>
+      <div @click="warnFun('点巡检管理')" class="warn_row1">
+        <span class="text">{{ lang.PointInspectionManage_ToDoInspection }}</span>
+        <span class="num">{{ pointInspectionNum }}</span>
+      </div>
+      <div @click="warnFun('保养管理')" class="warn_row1">
+        <span class="text">{{ lang.MaintenanceManage_ToDoMaintenance }}</span>
+        <span class="num">{{ maintainNum }}</span>
       </div>
 
+      <div @click="warnFun('维修管理')" class="warn_row1">
+        <span class="text">{{ lang.RepairManage_ToDoRepair }}</span>
+        <span class="num">{{ repairNum }}</span>
+      </div>
     </div>
 
     <div v-show="loginShow" class="login_pop" :class="{ colordiv: $store.state.color == 'grey' }">
@@ -175,18 +231,33 @@
       </div>
     </div>
     <!-- 关于app二维码弹窗 -->
-    <div v-show="appCodeShow" class="software" :class="{ appsoftware: appTitle == lang.EngineeringCode }">
+    <div
+      v-show="appCodeShow"
+      class="software"
+      :class="{ appsoftware: appTitle == lang.EngineeringCode }"
+    >
       <div class="software_head" :class="{ colordiv: $store.state.color == 'grey' }">
         <!-- <span>{{lang.AboutUsView_AboutSoftWare}}</span> -->
         <span :class="{ colordiv1: $store.state.color == 'grey' }">{{ appTitle }}</span>
-        <i @click="softwareCloseFun" class="close el-icon-close" :class="{ colordiv1: $store.state.color == 'grey' }"></i>
+        <i
+          @click="softwareCloseFun"
+          class="close el-icon-close"
+          :class="{ colordiv1: $store.state.color == 'grey' }"
+        ></i>
       </div>
       <div class="app-conter">
         <div v-show="appTitle == lang.AppDownload">
           <div class="app-conter-head">
-            <div class="head-item" :class="!apptype ? 'head-item-selected' : ''" @click.stop="apptypechange(0)">Android
-            </div>
-            <div class="head-item" :class="apptype ? 'head-item-selected' : ''" @click.stop="apptypechange(1)">IOS</div>
+            <div
+              class="head-item"
+              :class="!apptype ? 'head-item-selected' : ''"
+              @click.stop="apptypechange(0)"
+            >Android</div>
+            <div
+              class="head-item"
+              :class="apptype ? 'head-item-selected' : ''"
+              @click.stop="apptypechange(1)"
+            >IOS</div>
           </div>
           <div class="app-conter-body">
             <div v-show="!apptype" class="app-android-class">
@@ -252,7 +323,10 @@
             </div>
           </div>
         </div>
-        <div v-show="appTitle == lang.EngineeringCode" class="app-conter-body app-engineering-conter">
+        <div
+          v-show="appTitle == lang.EngineeringCode"
+          class="app-conter-body app-engineering-conter"
+        >
           <div class="app-android-class engineering-top">
             <div class="app-engineering-img">
               <div class="app-android-img engineering-bg">
@@ -276,8 +350,7 @@
         <span class="text">{{ lang.HT_MessageBoxCaption_Tips }}</span>
       </div>
       <div class="login_conter">
-        <div>{{ `${lang.Main_MessageBox_IfLoginOut} &lt;${userName1 == lang.SuperAdmin ? 'SuperAdmin' : userName1}&gt; ?`
-        }}</div>
+        <div>{{ `${lang.Main_MessageBox_IfLoginOut} &lt;${userName1 == lang.SuperAdmin ? 'SuperAdmin' : userName1}&gt; ?` }}</div>
       </div>
       <div class="login_btn">
         <div @click="login_no" class="login_no">{{ lang.MessageBox_NO }}</div>
@@ -333,21 +406,32 @@
         <div class="Original_password">
           <div class="text1">{{ lang.AboutUsView_OldPassword }}</div>
           <div class="ip1">
-            <el-input show-password v-model="Original_password"
-              :placeholder="lang.AboutUsView_PEOriginalPassword"></el-input>
+            <el-input
+              show-password
+              v-model="Original_password"
+              :placeholder="lang.AboutUsView_PEOriginalPassword"
+            ></el-input>
           </div>
         </div>
         <div class="New_password">
           <div class="text2">{{ lang.AboutUsView_NewPassword }}</div>
 
           <div class="ipt2">
-            <el-input show-password v-model="New_password" :placeholder="lang.AboutUsView_PEPassword"></el-input>
+            <el-input
+              show-password
+              v-model="New_password"
+              :placeholder="lang.AboutUsView_PEPassword"
+            ></el-input>
           </div>
         </div>
         <div class="confirm_password">
           <div class="text3">{{ lang.AboutUsView_ConfirmPassword }}</div>
           <div class="ipt3">
-            <el-input show-password v-model="confirm_password" :placeholder="lang.AboutUsView_PEPasswordAgain"></el-input>
+            <el-input
+              show-password
+              v-model="confirm_password"
+              :placeholder="lang.AboutUsView_PEPasswordAgain"
+            ></el-input>
           </div>
         </div>
         <div class="modify_fool">
@@ -356,6 +440,10 @@
         </div>
       </div>
     </div>
+
+    <!-- <div class="test-btn">
+      <button @click="testFun1">+1消息</button>
+    </div> -->
   </header>
 </template>
 
@@ -363,6 +451,8 @@
 import Nav from './Nav.js';
 import '../../../public/jquery.signalR-2.4.1.js'
 import Utils from '../../assets/js/util.js'
+import { MaterialMistakeProofing } from '@/api/rzdn/common.js'
+
 export default {
   data() {
     return {
@@ -425,8 +515,7 @@ export default {
       iosImgUrl: '',
       appVersion: '',
       engineeringImgUrl: '',
-      engineeringName: '',
-      warnList: [],
+      engineeringName: ''
     };
   },
   watch: {
@@ -434,15 +523,202 @@ export default {
       this.$store.state.routename = a;
     },
     Menus(val) {
-      console.log(val)
+      // console.log(val)
     }
   },
   destroyed() {
     clearInterval(this.userTime)
     clearInterval(this.touristTime)
+    window.removeEventListener("keydown", (e)=> {
+      let nextCode,nextTime = '';
+      let lastTime = this.lastTime;
+      let code = this.code === undefined ? '' : this.code;
+      let shift = e.shiftKey
+      if (window.event) {// IE
+        nextCode = e.keyCode
+      } else if (e.which) {// Netscape/Firefox/Opera
+        nextCode = e.which
+      }
+      nextTime = new Date().getTime();
+      if (nextCode === 229) {
+        return
+      }
+      // console.log('eeeee', shift, nextCode, code, this.code)
+      //字母上方 数字键0-9 对应键码值 48-57; 数字键盘 数字键0-9 对应键码值 96-105
+      if((nextCode >= 48 && nextCode <= 57) || (nextCode >= 96 && nextCode <= 105)){
+      let codes = {
+        '48': 48,
+        '49': 49,
+        '50': 50,
+        '51': 51,
+        '52': 52,
+        '53': 53,
+        '54': 54,
+        '55': 55,
+        '56': 56,
+        '57': 57,
+        '96': 48,
+        '97': 49,
+        '98': 50,
+        '99': 51,
+        '100': 52,
+        '101': 53,
+        '102': 54,
+        '103': 55,
+        '104': 56,
+        '105': 57,
+      }
+        nextCode = codes[nextCode];
+        nextTime = new Date().getTime();
+      }
+      // 第二次输入延迟两秒，删除之前的数据重新计算
+      if(nextTime && lastTime && nextTime-lastTime> 30){
+        // 特殊字符处理
+        if (shift && nextCode == 16) {
+          return
+        }
+        code = String.fromCharCode(nextCode);
+      }else{
+        // 特殊字符处理
+        if (shift && nextCode == 16) {
+          return
+        }
+        if (shift && nextCode == 50) {
+          code += '@'
+        } else {
+          code += String.fromCharCode(nextCode)
+        }
+      }
+      // 保存数据
+      this.nextCode = nextCode;
+      this.lastTime = nextTime;
+      this.code = code;
+      // 键入Enter
+      if(e.which == 13) {
+        // 判断 code 长度（这里就获取到条码值了，以下业务自由发挥）
+        if (this.code.length < 3) { // 此处处理输入框键盘触发扫码接口（画面制作等等界面的输入框）
+          return
+        }
+        let $this = this
+        code = code.trim()
+        MaterialMistakeProofing(code).then(res => {
+          if (res.data.code === 0) {
+            $this.message_Success($this, '扫码成功')
+          } else {
+            $this.confirm_Pop2($this, res.data.msg)
+          }
+          //键入回车务必清空code值
+          code = ''
+          this.code = ''
+          return false;
+        })
+      }
+    }, false)
   },
-
+  
   mounted() {
+    /* 添加全局扫码枪 */
+    window.addEventListener("keydown", (e)=> {
+      let nextCode,nextTime = '';
+      let lastTime = this.lastTime;
+      let code = this.code === undefined ? '' : this.code;
+      let shift = e.shiftKey
+      if (window.event) {// IE
+        nextCode = e.keyCode
+      } else if (e.which) {// Netscape/Firefox/Opera
+        nextCode = e.which
+      }
+      nextTime = new Date().getTime();
+      if (nextCode === 229) {
+        return
+      }
+      // console.log('eeeee', shift, nextCode, code, this.code)
+      //字母上方 数字键0-9 对应键码值 48-57; 数字键盘 数字键0-9 对应键码值 96-105
+      if((nextCode >= 48 && nextCode <= 57) || (nextCode >= 96 && nextCode <= 105)){
+      let codes = {
+        '48': 48,
+        '49': 49,
+        '50': 50,
+        '51': 51,
+        '52': 52,
+        '53': 53,
+        '54': 54,
+        '55': 55,
+        '56': 56,
+        '57': 57,
+        '96': 48,
+        '97': 49,
+        '98': 50,
+        '99': 51,
+        '100': 52,
+        '101': 53,
+        '102': 54,
+        '103': 55,
+        '104': 56,
+        '105': 57,
+      }
+        nextCode = codes[nextCode];
+        nextTime = new Date().getTime();
+      }
+      // 第二次输入延迟两秒，删除之前的数据重新计算
+      if(nextTime && lastTime && nextTime-lastTime> 30){
+        // 特殊字符处理
+        if (shift && nextCode == 16) {
+          return
+        }
+        code = String.fromCharCode(nextCode);
+      }else{
+        // 特殊字符处理(shift键)
+        if (shift && nextCode == 16) {
+          return
+        }
+        if (shift && nextCode == 50) {
+          code += '@'
+        } else{
+          // 特殊字符处理
+          if (nextCode === 189) {
+            code += '-'
+          } else {
+            code += String.fromCharCode(nextCode)
+          }
+        }
+      }
+      // 保存数据
+      this.nextCode = nextCode;
+      this.lastTime = nextTime;
+      this.code = code;
+      // 键入Enter
+      if(e.which == 13) {
+        // 判断 code 长度（这里就获取到条码值了，以下业务自由发挥）
+        if (this.code.length < 3) { // 此处处理输入框键盘触发扫码接口（画面制作等等界面的输入框）
+          return
+        }
+        let $this = this
+        code = code.trim()
+        // this.$nextTick(() => {
+        //   if ($this.$store.state.msgboxShow) {
+        //     $this.$store.commit('setMsgboxShow', false)
+        //   }
+        // })
+        MaterialMistakeProofing(code).then(res => {
+          if (res.data.code === 0) {
+            $this.message_Success($this, '扫码成功')
+            if ($this.$store.state.msgboxShow) {
+              $this.$store.commit('setMsgboxShow', false)
+            }
+          } else {
+            // $this.confirm_Pop2($this, res.data.msg)
+            $this.message_Error($this, res.data.msg)
+          }
+          //键入回车务必清空code值
+          code = ''
+          this.code = ''
+          return false;
+        })
+      }
+    }, false)
+
+    /* 结束 */
     // this.$nextTick(() => {
     //     this.lang = JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
     // })
@@ -472,7 +748,7 @@ export default {
 
     for (let i = 0; i < $('.nav-item').length; i++) {
       width += $('.nav-item')[i].cliWidth
-      console.log($('.nav-item')[i])
+      // console.log($('.nav-item')[i])
       if (width >= (window.screen.width - (150 * a))) {
         Menusone.push(this.Menus[i])
       } else {
@@ -592,8 +868,8 @@ export default {
     }
   },
   methods: {
-    functionA(arr) {
-      Utils.$emit('demo', arr)
+    functionA(arr){
+     Utils.$emit('demo',arr)
     },
     //保存app图片
     keepImgFun(type) {
@@ -604,11 +880,11 @@ export default {
       } else if (type == 2) {
         this.downloadIamge(this.iosImgUrl, 'CMS-ios-App')
       } else if (type == 3) {
-        this.downloadIamge('/api/data/doget?url=' + this.engineeringImgUrl, 'CMS-engineering')
+        this.downloadIamge('/api/data/doget?url='+this.engineeringImgUrl,'CMS-engineering')
       }
 
     },
-
+   
     apptypechange(type) {
       this.apptype = type
       if (!this.apptype) {
@@ -636,7 +912,7 @@ export default {
           method: 'get',
           url: '/api/app/GetAppVersion',
         }).then(res => {
-          console.log(res)
+          // console.log(res)
           this.appVersion = res.data
           // var ww = res.data + ';' + 'msgHubFun()'
           // eval(ww);
@@ -679,7 +955,7 @@ export default {
     //下载图片
     downloadIamge(url, name) {
       // 将图片的src属性作为URL地址
-      console.log(url)
+      // console.log(url)
       var a = document.createElement('a')
       var event = new MouseEvent('click')
       a.download = name || '下载图片名称'
@@ -695,8 +971,8 @@ export default {
       this.localData.Main_Record_ChangePassword = languages[currentLang].Main_Record_ChangePassword
     },
     changemenu() {
-      console.log('menu', this.Menus)
-      console.log('123', this.Menus2)
+      // console.log('menu', this.Menus)
+      // console.log('123', this.Menus2)
     },
 
     // 修改自适应
@@ -741,207 +1017,208 @@ export default {
       this.msgHub.client.ReceivedError = function (content) {
       };
       var self = this
-      /* 趋势曲线 清除曲线*/
-      try {
-        window.$.connection.redisMonitor.client.ReceivedClearCurveGroupId = (content) => {
-          setTimeout(() => {    //同时调用多次会直接替换延迟50毫秒保证每次替换的值都有被监听到
-            console.clear()
-            console.log('UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU', content)
-            if (content === self.$store.state.curveGroupId) {
-              self.$store.state.curveGroupId = '';//重置一下再改变
-            }
-            self.$store.state.curveGroupId = content
-          }, 50)
+      //二次开发图表实时刷新调用客户端方法 接收值
+      window.$.connection.subchart.client.ReceivedRealyData = function (content) {
+        console.log('websocket接口测试', 1);
+        setTimeout(() => {    //同时调用多次会直接替换延迟50毫秒保证每次替换的值都有被监听到
+          self.$store.state.typeNum = '2'                      //图表类型监听
+          self.$store.state.contentData = content.Data   //图表监听动态数值 弹窗使用
+          self.$store.state.contentName = content.ViewName
+        }, 50)
+      };
+      //二次开发图表历史查询调用客户端方法  接收值
+      window.$.connection.subchart.client.ReceivedQueryData = function (content) {
+        console.log('websocket接口测试', 2);
+        setTimeout(() => {
+          self.$store.state.typeNum = '1'                       //图表类型监听
+          self.$store.state.contentData = content.Data   //图表监听动态数值 弹窗使用
+          self.$store.state.contentName = content.ViewName
+        }, 50)
+      };
+      window.$.connection.redisMonitor.client.RecivedRedisControlChanged = function(name,value,arr,b){
+        console.log('websocket接口测试', 3);
+        // console.log("下拉框",name,value,arr,b)
+        self.functionA(arr)
+      }
+      //二次开发报警控件实时值调用客户端方法 接收值
+      window.$.connection.redisMonitor.client.ReceivedAlarms = function (name, value) {
+        console.log('websocket接口测试', 4);
+        let data = {
+          name: name,
+          value: value
         }
-      } catch (err) {
-        console.log(err)
+        setTimeout(() => {
+          self.$store.state.ReceivedAlarms = data
+        }, 50)
       }
-      /* 趋势曲线 缓存时间 */
-      try {
-        window.$.connection.redisMonitor.client.ReceivedCurveCacheTime = (content) => {
-          setTimeout(() => {    //同时调用多次会直接替换延迟50毫秒保证每次替换的值都有被监听到
-            self.$store.state.cacheTime = content
-          }, 50)
-        }
-      } catch (err) {
-        console.log(err)
-      }
-      try {
-        //二次开发图表实时刷新调用客户端方法 接收值
-        window.$.connection.subchart.client.ReceivedClearCurveGroupId = function (content) {
-          setTimeout(() => {    //同时调用多次会直接替换延迟50毫秒保证每次替换的值都有被监听到
-            console.log('CCCCCCCCCCC', content)
-            if (content === self.$store.state.curveGroupId) {
-              self.$store.state.curveGroupId = ''//重置一下再改变
-            }
-            self.$store.state.curveGroupId = content
-          }, 50)
-        };
-      } catch (err) {
-        console.log(err)
-      }
-      try {
-        //二次开发图表实时刷新调用客户端方法 接收值
-        window.$.connection.subchart.client.ReceivedRealyData = function (content) {
-          console.log('画面制作-接收数据', content.Data);
-          setTimeout(() => {    //同时调用多次会直接替换延迟50毫秒保证每次替换的值都有被监听到
-            self.$store.state.typeNum = '2'                      //图表类型监听
-            self.$store.state.contentData = content.Data   //图表监听动态数值 弹窗使用
-
-            self.$store.state.contentName = content.ViewName
-          }, 50)
-        };
-      } catch (err) {
-        console.log(err)
-      }
-      try {
-        //二次开发图表历史查询调用客户端方法  接收值
-        window.$.connection.subchart.client.ReceivedQueryData = function (content) {
-          console.log('画面制作-初始化数据', content.Data);
-          setTimeout(() => {
-            self.$store.state.typeNum = '1'                       //图表类型监听
-            self.$store.state.contentData = content.Data   //图表监听动态数值 弹窗使用
-
-            self.$store.state.contentName = content.ViewName
-          }, 50)
-        };
-      } catch (err) {
-        console.log(err)
-      }
-      try {
-        window.$.connection.redisMonitor.client.RecivedRedisControlChanged = function (name, value, arr, b) {
-          console.log("下拉框", name, value, arr, b)
-          self.functionA(arr)
-        }
-      } catch (err) {
-        console.log(err)
-      }
-      try {
-        //静态图片接收值
-        window.$.connection.staticImageHub.client.updateWebStaticImages = function (data) {
-          console.log("过来玩图片呀", data)
-          setTimeout(() => {
-            self.$store.state.staticImagearr = data
-          }, 50)
-        }
-      } catch (err) {
-        console.log(err)
-      }
-      try {
-        //二次开发报警控件实时值调用客户端方法 接收值
-        window.$.connection.redisMonitor.client.ReceivedAlarms = function (name, value) {
-          let data = {
-            name: name,
-            value: value
+      //主页面报警提醒消息实时值调用方法 接收值
+      window.$.connection.redisMonitor.client.ReceivedDeviceMessageRemind = (content) => {
+        // console.log('websocket接口测试', 5);
+        this.vulnerablePartNum = content.vulnerablePartNum > 99 ? '99+' : content.vulnerablePartNum
+        this.pointInspectionNum = content.pointInspectionNum > 99 ? '99+' : content.pointInspectionNum
+        this.maintainNum = content.vulnerablePartNum > 99 ? '99+' : content.maintainNum
+        this.repairNum = content.repairNum > 99 ? '99+' : content.repairNum
+        var TotalNum = content.vulnerablePartNum + content.pointInspectionNum + content.maintainNum + content.repairNum
+        this.TotalNum = TotalNum > 99 ? '99+' : TotalNum
+        if (this.TotalNum == 0) {
+          this.TotalNum = this.TotalNum
+          if (document.querySelector('.warn_infoImg') != undefined) {
+            // document.querySelector('.warn_infoImg').src = require('../../assets/images/6d9a1ee3e274d5e414e1475c0bae615.png')
+            document.querySelector('.warn_text').style.background = '#999'
+            document.querySelector('.warn_text').innerHTML = this.TotalNum
           }
-          setTimeout(() => {
-            self.$store.state.ReceivedAlarms = data
-          }, 50)
-        }
-      } catch (err) {
-        console.log(err)
-      }
-      try {
-        //主页面报警提醒消息实时值调用方法 接收值
-        window.$.connection.redisMonitor.client.ReceivedDeviceMessageRemind = (content) => {
-          this.warnList = content.Menus
-          this.TotalNum = content.Sum
-        }
-      } catch (err) {
-        console.log(err)
-      }
-      try {
-        //二次开发页面脚本事件调用方法
-        window.$.connection.chart.client.ReceivedExecuteScript = function (name, value) {
-
-          //              name = [
-          //                  {
-          //                      Control: "FlowPipe2",
-          // Property: "background",
-          // Value: "Red"
-          //                  }
-          //              ]
-          console.log('脚本数据', name)
-          setTimeout(() => {
-            self.$store.state.scriptData = ''
-            self.$store.state.scriptData = name
-          }, 50)
-        }
-      } catch (err) {
-        console.log(err)
-      }
-      try {
-        //二次开发页面实时监听变量点 接收值
-        window.$.connection.redisMonitor.client.RecivedRedisChanged = function (name, value) {
-          self.$store.state.monitorShow = value   //流动控件监听  弹窗使用
-          self.$store.state.monitorName = name
-          //变化时推送变量触发组件方法
-          var data = {
-            name: name,
-            value: value
+        } else {
+          this.TotalNum = this.TotalNum
+          if (document.querySelector('.warn_infoImg') != undefined) {
+            document.querySelector('.warn_text').style.background = '#4270E4'
+            document.querySelector('.warn_text').innerHTML = this.TotalNum
+            document.querySelector('.warn_infoImg').src = require('../../assets/images/warn.png')
           }
-          setTimeout(() => {
-            self.$store.state.varChange = data  //监听变量变化
-          }, 50)
         }
-      } catch (err) {
-        console.log(err)
       }
-      try {
-        //二次开发页面查询控件定时触发调用方法
-        this.msgHub.client.ReceivedQueryTrigger = function (content) {
-          setTimeout(() => {
-            self.$store.state.setTiemValue = content  //图表定时触发监听 弹窗使用
-          }, 50)
-        };
-        console.log("触发1", this.$route)
-      } catch (err) {
-        console.log(err)
-      }
-      try {
-        //不良条码prodCode
-        window.$.connection.redisMonitor.client.ReceivedRFIDValue = function (data) {
-          console.log("ReceivedRFIDValue", data)
-          self.$store.state._prodCode = null
-          setTimeout(() => {
-            self.$store.state._prodCode = data
-          }, 50)
-        }
-      } catch (err) {
-        console.log(err)
-      }
-      try {
-        //不良条码prodCode
-        window.$.connection.redisMonitor.client.ReceivedSubmitAction = function (data) {
-          self.$store.state.submitIP = '';
-          setTimeout(() => {
-            self.$store.state.submitIP = data.IP
-          }, 50)
-        }
-      } catch (err) {
-        console.log(err)
-      }
-      try {
-        //websockets建立连接在Vuex监听
-        window.$.connection.hub.start().done(() => {
-          console.log("触发", this.$route)
+      // 瑞舟工位管理-弹窗管理
+      window.$.connection.ruiZhouHub.client.SentPopupInfoMethod = (obj) => {
+        console.log('瑞舟弹窗管理.websocket回调', obj);
+        if (window.cachedSignalId === obj.ID) return
+        window.cachedSignalId = obj.ID
+        this.setServiceSignal(obj.Info)
+      };
 
-          setTimeout(() => {
-            this.$store.state.websocketsShow = 'true'
-            console.log("web改变了")
-            window.$.connection.subchart.server.joinView(`${this.$route.params.pathMatch}`, localStorage.getItem('currentLang'))
-          }, 50)
-        }).fail(function () {
-          console.log("Connect fail")
-        });
-      } catch (err) {
-        console.log(err)
+      // 瑞舟首件报表提示-弹窗管理
+      window.$.connection.ruiZhouHub.client.SentSendFristarticleTootip = (obj) => {
+        console.log('首件报表弹窗管理.websocket回调', obj);
+        if (window.cachedTootipId === obj.ID) return
+        window.cachedTootipId = obj.ID
+        this.openServiceSignal(obj.Toptip)
+      };
+      // 瑞舟工位看板 (已更换为定时器)
+      // window.$.connection.ruiZhouHub.client.SentProcessTotipMethod = (obj) => {
+      //   setTimeout(() => {
+      //     console.log('过程提示')
+      //     self.$store.state.processData = obj
+      //   }, 50);
+      // };
+
+      // window.$.connection.ruiZhouHub.client.SentServiceStatusMethod = (obj) => {
+      //   setTimeout(() => {
+      //     console.log('设备状态')
+      //     self.$store.state.deviceData = obj
+      //   }, 50);
+      // };
+
+      // window.$.connection.ruiZhouHub.client.SentOrderTypeMethod = (obj) => {
+      //   setTimeout(() => {
+      //     console.log('产品型号')
+      //     self.$store.state.productType = obj
+      //   }, 50);
+      // };
+
+      //二次开发页面脚本事件调用方法
+       window.$.connection.chart.client.ReceivedExecuteScript = function (name, value) {
+        console.log('websocket接口测试', 7);
+
+        //              name = [
+        //                  {
+        //                      Control: "FlowPipe2",
+        // Property: "background",
+        // Value: "Red"
+       //                  }
+        //              ]
+        // console.log('脚本数据', name)
+        setTimeout(() => {
+          self.$store.state.scriptData = ''
+          self.$store.state.scriptData = name
+        }, 50)
       }
+      //二次开发页面实时监听变量点 接收值
+      window.$.connection.redisMonitor.client.RecivedRedisChanged = function (name, value) {
+        console.log('websocket接口测试', 8);
+        self.$store.state.monitorShow = value   //流动控件监听  弹窗使用
+        self.$store.state.monitorName = name
+        //变化时推送变量触发组件方法
+        var data = {
+          name: name,
+          value: value
+        }
+        setTimeout(() => {
+          self.$store.state.varChange = data  //监听变量变化
+        }, 50)
+      }
+      //二次开发页面查询控件定时触发调用方法
+      this.msgHub.client.ReceivedQueryTrigger = function (content) {
+        console.log('websocket接口测试', 9);
+        setTimeout(() => {
+          self.$store.state.setTiemValue = content  //图表定时触发监听 弹窗使用
+        }, 50)
+      };
+        // console.log("触发1",this.$route)
+        // console.time();
+      //websockets建立连接在Vuex监听
+      window.$.connection.hub.start().done(() => {
+        console.log('websocket接口测试', 10);
+        // console.timeEnd();
+        //  console.log("触发",this.$route)
+         
+        setTimeout(() => {
+          this.$store.state.websocketsShow = 'true'
+          // console.log("web改变了")
+          window.$.connection.subchart.server.joinView(`${this.$route.params.pathMatch}`, localStorage.getItem('currentLang'))
+        }, 50)
+      }).fail(function () {
+        // console.log("Connect fail")
+      });
     },
+    // 瑞舟工位管理-弹窗管理
+    setServiceSignal(obj) {
+
+      this.$alert(
+        obj.Tootip, 
+        '提示', 
+        {
+          customClass: 'confirmDialog confirmDialog2',
+          confirmButtonText: '确认',
+          closeOnClickModal: false,
+          dangerouslyUseHTMLString: true,
+          type: 'warning',
+          callback: () => {
+            window.cachedSignalId = null
+            console.log('下发参数', obj);
+            this.$api.locationManagement.setServiceSignal(obj.Single).then(ref => {
+              console.log('下发结果', ref.data);
+              if (ref.data.code === 1) this.confirm_Pop2(this, ref.data.msg)
+            }, err => {
+              console.log('下发失败', err);
+            })
+          }
+        }
+      )
+    },
+    // 瑞舟首件报表提示-弹窗管理
+    openServiceSignal(tooltip) {
+      // if (this._isOpenedServiceSignal) return
+      // this._isOpenedServiceSignal = true
+      this.$alert(
+        tooltip,
+        '提示',
+        {
+          customClass: 'confirmDialog confirmDialog2',
+          confirmButtonText: '确认',
+          closeOnClickModal: false,
+          dangerouslyUseHTMLString: true,
+          type: 'warning',
+          callback:() => {
+            window.cachedTootipId = null
+          }
+        }
+      )
+    },
+    testFun1() {
+    },
+
     //查询id
     fff(id) {
       //注册在路径在的id是用于二次开发页面 控件是否有权限的参数
-      console.log('eeeeeefff', id)
+      // console.log('eeeeeefff', id)
     },
     //按钮初始化权限信息
     powerBtn() {
@@ -961,7 +1238,6 @@ export default {
         method: 'post',
         url: `/api/Main/Main_GetProjectInfo`,
       }).then(res => {
-        console.log("saffasafsasfasfsd")
         if (res.data.data.HasConfig == 1) {
           this.TitleText = res.data.data.Config.TitleText
           document.querySelector('.logo').src = `/images/${res.data.data.Config.TitleLogo}`
@@ -1086,7 +1362,7 @@ export default {
         UserName: name,
         argPassword: '网页注销',
       }).then((res) => {
-        console.log('sss', res.data.data)
+        // console.log('sss', res.data.data)
       })
     },
     //点击出现换行导航栏
@@ -1139,19 +1415,63 @@ export default {
     },
 
     //提醒跳转
-    warnFun(item) {
-      this.wranShow = false;
-      this.$router.push(`/${item.ToDoPlanMenuBehavior.ModuleName}`);
+    warnFun(text) {
+      var textShow = false;
+      for (var i = 0; i < this.routeData.length; i++) {
+        if (text == this.routeData[i].title) {
+          textShow = false;
+          this.wranShow = false;
+          if (text == '易损件寿命管理') {
+            this.$router.push('/VulnerablePartManage');
+          } else if (text == '点巡检管理') {
+            this.$router.push('/PointInspectionManage');
+          } else if (text == '保养管理') {
+            this.$router.push('/MaintenanceManage');
+          } else if (text == '维修管理') {
+            this.$router.push('/RepairManage');
+          }
+          return;
+        } else {
+          if (this.routeData[i].children != null) {
+            var data = this.routeData[i].children;
+            for (var j = 0; j < data.length; j++) {
+              if (text == data[j].title) {
+                textShow = false;
+                this.wranShow = false;
+                if (text == '易损件寿命管理') {
+                  this.$router.push('/VulnerablePartManage');
+                } else if (text == '点巡检管理') {
+                  this.$router.push('/PointInspectionManage');
+                } else if (text == '保养管理') {
+                  this.$router.push('/MaintenanceManage');
+                } else if (text == '维修管理') {
+                  this.$router.push('/RepairManage');
+                }
+                return;
+              } else {
+                textShow = true;
+                this.wranShow = false;
+              }
+            }
+          } else {
+            textShow = true;
+            this.wranShow = false;
+          }
+        }
+      }
+      if (textShow) {
+        this.warnPopShow = true;
+      }
     },
     //页面监听路由是同页面发生改变
     sad1(item) {
       this.aaa = item.title;
-      console.log('页面监听路由是同页面发生改变', item)
+      // console.log('页面监听路由是同页面发生改变', item)
       //主菜单只有一个子菜单的情况
       if (item.children.length === 0) {
         this.$router.push('/');
         this.$router.push({
-          path: encodeURIComponent(item.to.replace('/', '')),
+          path: item.to,
           query: {
             id: item.id
           }
@@ -1190,7 +1510,7 @@ export default {
 
         this.$router.push('/');
         this.$router.push({
-          path: encodeURIComponent(newItem.to.replace('/', '')),
+          path: newItem.to,
           query: {
             id: newItem.id
           }
@@ -1199,13 +1519,6 @@ export default {
       this.title = newItem.to;
       this.nowchildrem = newItem.title;
       this.now = item.title;
-      this.$router.push({
-        path: encodeURIComponent(newItem.to.replace('/', '')),
-        query: {
-          id: newItem.id,
-          // title: newItem.title,
-        }
-      });
     },
 
     //请求路由信息
@@ -1223,7 +1536,7 @@ export default {
         url: '/api/Main/Main_GetMenuKey?argUserID=' + this.userid,
         // argUserID: this.userid
       }).then(ress => {
-        console.log(ress.data.data)
+        // console.log(ress.data.data)
         //游客信息
         this.$axios({
           method: 'post',
@@ -1243,7 +1556,7 @@ export default {
         }).then(res => {
           sessionStorage.setItem('MenuInfo', JSON.stringify(res.data.data));
         }).catch(err => {
-          console.log('res缓存请求err')
+          // console.log('res缓存请求err')
         });
 
         //缓存变量类型
@@ -1253,7 +1566,7 @@ export default {
         }).then(res => {
           sessionStorage.setItem('variable', JSON.stringify(res.data.data));
         }).catch(err => {
-          console.log('res缓存请求err')
+          // console.log('res缓存请求err')
         });
 
 
@@ -1267,7 +1580,7 @@ export default {
             }
           })
           this.Menus = ress.data.data;
-          console.log(ress.data.data)
+          // console.log(ress.data.data)
 
           if (this.Menus.length != 0) {
 
@@ -1281,10 +1594,10 @@ export default {
                 onePath = ress.data.data[0].children[0].to;
                 oneId = ress.data.data[0].children[0].id;
               }
-              this.$router.push({ path: encodeURIComponent(onePath.replace('/', '')), query: { id: oneId } });
+              this.$router.push({ path: onePath, query: { id: oneId } });
             }
             let i = 0;
-            console.log(this.Menus)
+            // console.log(this.Menus)
             for (i in this.Menus) {
               // console.log(this.Menus)
               if (this.Menus[i].children && this.Menus[i].children.length > 0) {
@@ -1293,18 +1606,18 @@ export default {
             }
             //计算第一行个数
             var cliWidth = document.body.clientWidth - 60;
-            console.log("cliWidth", cliWidth)
+            // console.log("cliWidth", cliWidth)
             let MenusArr = []
             for (let j = 0; j < this.Menus.length; j++) {
               MenusArr.push(this.Menus[j].title)
             }
             var MenusSum = 0
             var MenusIndex = 0
-            for (let m = 0; m < $('.header-nav').find('.nav-item').length; m++) {
-              console.log($('.header-nav').find('.nav-item')[m])
-            }
-            console.log($($('.header-nav')[0]).children())
-            console.log("MenusArr", MenusArr)
+            // for (let m = 0; m < $('.header-nav').find('.nav-item').length; m++) {
+            //   console.log($('.header-nav').find('.nav-item')[m])
+            // }
+            // console.log($($('.header-nav')[0]).children())
+            // console.log("MenusArr", MenusArr)
             let a11111 = Number(parseFloat(window.screen.width / 1920).toFixed(2))
             if (a11111 < 1) {
               a11111 = 0.8
@@ -1391,7 +1704,7 @@ export default {
       }
       for (let i = 0; i < $('.nav-item').length; i++) {
         width += $('.nav-item')[i].clientWidth
-        console.log($('.nav-item')[i].clientWidth)
+        // console.log($('.nav-item')[i].clientWidth)
         if (width <= (window.screen.width / a - (150))) {
           Menusone.push(this.Menus[i])
         } else {
@@ -1421,11 +1734,9 @@ export default {
   user-select: none;
   z-index: 999999;
 }
-
 .header_login:hover {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
-
 .v-toolbar {
   min-width: 1200px;
   width: 100%;
@@ -1436,7 +1747,6 @@ export default {
   height: 90px;
   box-shadow: 0px 0px 10px 0px rgba(72, 82, 93, 0.5);
 }
-
 .modify_pop {
   width: 480px;
   height: 330px;
@@ -1448,14 +1758,12 @@ export default {
   top: 260px;
   margin: auto;
   z-index: 10;
-
   .modify_conter {
     width: 400px;
     height: 270px;
     margin: 0 auto;
     padding-top: 10px;
   }
-
   .modify_fool {
     width: 100%;
     height: 40px;
@@ -1476,7 +1784,6 @@ export default {
       line-height: 40px;
       cursor: pointer;
     }
-
     .modify_Btnconfim {
       position: absolute;
       right: 0;
@@ -1509,14 +1816,12 @@ export default {
       align-items: center;
       justify-content: center;
     }
-
     .ip1 {
       float: left;
       width: 270px;
       height: 40px;
     }
   }
-
   .New_password {
     width: 100%;
     height: 40px;
@@ -1533,14 +1838,12 @@ export default {
       align-items: center;
       justify-content: center;
     }
-
     .ipt2 {
       float: left;
       width: 270px;
       height: 40px;
     }
   }
-
   .confirm_password {
     width: 100%;
     height: 45px;
@@ -1557,7 +1860,6 @@ export default {
       justify-content: center;
       align-items: center;
     }
-
     .ipt3 {
       float: left;
       width: 270px;
@@ -1575,7 +1877,6 @@ export default {
     line-height: 60px;
     font-size: 20px;
   }
-
   .close {
     position: absolute;
     right: 12px;
@@ -1598,11 +1899,9 @@ export default {
   margin: auto;
   z-index: 11;
   background: #fff;
-
   .login_btn {
     overflow: hidden;
     margin-top: 10px;
-
     .login_confirm {
       width: 305px;
       height: 30px;
@@ -1613,7 +1912,6 @@ export default {
       text-align: center;
       cursor: pointer;
     }
-
     .login_no {
       width: 155px;
       height: 30px;
@@ -1625,7 +1923,6 @@ export default {
       margin-left: 22px;
       cursor: pointer;
     }
-
     .login_yes {
       width: 155px;
       height: 30px;
@@ -1638,7 +1935,6 @@ export default {
       cursor: pointer;
     }
   }
-
   .login_conter {
     display: flex;
     align-items: center;
@@ -1666,7 +1962,6 @@ export default {
       color: #fff;
       margin-right: 5px;
     }
-
     .text {
       font-size: 16px;
       color: #fff;
@@ -1684,7 +1979,6 @@ export default {
   margin: auto;
   margin-top: 100px;
   box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.6);
-
   .software_head {
     width: 100%;
     height: 60px;
@@ -1695,7 +1989,6 @@ export default {
     position: relative;
     font-size: 20px;
   }
-
   .software_conter {
     width: 90%;
     height: 345px;
@@ -1704,7 +1997,6 @@ export default {
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
-
     .software_imgBox {
       width: 400px;
       height: 300px;
@@ -1716,7 +2008,6 @@ export default {
       margin: auto 0;
       float: left;
     }
-
     .software_right {
       float: right;
       margin-top: 25px;
@@ -1727,7 +2018,6 @@ export default {
       align-items: center;
       justify-content: center;
     }
-
     .software_img {
       position: absolute;
       left: 0;
@@ -1736,12 +2026,10 @@ export default {
       right: 0;
       margin: auto;
     }
-
     img {
       max-width: 100%;
       max-height: 100%;
     }
-
     .software_text {
       font-size: 18px;
       color: #333333;
@@ -1749,13 +2037,11 @@ export default {
       text-decoration: none;
     }
   }
-
   .software_fool {
     width: 90%;
     height: 73px;
     margin: auto;
     position: relative;
-
     .software_img2 {
       position: absolute;
       right: 15px;
@@ -1765,7 +2051,6 @@ export default {
       background: url("../../assets/images/syclogo.png");
       background-size: cover;
     }
-
     .text {
       position: absolute;
       top: 34px;
@@ -1773,7 +2058,6 @@ export default {
       font-size: 16px;
     }
   }
-
   .close {
     position: absolute;
     top: 10px;
@@ -1783,14 +2067,12 @@ export default {
     cursor: pointer;
   }
 }
-
 .warn_popBox {
   position: absolute;
   width: 1920px;
   height: 1080px;
   z-index: 11;
 }
-
 .login_pop {
   position: absolute;
   width: 195px;
@@ -1802,20 +2084,17 @@ export default {
   padding-top: 10px;
   z-index: 12;
   box-sizing: border-box;
-
   .warn_img {
     font-size: 20px;
     margin-left: 5px;
     margin-right: 8px;
   }
-
   .login_row1 {
     width: 90%;
     // height: 75px;
     margin: auto;
     text-align: center;
     cursor: pointer;
-
     // overflow: auto;
     .text {
       display: block;
@@ -1823,7 +2102,6 @@ export default {
       font-size: 17px;
       color: #5b83e7;
     }
-
     .name {
       font-size: 16px;
       display: block;
@@ -1831,15 +2109,12 @@ export default {
       color: #5b83e7;
     }
   }
-
   .login_row1:hover {
     background: #e7eef5;
   }
-
   .login_row2:hover {
     background: #e7eef5;
   }
-
   .login_row2 {
     width: 90%;
     height: 40px;
@@ -1849,13 +2124,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-
     .lock {
       font-size: 23px;
       margin-left: 5px;
       margin-right: 8px;
     }
-
     .loginImg {
       width: 19px;
       height: 19px;
@@ -1866,7 +2139,6 @@ export default {
     }
   }
 }
-
 .warn_pop1 {
   position: absolute;
   top: 50px;
@@ -1880,32 +2152,27 @@ export default {
   overflow: hidden;
   display: flex;
   align-items: center;
-
   .left {
     flex: 1;
     height: 100%;
     display: flex;
     align-items: center;
-
     .radio {
       flex: 1;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-
-      >div {
+      > div {
         width: 100%;
         display: flex;
         justify-content: center;
       }
-
-      >span {
+      > span {
         text-align: center;
         font-size: 12px;
       }
     }
-
     .white {
       width: 39px;
       height: 39px;
@@ -1915,32 +2182,27 @@ export default {
       margin-bottom: 10px;
     }
   }
-
   .right {
     flex: 1;
     height: 100%;
     display: flex;
     align-items: center;
-
     .radio {
       flex: 1;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-
-      >div {
+      > div {
         width: 100%;
         display: flex;
         justify-content: center;
       }
-
-      >span {
+      > span {
         text-align: center;
         font-size: 12px;
       }
     }
-
     .lai {
       width: 39px;
       height: 39px;
@@ -1951,17 +2213,15 @@ export default {
     }
   }
 }
-
 .selectradio {
   border: 2px solid rgba(70, 118, 248, 1) !important;
 }
-
 .warn_pop {
   position: absolute;
   top: 50px;
   right: 60px;
   width: 180px;
-  height: fit-content;
+  height: 180px;
   background: #fff;
   box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.6);
   padding-top: 10px;
@@ -1984,7 +2244,6 @@ export default {
     .text {
       float: left;
     }
-
     .num {
       float: right;
       color: #5e86e7;
@@ -1995,7 +2254,6 @@ export default {
 .header-top {
   @include vc;
   height: 40px;
-
   // height:4.1vh;
   .logo-content {
     @include vc;
@@ -2008,7 +2266,6 @@ export default {
       max-height: 100%;
       object-fit: contain;
     }
-
     padding: 0 38px;
 
     .scms {
@@ -2016,26 +2273,22 @@ export default {
       font-size: 20px;
     }
   }
-
   .app-class {
     height: 80%;
     width: 80%;
     margin-top: 10%;
     margin-left: 10%;
   }
-
   .divider {
     width: 1px;
     height: 24px;
     background-color: #bbbbbb;
   }
-
   .title {
     margin-left: 30px;
     color: #333333;
     font-size: 20px;
   }
-
   .warn-info {
     width: 70px;
     height: 40px;
@@ -2066,7 +2319,6 @@ export default {
       left: 28px;
     }
   }
-
   .warn-info1 {
     width: 40px;
     height: 40px;
@@ -2090,15 +2342,12 @@ export default {
   .user-info:hover {
     box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.6);
   }
-
   .warn-info1:hover {
     box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.6);
   }
-
   .logout:hover {
     box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.6);
   }
-
   .warn-info:hover {
     box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.6);
   }
@@ -2115,7 +2364,6 @@ export default {
       height: auto;
     }
   }
-
   .logout {
     width: 40px;
     height: 40px;
@@ -2123,7 +2371,6 @@ export default {
     cursor: pointer;
 
     @include center;
-
     .logout-icon {
       width: 18px;
       height: auto;
@@ -2143,13 +2390,11 @@ export default {
   // height:5.2vh;
   padding-left: 20px;
   @include vc;
-
   .nav-item {
     position: relative;
     height: 40px;
     // height:110px;
     text-align: center;
-
     .link-to {
       white-space: nowrap;
       padding: 8px 10px;
@@ -2160,13 +2405,11 @@ export default {
       text-decoration: none;
       color: #767a84;
       font-size: 16px;
-
       &:hover {
         color: #4270e4;
         font-weight: bold;
       }
     }
-
     .nav-newItem {
       position: absolute;
       top: 35px;
@@ -2177,46 +2420,37 @@ export default {
       background: #fff;
       text-align: center;
       box-shadow: 0px 3px 5px 0px rgba(72, 82, 93, 0.5);
-
       .newItem {
         background-color: #fff;
         height: 40px;
         line-height: 40px;
       }
     }
-
     &:hover .nav-newItem {
       display: block;
     }
   }
 }
-
 .now {
   border-bottom: 3px solid #4270e4;
   color: #4270e4 !important;
 }
-
 .nowchildren {
   border-bottom: 3px solid #4270e4;
   color: #4270e4 !important;
 }
-
 .header-nav .nav-item .nav-newItem .newItem {
   line-height: 30px;
 }
-
 .newItem:hover {
   background-color: #e7eef5 !important;
 }
-
 .colordiv {
   background-color: #d9dbde !important;
 }
-
 .colortip {
   background-color: #efeff0 !important;
 }
-
 .header-screen {
   width: 40px;
   height: 40px;
@@ -2224,13 +2458,11 @@ export default {
   border-radius: 4px;
   position: relative;
   cursor: pointer;
-
   img {
     width: 100%;
     height: 100%;
   }
 }
-
 .header-screen:hover {
   box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.6);
 }
@@ -2247,21 +2479,18 @@ export default {
   border-radius: 4px;
   z-index: 12;
   overflow: hidden;
-
   ul {
     width: 100%;
     height: 100%;
     list-style: none;
     padding: 10px;
     padding-bottom: 0px;
-
     li {
       width: 50%;
       height: 50%;
       float: left;
       cursor: pointer;
       position: relative;
-
       .screen_word {
         font-size: 8px;
         height: calc(100% - 35px);
@@ -2271,7 +2500,6 @@ export default {
         position: absolute;
         bottom: 0;
       }
-
       img {
         width: 35px;
         height: 35px;
@@ -2284,7 +2512,6 @@ export default {
     }
   }
 }
-
 .app-list {
   position: absolute;
   top: 50px;
@@ -2297,7 +2524,6 @@ export default {
   border-radius: 4px;
   z-index: 12;
   overflow: hidden;
-
   ul {
     width: 100%;
     height: 100%;
@@ -2306,7 +2532,6 @@ export default {
     // padding-bottom: 0px;
     font-size: 16px;
     color: #222222;
-
     li {
       width: 100%;
       height: 50%;
@@ -2314,7 +2539,6 @@ export default {
       cursor: pointer;
       position: relative;
       line-height: 40px;
-
       .screen_word {
         font-size: 8px;
         height: calc(100% - 35px);
@@ -2324,14 +2548,12 @@ export default {
         position: absolute;
         bottom: 0;
       }
-
       &:hover {
         background: #e7eef5;
       }
     }
   }
 }
-
 .app-conter {
   // padding-top: 20px;
   width: 90%;
@@ -2341,10 +2563,8 @@ export default {
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
-
   .app-conter-head {
     margin: 20px 0;
-
     .head-item {
       width: 50%;
       display: inline-block;
@@ -2354,25 +2574,21 @@ export default {
       background: #dcdcdc;
       border-bottom: 3px solid #d2d2d2;
       box-sizing: border-box;
-
       &:hover {
         background: #e5e5e5;
       }
     }
-
     .head-item-selected {
       color: #1d89ed;
       border-bottom: 3px solid #1d89ed;
     }
   }
-
   .app-conter-body {
     background: #e5e5e5;
     height: 340px;
     border: 1px solid #d5d5d5;
     border-radius: 6px;
     position: relative;
-
     .app-android-class {
       position: absolute;
       top: 15%;
@@ -2391,7 +2607,6 @@ export default {
         background: #34bc83;
         border-radius: 5px;
         padding: 10px;
-
         // left: 50%;
         // margin-left: -80px;
         img {
@@ -2399,7 +2614,6 @@ export default {
           height: 100%;
         }
       }
-
       .app-android-v {
         font-size: 16px;
         font-family: Source Han Sans CN;
@@ -2408,17 +2622,14 @@ export default {
         padding: 10px 0;
       }
     }
-
     .app-ios-class {
       overflow: hidden;
       height: 100%;
-
       .app-ios-item {
         float: left;
         width: 50%;
         position: relative;
         height: 100%;
-
         .ios-tags-icon {
           box-sizing: border-box;
           background: rgba(0, 0, 0, 0.2);
@@ -2429,7 +2640,6 @@ export default {
           display: inline-block;
           text-align: center;
         }
-
         .ios-tips {
           font-size: 12px;
           font-family: Source Han Sans CN;
@@ -2437,29 +2647,23 @@ export default {
           color: #666666;
           padding-left: 24px;
         }
-
         .ios-text {
           padding: 10px;
           padding-left: 20px;
         }
-
         .app-ios-top {
           top: 20%;
         }
-
         .ios-left {
           background: #1678ff;
         }
-
         .ios-left-text {
           color: #1678ff;
         }
       }
     }
-
     .app-android-btn {
       box-sizing: border-box;
-
       .app-btn-copyimg {
         box-sizing: border-box;
         background: #ffffff;
@@ -2474,7 +2678,6 @@ export default {
         margin-right: 30px;
         cursor: pointer;
       }
-
       .app-btn-keepimg {
         background: #386df0;
         // border: 1px solid #386df0;
@@ -2489,25 +2692,21 @@ export default {
       }
     }
   }
-
   .app-engineering-conter {
     background: #eeeeee;
     height: 100%;
     border: 0px;
     border-radius: 0px;
     position: relative;
-
     .app-engineering-img {
       background: #e5e5e5;
       border: 1px solid #d5d5d5;
       border-radius: 6px;
       padding: 20px;
     }
-
     .engineering-top {
       top: 10%;
     }
-
     .app-engineering-text {
       font-size: 16px;
       font-family: Source Han Sans CN;
@@ -2516,11 +2715,9 @@ export default {
       text-align: center;
       padding: 20px 0 0;
     }
-
     .engineering-bg {
       background: #ffffff !important;
     }
-
     .engineering-tips {
       font-size: 14px;
       font-family: Source Han Sans CN;
@@ -2530,11 +2727,9 @@ export default {
     }
   }
 }
-
 .colordiv1 {
   color: #333333 !important;
 }
-
 .appsoftware {
   width: 600px !important;
 }
@@ -2542,4 +2737,13 @@ export default {
 // .v-toolbar{
 //     display: none;
 // }
+
+.test-btn {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  z-index: 99999;
+  background: green;
+}
 </style>

@@ -1611,7 +1611,7 @@ this.tipchange = true;
                     } else {
                         this.meaddtable.PrMethod = this.lang.QualityManage_HT_ItemEditWindowViewModel_Automatic;
                     }
-                    if (!JSON.parse(sessionStorage.getItem('userInfo'))) {
+                    if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
                         this.meaddtable.loginUserID = JSON.parse(
                             sessionStorage.getItem('sightseerInfo1')
                         ).SCMSUserID;

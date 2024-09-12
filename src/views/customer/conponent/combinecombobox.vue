@@ -12,11 +12,8 @@
         @contextmenu.prevent name="combinecombobox" :style="'position:absolute; left:' + item.left + 'px; top:' + item.top
         + 'px; boxSizing:border-box; text-align:center; line-height: ' + (item.height - item.BorderThickness * 2)
         + 'px; width:' + item.width + 'px; height:' + item.height + 'px;opacity:'
-        + item.opacity + ';overflow:hidden;zIndex:' + item.ZIndex
-        + ';transform:rotate(' + item.rotate + 'deg);boxShadow:' + item.Shadow
-        + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
-        + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`
-        /* + `;${item.showBorder ? `border: ${item.BorderThickness}px solid ${item.borderStyle}` : `padding: ${item.BorderThickness}px`}` */ ">
+        + item.opacity + ';overflow:hidden;zIndex:' + item.ZIndex + ';padding:' + item.BorderThickness
+        + 'px;background:' + item.BorderBrush + ';transform:rotate(' + item.rotate + 'deg);boxShadow:' + item.Shadow">
         <el-select @focus="selectClick($event, item)" v-model="item.value" clearable
           :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose" v-if="show" @click.native="clickTextFun(item)"
           @change="tagAxios(item)" :style="'width:100%;height:100%;'">
@@ -201,6 +198,7 @@ export default {
                         }
                       }
                     } else {
+
                       if (Number(item.Data) == Number(res.value)) {
                         if (!item.IsDefault) {
                           $this.dataValue[i].value = item.Name
@@ -649,32 +647,26 @@ export default {
 
 
       //边框色渐变
-      let showLinear = false
-      let linearStyle = ''
       if (borderbrushArr.ColorType == 'SolidColor') {
         borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
       } else {
-        // 此处为渐变色
-        let linearColor = ''
+        borderColor = ''
         lagel3 = borderbrushArr.Data.Angel.toFixed(0)
         var borColor1
         var borColor2
         for (var f2 = 0; f2 < borderbrushArr.Data.GradientStops.length; f2++) {
           gradient3 = borderbrushArr.Data.GradientStops[f2]
-          linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset * 100).toFixed(0) + '%'
+          borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset * 100).toFixed(0) + '%'
           borColor1 = borderbrushArr.Data.GradientStops[0].Color
           borColor2 = borderbrushArr.Data.GradientStops[1].Color
         }
-        // borderColor = '-webkit-linear-gradient(' + lagel3 + 'deg' + borderColor + ')';
-        showLinear = true
-        borderColor = 'transparent'
-        linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
+        borderColor = '-webkit-linear-gradient(' + lagel3 + 'deg' + borderColor + ')';
       }
       //背景色渐变
       if (backgroundArr.ColorType == 'SolidColor') {
         backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
         if (backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF") {
-          // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+          borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
         }
       } else {
         backColor = ''
@@ -693,9 +685,7 @@ export default {
         backgroundColor: backgroundColor,
         clipText: clipText,
         borderColor: borderColor,
-        backColor: backColor,
-        showLinear,
-        linearStyle
+        backColor: backColor
       }
       return value
     },
@@ -792,9 +782,7 @@ export default {
                 options: '',
                 ComId: '',
                 ComNmame: '',
-                ZIndex: this.ZIndex,
-                showLinear: colorData.showLinear,
-                linearStyle: colorData.linearStyle
+                ZIndex: this.ZIndex
               }
               this.dataValue.push(value)
 
@@ -862,9 +850,7 @@ export default {
                   options1: '',
                   ComId: '',
                   ComNmame: '',
-                  ZIndex: this.ZIndex,
-                  showLinear: colorData.showLinear,
-                  linearStyle: colorData.linearStyle
+                  ZIndex: this.ZIndex
                 }
                 this.dataValue.push(value5)
 
@@ -936,9 +922,7 @@ export default {
             options1: '',
             ComId: '',
             ComNmame: '',
-            ZIndex: this.ZIndex,
-            showLinear: colorData.showLinear,
-            linearStyle: colorData.linearStyle
+            ZIndex: this.ZIndex
           }
           this.dataValue.push(value8)
 

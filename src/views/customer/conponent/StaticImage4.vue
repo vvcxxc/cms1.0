@@ -15,7 +15,7 @@
    @mouseup="seupClick(item,$event)"
       :class="item.class" class="imgVue" :style="'width:'+ item.width + 'px; height:' + item.height + 'px; opacity:' + item.opacity 
       + '; position:absolute; left:' + item.left  + 'px; top:' + item.top + 'px; transform:rotate(' + item.rotate + 'deg);zIndex:'+item.ZIndex" >
-        <img class="boximg" :src="encodeURIComponent(item.source)" :class="{cimg:bl==1}">
+        <img class="boximg" :src="item.source" :class="{cimg:bl==1}">
       </div>
 
     <!-- 权限弹窗 -->
@@ -107,17 +107,6 @@ export default {
         }
     },
   methods: {
-    axioImg2(arr){
-      console.log('这里还有图片可以玩哟',arr)
-      console.log(this.dataValue)
-      arr.forEach((item)=>{
-        this.dataValue.forEach((item1)=>{
-          if(item.ControlName == item1.class){
-            item1.source = item.PictureUrl
-          }
-        })
-      })
-    },
     init(){
       this.dataValue = []
             //数据筛选
@@ -333,12 +322,7 @@ export default {
         
           j = item.PropertyList.Source.slice(0,item.PropertyList.Source.length-3)
           jc = item.PropertyList.Source.slice(item.PropertyList.Source.length-3,item.PropertyList.Source.length)
-         if(item.PropertyList.Source.includes('http:')){
-                SourceSrc = `${item.PropertyList.Source}`
-          }else{
-              SourceSrc = jc == 'JPG' ? `/ViewImage/${this.name}/${j}jpg` : `/ViewImage/${this.name}/${item.PropertyList.Source}`
-          }
-      
+          SourceSrc = jc == 'JPG' ? `/ViewImage/${this.name}/${j}jpg` : `/ViewImage/${this.name}/${item.PropertyList.Source}`
           // SourceSrc = jc == 'JPG' ? require(`../../../ViewImage/${this.name}/${j}jpg`) : require(`../../../ViewImage/${this.name}/${item.PropertyList.Source}`)
         }else{
            SourceSrc = require(`../../../assets/images/DynamicPicture.png`)

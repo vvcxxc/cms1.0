@@ -80,8 +80,8 @@
         <template slot-scope="scope">{{scope.$index + 1}}</template>
       </el-table-column>
       <el-table-column prop="TaskTypeStr" :label="lang.MsgPush_Log_MsgType"></el-table-column>
-      <el-table-column prop="ConfigName" :label="lang.PushMessage_GroupName"></el-table-column>
       <el-table-column prop="TaskName" :label="lang.PushMessage_TaskName"></el-table-column>
+      <el-table-column prop="ConfigName" :label="lang.PushMessage_ContenName"></el-table-column>
       <el-table-column prop="PushChannelStr" :label="lang.PushMessage_PushChannel"></el-table-column>
       <el-table-column prop="PushTime" :label="lang.MsgPush_Log_PushTime">
         <template slot-scope="scope">{{scope.row.PushTime.replace('T', ' ')}}</template>
@@ -102,9 +102,6 @@
 <script>
 import MyPage from '@/components/public/Pages.vue';
 import TipsPop from '../customer/TipsPop.vue'
-import { findPathByLeafId, getUrlParam } from '@/utils/index.js'
-import { getMessageType } from '@/api/push-message/index'
-
 export default {
   components: { MyPage,TipsPop },
   data() {
@@ -122,19 +119,7 @@ export default {
           },
           {
             value: '1',
-            label: '报警消息'
-          },
-          {
-            value: '100',
-            label: '代办巡检'
-          },
-          {
-            value: '101',
-            label: '代办保养'
-          },
-          {
-            value: '102',
-            label: '代办维修'
+            label: '报警类型'
           }
         ],
         channlType: [
@@ -164,10 +149,6 @@ export default {
             value: '3',
             label: '全部失败'
           },
-          {
-            value: '4',
-            label: '包含发送中'
-          },
         ]
       },
       form: {
@@ -186,25 +167,9 @@ export default {
         LastEnabled: false,
         NextEnabled: false
       },
-      /* 权限 */
-      showSearch: true,
     };
   },
   methods: {
-    getMessageList () {
-      let $this = this
-      getMessageType().then(res => {
-        $this.options.taskType = res.data.data
-        $this.options.taskType = $this.options.taskType.map((item) => ({
-          value: item.Value,
-          label: item.Label
-        }))
-        $this.options.taskType.unshift({
-          value: '0',
-          label:$this.lang.AlarmRecord_HT_Unlimited
-        })
-      })
-    },
     // 获取今天 state: 'startTime'开始时间  'endTime'结束时间
     toDay(state) {
       var y = new Date().getFullYear();
@@ -221,13 +186,9 @@ export default {
       this.isTipsPop = false
     },
     query(id) {
-      if (!this.showSearch) {
-        this.confirm_Pop2(this, this.lang.NoOperationAuthority, {tips: this.lang.HT_MessageBoxCaption_Tips, yes: this.lang.PushMessage_Confirm })
-        return
-      }
       let _query = () => {
         if (new Date(this.form.endTime) - new Date(this.form.startTime) < 0 ) {
-          this.$message.warning(this.lang.AlarmRecord_HT_TheQueryDate);
+          this.$message.warning('结束时间不能比开始时间早');
           return;
         }
         let data = {
@@ -246,7 +207,7 @@ export default {
           this.pageData.PageIndex = ref.data.data.ParameterList.PageIndex;
           this.pageData.TotalCount = ref.data.data.ParameterList.TotalCount;
           this.pageData.TotalPage = ref.data.data.ParameterList.TotalPage;
-          console.log("列表", JSON.parse(JSON.stringify(this.list)));
+          // console.log("列表", JSON.parse(JSON.stringify(this.list)));
         }, err => {
           console.log('失败回调', err);
         })
@@ -275,10 +236,7 @@ export default {
     translation() {
       this.TipsPopText = this.lang.NoOperationAuthority
       this.options.taskType[0].label = this.lang['不限'] || ''
-      this.options.taskType[1].label = this.lang.MsgPush_Alarm || ''
-      this.options.taskType[2].label = this.lang['代办巡检'] || ''
-      this.options.taskType[3].label = this.lang['代办保养'] || ''
-      this.options.taskType[4].label = this.lang['代办维修'] || ''
+      this.options.taskType[1].label = this.lang.AlarmStatistics_subtablecell0 || ''
 
       this.options.channlType[0].label = this.lang['不限'] || ''
       this.options.channlType[1].label = this.lang.PushMessage_PushApp
@@ -287,7 +245,6 @@ export default {
       this.options.pushStatus[1].label = this.lang.MsgPush_Log_AllSuccessful
       this.options.pushStatus[2].label = this.lang.MsgPush_Log_ContainFailure
       this.options.pushStatus[3].label = this.lang.MsgPush_Log_AllFailed
-      this.options.pushStatus[4].label = this.lang.MsgPush_Log_HasSending
     },
     async init() {
       this.translation();
@@ -299,54 +256,38 @@ export default {
       var powerData = this.$store.state.btnPowerData
       var btnList = [] // 按钮数据列表
       var btnObj = {} // 按钮对象是为了能根据key快速查询对应的按钮数据
-      // // 获取按钮权限ID
-      // for (let i = 0, iLen = powerData.length; i < iLen; i++) {
-      //     const Children = powerData[i].Children;
-      //     for (let n = 0, nLen = Children.length; n < nLen; n++) {
-      //         const item = Children[n];
-      //         if (item.RightDesc === '消息推送') {
-      //             btnList = item.Children;
-      //             break
-      //         }
-      //     }
-      //     if (btnList.length) break;
-      // }
-      // btnList.forEach((item) => {
-      //     btnObj[item.RightDesc] = item
-      // });
-      // this.buttonid = {
-      //   bjtsczid:btnObj['报警信息-推送任务操作按钮'].RightID,
-      //   bjtsckid:btnObj['报警信息-推送内容查看按钮'].RightID,
-      //   bjcxid:btnObj['报警信息-查询按钮'].RightID,
-      //   bjpzcz:btnObj['报警信息-账户配置操作按钮'].RightID,
-      //   bjpzid:btnObj['报警信息-配置按钮'].RightID,
-      //   tsrzcxid:btnObj['推送日志-查询按钮'].RightID
-      // }
-
-      this.buttonarr = findPathByLeafId(getUrlParam('id'), powerData)[0].Children
-      this.buttonarr.forEach((item) => {
+      // 获取按钮权限ID
+      for (let i = 0, iLen = powerData.length; i < iLen; i++) {
+          const Children = powerData[i].Children;
+          for (let n = 0, nLen = Children.length; n < nLen; n++) {
+              const item = Children[n];
+              if (item.RightDesc === '消息推送') {
+                  btnList = item.Children;
+                  break
+              }
+          }
+          if (btnList.length) break;
+      }
+      btnList.forEach((item) => {
           btnObj[item.RightDesc] = item
       });
       this.buttonid = {
-        // bjtsczid:btnObj['报警信息-推送任务操作按钮'].RightID,
-        // bjtsckid:btnObj['报警信息-推送内容查看按钮'].RightID,
-        // bjcxid:btnObj['报警信息-查询按钮'].RightID,
-        // bjpzcz:btnObj['报警信息-账户配置操作按钮'].RightID,
-        // bjpzid:btnObj['报警信息-配置按钮'].RightID,
+        bjtsczid:btnObj['报警信息-推送任务操作按钮'].RightID,
+        bjtsckid:btnObj['报警信息-推送内容查看按钮'].RightID,
+        bjcxid:btnObj['报警信息-查询按钮'].RightID,
+        bjpzcz:btnObj['报警信息-账户配置操作按钮'].RightID,
+        bjpzid:btnObj['报警信息-配置按钮'].RightID,
         tsrzcxid:btnObj['推送日志-查询按钮'].RightID
       }
-      this.isPower(this.buttonid.tsrzcxid).then((val)=>{
-        this.showSearch = val
+      this.isPower(this.buttonid.bjtsczid).then((val)=>{
+        this.showbjtscz = val
       })
-      // this.isPower(this.buttonid.bjtsczid).then((val)=>{
-      //   this.showbjtscz = val
-      // })
-      // this.isPower(this.buttonid.bjpzcz).then((val)=>{
-      //   this.showbjpz = val
-      // })
-      // this.isPower(this.buttonid.bjtsckid).then((val)=>{
-      //   this.showbjtsck = val
-      // })
+      this.isPower(this.buttonid.bjpzcz).then((val)=>{
+        this.showbjpz = val
+      })
+      this.isPower(this.buttonid.bjtsckid).then((val)=>{
+        this.showbjtsck = val
+      })
     },
     // 该用户是否有权限
     isPower(id) {
@@ -366,7 +307,6 @@ export default {
     }
   },
   created() {
-    this.getMessageList()
     this.init()
   }
 };

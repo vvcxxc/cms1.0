@@ -1,395 +1,337 @@
 <template>
   <div class="alarm-message flex">
-    <div class="form" >
-      <search-form :config="searchConfig" :formData="formData" @searchData="searchData"/>
+    <div class="form flex">
+      <span>{{lang.PushMessage_SearchKey}}：</span>
+      <el-select v-model="queryType" :placeholder="lang.PushMessage_PleaseSelect"
+        style="margin: 0 10px 0 0 ; width: 140px;"
+        size="medium"
+      >
+        <el-option
+          v-for="item in options.searchType"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <el-input v-model="queryKey" size="medium" :placeholder="lang.PushMessage_PleaseEnter"
+        style="margin: 0 10px 0 0; width: 180px;"
+      ></el-input>
+      <el-button @click="query('id')" type="primary" size="mini">{{ lang.PushMessage_Query }}</el-button>
+      <el-button type="primary" size="mini" class="yellow-btn"
+        @click="showPushAccountConfig"
+      >{{ lang.PushMessage_Config }}</el-button>
     </div>
-    <div class="content">
-      <push-left-group
-        class="push-task"
-        :tableData="leftData"
-        ref="leftTable"
-        :currentRow="leftCurrentRow"
-        :powers="powerBtn.groupBtn"
-        :config="config"
-        @rowClick="leftRowClick"
-        @refreshData="refreshLeftData"
-        @noChangeSwitch="leftNoChangeSwitch"
-      />
-      <push-middle-task
-        class="push-content"
-        :tableData="middleData"
-        ref="middleTable"
-        :formData="formData"
-        :parentCurrentRow="leftCurrentRow"
-        :currentRow="middleCurrentRow"
-        :powers="powerBtn.taskBtn"
-        :config="config"
-        @rowClick="middleRowClick"
-        @refreshData="refreshMiddleData"
-      />
-      <push-right-config
-        class="push-config"
-        :tableData="rightData"
-        ref="rightTable"
-        :parentCurrentRow="middleCurrentRow"
-        :currentRow="rightCurrentRow"
-        :powers="powerBtn.configBtn"
-        :config="config"
-        @rowClick="rightRowClick"
-        @refreshData="refreshRightData"
-        @noChangeSwitch="rightNoChangeSwitch"
-      />
+    <div class="content flex">
+      <push-task :showbjtscz="showbjtscz" :taskList="taskList" @selectTask="selectTask" class="push-task"></push-task>
+      <push-content :showbjtsck="showbjtsck" :contentList="contentList" @selectContent="selectContent" class="push-content"></push-content>
+      <account-config :showbjpz="showbjpz" :accountList="accountList" class="push-account-cconfig"></account-config>
+    </div>
+
+    <!-- 推送用户配置 -->
+    <el-dialog
+      :title="lang.PushMessage_PushUserConfig"
+      width="80%"
+      class="push-content-details-dialog flex"
+      :visible.sync="pushAccountConfig.dialog"
+      :before-close="() => {pushAccountConfig.dialog = false}"
+    >
+      <push-account-config 
+        v-if="pushAccountConfig.dialog" 
+        :contentData="contentData"
+        @hidePushAccountConfig="hidePushAccountConfig"
+      ></push-account-config>
+    </el-dialog>
+
+    <!-- 无权限提示框 -->
+    <div v-if="isTipsPop" class="TipsPop-box">
+      <TipsPop :popText="TipsPopText"></TipsPop>
     </div>
   </div>
 </template>
 <script>
-import SearchForm from './components/search-form'
-import PushLeftGroup from './components/push-left-group'
-import PushMiddleTask from './components/push-middle-task'
-import PushRightConfig from './components/push-right-config'
-import { getGroup, getTask, getConfig } from '@/api/push-message/index'
-import { getPowerById } from '@/api/common.js'
-import { findPathByLeafId, getUrlParam } from '@/utils/index.js'
-
+import PushTask from '@/components/push-message/push-task.vue';
+import PushContent from '@/components/push-message/push-content.vue';
+import AccountConfig from '@/components/push-message/account-config.vue';
+import PushAccountConfig from '@/components/push-message/push-account-config.vue';
+import TipsPop from '../customer/TipsPop.vue'
 export default {
-  name: 'AlarmMessage',
-  components: { SearchForm, PushLeftGroup, PushMiddleTask, PushRightConfig },
+  components: { PushTask, PushContent, AccountConfig, PushAccountConfig, TipsPop },
   data() {
     return {
       lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
-      leftData: [],
-      leftCurrentRow: null,
-      middleData: [],
-      middleCurrentRow: null,
-      rightData: [],
-      rightCurrentRow: null,
-      searchConfig: {
-        form: [
+      options: {
+        searchType: [
           {
-            type: 'select',
-            inputWidth: '200px',
-            prop: 'SearchType',
-            name: '搜索关键字：',
-            options: [
-              {
-                label: '分组名称',
-                value: 1
-              },
-              {
-                label: '任务名称',
-                value: 2
-              },
-              {
-                label: '推送名单',
-                value: 3
-              },
-            ]
+            value: 'task',
+            label: '任务名称'
           },
           {
-            type: 'input',
-            width: '280px',
-            prop: 'Keyword',
+            value: 'content',
+            label: '内容名称'
           },
           {
-            type: 'btn',
-            powerShow: true,
-            name: '查询',
-          }
+            value: 'account',
+            label: '推送账户'
+          },
         ],
       },
-      formData: {
-        GroupType: 1,
-        SearchType: 1,
-        Keyword: ''
+      
+      queryType: 'task',
+      queryKey: '',
+      
+      taskData: null, // 任务数据
+      contentData: null, // 内容数据
+
+      localData: {
+        contentList: [],
+        accountList: []
       },
-      config: {
-        origin: '报警消息推送'
+      taskList: [],
+      contentList: [],
+      accountList: [],
+
+      pushAccountConfig: {
+        dialog: false
       },
-      /* 权限处理 */
-      powerBtn: {
-        groupBtn: {
-          searchId: '',
-          addId: '',
-          updId: '',
-          delId: '',
-          handleId: '',
-          search: true,
-          add: true,
-          upd: true,
-          del: true,
-          handle: true,
-        },
-        taskBtn: {
-          copy: true,
-          add: true,
-          upd: true,
-          del: true,
-          copyId: '',
-          addId: '',
-          updId: '',
-          delId: '',
-        },
-        configBtn: {
-          add: true,
-          upd: true,
-          del: true,
-          handle: true,
-          addId: '',
-          updId: '',
-          delId: '',
-          handleId: '',
-        },
-      }
+
+      // 权限变量
+      TipsPopText: '该用户没有操作权限',
+      isTipsPop: false,
+      buttonid: {},
+      bjpzcz: false,
+      showbjtscz: true,
+      showbjpz: true,
+      showbjtsck: true
     };
   },
-  async created () {
-    // 权限
-    await this.getPower()
-  },
-  mounted(){
-    this.searchConfig = {
-       form: [
-          {
-            type: 'select',
-            inputWidth: '200px',
-            prop: 'SearchType',
-            name: this.lang.PushMessage_PleaseEnterKeyword + "：",
-            options: [
-              {
-                label: this.lang.PushMessage_GroupName,
-                value: 1
-              },
-              {
-                label: this.lang.PushMessage_TaskName,
-                value: 2
-              },
-              {
-                label: this.lang.PushMessage_PushList,
-                value: 3
-              },
-            ]
-          },
-          {
-            type: 'input',
-            width: '280px',
-            prop: 'Keyword',
-          },
-          {
-            type: 'btn',
-            powerShow: true,
-            name: this.lang.PushMessage_Query,
-          }
-        ],
-    }
-    this.searchData(this.formData)
-  },
   methods: {
-    // 权限
-    getPower() {
-      //  return new Promise((resolve, reject) => {
-      //   getLimitTree().then(res => {
-      //     resolve(res.data.data)
-      //   })
-      // })
-      let $this = this
-      let powers = this.$store.state.btnPowerData
-      this.buttonarr = findPathByLeafId(getUrlParam('id'), powers)[0].Children
-      this.buttonarr.forEach((item) => {
-        // 分组按钮权限
-        if (item.RightDesc === '报警信息-查询按钮') {
-            this.powerBtn.groupBtn.searchId = item.RightID;
-        }
-        if (item.RightDesc === '报警信息-新增推送分组按钮') {
-            this.powerBtn.groupBtn.addId = item.RightID;
-        }
-        if (item.RightDesc === '报警信息-编辑推送分组按钮') {
-            this.powerBtn.groupBtn.updId = item.RightID;
-        }
-        if (item.RightDesc === '报警信息-删除推送分组按钮') {
-            this.powerBtn.groupBtn.delId = item.RightID;
-        }
-        if (item.RightDesc === '报警信息-操作推送分组按钮') {
-            this.powerBtn.groupBtn.handleId = item.RightID;
-        }
-        // 任务按钮权限
-        if (item.RightDesc === '报警信息-复制推送任务按钮') {
-            this.powerBtn.taskBtn.copyId = item.RightID;
-        }
-        if (item.RightDesc === '报警信息-新增推送任务按钮') {
-            this.powerBtn.taskBtn.addId = item.RightID;
-        }
-        if (item.RightDesc === '报警信息-编辑推送任务按钮') {
-            this.powerBtn.taskBtn.updId = item.RightID;
-        }
-        if (item.RightDesc === '报警信息-删除推送任务按钮') {
-            this.powerBtn.taskBtn.delId = item.RightID;
-        }
-        // 配置按钮权限
-        if (item.RightDesc === '报警信息-新增推送配置按钮') {
-            this.powerBtn.configBtn.addId = item.RightID;
-        }
-        if (item.RightDesc === '报警信息-编辑推送配置按钮') {
-            this.powerBtn.configBtn.updId = item.RightID;
-        }
-        if (item.RightDesc === '报警信息-删除推送配置按钮') {
-            this.powerBtn.configBtn.delId = item.RightID;
-        }
-        if (item.RightDesc === '报警信息-操作推送配置按钮') {
-            this.powerBtn.configBtn.handleId = item.RightID;
-        }
+    // 设置消息数据
+    setMsgData(data) {
+      this.taskList = data.TaskList;
+      this.contentList = [];
+      this.accountList = [];
+      this.localData.contentList = data.ContentList;
+      this.localData.accountList = data.UserConfigList;
+    },
+    // 搜索任务
+    queryTask() {
+      this.taskData = null;
+      this.$api.pushMessage.getTaskList({
+        key: this.queryKey,
+        type: 1,
+        pageIndex: '',
+        pageSize: ''
+      }).then(ref => {
+        // console.log("任务", JSON.parse(JSON.stringify(ref.data.data)));
+        this.setMsgData(ref.data.data)
+      }, err => {
+        console.log('失败回调', err);
+      })
+    },
+    // 获取内容列表-关键字
+    getContentByKey() {
+      this.$api.pushMessage.getContentByKey({
+        key: this.queryKey,
+        pageIndex: '',
+        pageSize: ''
+      }).then(ref => {
+        // console.log("内容-key", JSON.parse(JSON.stringify(ref.data.data)));
+        this.setMsgData(ref.data.data)
+      }, err => {
+        console.log('失败回调', err);
+      })
+    },
+    // 获取内容列表-本地
+    getContentByLocal() {
+      let arr = [];
+      this.localData.contentList.forEach((item) => {
+        if (item.TaskId === this.taskData.TaskId) arr.push(item)
       });
-      var userid = '';
-      if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
-        userid = JSON.parse(sessionStorage.getItem('sightseerInfo1')).SCMSUserID;
-      } else {
-        userid = JSON.parse(sessionStorage.getItem('userInfo1')).SCMSUserID;
-      }
-
-      /* 获取按钮权限 */
-      //  分组按钮
-      getPowerById(userid, this.powerBtn.groupBtn.searchId).then(res => {
-        $this.searchConfig.form[2].powerShow = res.data.data
-      })
-      this.getPowerBtn(userid, this.powerBtn.groupBtn.addId, 'groupBtn', 'add')
-      this.getPowerBtn(userid, this.powerBtn.groupBtn.updId, 'groupBtn', 'upd')
-      this.getPowerBtn(userid, this.powerBtn.groupBtn.delId, 'groupBtn', 'del')
-      this.getPowerBtn(userid, this.powerBtn.groupBtn.handleId, 'groupBtn', 'handle')
-      // 任务按钮
-      this.getPowerBtn(userid, this.powerBtn.taskBtn.copyId, 'taskBtn', 'copy')
-      this.getPowerBtn(userid, this.powerBtn.taskBtn.addId, 'taskBtn', 'add')
-      this.getPowerBtn(userid, this.powerBtn.taskBtn.updId, 'taskBtn', 'upd')
-      this.getPowerBtn(userid, this.powerBtn.taskBtn.delId, 'taskBtn', 'del')
-      // 配置按钮
-      this.getPowerBtn(userid, this.powerBtn.configBtn.addId, 'configBtn', 'add')
-      this.getPowerBtn(userid, this.powerBtn.configBtn.updId, 'configBtn', 'upd')
-      this.getPowerBtn(userid, this.powerBtn.configBtn.delId, 'configBtn', 'del')
-      this.getPowerBtn(userid, this.powerBtn.configBtn.handleId, 'configBtn', 'handle')
+      // console.log("内容-Local", JSON.parse(JSON.stringify(arr)));
+      this.contentList = arr
     },
-    getPowerBtn(userid, btnId, prop, innerProp) {
-      let $this = this
-      getPowerById(userid, btnId).then(res => {
-        $this.powerBtn[prop][innerProp] = res.data.data
+    // 获取已配置用户列表-关键字
+    getUserConfigByKey() {
+      this.$api.pushMessage.getUserConfigByKey({
+        key: this.queryKey,
+        pageIndex: '',
+        pageSize: ''
+      }).then(ref => {
+        // console.log("配置-key", JSON.parse(JSON.stringify(ref.data.data)));
+        this.setMsgData(ref.data.data)
+      }, err => {
+        console.log('失败回调', err);
       })
     },
-    async searchData(formData) {
-      let $this = this
-      await this.getLeftData(formData)
+    // 获取已配置用户列表-本地
+    getUserConfigByLocal() {
+      let arr = [];
+      this.localData.accountList.forEach((item) => {
+        if (item.ConfigId === this.contentData.ConfigId) arr.push(item)
+      });
+      // console.log("配置-Local", JSON.parse(JSON.stringify(arr)));
+      this.accountList = arr
     },
-    /* 左侧事件 */
-    async refreshLeftData (type = '') {
-      await this.getLeftData(this.formData)
-    },
-    leftNoChangeSwitch (index, value) {
-      this.leftData[index].IsLive = value
-    },
-    async getLeftData (data) {
-      let $this = this
-      let postData = {
-        GroupType: data.GroupType,
-        Keyword:  data.SearchType === 1 ? data.Keyword : '',
-        SearchType: data.SearchType
-      }
-      await getGroup(data).then((res) => {
-        this.leftData = res.data.data
-        this.setLeftCurrentRow()
-      })
-    },
-    setLeftCurrentRow () {
-      this.$nextTick(() => {
-        if (this.leftData.length !== 0) {
-          this.leftCurrentRow = this.leftData[0]
-          if (this.$refs.leftTable) {
-            this.$refs.leftTable.$refs.table.setCurrentRow(this.leftData[0])
-            this.getMiddleData()
-          }
-        } else {
-          this.leftCurrentRow = null
-          this.middleData = []
-          this.rightData = []
+    query(id) {
+      let _query = () => {
+        switch (this.queryType) {
+          case 'task':
+            this.queryTask();
+            break;
+          case 'content':
+            this.getContentByKey();
+            break;
+          case 'account':
+            this.getUserConfigByKey()
+            break;
+          default:
+            this.queryTask();
+            break;
         }
-      })
-    },
-    leftRowClick (row) {
-      this.leftCurrentRow = row
-      this.getMiddleData()
-    },
-    /* 中间事件 */
-    async refreshMiddleData (type = '') {
-      await this.getMiddleData()
-    },
-    async getMiddleData () {
-      let $this = this
-      let postData = {
-        GroupId: this.leftCurrentRow.Id,
-        Keyword: this.formData.SearchType === 2 ? this.formData.Keyword : '',
       }
-      await getTask(postData).then(res => {
-        this.middleData = res.data.data
-        this.setMiddleCurrentRow()
-      })
-    },
-    middleRowClick(row) {
-      this.middleCurrentRow = row
-      this.getRightData()
-    },
-    setMiddleCurrentRow () {
-      this.$nextTick(() => {
-         if (this.middleData.length !== 0) {
-           this.middleCurrentRow = this.middleData[0]
-           if (this.$refs.middleTable) {
-             this.$refs.middleTable.$refs.table.setCurrentRow(this.middleData[0])
-             this.getRightData()
-           }
-         } else {
-           this.middleCurrentRow = null
-           this.rightData = []
-         }
-      })
-    },
-    /* 右侧事件 */
-    refreshRightData (type = '') {
-      this.getRightData()
-    },
-    rightNoChangeSwitch (index, value) {
-      this.rightData[index].IsLive = value
-    },
-    getRightData () {
-      let $this = this
-      let postData = {
-        TaskId: this.middleCurrentRow.Id,
-        Keyword: this.formData.SearchType === 3 ? this.formData.Keyword : '',
+      if (this.queryKey && !this.queryType) {
+        this.$message.warning('请选择类型');
+        return;
       }
-      getConfig(postData).then(res => {
-        this.rightData = res.data.data
-        this.setRightCurrentRow()
+      if (!id) {
+        _query()
+        return;
+      }
+      this.isPower(this.buttonid.bjcxid).then((val)=>{
+        if (!val) {
+          this.isTipsPop = true;
+          return;
+        }
+        _query()
       })
     },
-    setRightCurrentRow () {
-      this.$nextTick(() => {
-         if (this.rightData.length !== 0) {
-           this.rightCurrentRow = this.rightData[0]
-           if (this.$refs.rightTable) {
-             this.$refs.rightTable.$refs.table.setCurrentRow(this.rightData[0])
-           }
-         } else {
-           this.rightCurrentRow = null
-         }
+
+    // 选择任务
+    selectTask(taskData) {
+      // console.log("选择任务", JSON.parse(JSON.stringify(taskData)));
+      this.taskData = taskData;
+      this.getContentByLocal()
+    },
+    // 选择内容
+    selectContent(contentData) {
+      // console.log("选择内容", JSON.parse(JSON.stringify(contentData)));
+      this.contentData = contentData;
+      this.getUserConfigByLocal()
+    },
+
+    // 筛选按钮数据
+    powerBtn() {
+      var powerData = this.$store.state.btnPowerData
+      var btnList = [] // 按钮数据列表
+      var btnObj = {} // 按钮对象是为了能根据key快速查询对应的按钮数据
+      // 获取按钮权限ID
+      for (let i = 0, iLen = powerData.length; i < iLen; i++) {
+        const Children = powerData[i].Children;
+        for (let n = 0, nLen = Children.length; n < nLen; n++) {
+          const item = Children[n];
+          if (item.RightDesc === '消息推送') {
+              btnList = item.Children;
+              break
+          }
+        }
+        if (btnList.length) break;
+      }
+      btnList.forEach((item) => {
+        btnObj[item.RightDesc] = item
+      });
+      this.buttonid = {
+        bjtsczid:btnObj['报警信息-推送任务操作按钮'].RightID,
+        bjtsckid:btnObj['报警信息-推送内容查看按钮'].RightID,
+        bjcxid:btnObj['报警信息-查询按钮'].RightID,
+        bjpzcz:btnObj['报警信息-账户配置操作按钮'].RightID,
+        bjpzid:btnObj['报警信息-配置按钮'].RightID,
+        tsrzcxid:btnObj['推送日志-查询按钮'].RightID
+      }
+      this.isPower(this.buttonid.bjtsczid).then((val)=>{
+        this.showbjtscz = val
+      })
+      this.isPower(this.buttonid.bjpzcz).then((val)=>{
+        this.showbjpz = val
+      })
+      this.isPower(this.buttonid.bjtsckid).then((val)=>{
+        this.showbjtsck = val
       })
     },
-    rightRowClick(row) {
-      this.rightCurrentRow = row
+    // 该用户是否有权限
+    isPower(id) {
+      return new Promise((resolve, reject) => {
+        var userinfo = JSON.parse(sessionStorage.getItem('userInfo1'));
+        var sightseerInfo1 = JSON.parse(sessionStorage.getItem('sightseerInfo1'));
+        var argUserID = (userinfo != null) ? argUserID = userinfo.SCMSUserID : argUserID = sightseerInfo1.SCMSUserID
+        this.$axios({ // 权限配置请求接口
+          method: 'post',
+          url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${argUserID}&argRightID=${id}`,
+        }).then(res => {
+          resolve(res.data.data)
+        },err => {
+          console.log('该用户是否有权限-报错', err)
+        })
+      })
+    },
+    // 设置账户通知配置
+    showPushAccountConfig() {
+      if (!this.contentData) {
+        this.$message.warning('请选择内容');
+        return;
+      }
+      this.isPower(this.buttonid.bjpzid).then(val => {
+        if (!val) {
+          this.isTipsPop = true
+          return;
+        }
+        this.pushAccountConfig.dialog = true
+      })
+    },
+    // 关闭账户通知配置 状态state: 'confirm'确定   'cancel'取消
+    hidePushAccountConfig(state) {
+      if (state === 'cancel') {
+        this.pushAccountConfig.dialog = false
+        return;
+      }
+      this.pushAccountConfig.dialog = false
+      let oldContentData = JSON.parse(JSON.stringify(this.contentData));
+      this.contentData = null
+      setTimeout(() => {
+        this.contentData = oldContentData
+      }, 500);
+    },
+    showtip(){
+      this.isTipsPop = true
+    },
+    //关闭弹窗提示
+    clonePopFun() {
+      this.isTipsPop = false
+    },
+    translation() {
+      this.TipsPopText = this.lang.NoOperationAuthority
+      this.options.searchType[0].label = this.lang.RepairManage_TaskName;
+      this.options.searchType[1].label = this.lang.MsgPush_Log_ContentName;
+      this.options.searchType[2].label = this.lang.PushMessage_PushAccount;
+    },
+    async init() {
+      this.translation();
+      await this.powerBtn()
+      this.query();
     }
+  },
+  created() {
+    this.init()
   }
 };
 </script>
 
 <style lang='scss' scoped>
+@import "@/assets/style/push-message.scss";
 .alarm-message {
   width: 100%;
   height: 100%;
   padding: 10px 20px;
   flex-direction: column;
-  background-color: #EEEEEE;
   & > .form {
     width: 100%;
     height: 60px;
@@ -400,24 +342,49 @@ export default {
   & > .content {
     width: 100%;
     height: calc(100% - 60px);
-    display: flex;
   }
 }
 .push-task {
-  width: 25%;
+  width: 30%;
   height: 100%;
   padding: 0 10px 0 0;
   flex-direction: column;
 }
 .push-content {
-  width: 25%;
+  width: 35%;
   height: 100%;
   padding: 0 10px 0 0;
   flex-direction: column;
 }
-.push-config {
-  width: 50%;
+.push-account-cconfig {
+  width: 35%;
   height: 100%;
   flex-direction: column;
+}
+.push-content-details-dialog {
+  margin: 0;
+}
+.push-content-details-dialog ::v-deep .el-dialog {
+  max-width: 1120px;
+  height: 820px;
+  margin: 0 !important;
+  // margin-top: 0;
+  .el-dialog__body {
+    width: 100%;
+    height: calc(100% - 45px);
+    overflow-y: auto;
+    background: #EEEEEE;
+  }
+}
+.TipsPop-box{
+  position: absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
 }
 </style>

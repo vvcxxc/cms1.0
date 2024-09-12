@@ -81,7 +81,7 @@
   }
 }
 .jexcel-content {
-    overflow: auto;
+    overflow: hidden;
 }
 
 table {
@@ -200,9 +200,7 @@ li {
 
 .page1 {
     overflow: hidden;
-    width: 268px;
-    display: flex;
-    justify-content: flex-end;
+    width: 200px;
     .start{
       background-color: #fff;
   }
@@ -616,10 +614,6 @@ button {
       position: absolute;
       right: 10px;
     }
-    .el-tree-node.is-current>.el-tree-node__content {
-      background-color: #4270E4;
-      color: #fff;
-    }
   }
   .selecttree{
     .el-tree-node__content{
@@ -925,7 +919,7 @@ td {
 }
 
 .jexcel-content {
-  overflow: auto;
+  overflow: hidden;
 
 }
 
@@ -1527,11 +1521,6 @@ video{
 }
 }
 
-.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
-  background-color: #4270E4;
-  color: #fff;
-}
-
 .el-popup-parent--hidden{
   .el-select-dropdown__item:hover{
     background-color: #ADD6FC !important; 
@@ -1582,10 +1571,10 @@ video{
 .el-button--primary{
   // display: flex;
   // justify-content: center;
-  // span{  // 此处影响到了全局样式，加个class单独修改吧
-  //   position: relative;
-  //   top: -2px;
-  // }
+  span{
+    position: relative;
+    top: -2px;
+  }
   // .header-search{
   //   position: absolute !important;
   //   top: 0 !important;

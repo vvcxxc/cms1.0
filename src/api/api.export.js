@@ -2,10 +2,12 @@
 
 import scms from "./scms";
 import pushMessage from "./push-message";
-import agency from "./agency";
+import locationManagement from "./rzdn/location-management";
+import agency from "./rzdn/agency";
 
 export default {
     scms,
     pushMessage,
+    locationManagement,
     agency
 }

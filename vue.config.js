@@ -1,16 +1,9 @@
 /*
- * @Description: 这是***页面（组件）
- * @Date: 2019-11-12 17:31:23
- * @Author: Tao
- * @LastEditors: Tao
- * @LastEditTime: 2021-03-17 15:09:27
- */
-/**
- * @description: vue-cli配置文件
- * @since: 2019-11-07 20:55:55
- * @Author: jawnwa22
- * @LastEditors: jawnwa22
- * @LastEditTime: 2019-11-07 21:18:34
+ * @Description  : 打包配置
+ * @Date         : 2019-11-12 17:31:23
+ * @Author       : Tao
+ * @LastEditors  : conghui li
+ * @LastEditTime : 2022-10-24 09:42:22
  */
 // http://192.168.1.142:8802/api/Base/PostRediusTest?varNameString=S7_TCP
 const webpack = require('webpack');
@@ -23,25 +16,12 @@ module.exports = {
         proxy: {
             '/api': {
                 //这里最好有一个 /
-                // 'http://192.168.1.123:8807'
-                // 192.168.2.134:8802
-                target: 'http://192.168.4.129:8806', // 后台接口域名
+                target: 'http://192.168.4.63:8802/', // 后台接口域名
                 ws: true, //如果要代理 websockets，配置这个参数
                 secure: false, // 如果是https接口，需要配置这个参数
                 changeOrigin: true, //是否跨域
                 pathRewrite: {
                     '^/api': '/api'
-                }
-            },
-            '/(ISAPI|SDK|webSocketVideoCtrlProxy)': {
-                target: 'http://127.0.0.1:5050', // 摄像头nginx接口地址
-                ws: true, //如果要代理 websocket
-                secure: false, // 如果是https接口，需要配置这个参数
-                changeOrigin: true, //是否跨域
-                pathRewrite: {
-                    '^/ISAPI': '/ISAPI',
-                    '^/SDK': '/SDK',
-                    '^/webSocketVideoCtrlProxy': '/webSocketVideoCtrlProxy'
                 }
             }
         }
@@ -57,13 +37,13 @@ module.exports = {
     chainWebpack: config => {
         config.module
             .rule('flv')
-            .test(/\.(flv|avi)$/)
+            .test(/\.(flv|avi|pdf)$/)
             .use('file-loader')
             .loader('file-loader')
             .end();
     },
     configureWebpack: {
-        devtool: 'source-map',
+        // devtool: 'source-map',
         externals: [
             {
                 './cptable': 'var cptable'
@@ -76,6 +56,5 @@ module.exports = {
                 'windows.jQuery': 'jquery'
             })
         ]
-    },
-    transpileDependencies: []
+    }
 };

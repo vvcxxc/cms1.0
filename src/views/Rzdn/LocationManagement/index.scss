@@ -1,0 +1,122 @@
+// 修改饿了吗默认样式
+::v-deep .el-dialog {
+  margin-top: 0  
+}
+
+.el-button--primary {
+  height: 36px;
+  background: #4270e4;
+}
+
+::v-deep .el-input__inner {
+  height: 40px;
+  line-height: 40px;
+}
+
+::v-deep .pages .el-input__inner {
+  width: 80px;
+  height: 28px;
+  border-radius: 0;
+}
+
+
+/* === 表格 开始 ========= */
+.el-table {
+  width: 100%;
+  height: 100%;
+}
+
+::v-deep .el-table th .cell {
+  word-break: break-word;
+}
+
+::v-deep .table-row-highlighted {
+  background: #eaedee;
+}
+
+::v-deep .table-row-default {
+  background: #ffffff;
+}
+
+::v-deep .el-table__body tr.current-row>td {
+  background-color: #D4DEFB;
+}
+::v-deep .el-table__body-wrapper {
+  height: calc(100% - 50px);
+}
+/* === 表格 结束 ========= */
+
+/* === dialog弹窗 开始 ========= */
+::v-deep .el-dialog__header {
+  padding: 10px 20px;
+  text-align: center;
+  background: #386DF0;
+}
+::v-deep .el-dialog__title {
+  font-size: 18px;
+  font-family: Source Han Sans CN;
+  font-weight: bold;
+  color: #EEEEEE;
+}
+::v-deep .el-dialog__headerbtn {
+  top: inherit;
+  .el-dialog__close {
+    font-size: 24px;
+    color: #EEEEEE;
+  }
+}
+.el-dialog__body {
+  padding: 20px 30px;
+  background: #EEEEEE;
+}
+/* === dialog弹窗 结束 ========= */
+
+
+
+
+.flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin basic-btn () {
+  min-width: 100px;
+  height: 40px;
+  padding: 0 10px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #46BE05;
+  background: white;
+  border: 2px solid #46BE05;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.basicbtn {
+  @include basic-btn();
+}
+
+.basicbtn-orange {
+  @include basic-btn();
+  color: #FFA424;
+  border-color: #FFA424;
+}
+
+.basicbtn-blue {
+  @include basic-btn();
+  color: #4270e4;
+  border-color: #4270e4;
+}
+
+.basicbtn-gray-fill {
+  @include basic-btn();
+  color: white;
+  background: gray;
+  border: 0;
+}

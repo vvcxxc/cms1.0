@@ -17,7 +17,7 @@
     <LineVue1 :dataId="dataId" :dae="data"></LineVue1>
       <RectangleVue2 :dataId="dataId" :dae="data"></RectangleVue2>
       <EllipseVue3 :dataId="dataId" :dae="data"></EllipseVue3>
-      <StaticImage4     ref="StaticImage4" :dataId="dataId" :name="name" :dae="data"></StaticImage4>
+      <StaticImage4 :dataId="dataId" :name="name" :dae="data"></StaticImage4>
       <StaticTextBlock5 :dataId="dataId" :dae="data"></StaticTextBlock5>
       <CornerButton6 ref="aaCornerButton6" :dataId="dataId" :dae="data"></CornerButton6>
       <PressButton7 ref="PressButton7" :dataId="dataId" :dae="data"></PressButton7>
@@ -56,11 +56,6 @@
       <!-- 矩阵控件 -->
       <MatrixGrid ref="MatrixGrid" :dataId="dataId" :dae="data"/>
       <MatrixGridSet ref="MatrixGridSet" :dataId="dataId" :dae="data"/>
-      <Camera
-        :dataId="dataId"
-        :name="name"
-        :dae="data"
-      ></Camera>
       <Combinecombobox
                     ref="aaCombinecombobox"
                     :dataId="dataId"
@@ -78,7 +73,6 @@ import MatrixGridSet from './conponent2/MatrixGridSet'
 import RectangleVue2 from './conponent2/RectangleVue2.vue'
 import EllipseVue3 from './conponent2/EllipseVue3.vue'
 import StaticImage4 from './conponent2/StaticImage4.vue'
-import Camera from './conponent2/Camera.vue'
 import StaticTextBlock5 from './conponent2/StaticTextBlock5.vue'
 import CornerButton6 from './conponent2/CornerButton6.vue'
 import PressButton7 from './conponent2/PressButton7.vue'
@@ -153,7 +147,6 @@ export default {
     MobileProductsT,
     DynamicProducts,
     Video,
-    Camera, // 摄像头
     TipsPop     //权限提示弹窗
     },
     props:['popdata'],
@@ -196,13 +189,6 @@ export default {
             }
           }
       },
-      '$store.state.staticImagearr':{
-            //静态图片数据
-            deep:true,
-            handler:function(n){
-              this.$refs.StaticImage4.axioImg2(this.$store.state.staticImagearr);
-            }
-        },
     //图表定时触发监听
      "$store.state.setTiemValue": {
       deep: true,
@@ -465,7 +451,7 @@ export default {
     //       }).then(res => {
       this.$axios({
               method: 'post',
-              url: `/api/Main/Main_GetViewJson?argViewName=${encodeURIComponent(name)}`,
+              url: `/api/Main/Main_GetViewJson?argViewName=${name}`,
           }).then(res => {
           this.$nextTick(()=>{
             var data =res.data

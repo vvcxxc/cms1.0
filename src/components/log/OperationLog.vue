@@ -29,68 +29,44 @@
                 <div class="tiphead1"></div>
                 <div class="img" @click="cancel2">
                     <img :src="no" alt />
-                </div>
-                {{ lang.LogManage_OperateRecordDetail_UserActionRecordDetails }}
+                </div>{{lang.LogManage_OperateRecordDetail_UserActionRecordDetails}}
             </div>
             <div class="tipcontent">
                 <div class="first">
                     <div class="time">
-                        <span>{{
-                            lang.LogManage_OperateRecordDetail_Time
-                        }}</span>
+                        <span>{{lang.LogManage_OperateRecordDetail_Time}}</span>
                         <input type="text" v-model="sestion.Time" disabled />
                     </div>
                     <div class="name">
-                        <span>{{
-                            lang.LogManage_OperateRecordDetail_Name
-                        }}</span>
-                        <input
-                            type="text"
-                            v-model="sestion.OperatorName"
-                            disabled
-                        />
+                        <span>{{lang.LogManage_OperateRecordDetail_Name}}</span>
+                        <input type="text" v-model="sestion.OperatorName" disabled/>
                     </div>
                 </div>
                 <div class="second">
                     <div class="time">
-                        <span>{{
-                            lang.LogManage_OperateRecordDetail_Object
-                        }}</span>
+                        <span>{{lang.LogManage_OperateRecordDetail_Object}}</span>
                         <input type="text" v-model="sestion.Target" disabled />
                     </div>
                     <div class="name">
-                        <span>{{
-                            lang.LogManage_OperateRecordDetail_Type
-                        }}</span>
-                        <input type="text" v-model="sestion.Type" disabled />
+                        <span>{{lang.LogManage_OperateRecordDetail_Type}}</span>
+                        <input type="text" v-model="sestion.Type" disabled/>
                     </div>
                 </div>
                 <div class="third">
-                    <span>{{
-                        lang.LogManage_OperateRecordDetail_Description
-                    }}</span>
-                    <textarea
-                        type="text"
-                        v-model="sestion.Description"
-                        disabled
-                    />
+                    <span>{{lang.LogManage_OperateRecordDetail_Description}}</span>
+                    <textarea type="text" v-model="sestion.Description" disabled/>
                 </div>
             </div>
         </div>
         <div class="tip11" ref="kongtiao3" v-show="tipchange1">
-            <div
-                class="tiphead"
-                style="position:absolute;width: 380px;height: 40px;"
-            ></div>
+             <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
             <div class="tiptop">
                 <img :src="gth" alt />
-                <span>{{ lang.Login_HintMessage_Hint }}</span>
+                <span>{{lang.Login_HintMessage_Hint}}</span>
             </div>
             <div class="tipcontanin">
-                <div class="w">{{ w }}</div>
-                <div class="tipdetermine" @click="tip2">
-                    {{ lang.MessageBox_Confrim }}
-                </div>
+                <div class="w">{{w}}</div>
+                <div class="tipdetermine" @click="tip2">{{lang.MessageBox_Confrim}}</div>
             </div>
         </div>
         <div class="cover3" v-if="tipchange1"></div>
@@ -157,38 +133,17 @@ export default {
             no: require('../../assets/images/no.png'),
             sestion: {},
             change: false,
-            lang: JSON.parse(localStorage.getItem('languages'))[
-                localStorage.getItem('currentLang')
-            ],
-            jurisdiction: [],
-            buttonarr: [],
-            cxid: '',
-            dcid: '',
-            xqid: '',
-            cxshow: true,
-            dcshow: true,
-            xqshow: true
+            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
-    },
-    computed: {
-        VpowerData() {
-            return this.$store.state.btnPowerData;
-        }
-    },
-    watch: {
-        VpowerData(val) {
-            this.btnPowerData();
-        }
     },
     mounted() {
         this.a1 = Number(parseFloat(window.screen.width / 1920).toFixed(2));
         if (this.a1 < 1) {
             this.a1 = 0.8;
         }
-        this.btnPowerData();
     },
     created() {
-        this.getLangData();
+        this.getLangData()
         let argStartTime = this.$getDate(
             new Date(new Date().toLocaleDateString()).getTime()
         );
@@ -204,101 +159,6 @@ export default {
         this.req(1);
     },
     methods: {
-        btnPowerData() {
-            this.jurisdiction = this.$store.state.btnPowerData;
-            this.buttonarr = this.findPathByLeafId(
-                this.GetUrlParam('id'),
-                this.jurisdiction
-            )[0].Children;
-            console.log('nut', this.buttonarr);
-            this.buttonarr.forEach(item => {
-                if (item.RightName == '用户操作记录-查询按钮') {
-                    this.cxid = item.RightID;
-                } else if (item.RightName == '用户操作记录-详情') {
-                    this.xqid = item.RightID;
-                } else if (item.RightName == '用户操作记录-导出按钮') {
-                    this.dcid = item.RightID;
-                }
-            });
-            var userid = '';
-            if (!JSON.parse(sessionStorage.getItem('userInfo1'))) {
-                userid = JSON.parse(sessionStorage.getItem('sightseerInfo1'))
-                    .SCMSUserID;
-            } else {
-                userid = JSON.parse(sessionStorage.getItem('userInfo1'))
-                    .SCMSUserID;
-            }
-            this.$axios({
-                method: 'post',
-                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.cxid}`
-            })
-                .then(res => {
-                    this.cxshow = res.data.data;
-                })
-                .catch(err => {
-                    console.log('err', err);
-                });
-            this.$axios({
-                method: 'post',
-                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.xqid}`
-            })
-                .then(res => {
-                    this.xqshow = res.data.data;
-                })
-                .catch(err => {
-                    console.log('err', err);
-                });
-            this.$axios({
-                method: 'post',
-                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.dcid}`
-            })
-                .then(res => {
-                    this.dcshow = res.data.data;
-                })
-                .catch(err => {
-                    console.log('err', err);
-                });
-        },
-        findPathByLeafId(id, node, path) {
-            if (!path) {
-                path = [];
-            }
-            for (let i = 0; i < node.length; i++) {
-                var temPath = path.concat();
-
-                if (id == node[i].RightID) {
-                    temPath.push(node[i]);
-                    return temPath;
-                }
-                if (node[i].Children) {
-                    var findResult = this.findPathByLeafId(
-                        id,
-                        node[i].Children,
-                        temPath
-                    );
-                    if (findResult) {
-                        return findResult;
-                    }
-                }
-            }
-        },
-        GetUrlParam(paraName) {
-            let url = document.location.toString();
-            let arrObj = url.split('?');
-            if (arrObj.length > 1) {
-                let arrPara = arrObj[1].split('&');
-                let arr;
-                for (let i = 0; i < arrPara.length; i++) {
-                    arr = arrPara[i].split('=');
-                    if (arr && arr[0] == paraName) {
-                        return arr[1];
-                    }
-                }
-                return '';
-            } else {
-                return '';
-            }
-        },
         getLangData() {
             this.searchList = [
                 {
@@ -316,45 +176,40 @@ export default {
                     type: 'key',
                     placeholder: this.lang.LogManage_OperationRecord_Operator
                 }
-            ];
+            ]
             this.tableHead = {
                 Time: this.lang.LogManage_OperationRecord_DataGrid_Time,
-                OperatorName: this.lang
-                    .LogManage_OperationRecord_DataGrid_Operator,
+                OperatorName: this.lang.LogManage_OperationRecord_DataGrid_Operator,
                 Target: this.lang.LogManage_OperationRecord_DataGrid_Target,
                 Type: this.lang.LogManage_OperationRecord_DataGrid_Type,
-                Description: this.lang
-                    .LogManage_OperationRecord_DataGrid_Describe
-            };
+                Description: this.lang.LogManage_OperationRecord_DataGrid_Describe
+            }
         },
         cancel2() {
             this.change = false;
         },
         tip2() {
-            if (
-                this.w == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect
-            ) {
-                this.searchData.argStartTime = new Date(
-                    new Date().toLocaleDateString()
-                );
-                this.searchData.argEndTime = new Date(
-                    new Date(new Date().toLocaleDateString()).getTime() +
-                        24 * 60 * 60 * 1000 -
-                        1
-                );
+                  if(this.w == this.lang.SCMSConsoleWebApiMySql_TimeFormatIsIncorrect){
+              this.searchData.argStartTime=new Date(new Date().toLocaleDateString());
+          this.searchData.argEndTime=new Date(
+                new Date(new Date().toLocaleDateString()).getTime() +
+                    24 * 60 * 60 * 1000 -
+                    1
+                      );
             }
             this.tipchange1 = false;
         },
-        move(name, namehead) {
-            //  $(`.${name}`).addClass('center')
-            let left = $(`.${name}`).width() / 2 + 'px';
-            let top = $(`.${name}`).height() / 2 + 'px';
-            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+     move(name, namehead) {
+          //  $(`.${name}`).addClass('center')
+           let left = ($(`.${name}`).width())/2+'px'
+           let top = ($(`.${name}`).height())/2+'px'
+             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
             $(`.${name}`)[0].addEventListener('mousedown', function(e) {
+                
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
-                    $(`.${name}`).removeClass('center');
+                    $(`.${name}`).removeClass('center')
                     window.event.stopPropagation();
                     var x = 0;
                     var y = 0;
@@ -370,6 +225,7 @@ export default {
                     isDown = true;
                     var pdmove = false;
 
+                     
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
@@ -385,9 +241,9 @@ export default {
                         //计算移动后的左偏移量和顶部的偏移量
                         var nl = nx - (x - l);
                         var nt = ny - (y - t);
-                        console.log(nx);
-                        console.log(x);
-                        console.log(l);
+                        console.log(nx)
+                        console.log(x)
+                        console.log(l)
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
@@ -400,11 +256,6 @@ export default {
             });
         },
         getdata(a) {
-            if (!this.xqshow) {
-                this.isPopShow = true;
-                this.tipText = this.lang.NoOperationAuthority;
-                return;
-            }
             this.sestion = a;
             setTimeout(() => {
                 let a1 = Number(
@@ -424,9 +275,24 @@ export default {
             });
         },
         setParams(params, a) {
-            if (!this.cxshow) {
-                this.isPopShow = true;
-                this.tipText = this.lang.NoOperationAuthority;
+            if (!a) {
+                setTimeout(() => {
+                    let a1 = Number(
+                        parseFloat(window.screen.width / 1920).toFixed(2)
+                    );
+                    if (a1 < 1) {
+                        a1 = 0.8;
+                    }
+                    this.a1 = a1;
+                    $('.tip11').css({
+                        zoom: a1,
+                        left: `calc(50% - ${($('.tip11').width() / 2) * a1}px)`,
+                        top: `calc(50% - ${($('.tip11').height() / 2) * a1}px)`
+                    });
+                    this.tipchange1 = true;
+                    this.move('tip11', 'tiphead');
+                });
+                this.w = this.lang.NoOperationAuthority;
                 return;
             }
             var timeRegex =
@@ -484,7 +350,6 @@ export default {
             this.searchData = params;
 
             this.searchData.argUserName = params.argKeyword;
-            this.req(1);
         },
         isPositiveInteger(s) {
             //是否为正整数

@@ -6,8 +6,8 @@
  * @LastEditTime: 2021-01-26 18:46:22
  -->
 <template>
-    <div class="public-table">
-        <div class="search-container" :style="{ zoom: zoom }">
+    <div class="public-table" >
+        <div class="search-container" :style="{zoom:zoom}">
             <my-search
                 :searchList="searchList"
                 :searchData="searchData"
@@ -16,58 +16,33 @@
             ></my-search>
         </div>
         <div class="table-container">
-            <my-table
-                :zoom="zoom"
-                :data="data"
-                :tableHead="tableHead"
-                @func="del5"
-                @funcn="change5"
-            ></my-table>
+            <my-table :zoom='zoom' :data="data" :tableHead="tableHead" @func="del5" @funcn="change5"></my-table>
         </div>
-        <div class="pages-container">
+        <div class="pages-container" >
             <my-page :pageData="pageData" @req="req"></my-page>
         </div>
-        <div
-            class="setdata"
-            ref="kongtiao2"
-            v-show="changemenu"
-            :style="{ zoom: zoom }"
-        >
-            <div class="setdatahead1"></div>
+        <div class="setdata" ref="kongtiao2" v-show="changemenu" :style="{zoom:zoom}">
             <div
-                class="setdatahead"
-                :class="{ colordiv: $store.state.color == 'grey' }"
-            >
-                <span :class="{ fcolor: $store.state.color == 'grey' }">{{
-                    text
-                }}</span>
-                <img
-                    :src="no2"
-                    alt
-                    class="no"
-                    @click="cancel"
-                    v-if="$store.state.color == 'grey'"
-                />
-                <img :src="no" alt class="no" @click="cancel" v-else />
+                class="setdatahead1"
+              
+            ></div>
+            <div class="setdatahead"  :class="{colordiv:$store.state.color=='grey'}">
+                <span  :class="{fcolor:$store.state.color=='grey'}">{{text}}</span>
+                <img :src="no2" alt class="no" @click="cancel" v-if="$store.state.color=='grey'"/>
+                <img :src="no" alt class="no" @click="cancel" v-else/>
             </div>
             <div class="setdatatwo">
-                <div class="rolesetion">
-                    {{ lang.RoleManage_RoleWindow_RoleInfo }}
-                </div>
-                <div class="rolevip">
-                    {{ lang.RoleManage_RoleWindow_RoleRight }}
-                </div>
+                <div class="rolesetion">{{lang.RoleManage_RoleWindow_RoleInfo}}</div>
+                <div class="rolevip">{{lang.RoleManage_RoleWindow_RoleRight}}</div>
             </div>
             <div class="setdatathree">
                 <div class="setdataleft">
                     <div class="rolename">
-                        <span>{{ lang.RoleManage_RoleWindow_RoleName }}</span>
+                        <span>{{lang.RoleManage_RoleWindow_RoleName}}</span>
                         <input type="text" v-model="rolename" />
                     </div>
                     <div class="rolediscrle">
-                        <span>{{
-                            lang.RoleManage_RoleWindow_Description
-                        }}</span>
+                        <span>{{lang.RoleManage_RoleWindow_Description}}</span>
                         <input type="text" v-model="rolesomething" />
                     </div>
                 </div>
@@ -86,9 +61,9 @@
                         ></el-tree>
                     </div>
                 </div>
-                <div class="powerBtn_box">
-                    <div class="endtree">
-                        <el-tree
+                   <div class="powerBtn_box">
+                       <div class="endtree">
+                       <el-tree
                             ref="tree1"
                             :data="PowerBtnArr"
                             show-checkbox
@@ -97,49 +72,32 @@
                             class="tree1"
                             default-expand-all
                             @check-change="handleNodeClic2"
-                            :default-checked-keys="argRightIDList"
-                        >
+                            :default-checked-keys="argRightIDList">
                         </el-tree>
-                    </div>
+                       </div>
                 </div>
             </div>
-            <div class="btn">
-                <div class="cancel" @click="cancel">
-                    {{ lang.RoleManage_RoleWindow_Cancel }}
+                <div class="btn">
+                    <div class="cancel" @click="cancel">{{lang.RoleManage_RoleWindow_Cancel}}</div>
+                    <div class="over" @click="over">{{lang.RoleManage_RoleWindow_Save}}</div>
                 </div>
-                <div class="over" @click="over">
-                    {{ lang.RoleManage_RoleWindow_Save }}
-                </div>
-            </div>
         </div>
-        <div
-            class="tip"
-            ref="kongtiao"
-            v-show="tipchange"
-            :style="{ zoom: zoom }"
-        >
-            <div
-                class="tiphead"
-                style="position:absolute;width: 380px;height: 40px;"
-            ></div>
+        <div class="tip" ref="kongtiao" v-show="tipchange" :style="{zoom:zoom}">
+          <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
             <div
                 class="tiptop"
                 @mousedown="mouseDownHandleelse($event)"
                 @mouseup="mouseUpHandleelse($event)"
             >
                 <img :src="gth" alt />
-                <span>{{ lang.RoleManage_HT_Tips }}</span>
+                <span>{{lang.RoleManage_HT_Tips}}</span>
             </div>
             <div class="tipcontanin">
-                <div class="tipword">{{ tipword }}</div>
-                <div class="tipdetermine" @click="tip1" v-if="deltrue">
-                    {{ lang.MessageBox_Confrim }}
-                </div>
+                <div class="tipword">{{tipword}}</div>
+                <div class="tipdetermine" @click="tip1" v-if="deltrue">{{lang.MessageBox_Confrim}}</div>
                 <div class="delclass" v-if="!deltrue">
-                    <div class="one" @click="no1">{{ lang.MessageBox_NO }}</div>
-                    <div class="two" @click="yes1">
-                        {{ lang.MessageBox_YES }}
-                    </div>
+                    <div class="one" @click="no1">{{lang.MessageBox_NO}}</div>
+                    <div class="two" @click="yes1">{{lang.MessageBox_YES}}</div>
                 </div>
             </div>
         </div>
@@ -163,12 +121,12 @@ export default {
         return {
             text: '',
             select: 1,
-            zoom: 1,
+            zoom:1,
             tipchange: false,
             tipword: '',
             deltrue: true,
-            pdyd1: true,
-            pdyd2: true,
+              pdyd1:true,
+            pdyd2:true,
             gth: require('../../assets/images/icon_gth.png'),
             no: require('../../assets/images/no.png'),
             no2: require('../../assets/images/no2.png'),
@@ -210,22 +168,19 @@ export default {
             changedata: {},
             data1: '',
             deldata: '',
-            PowerBtnArr: [], //权限按钮数据
-            AllPowerBtnArr: [],
-            lang: JSON.parse(localStorage.getItem('languages'))[
-                localStorage.getItem('currentLang')
-            ]
+            PowerBtnArr:[],  //权限按钮数据
+            AllPowerBtnArr:[],
+            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
     created() {
         console.clear();
-        this.getLangData();
+        this.getLangData()
         this.req(1);
         this.bigmnue();
     },
-    mounted() {
-        this.zoom =
-            window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920;
+    mounted(){
+        this.zoom = window.screen.width / 1920 < 0.8 ? 0.8 : window.screen.width / 1920
     },
     methods: {
         getLangData() {
@@ -235,127 +190,19 @@ export default {
                     type: 'key',
                     placeholder: this.lang.RoleManage_QueryInfo
                 }
-            ];
+            ]
             this.tableHead = {
                 NO: this.lang.RoleManage_NO,
                 RoleName: this.lang.RoleManage_RoleName,
                 RoleDesc: this.lang.RoleManage_RoleDesc,
                 UpdateUserName: this.lang.RoleManage_UpdateUserName,
                 UpdateTime: this.lang.RoleManage_UpdateTime
-            };
-        },
-        del5(data, a) {
-            if (!a) {
-                setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-                        left: `calc(50% - ${($('.tip').width() / 2) *
-                            this.a11}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) *
-                            this.a11}px)`
-                    });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-                this.pdyd2 = true;
-                this.tipword = this.lang.NoOperationAuthority;
-                return;
             }
-            this.deldata = data.RoleID;
-            let $this = this;
-            this.$axios
-                .post(
-                    `/api/RoleManage/RoleManage_IsUserRelateRole?argRoleID=${data.RoleID}`
-                )
-                .then(res => {
-                    let firstL = '';
-                    let firstR = '';
-                    if (
-                        localStorage.getItem('currentLang') ===
-                        'Main_Language_EN'
-                    ) {
-                        firstL = $this.lang.RoleManage_HT_MessDeleteRole.indexOf(
-                            '['
-                        );
-                        firstR =
-                            $this.lang.RoleManage_HT_MessDeleteRole.indexOf(
-                                ']'
-                            ) + 1;
-                    } else if (
-                        localStorage.getItem('currentLang') ===
-                        'Main_Language_ZH'
-                    ) {
-                        firstL = $this.lang.RoleManage_HT_MessDeleteRole.indexOf(
-                            '<'
-                        );
-                        firstR =
-                            $this.lang.RoleManage_HT_MessDeleteRole.indexOf(
-                                '>'
-                            ) + 1;
-                    }
-
-                    let str1 = $this.lang.RoleManage_HT_MessDeleteRole.slice(
-                        firstL,
-                        firstR
-                    );
-                    let msg = $this.lang.RoleManage_HT_MessDeleteRole.replace(
-                        str1,
-                        `<${data.RoleName}>`
-                    );
-                    if (res.data.data) {
-                        $this
-                            .$axios({
-                                method: 'post',
-                                url: `/api/RoleManage/RoleManage_DeleteRole?argRoleId=${this.deldata}`
-                            })
-                            .then(res => {
-                                if (res.data.msg == '请求成功') {
-                                    setTimeout(() => {
-                                        $('.tip').css({
-                                            zoom: this.a11,
-                                            left: `calc(50% - ${($(
-                                                '.tip'
-                                            ).width() /
-                                                2) *
-                                                this.a11}px)`,
-                                            top: `calc(50% - ${($(
-                                                '.tip'
-                                            ).height() /
-                                                2) *
-                                                this.a11}px)`
-                                        });
-                                        this.tipchange = true;
-                                        this.move('tip', 'tiphead');
-                                    });
-                                    this.pdyd2 = true;
-                                    this.deltrue = false;
-                                    this.tipword = msg;
-                                } else if (!res.data.data.msg) {
-                                    this.tipword = res.data.msg;
-                                    setTimeout(() => {
-                                        $('.tip').css({
-                                            zoom: this.a11,
-                                            left: `calc(50% - ${($(
-                                                '.tip'
-                                            ).width() /
-                                                2) *
-                                                this.a11}px)`,
-                                            top: `calc(50% - ${($(
-                                                '.tip'
-                                            ).height() /
-                                                2) *
-                                                this.a11}px)`
-                                        });
-                                        this.tipchange = true;
-                                        this.move('tip', 'tiphead');
-                                    });
-                                    this.pdyd2 = true;
-                                }
-                                // this.req(this.pageData.PageIndex);
-                            })
-                            .catch(err => {});
-                    } else {
-                        setTimeout(() => {
+            
+        },
+        del5(data,a) {
+               if(!a){
+                      setTimeout(() => {
                             $('.tip').css({
                                 zoom: this.a11,
                                 left: `calc(50% - ${($('.tip').width() / 2) *
@@ -366,37 +213,109 @@ export default {
                             this.tipchange = true;
                             this.move('tip', 'tiphead');
                         });
-                        this.pdyd2 = true;
+                  this.pdyd2 = true;
+                this.tipword = this.lang.NoOperationAuthority;
+                return;
+            }
+            this.deldata = data.RoleID;
+            let $this = this
+            this.$axios
+                .post(
+                    `/api/RoleManage/RoleManage_IsUserRelateRole?argRoleID=${data.RoleID}`
+                )
+                .then(res => {
+                    let firstL = ''
+                    let firstR = ''
+                    if (localStorage.getItem('currentLang') === 'Main_Language_EN') {
+                        firstL = $this.lang.RoleManage_HT_MessDeleteRole.indexOf('[')
+                        firstR = $this.lang.RoleManage_HT_MessDeleteRole.indexOf(']') + 1
+                    } else if (localStorage.getItem('currentLang') === 'Main_Language_ZH') {
+                        firstL = $this.lang.RoleManage_HT_MessDeleteRole.indexOf('<')
+                        firstR = $this.lang.RoleManage_HT_MessDeleteRole.indexOf('>') + 1
+                    }
+                    
+                    let str1 = $this.lang.RoleManage_HT_MessDeleteRole.slice(firstL, firstR)
+                    let msg = $this.lang.RoleManage_HT_MessDeleteRole.replace(str1, `<${data.RoleName}>`)
+                    if (res.data.data) {
+                        $this.$axios({
+                            method: 'post',
+                            url: `/api/RoleManage/RoleManage_DeleteRole?argRoleId=${this.deldata}`
+                        })
+                            .then(res => {
+                                if (res.data.msg == '请求成功') {
+                                    setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                          this.pdyd2 = true;
+                        this.deltrue = false;
+                        this.tipword = msg;
+                                } else if (!res.data.data.msg) {
+                                    this.tipword = res.data.msg;
+                                     setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                                    this.pdyd2 = true;
+                                    
+                                }
+                                // this.req(this.pageData.PageIndex);
+                            })
+                            .catch(err => {});
+                    } else {
+                       setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                          this.pdyd2 = true;
                         this.deltrue = false;
                         this.tipword = msg;
                     }
                 });
         },
-        change5(data, a) {
-            if (!a) {
-                setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-                        left: `calc(50% - ${($('.tip').width() / 2) *
-                            this.a11}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) *
-                            this.a11}px)`
-                    });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-                this.pdyd2 = true;
+        change5(data,a) {
+                if(!a){
+                    setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                  this.pdyd2 = true;
                 this.tipword = this.lang.NoOperationAuthority;
                 return;
             }
-            this.PowerBtnArr = [];
+            this.PowerBtnArr = []
             this.text = this.lang.RoleManage_HT_RoleWindow_TitleNameModify;
             this.data1 = data;
             this.select = 2;
-            this.$axios
-                .post(
-                    `/api/RoleManage/RoleManage_GstRoleRight?argRoleID=${data.RoleID}`
-                )
+            this.$axios.post(`/api/RoleManage/RoleManage_GstRoleRight?argRoleID=${data.RoleID}`)
                 .then(res => {
                     // console.log('角色已选权限' ,res.data);
                     let i = 0;
@@ -410,14 +329,13 @@ export default {
                     setTimeout(() => {
                         $('.setdata').css({
                             zoom: this.a11,
-                            left: `calc(50% - ${($('.setdata').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.setdata').height() / 2) *
-                                this.a11}px)`
+                            left: `calc(50% - ${($('.setdata').width() / 2) * this.a11}px)`,
+                            top: `calc(50% - ${($('.setdata').height() / 2) * this.a11}px)`
                         });
                         this.changemenu = true;
                         this.move('setdata', 'setdatahead1');
                     });
+                    
                 });
         },
         no1() {
@@ -434,7 +352,7 @@ export default {
                         this.tipchange = false;
                     } else if (!res.data.data.msg) {
                         this.tipword = res.data.msg;
-                        setTimeout(() => {
+                       setTimeout(() => {
                             $('.tip').css({
                                 zoom: this.a11,
                                 left: `calc(50% - ${($('.tip').width() / 2) *
@@ -445,7 +363,7 @@ export default {
                             this.tipchange = true;
                             this.move('tip', 'tiphead');
                         });
-                        this.pdyd2 = true;
+                          this.pdyd2 = true;
                     }
 
                     // this.deltrue = true;
@@ -458,36 +376,36 @@ export default {
         },
 
         add(a) {
-            if (!a) {
-                setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-                        left: `calc(50% - ${($('.tip').width() / 2) *
-                            this.a11}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) *
-                            this.a11}px)`
-                    });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-                this.pdyd2 = true;
+             if(!a){
+                    setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                  this.pdyd2 = true;
                 this.tipword = this.lang.NoOperationAuthority;
                 return;
             }
             this.text = this.lang.RoleManage_HT_RoleWindow_TitleNameAdd;
             this.select = 1;
-            setTimeout(() => {
-                $('.setdata').css({
-                    zoom: this.a11,
-                    left: `calc(50% - ${($('.setdata').width() / 2) *
-                        this.a11}px)`,
-                    top: `calc(50% - ${($('.setdata').height() / 2) *
-                        this.a11}px)`
-                });
-                this.changemenu = true;
-                this.move('setdata', 'setdatahead1');
-            });
-            this.pdyd1 = true;
+               setTimeout(() => {
+                            $('.setdata').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.setdata').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.setdata').height() / 2) *
+                                    this.a11}px)`
+                            });
+                              this.changemenu = true;
+                            this.move('setdata', 'setdatahead1');
+                        });
+               this.pdyd1 = true;
             // this.rolename = '';
             // this.rolesomething = '';
             // this.argRightIDList = '';
@@ -501,64 +419,51 @@ export default {
             this.$refs.tree1.setCheckedKeys([]);
         },
         //三级数据结构
-        treeFun() {
-            this.AllPowerBtnArr = JSON.parse(JSON.stringify(this.bigmenu));
-            for (var k = 0; k < this.AllPowerBtnArr.length; k++) {
-                for (
-                    var f = 0;
-                    f < this.AllPowerBtnArr[k].children.length;
-                    f++
-                ) {
-                    for (var h = 0; h < this.bigmenuChild.length; h++) {
-                        this.bigmenuChild[h].children = [];
-                        this.bigmenuChild[h].label = this.bigmenuChild[
-                            h
-                        ].ItemName;
-                        this.bigmenuChild[h].id = this.bigmenuChild[h].ItemID;
-                        this.bigmenuChild[
-                            h
-                        ].SCMSChildMenuID = this.bigmenuChild[h].ItemID;
-                        if (
-                            this.AllPowerBtnArr[k].children[f].id ==
-                            this.bigmenuChild[h].ParentID
-                        ) {
-                            this.AllPowerBtnArr[k].children[f].children.push(
-                                this.bigmenuChild[h]
-                            );
-                        }
-                    }
-                }
-            }
-        },
-
-        //树形页面点击
-        handleNodeClick(data) {
-            //添加按钮权限
-            this.treeFun();
-            if (data.SCMSMenuType != undefined) {
-                this.PowerBtnArr = [];
-                this.PowerBtnArr = [];
-                for (let i = 0; i < this.AllPowerBtnArr.length; i++) {
-                    if (this.AllPowerBtnArr[i].children.length) {
-                        const childrenArr = this.AllPowerBtnArr[i].children;
-                        for (let j = 0; j < childrenArr.length; j++) {
-                            if (childrenArr[j].id == data.id) {
-                                if (childrenArr[j].children.length) {
-                                    var menu = {};
-                                    menu.label = data.SCMSChildMenuName;
-                                    menu.id = '';
-                                    menu.children = childrenArr[j].children;
-                                    this.PowerBtnArr.push(menu);
+        treeFun(){
+              this.AllPowerBtnArr = JSON.parse(JSON.stringify(this.bigmenu))
+              for(var k=0;k<this.AllPowerBtnArr.length;k++){
+                        for(var f=0;f<this.AllPowerBtnArr[k].children.length;f++){
+                            for(var h=0;h<this.bigmenuChild.length;h++){
+                                 this.bigmenuChild[h].children = [];
+                                this.bigmenuChild[h].label = this.bigmenuChild[h].ItemName;
+                                this.bigmenuChild[h].id = this.bigmenuChild[h].ItemID;
+                                this.bigmenuChild[h].SCMSChildMenuID = this.bigmenuChild[h].ItemID;
+                                if(this.AllPowerBtnArr[k].children[f].id == this.bigmenuChild[h].ParentID){
+                                    this.AllPowerBtnArr[k].children[f].children.push(this.bigmenuChild[h])
                                 }
                             }
                         }
                     }
-                }
-            }
         },
-        //按钮权限选择
-        handleNodeClic2(data, a) {
-            if (a) {
+
+        //树形页面点击
+        handleNodeClick(data){
+                   //添加按钮权限
+                    this.treeFun()
+                    if(data.SCMSMenuType !=undefined){
+                        this.PowerBtnArr = []
+                            this.PowerBtnArr = []
+                            for(let i=0;i<this.AllPowerBtnArr.length;i++){
+                                if(this.AllPowerBtnArr[i].children.length){
+                                    const childrenArr = this.AllPowerBtnArr[i].children
+                                    for(let j=0;j<childrenArr.length;j++){
+                                        if(childrenArr[j].id == data.id){
+                                            if(childrenArr[j].children.length){
+                                                var menu = {}
+                                                 menu.label = data.SCMSChildMenuName
+                                                 menu.id = '';
+                                                 menu.children = childrenArr[j].children;
+                                                this.PowerBtnArr.push(menu)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                    } 
+        },
+         //按钮权限选择
+         handleNodeClic2(data,a){
+             if (a) {
                 if (data.SCMSChildMenuID) {
                     this.argRightIDList.push(data.SCMSChildMenuID);
                 }
@@ -570,84 +475,58 @@ export default {
                     }
                 }
             }
-        },
-        //页面选择
+         },
+         //页面选择
         handleNodeClic(data, a) {
-            this.treeFun();
-            if (data.SCMSMenuType != undefined) {
-                this.PowerBtnArr = [];
-                this.PowerBtnArr = [];
-                for (let i = 0; i < this.AllPowerBtnArr.length; i++) {
-                    if (this.AllPowerBtnArr[i].children.length) {
-                        const childrenArr = this.AllPowerBtnArr[i].children;
-                        for (let j = 0; j < childrenArr.length; j++) {
-                            if (childrenArr[j].id == data.id) {
-                                if (childrenArr[j].children.length) {
-                                    var menu = {};
-                                    menu.label = data.SCMSChildMenuName;
-                                    menu.id = '';
-                                    menu.children = childrenArr[j].children;
-                                    this.PowerBtnArr.push(menu);
+            
+            this.treeFun()
+            if(data.SCMSMenuType !=undefined){
+                this.PowerBtnArr = []
+                    this.PowerBtnArr = []
+                    for(let i=0;i<this.AllPowerBtnArr.length;i++){
+                        if(this.AllPowerBtnArr[i].children.length){
+                            const childrenArr = this.AllPowerBtnArr[i].children
+                            for(let j=0;j<childrenArr.length;j++){
+                                if(childrenArr[j].id == data.id){
+                                    if(childrenArr[j].children.length){
+                                        var menu = {}
+                                            menu.label = data.SCMSChildMenuName
+                                            menu.id = '';
+                                            menu.children = childrenArr[j].children;
+                                        this.PowerBtnArr.push(menu)
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            }
+            } 
 
             if (a) {
                 if (data.SCMSChildMenuID) {
                     this.argRightIDList.push(data.SCMSChildMenuID);
                 }
             } else {
-                if (
-                    data.label ==
-                    this.lang.RoleManage_HT_RoleWindow_AllFunctions
-                ) {
-                    this.argRightIDList = [];
-                } else {
+                if(data.label == this.lang.RoleManage_HT_RoleWindow_AllFunctions){
+                    this.argRightIDList = []
+                }else{
+                    
                     let i = 0;
                     for (i in this.argRightIDList) {
                         if (this.argRightIDList[i] == data.SCMSChildMenuID) {
                             this.argRightIDList.splice(i, 1);
                             //取消按钮权限
-                            this.treeFun();
+                            this.treeFun()
                             //  this.PowerBtnArr = []
-                            for (
-                                let i = 0;
-                                i < this.AllPowerBtnArr.length;
-                                i++
-                            ) {
-                                if (this.AllPowerBtnArr[i].children) {
-                                    var AllChilden = this.AllPowerBtnArr[i]
-                                        .children;
-                                    for (
-                                        let j = 0;
-                                        j < AllChilden.length;
-                                        j++
-                                    ) {
-                                        if (
-                                            AllChilden[j].SCMSChildMenuID ==
-                                            data.SCMSChildMenuID
-                                        ) {
-                                            if (AllChilden[j].children) {
-                                                for (
-                                                    let k = 0;
-                                                    k <
-                                                    AllChilden[j].children
-                                                        .length;
-                                                    k++
-                                                ) {
-                                                    let index = this.argRightIDList.indexOf(
-                                                        AllChilden[j].children[
-                                                            k
-                                                        ].SCMSChildMenuID
-                                                    );
-                                                    if (index != -1) {
-                                                        this.argRightIDList.splice(
-                                                            index,
-                                                            1
-                                                        );
+                            for(let i=0;i<this.AllPowerBtnArr.length;i++){
+                                if(this.AllPowerBtnArr[i].children){
+                                    var AllChilden = this.AllPowerBtnArr[i].children
+                                    for(let j=0;j<AllChilden.length;j++){
+                                        if(AllChilden[j].SCMSChildMenuID == data.SCMSChildMenuID){
+                                            if(AllChilden[j].children){
+                                                for(let k=0;k<AllChilden[j].children.length;k++){
+                                                    let index = this.argRightIDList.indexOf(AllChilden[j].children[k].SCMSChildMenuID)
+                                                    if(index != -1){
+                                                        this.argRightIDList.splice(index, 1);
                                                     }
                                                 }
                                             }
@@ -659,49 +538,49 @@ export default {
                     }
                 }
             }
-            if (data.id == 1 && a == true) {
-                for (let f = 0; f < this.bigmenuChild.length; f++) {
-                    this.argRightIDList.push(
-                        this.bigmenuChild[f].SCMSChildMenuID
-                    );
+            if(data.id == 1 && a == true){
+                for(let f=0;f<this.bigmenuChild.length;f++){
+                    this.argRightIDList.push(this.bigmenuChild[f].SCMSChildMenuID)
                 }
             }
         },
         over() {
+          
+            
             if (this.select == 1) {
                 this.addmenu.argRightIDList = this.argRightIDList;
                 this.addmenu.argRole = {};
                 this.addmenu.argRole.RoleName = this.rolename;
                 this.addmenu.argRole.RoleDesc = this.rolesomething;
                 this.addmenu.argRightIDList = this.argRightIDList;
-
-                if (
-                    !JSON.parse(sessionStorage.getItem('userInfo1')) ||
-                    JSON.parse(sessionStorage.getItem('userInfo1')) == null
-                ) {
-                    this.addmenu.argUserID = JSON.parse(
-                        sessionStorage.getItem('sightseerInfo1')
-                    ).SCMSUserID;
-                } else {
-                    this.addmenu.argUserID = JSON.parse(
-                        sessionStorage.getItem('userInfo1')
-                    ).SCMSUserID;
-                }
+              
+              if(!JSON.parse(
+                sessionStorage.getItem('userInfo1')
+            )||(JSON.parse(sessionStorage.getItem('userInfo1')) == null)){
+                  this.addmenu.argUserID = JSON.parse(
+                sessionStorage.getItem('sightseerInfo1')
+            ).SCMSUserID; 
+            }else{
+            
+             this.addmenu.argUserID = JSON.parse(
+                sessionStorage.getItem('userInfo1')
+            ).SCMSUserID;
+            }
 
                 //   this.addmenu.argRole.argRightIDList = JSON.parse(sessionStorage.getItem('userInfo')).SCMSUserID;
                 if (!this.rolename && !this.rolesomething) {
-                    setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
+                setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
                         });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
-                    this.pdyd2 = true;
+                      this.pdyd2 = true;
                     this.tipword = this.lang.RoleManage_HT_RoleWindow_MessEmpty;
                 } else {
                     this.$axios({
@@ -711,20 +590,18 @@ export default {
                     }).then(res => {
                         if (!res.data.data) {
                             this.tipword = res.data.msg;
-                            setTimeout(() => {
-                                $('.tip').css({
-                                    zoom: this.a11,
-                                    left: `calc(50% - ${($('.tip').width() /
-                                        2) *
-                                        this.a11}px)`,
-                                    top: `calc(50% - ${($('.tip').height() /
-                                        2) *
-                                        this.a11}px)`
-                                });
-                                this.tipchange = true;
-                                this.move('tip', 'tiphead');
+                        setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
                             });
-                            this.pdyd2 = true;
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                              this.pdyd2 = true;
                         } else {
                             this.changemenu = false;
                             this.rolename = '';
@@ -732,8 +609,8 @@ export default {
                             this.req(this.pageData.PageIndex);
                         }
                         this.argRightIDList = [];
-                        this.$refs.tree.setCheckedKeys([]);
-                        this.$refs.tree1.setCheckedKeys([]);
+                          this.$refs.tree.setCheckedKeys([]);
+                          this.$refs.tree1.setCheckedKeys([]);
                     });
                 }
             } else if (this.select == 2) {
@@ -742,32 +619,33 @@ export default {
                 this.changedata.argRole.RoleName = this.rolename;
                 this.changedata.argRole.RoleDesc = this.rolesomething;
                 this.changedata.argRightIDList = this.argRightIDList;
-                if (
-                    !JSON.parse(sessionStorage.getItem('userInfo1')) ||
-                    JSON.parse(sessionStorage.getItem('userInfo1')) == null
-                ) {
+                 if(!JSON.parse(
+                sessionStorage.getItem('userInfo1')
+            )||(JSON.parse(sessionStorage.getItem('userInfo1')) == null)){
                     this.changedata.argUserID = JSON.parse(
-                        sessionStorage.getItem('sightseerInfo1')
-                    ).SCMSUserID;
-                } else {
-                    this.changedata.argUserID = JSON.parse(
-                        sessionStorage.getItem('userInfo1')
-                    ).SCMSUserID;
-                }
+                sessionStorage.getItem('sightseerInfo1')
+            ).SCMSUserID; 
+            }else{
+            
+               this.changedata.argUserID = JSON.parse(
+                sessionStorage.getItem('userInfo1')
+            ).SCMSUserID;
+            }
+
 
                 if (!this.rolename && !this.rolesomething) {
-                    setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
+                   setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
                         });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
-                    this.pdyd2 = true;
+                      this.pdyd2 = true;
                     this.tipword = this.lang.RoleManage_HT_RoleWindow_MessEmpty;
                 } else {
                     this.$axios({
@@ -777,20 +655,18 @@ export default {
                     }).then(res => {
                         if (!res.data.data) {
                             this.tipword = res.data.msg;
-                            setTimeout(() => {
-                                $('.tip').css({
-                                    zoom: this.a11,
-                                    left: `calc(50% - ${($('.tip').width() /
-                                        2) *
-                                        this.a11}px)`,
-                                    top: `calc(50% - ${($('.tip').height() /
-                                        2) *
-                                        this.a11}px)`
-                                });
-                                this.tipchange = true;
-                                this.move('tip', 'tiphead');
+                           setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
                             });
-                            this.pdyd2 = true;
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                              this.pdyd2 = true;
                         } else {
                             this.changemenu = false;
                             this.rolename = '';
@@ -798,8 +674,8 @@ export default {
                             this.req(this.pageData.PageIndex);
                         }
                         this.argRightIDList = [];
-                        this.$refs.tree.setCheckedKeys([]);
-                        this.$refs.tree1.setCheckedKeys([]);
+                          this.$refs.tree.setCheckedKeys([]);
+                          this.$refs.tree1.setCheckedKeys([]);
                     });
                 }
             }
@@ -809,9 +685,9 @@ export default {
                 .post(`/api/UserManage/UserManage_GstMainMenu`)
                 .then(res => {
                     let i = 0;
-                    for (i in res.data.data) {
-                        if (res.data.data[i].SCMSIsActivate) {
-                            this.bigmenu.push(res.data.data[i]);
+                   for(i in res.data.data){
+                        if(res.data.data[i].SCMSIsActivate){
+                           this.bigmenu.push(res.data.data[i]);
                         }
                     }
                 })
@@ -825,80 +701,69 @@ export default {
                 .then(res => {
                     this.smallmenu = res.data.data;
                     // console.log("权限树", JSON.parse(JSON.stringify(this.smallmenu)));
-                    this.$axios
-                        .post(`/api/UserManage/UserManage_GstAuthorityControl`)
-                        .then(res => {
-                            this.bigmenuChild = res.data.data;
-                            let i = 0;
-                            let j = 0;
-                            let a = 0;
-                            let b = 0;
-                            for (a in this.bigmenu) {
-                                this.bigmenu[a].children = [];
-                                this.bigmenu[a].label = this.bigmenu[
-                                    a
-                                ].SCMSMainMenuName;
-                                this.bigmenu[a].id = this.bigmenu[
-                                    a
-                                ].SCMSMainMenuID;
-                            }
-                            for (b in this.smallmenu) {
-                                this.smallmenu[b].children = [];
-                                this.smallmenu[b].label = this.smallmenu[
-                                    b
-                                ].SCMSChildMenuName;
-                                this.smallmenu[b].id = this.smallmenu[
-                                    b
-                                ].SCMSChildMenuID;
-                            }
-                            for (i in this.bigmenu) {
-                                for (j in this.smallmenu) {
-                                    if (
-                                        this.bigmenu[i].SCMSMainMenuID ===
-                                        this.smallmenu[j].SCMSMainMenuID
-                                    ) {
-                                        this.bigmenu[i].children.push(
-                                            this.smallmenu[j]
-                                        );
-                                    }
+                     this.$axios
+                    .post(`/api/UserManage/UserManage_GstAuthorityControl`)
+                    .then(res => {
+                        this.bigmenuChild = res.data.data;
+                        let i = 0;
+                        let j = 0;
+                        let a = 0;
+                        let b = 0;
+                        for (a in this.bigmenu) {
+                            this.bigmenu[a].children = [];
+                            this.bigmenu[a].label = this.bigmenu[a].SCMSMainMenuName;
+                            this.bigmenu[a].id = this.bigmenu[a].SCMSMainMenuID;
+                        }
+                        for (b in this.smallmenu) {
+                            this.smallmenu[b].children = [];
+                            this.smallmenu[b].label = this.smallmenu[b].SCMSChildMenuName;
+                            this.smallmenu[b].id = this.smallmenu[b].SCMSChildMenuID;
+                        }
+                        for (i in this.bigmenu) {
+                            for (j in this.smallmenu) {
+                                if (
+                                    this.bigmenu[i].SCMSMainMenuID === this.smallmenu[j].SCMSMainMenuID
+                                ) {
+                                    this.bigmenu[i].children.push(this.smallmenu[j]);
                                 }
                             }
-                            // // 四级
-                            // for(var k=0;k<this.bigmenu.length;k++){
-                            //     for(var f=0;f<this.bigmenu[k].children.length;f++){
-                            //         for(var h=0;h<this.bigmenuChild.length;h++){
-                            //             this.bigmenuChild[h].children = [];
-                            //             this.bigmenuChild[h].label = this.bigmenuChild[h].ItemName;
-                            //             this.bigmenuChild[h].id = this.bigmenuChild[h].ItemID;
-                            //             this.bigmenuChild[h].SCMSChildMenuID = this.bigmenuChild[h].ItemID;
-                            //             if(this.bigmenu[k].children[f].id == this.bigmenuChild[h].ParentID){
-                            //                 this.bigmenu[k].children[f].children.push(this.bigmenuChild[h])
-                            //             }
-                            //         }
-                            //     }
-                            // }
-                            this.menu.label = this.lang.RoleManage_HT_RoleWindow_AllFunctions;
-                            this.menu.id = '1';
-                            this.menu.children = this.bigmenu;
-                            this.endmenu.push(this.menu);
-                        });
-                });
+                        }
+                        // // 四级
+                        // for(var k=0;k<this.bigmenu.length;k++){
+                        //     for(var f=0;f<this.bigmenu[k].children.length;f++){
+                        //         for(var h=0;h<this.bigmenuChild.length;h++){
+                        //             this.bigmenuChild[h].children = [];
+                        //             this.bigmenuChild[h].label = this.bigmenuChild[h].ItemName;
+                        //             this.bigmenuChild[h].id = this.bigmenuChild[h].ItemID;
+                        //             this.bigmenuChild[h].SCMSChildMenuID = this.bigmenuChild[h].ItemID;
+                        //             if(this.bigmenu[k].children[f].id == this.bigmenuChild[h].ParentID){
+                        //                 this.bigmenu[k].children[f].children.push(this.bigmenuChild[h])
+                        //             }
+                        //         }
+                        //     }
+                        // }
+                        this.menu.label = this.lang.RoleManage_HT_RoleWindow_AllFunctions;
+                        this.menu.id = '1';
+                        this.menu.children = this.bigmenu;
+                        this.endmenu.push(this.menu);
+                    })
+                })
         },
-        move(name, namehead) {
-            //  $(`.${name}`).addClass('center')
-            let left = $(`.${name}`).width() / 2 + 'px';
-            let top = $(`.${name}`).height() / 2 + 'px';
-            if (name == 'setdata') {
-                $(`.${name}`)[0].style.left = `calc(50%)`;
-                $(`.${name}`)[0].style.top = `calc(50%)`;
-            } else {
-                $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-                $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
-            }
-
+    move(name, namehead) {
+          //  $(`.${name}`).addClass('center')
+           let left = ($(`.${name}`).width())/2+'px'
+           let top = ($(`.${name}`).height())/2+'px'
+           if(name == 'setdata'){
+  $(`.${name}`)[0].style.left = `calc(50%)`;
+           $(`.${name}`)[0].style.top = `calc(50%)`;
+           }else{
+  $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+           }
+           
             $(`.${name}`)[0].addEventListener('mousedown', function(e) {
                 if (e.target.className.toLocaleLowerCase() == namehead) {
-                    $(`.${name}`).removeClass('center');
+                    $(`.${name}`).removeClass('center')
                     window.event.stopPropagation();
                     var x = 0;
                     var y = 0;
@@ -914,6 +779,7 @@ export default {
                     isDown = true;
                     var pdmove = false;
 
+                     
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
@@ -940,88 +806,78 @@ export default {
                 }
             });
         },
-        setParams(params, a) {
-            if (!a) {
+        setParams(params,a) {
+            if(!a){
                 setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-                        left: `calc(50% - ${($('.tip').width() / 2) *
-                            this.a11}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) *
-                            this.a11}px)`
-                    });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-                this.pdyd2 = true;
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                  this.pdyd2 = true;
                 this.tipword = this.lang.NoOperationAuthority;
                 return;
             }
             this.searchData = params;
-            this.req(1);
         },
-        isPositiveInteger(s) {
+          isPositiveInteger(s) {
             //是否为正整数
             var re = /^[0-9]+$/;
             return re.test(s);
         },
-        req(pageIndex, s) {
-            if (s == 'jump') {
-                if (!this.isPositiveInteger(pageIndex)) {
-                    setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
-                    this.pdyd2 = true;
-                    this.tipword = this.lang.DataGrid_Reaction_HT_PEAPositiveInteger;
-                    return;
-                } else {
-                    if (
-                        pageIndex !== 1 &&
-                        pageIndex !== this.pageData.TotalPage
-                    ) {
-                        if (
-                            pageIndex < 1 ||
-                            pageIndex > this.pageData.TotalPage
-                        ) {
-                            setTimeout(() => {
-                                $('.tip').css({
-                                    zoom: this.a11,
-                                    left: `calc(50% - ${($('.tip').width() /
-                                        2) *
-                                        this.a11}px)`,
-                                    top: `calc(50% - ${($('.tip').height() /
-                                        2) *
-                                        this.a11}px)`
-                                });
-                                this.tipchange = true;
-                                this.move('tip', 'tiphead');
+        req(pageIndex,s) {
+               if(s=='jump'){
+                   if (!this.isPositiveInteger(pageIndex)) {
+           setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
                             });
-                            this.pdyd2 = true;
-                            this.tipword = this.lang.RoleManage_HT_PageNumberNotExist;
-                            return;
-                        }
-                    }
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                  this.pdyd2 = true;
+                this.tipword = this.lang.DataGrid_Reaction_HT_PEAPositiveInteger;
+                return;
+            } else {
+                if(pageIndex!==1&&pageIndex!==this.pageData.TotalPage){
+                        if (pageIndex < 1 || pageIndex > this.pageData.TotalPage) {
+               setTimeout(() => {
+                            $('.tip').css({
+                                zoom: this.a11,
+                                left: `calc(50% - ${($('.tip').width() / 2) *
+                                    this.a11}px)`,
+                                top: `calc(50% - ${($('.tip').height() / 2) *
+                                    this.a11}px)`
+                            });
+                            this.tipchange = true;
+                            this.move('tip', 'tiphead');
+                        });
+                      this.pdyd2 = true;
+                    this.tipword = this.lang.RoleManage_HT_PageNumberNotExist;
+                    return;
                 }
+                }
+             
             }
-
+               }
+           
             let params = Object.assign(this.searchData, {
                 argPageIndex: pageIndex,
                 argPageSize: this.pageData.PageSize
             });
             this.$axios
-                .post(
-                    `/api/RoleManage/RoleManage_GstRole?argKeyWord=${params.argKeyword}&argPageSize=${params.argPageSize}&argPageIndex=${params.argPageIndex}` /* , {
+                .post(`/api/RoleManage/RoleManage_GstRole?argKeyWord=${params.argKeyword}&argPageSize=${params.argPageSize}&argPageIndex=${params.argPageIndex}`/* , {
                     params
-                } */
-                )
+                } */)
                 .then(res => {
                     if (res.data.code == 0) {
                         this.data = res.data.data.DataList;
@@ -1180,13 +1036,13 @@ input {
             background-color: #e6e6e6;
             border: 1px solid #cccccc;
         }
-        .powerBtn_box {
+        .powerBtn_box{
             float: left;
-            width: 285px;
+            width:285px;
             height: 430px;
             background-color: #e6e6e6;
             border: 1px solid #cccccc;
-            border-left: none;
+            border-left:none;
             overflow: auto;
             // padding-top:55px;
         }
@@ -1230,8 +1086,8 @@ input {
             height: 40px;
         }
     }
-    .rolename {
-        span {
+    .rolename{
+          span {
             color: #737373;
             display: inline-block;
             width: 80px;
@@ -1323,10 +1179,10 @@ input {
         cursor: pointer;
     }
 }
-.fcolor {
-    color: #000 !important;
+.fcolor{
+    color: #000!important;
 }
-.img {
+.img{
     cursor: pointer;
 }
 .colordiv {
@@ -1335,14 +1191,14 @@ input {
 .colortip {
     background-color: #efeff0 !important;
 }
-.yd {
-    margin: auto;
-    top: 0 !important;
+.yd{
+   margin: auto;
+     top: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
-    left: 0 !important;
+    left: 0 !important;   
 }
-img {
+img{
     cursor: pointer;
 }
 </style>

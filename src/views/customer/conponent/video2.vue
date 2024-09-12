@@ -17,8 +17,9 @@
             :options="playerOptions"
             @play='onPlayerPlay($event)'
         ></video-player> -->
-     <video muted controls :style="'width:'+ play.Width + 'px; height:'+ play.Height + 'px;'" :src="src" :id="id" loop :ref="id">
-     </video>
+     <video muted controls :style="'width:'+ play.Width + 'px; height:'+ play.Height + 'px;'" src="" :id="id" loop :ref="id"
+     
+     ></video>
      <div class="cover" v-if='videoshow' @click="tip1()"></div>
         <!-- <div v-show="showtip" style="width:100%;height:100%;position:fixed;z-index:2147483647">
           <div v-if="showtip" class="commerPop_outPop">
@@ -153,7 +154,6 @@ export default {
           this.src = `/ViewMedia/${this.name}/${this.play.Source}`
           this.createVideo();
         }else{
-          // debugger
              console.log('name',this.name)
            console.log('Source',this.play.Source)
           // 本地调试
@@ -218,7 +218,6 @@ export default {
       },
       createVideo1(){
           if (flvjs.isSupported()) {
-            // debugger
             var videoElement = document.getElementById(this.id)
             var flvPlayer = flvjs.createPlayer({
               type: 'mp4',

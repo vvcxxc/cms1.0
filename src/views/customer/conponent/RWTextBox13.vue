@@ -18,12 +18,10 @@
       class="RWTextBox13a contenBox" type="text" 
       :style="'width:' + item.width + 'px; height:' +item.height + 'px; position:absolute; left:' 
       + item.left + 'px; top:' + item.top + 'px; transform:rotate(' + item.rotate + 'deg); opacity:' 
-      + item.opacity + '; fontFamily:' + item.fontFamily + '; fontSize:' + item.FontSize + 'px;'
-      + 'fontWeight:' + item.Blod +';boxSizing:border-box;'
-      + 'overflow:hidden;white-space:nowrap;boxShadow:' + item.Shadow+';zIndex:'+ item.ZIndex
-      + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
-      + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`
-      /* `;${item.showBorder ? `border: ${item.BorderThickness}px solid ${item.borderStyle}` : `padding: ${item.BorderThickness}px`}` */ ">
+      + item.opacity + '; fontFamily:' + item.fontFamily + '; fontSize:' + item.FontSize + 'px; background:' 
+      + item.BorderBrush + '; fontWeight:' + item.Blod +';boxSizing:border-box; padding:'+ item.BorderThickness 
+      + 'px;overflow:hidden;white-space:nowrap;boxShadow:' + item.Shadow+';zIndex:'+item.ZIndex">
+
         <div class="conten" 
         :style="'width:100%;height:100%;background:' + item.Background + ';boxShadow:' 
         + item.Shadow + ';boxSizing:border-box;fontSize:' +item.FontSize + 'px'">
@@ -141,13 +139,14 @@ var result = arr.some(item=>{
       }
     },
     methods: {
-    getPointNum(num, n) {
-      if(isNaN(num)||num===null){
-        return null
-      }else{
-        return Number(num).toFixed(n)
-      }
-    },
+            getPointNum(num, n) {
+			 if(isNaN(num)||num===null){
+		     return null
+	         }else{
+           
+		     return Number(num).toFixed(n)
+             }
+		  },
     getnum(value,keyclass){
     let classarrr = ''
      this.dataValue.forEach((item)=>{
@@ -1352,7 +1351,7 @@ var result = arr.some(item=>{
 
        //条件判断方法
       judgeFun1(data){
-        // console.log(data, this.textBbockArr)
+        console.log(data, this.textBbockArr)
           this.ElementNameHas = ['1']
               if(data.length){
                 for(var i=0;i<this.textBbockArr.length;i++){
@@ -1480,10 +1479,7 @@ var result = arr.some(item=>{
       //websocket触发该方法
       axioImg2(resArr){
         console.log("resArr11111111111111",resArr)
-        //  console.log(12)
-        //  console.log(JSON.parse(JSON.stringify(this.resArr)))
         if(this.arr){
-          console.log(this.arr)
           let index = this.arr.indexOf(resArr.name)
           let resShow = false
           if(index != -1){
@@ -1498,8 +1494,6 @@ var result = arr.some(item=>{
           }
         }
         if(this.resData.length){
-          // console.log(11)
-          // console.log(JSON.parse(JSON.stringify(this.resData)))
           for(let z=0;z<this.resData[0].length;z++){
             if(resArr.name == this.resData[0][z].Name){
               this.resData[0][z].Value = resArr.value
@@ -1576,28 +1570,22 @@ var result = arr.some(item=>{
                   Shadow = InnerShadow
               }
                 //边框色渐变
-                let showLinear = false
-                let linearStyle = ''
                if(borderbrushArr.ColorType == 'SolidColor'){
                    borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                }else{
-                      // 此处为渐变色
-                      let linearColor = ''
+                       borderColor = ''
                        lagel1 = borderbrushArr.Data.Angel.toFixed(0)
                    for(var f1=0;f1<borderbrushArr.Data.GradientStops.length;f1++){
                        gradient1 = borderbrushArr.Data.GradientStops[f1]
-                       linearColor = linearColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
+                       borderColor = borderColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
                    }
-                      //  borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
-                      showLinear = true
-                      borderColor = 'transparent'
-                      linearStyle = `linear-gradient(-${Number(lagel1) - 90}deg ${linearColor}) 1`;
+                       borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
                }
               //背景色渐变
               if(backgroundArr.ColorType == 'SolidColor'){
                   backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                   if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                    // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                    borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                 }
               }else{
                       backColor = ''
@@ -1650,9 +1638,7 @@ var result = arr.some(item=>{
                    Shadow:Shadow,
                    TextDecorations:this.textblockData[i].PropertyList.TextDecorations == 'False' ? 'none' : 'underline',
                    ZIndex:this.ZIndex,
-                   isShow:true,
-                    showLinear,
-                    linearStyle,
+                   isShow:true
                  }
                  this.dataValue.push(value)
                  break;
@@ -1683,28 +1669,22 @@ var result = arr.some(item=>{
                           Shadow = InnerShadow
                       }
                         //边框色渐变
-                        let showLinear = false
-                        let linearStyle = ''
                         if(borderbrushArr.ColorType == 'SolidColor'){
                             borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                         }else{
-                                // 此处为渐变色
-                                let linearColor = ''
+                                borderColor = ''
                                 lagel1 = borderbrushArr.Data.Angel.toFixed(0)
                             for(var f2=0;f2<borderbrushArr.Data.GradientStops.length;f2++){
                                 gradient1 = borderbrushArr.Data.GradientStops[f2]
-                                linearColor = linearColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
+                                borderColor = borderColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
                             }
-                                // borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
-                              showLinear = true
-                              borderColor = 'transparent'
-                              linearStyle = `linear-gradient(-${Number(lagel1) - 90}deg ${linearColor}) 1`;
+                                borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
                         }
                       //背景色渐变
                       if(backgroundArr.ColorType == 'SolidColor'){
                           backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                           if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                              // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                              borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                           }
                       }else{
                               backColor = ''
@@ -1756,9 +1736,7 @@ var result = arr.some(item=>{
                           Shadow:Shadow,
                           TextDecorations:this.textblockData[i].PropertyList.TextDecorations == 'False' ? 'none' : 'underline',
                           ZIndex:this.ZIndex,
-                          isShow:true,
-                          showLinear,
-                          linearStyle
+                          isShow:true
                         }
                         this.dataValue.push(value4)
                   }
@@ -1791,28 +1769,22 @@ var result = arr.some(item=>{
                   Shadow = InnerShadow
               }
                 //边框色渐变
-                let showLinear = false
-                let linearStyle = ''
                if(borderbrushArr.ColorType == 'SolidColor'){
                    borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                }else{
-                       // 此处为渐变色
-                       let linearColor = ''
+                       borderColor = ''
                        lagel1 = borderbrushArr.Data.Angel.toFixed(0)
                    for(var f3=0;f3<borderbrushArr.Data.GradientStops.length;f3++){
                        gradient1 = borderbrushArr.Data.GradientStops[f3]
-                       linearColor = linearColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
+                       borderColor = borderColor + ',' + gradient1.Color + ' ' + (gradient1.Offset*100).toFixed(0) + '%'
                    }
-                      //  borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
-                      showLinear = true
-                      borderColor = 'transparent'
-                      linearStyle = `linear-gradient(-${Number(lagel1) - 90}deg ${linearColor}) 1`;
+                       borderColor = '-webkit-linear-gradient('+lagel1+'deg'+borderColor+')';
                }
               //背景色渐变
               if(backgroundArr.ColorType == 'SolidColor'){
                   backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                   if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                    // borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                    borderColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                   }
               }else{
                       backColor = ''
@@ -1864,9 +1836,7 @@ var result = arr.some(item=>{
                    Shadow:Shadow,
                    TextDecorations:this.textblockData[i].PropertyList.TextDecorations == 'False' ? 'none' : 'underline',
                    ZIndex:this.ZIndex,
-                   isShow:true,
-                   showLinear,
-                   linearStyle
+                   isShow:true
                  }
                  this.dataValue.push(value2)
           }
@@ -1985,10 +1955,10 @@ var result = arr.some(item=>{
 .RWTextBox13a{
   display:inline-block;
 }
-// .RWTextBox13a:hover{
-//   background-color: #BEE6FD !important;
-//   background: #BEE6FD !important;
-// }
+.RWTextBox13a:hover{
+  background-color: #BEE6FD !important;
+  background: #BEE6FD !important;
+}
 .TextBoxPop_outPop{
      display: none;
      width:380px;

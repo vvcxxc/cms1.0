@@ -32,9 +32,7 @@
         </div>
         <div class="table" :class="{colortip:$store.state.color=='grey'}">
             <div class="first">
-                <div class="firsthead" :style="{ fontSize: 20 * a11 + 'px' }">{{lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_SectionManagement}}
-                    <div class="missBtn" @click="openSetting">设置</div>
-                </div>
+                <div class="firsthead" :style="{ fontSize: 20 * a11 + 'px' }">{{lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_SectionManagement}}</div>
                 <div class="firsttable">
                     <div class="firstselect" :style="{zoom:a11}">
                         <div class="firstadd" @click="addone">
@@ -90,33 +88,17 @@
                         ></el-table-column>
 
                         <el-table-column
-                            prop="WorkCode"
-                            label="工序编号"
-                            :class="{tdone:tdone == oneworkduan}"
-                            :minWidth="130"
-                            :show-overflow-tooltip="true"
-                        ></el-table-column>
-                        <el-table-column
                             prop="WorkName"
                             :label="lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_DataGrid_SectionName"
                             :class="{tdone:tdone == oneworkduan}"
                             :minWidth="lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_DataGrid_SectionName=='Process name'?130*a11:110*a11"
                             :show-overflow-tooltip="true"
                         ></el-table-column>
-                        <el-table-column
-                            prop="OperatingModeName"
-                            label="工序类型"
-                            :class="{tdone:tdone == oneworkduan}"
-                            :minWidth="130"
-                            :show-overflow-tooltip="true"
-                        ></el-table-column>
                     </el-table>
                 </div>
             </div>
             <div class="second">
-                <div class="firsthead" :style="{ fontSize: 20 * a11 + 'px' }">{{lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_ProcessManagement}}
-                    <div class="missBtn" @click="openMissingProcessing">漏工序检测</div>
-                </div>
+                <div class="firsthead" :style="{ fontSize: 20 * a11 + 'px' }">{{lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_ProcessManagement}}</div>
                 <div class="firsttable">
                     <div class="firstselect" :style="{zoom:a11}">
                         <div class="firstadd" @click="addtwo">
@@ -276,31 +258,14 @@
                                 </div>
                             </template>
                         </el-table-column>
-                        
                         <el-table-column :label="lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_DataGrid_SerialNumber" prop="Number" :width="120*a11" :show-overflow-tooltip="true"></el-table-column>
-                        <el-table-column
-                            prop="ProjectValueTagName"
-                            :label="lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_DataGrid_ProjectVariableName"
-                           :width="120*a11"
-                            :show-overflow-tooltip="true"
-                        ></el-table-column>
+
                         <el-table-column
                             prop="ProjectName"
                             :label="lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_DataGrid_ProjectName"
-                            :width="120*a11"
+                            :width="190*a11"
                             :show-overflow-tooltip="true"
                         ></el-table-column>
-                        <el-table-column prop="IsConvertImages"  label="是否转图片" :width="100*a11" :show-overflow-tooltip="true">
-                            <template slot-scope="scope">
-                                {{scope.row.IsConvertImages?'是':'否'}}
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="IsConvertImages"  label="是否转图片" :width="100*a11" :show-overflow-tooltip="true">
-                            <template slot-scope="scope">
-                                {{scope.row.ParameterTypeValue==0?'普通参数':scope.row.ParameterTypeValue==1?'制冷制热系统':scope.row.ParameterTypeValue==2?'安规房':''}}
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="GroupName"  label="分组" :width="100*a11" :show-overflow-tooltip="true"></el-table-column>
                         <el-table-column prop="Upper" :label="lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_DataGrid_Upper" :width="110*a11" :show-overflow-tooltip="true"></el-table-column>
                         <el-table-column prop="Lower" :label="lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_DataGrid_Lower" :width="110*a11" :show-overflow-tooltip="true"></el-table-column>
                         <el-table-column prop="Unit" :label="lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_DataGrid_Unit" :width="145*a11" :show-overflow-tooltip="true"></el-table-column>
@@ -310,7 +275,12 @@
                            :width="300*a11"
                             :show-overflow-tooltip="true"
                         ></el-table-column>
-                       
+                        <el-table-column
+                            prop="ProjectValueTagName"
+                            :label="lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_DataGrid_ProjectVariableName"
+                           :width="300*a11"
+                            :show-overflow-tooltip="true"
+                        ></el-table-column>
                     </el-table>
                 </div>
             </div>
@@ -327,23 +297,12 @@
             </div>
             <div class="oneworkname">
                 <span>{{lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_DataGrid_SectionName}}</span>
-                <el-input type="text" v-model="oneObj" style="width:310px"/>
-            </div>
-            <div class="oneworkname2">
-                <span> <span class="require">*</span>工序编号</span>
-                <el-input type="text" v-model="WorkCode" style="width:310px"/>
-            </div>
-            <div class="oneworkname3">
-                <span> <span class="require">*</span>操作方式</span>
-                <el-select type="text" v-model="OperatingMode" style="width:310px" :disabled="onechange != 2">
-                    <el-option label="手工" :value="1"></el-option>
-                    <el-option label="自动" :value="0"></el-option>
-                </el-select>
+                <input type="text" v-model="oneObj" />
             </div>
             <div class="cancel" @click="cancel">{{lang.PopupCommon_Cancel}}</div>
             <div class="pre" @click="onepre">{{lang.PopupCommon_Save}}</div>
         </div>
-        <!-- <div class="twowork" v-show="twowork" ref="kongtiao2" >
+        <div class="twowork" v-show="twowork" ref="kongtiao2" >
             <div class="oneworkhead" :class="{colordiv:$store.state.color=='grey'}">
                 <div
                     class="twoworktop"
@@ -383,11 +342,14 @@
                 </div>
                 <div class="inp3">
                     <el-checkbox v-model="ccc" @change="jd">{{lang.ProcessParameterConfigure_HT_WorkStepSetting1ViewModel_AbsolutelyQualified}}</el-checkbox>
+                    <!-- <select name id class="txt" :disabled="!ccc" v-model="twoworkdata.AbsoQualTag">
+                        <option v-for="(item,index) in pd" :value="item" :key="index">{{item}}</option>
+                    </select> -->
                 </div>
                 <div class="cancel" @click="cancel">{{lang.PopupCommon_Cancel}}</div>
                 <div class="pre" @click="gxpre">{{lang.PopupCommon_Save}}</div>
             </div>
-        </div> -->
+        </div>
         <div class="look" v-show="lookchange" :style="{width:1120*a11+'px',height:600*a11+'px'}">
             <div
                 class="looktop"
@@ -660,7 +622,7 @@
             </div>
             <div class="changecontent">
                 <div class="changestion">
-                    <span>项目名</span>
+                    <span>{{lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_DataGrid_ProjectName}}</span>
                     <input type="text" v-model="threeObj.OriginalProjectName" />
                 </div>
                 <div class="changestion inp">
@@ -683,18 +645,6 @@
                 <div class="changestion">
                     <span>{{lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_DataGrid_Digit}}</span>
                     <input type="text" v-model="threeObj.Digit" />
-                </div>
-                <div class="changestion">
-                    <span>参数类型</span>
-                    <el-select  :style="{width:'350px',marginLeft:'20px'}" v-model="threeObj.ParameterTypeValue">
-                        <el-option label="普通参数" :value="0"></el-option>
-                        <el-option label="制冷制热系统" :value="1"></el-option>
-                        <el-option label="安规房" :value="2"></el-option>
-                    </el-select>
-                 </div>
-                <div class="changestion">
-                    <span>分组名称</span>
-                    <input type="text" v-model="threeObj.GroupName" />
                 </div>
                 <div class="cancel" @click="cancel">{{lang.PopupCommon_Cancel}}</div>
                 <div class="pre" @click="changethree">{{lang.PopupCommon_Save}}</div>
@@ -898,30 +848,7 @@
                                         </div>
                                     </template>
                                 </el-table-column>
-                                <el-table-column prop="ProjectValueTagName" :label="lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_DataGrid_ProjectVariableName" :show-overflow-tooltip="true"   width="150px"></el-table-column>
-                                <el-table-column prop="ParameterTypeValue" label="参数类型" :show-overflow-tooltip="true" width="150px"> 
-                                    <template slot-scope="scope">
-                                        <div class="item">
-                                            <el-select   v-model="scope.row.ParameterTypeValue">
-                                                <el-option label="普通参数" :value="0"></el-option>
-                                                <el-option label="制冷制热系统" :value="1"></el-option>
-                                                <el-option label="安规房" :value="2"></el-option>
-                                            </el-select>
-                                        </div>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column prop="GroupName" label="分组名称" :show-overflow-tooltip="true"> 
-                                    <template slot-scope="scope">
-                                        <div class="item">
-                                            <input
-                                                type="text"
-                                                style="text-indent:0.5em"
-                                                  :style="{width:180*a11+'px',height:30*a11+'px',fontSize: a11 * 15 + 'px'}"
-                                                v-model="scope.row.GroupName"
-                                             />
-                                        </div>
-                                    </template>
-                                </el-table-column>
+                                <el-table-column prop="ProjectValueTagName" :label="lang.ProcessParameterConfigure_ProcessParameterConfigureUserControl_DataGrid_ProjectVariableName" :show-overflow-tooltip="true"></el-table-column>
                             </el-table>
                         </div>
                     </div>
@@ -933,41 +860,25 @@
                     <div class="pre" @click="pre11" :style="{zoom:a11}">{{lang.PopupCommon_Save}}</div>
         </div>
         <div class="cover1" v-if="onework"></div>
-        <!-- <div class="cover2" v-if="twowork"></div> -->
+        <div class="cover2" v-if="twowork"></div>
         <div class="cover3" v-if="lookchange"></div>
         <div class="cover4" v-if="newblue"></div>
         <div class="cover5" v-if="unsixth"></div>
         <div class="cover6" v-if="projectchange"></div>
         <div class="cover7" v-if="someprochange"></div>
-        <ProcessSetting v-if="ProcessingShow" @callback="ProcessingCallback"/>
-
-        <AddMissingProcessing v-if="missingProcessingShow" @callback="missingProcessingCallback" :SID="workproject"/>
-        <AddWorkStation v-if="twowork" :title="editWorkStationType"  @callback="gxpre2" :WID="oneworkduan" :selectItem="twoObj"/>
-        <TipPop v-if="isPopShow" :tipText="tipText" :noCancel="noCancel" @tipCallBack="tipCallBack" />
     </div>
 </template>
 
 <script>
-import ProcessSetting from './ProcessSetting.vue';
-import AddWorkStation from './AddWorkStation.vue';
-import AddMissingProcessing from './AddMissingProcessing.vue';
-import TipPop from '../../../components/public/tipPop.vue';
+// import MyPage from '../../../components/public/Pages.vue';
 import XLSX from 'xlsx';
 export default {
     components: {
-        AddMissingProcessing,
-        ProcessSetting,
-        AddWorkStation,
-        TipPop,
+        // MySearch,
+        // MyPage
     },
     data() {
         return {
-            isPopShow: false, // 是否显示弹窗
-            tipText: '', // 弹窗提示语
-            noCancel: true, // 弹窗是否带取消按按钮
-            editWorkStationType:'',
-            ProcessingShow:false,
-            missingProcessingShow:false,
             oneno: [],
             twono: [],
             twoword: '',
@@ -1103,13 +1014,8 @@ export default {
             xmscshow:true,
             xmsyid:'',
             xmsyshow:true,
-            lgxid:'',
-            lgxshow:true,
-            gccsszid:'',
-            gccsszshow:true,
+
             oneObj: "",
-            WorkCode: "",
-            OperatingMode: 1,
             twoObj: {
                 WID: '',
                 StepName: '',
@@ -1134,9 +1040,7 @@ export default {
                 SID: '',
                 Type: '',
                 Unit: '',
-                Upper: '',
-                GroupName:'',
-                ParameterTypeValue:0
+                Upper: ''
             },
 
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
@@ -1162,7 +1066,7 @@ export default {
         this.getLangData()
             this.jurisdiction = this.$store.state.btnPowerData
      this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'),this.jurisdiction)[0].Children
-         console.log("2312",this.buttonarr.map(_=>_.RightName ))
+         console.log("2312",this.buttonarr)
           this.buttonarr.forEach((item)=>{
          if(item.RightName == "工序管理-新建工序按钮"){
           this.tjgxid = item.RightID
@@ -1190,10 +1094,6 @@ export default {
           this.xmscid = item.RightID
          }else if(item.RightName =="参数管理-参数上移按钮"){
           this.xmsyid = item.RightID
-         }else if(item.RightName =="工位管理-漏工序检测"){
-          this.lgxid = item.RightID
-         }else if(item.RightName =="全局管理-过程参数设置"){
-          this.gccsszid = item.RightID
          }
          
      })
@@ -1324,24 +1224,6 @@ export default {
               }).catch((err)=>{
                   console.log('err',err)
               })
-              this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.lgxid}`,
-              }).then(res => {
-                  this.lgxshow = res.data.data
-                
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-              this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.gccsszid}`,
-              }).then(res => {
-                  this.gccsszshow = res.data.data
-                
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
     },
     watch: {
         tableData(val){
@@ -1384,10 +1266,6 @@ export default {
           this.xmscid = item.RightID
          }else if(item.RightName =="参数管理-参数上移按钮"){
           this.xmsyid = item.RightID
-         }else if(item.RightName =="工位管理-漏工序检测"){
-          this.lgxid = item.RightID
-         }else if(item.RightName =="全局管理-过程参数设置"){
-          this.gccsszid = item.RightID
          }
          
      })
@@ -1518,24 +1396,7 @@ export default {
               }).catch((err)=>{
                   console.log('err',err)
               })
-              this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.lgxid}`,
-              }).then(res => {
-                  this.lgxshow = res.data.data
-                
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
-              this.$axios({
-                  method: 'post',
-                  url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.gccsszid}`,
-              }).then(res => {
-                  this.gccsszshow = res.data.data
-                
-              }).catch((err)=>{
-                  console.log('err',err)
-              })
+
          },
         itemname(newval) {
             this.itemname = newval;
@@ -1568,65 +1429,6 @@ export default {
         }
     },
     methods: {
-        tipCallBack(str) {
-            if (str == 'yes') {
-                this.isPopShow = false;
-            } else {
-                this.isPopShow = false;
-            }
-        },
-        openSetting(){
-            if(!this.gccsszshow){
-                         setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
-                    this.pdyd5 = true;
-                    this.tipword =this.lang.NoOperationAuthority;
-                    return;
-            }
-            this.ProcessingShow=true;
-        },
-       ProcessingCallback(str){
-            this.ProcessingShow=false;
-            if(str){
-                this.isPopShow = true;
-                this.tipText=str;
-            }
-        },
-        openMissingProcessing(){
-            if(!this.lgxshow){
-                         setTimeout(() => {
-                        $('.tip').css({
-                            zoom: this.a11,
-                            left: `calc(50% - ${($('.tip').width() / 2) *
-                                this.a11}px)`,
-                            top: `calc(50% - ${($('.tip').height() / 2) *
-                                this.a11}px)`
-                        });
-                        this.tipchange = true;
-                        this.move('tip', 'tiphead');
-                    });
-                    this.pdyd5 = true;
-                    this.tipword =this.lang.NoOperationAuthority;
-                    return;
-            }
-            this.missingProcessingShow=true;
-        },
-        missingProcessingCallback(str){
-            this.missingProcessingShow=false;
-            if(str){
-                this.isPopShow = true;
-                this.tipText=str;
-            }
-        },
         getLangData() {
             this.twoworkdata = {
                 WID: '',
@@ -1806,8 +1608,6 @@ export default {
                 a[i].ProjectValueTagName = a[i].Name;
                 a[i].Unit = '//';
                 a[i].DataType = a[i].DateType;
-                a[i].ParameterTypeValue = 0;
-                a[i].GroupName = '';
                 // if (
                 //     a[i].DateType == this.lang['F64位浮点数IEEE754'] ||
                 //     a[i].DateType == this.lang['F32位浮点数IEEE754']
@@ -1843,8 +1643,6 @@ export default {
                 a[i].ProjectValueTagName = a[i].Name;
                 a[i].Unit = '//';
                 a[i].DataType = a[i].DateType;
-                a[i].ParameterTypeValue = 0;
-                a[i].GroupName = '';
                 // if (
                 //     a[i].DateType == this.lang['F64位浮点数IEEE754'] ||
                 //     a[i].DateType == this.lang['F32位浮点数IEEE754']
@@ -1877,20 +1675,10 @@ export default {
             console.log(a);
         },
         yes1() {
-            let _name=''
-            if (!JSON.parse(sessionStorage.getItem('userInfo1'))||(JSON.parse(sessionStorage.getItem('userInfo1')) == null)) {
-                _name = JSON.parse(
-                    sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserName;
-            } else {
-                _name = JSON.parse(
-                    sessionStorage.getItem('userInfo1')
-                ).SCMSUserName;
-            }
             if (this.a == 1) {
                 this.$axios
                     .post(
-                        `/api/ProcessParameterConfigure/DelWorkSection?argWId=${this.oneworkduan}&LoginName=${_name}`
+                        `/api/ProcessParameterConfigure/DelWorkSection?argWId=${this.oneworkduan}`
                     )
                     .then(res => {
                         this.pdyd5 = true;
@@ -1919,7 +1707,7 @@ export default {
                 console.log(this.workproject);
                 this.$axios
                     .post(
-                        `/api/ProcessParameterConfigure/DelWorkStep?argSId=${this.workproject}&LoginName=${_name}`
+                        `/api/ProcessParameterConfigure/DelWorkStep?argSId=${this.workproject}`
                     )
                     .then(res => {
                         this.pdyd5 = true;
@@ -2175,23 +1963,14 @@ export default {
             this.deltrue = false;
         },
         onepre() {
-            let _name=''
-            if (!JSON.parse(sessionStorage.getItem('userInfo1'))||(JSON.parse(sessionStorage.getItem('userInfo1')) == null)) {
-                _name = JSON.parse(
-                    sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserName;
-            } else {
-                _name = JSON.parse(
-                    sessionStorage.getItem('userInfo1')
-                ).SCMSUserName;
-            }
+            
             if (this.onechange == 2) {
                 // this.oneworkduan = '';
                 
                 let a  = ''
                 this.$axios
                     .post(
-                        `/api/ProcessParameterConfigure/AddWorkSection?argWId=${a}&argName=${this.oneObj}&WorkCode=${this.WorkCode}&OperatingMode=${this.OperatingMode}&LoginName=${_name}`
+                        `/api/ProcessParameterConfigure/AddWorkSection?argWId=${a}&argName=${this.oneObj}`
                     )
                     .then(res => {
                         this.pdyd5 = true;
@@ -2216,7 +1995,7 @@ export default {
                     });
             } else {
                 this.$axios
-                    .post(`/api/ProcessParameterConfigure/AddWorkSection?argWId=${this.oneworkduan}&argName=${this.oneObj}&WorkCode=${this.WorkCode}&OperatingMode=${this.OperatingMode}&LoginName=${_name}`)
+                    .post(`/api/ProcessParameterConfigure/AddWorkSection?argWId=${this.oneworkduan}&argName=${this.oneObj}`)
                     .then(res => {
                         this.pdyd5 = true;
                         setTimeout(() => {
@@ -2798,7 +2577,6 @@ this.unsixth = true;
                 method:'post',
                 data:resarr
             }).then(res => {
-                  
                     console.log(":sadasdsaddas",res)
                     $this.projectlist = res.data.data;
                     $this.projectlist2 = JSON.parse(JSON.stringify($this.projectlist[0].Groups));
@@ -2813,40 +2591,8 @@ this.unsixth = true;
                     this.lookforsearch1 = true;
                 });
         },
-        gxpre2(type,str){
-          this.twowork = false;
-            if(type == 'yes'){
-                this.pdyd5 = true;      
-                this.gettwodata();
-            }
-            if(str){
-                this.tipword = str;
-                setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-                        left: `calc(50% - ${($('.tip').width() / 2) * this.a11}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) * this.a11}px)`
-                    });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-            }
-        },
-        gxpre(str) {
-           if(str=='no'){
-            this.cancel()
-            return
-           }
-           let _name=''
-            if (!JSON.parse(sessionStorage.getItem('userInfo1'))||(JSON.parse(sessionStorage.getItem('userInfo1')) == null)) {
-                _name = JSON.parse(
-                    sessionStorage.getItem('sightseerInfo1')
-                ).SCMSUserName;
-            } else {
-                _name = JSON.parse(
-                    sessionStorage.getItem('userInfo1')
-                ).SCMSUserName;
-            }
+        gxpre() {
+           
             if (this.onechange == 2) {
                 console.log('新建');
                 this.twoObj.WID = this.oneworkduan;
@@ -2860,7 +2606,7 @@ this.unsixth = true;
                 console.log(this.twoObj);
                 this.$axios({
                     method: 'post',
-                    url: `/api/ProcessParameterConfigure/AddWorkStep?LoginName=${_name}`,
+                    url: '/api/ProcessParameterConfigure/AddWorkStep',
                     data: this.twoObj
                 }).then(res => {
                     if (res.data.msg == '请求成功') {
@@ -2914,7 +2660,7 @@ this.unsixth = true;
                 xgdata.StepName = xgdata.OriginalStepName
                 this.$axios({
                     method: 'post',
-                    url: `/api/ProcessParameterConfigure/AddWorkStep?LoginName=${_name}`,
+                    url: '/api/ProcessParameterConfigure/AddWorkStep',
                     data: xgdata
                 }).then(res => {
                     console.log(res);
@@ -3429,17 +3175,8 @@ this.newblue = true;
             this.daiti = JSON.parse(a);
             
             this.onechange = 1;
-            console.log("----", this.oneworkname,this.daiti )
+            console.log("----", this.oneworkname)
             this.oneObj = this.oneworkname
-            
-            let _obj=this.tableData.find(_=>_.WID==this.oneworkduan)
-            if(_obj){
-                this.WorkCode=_obj.WorkCode;
-                this.OperatingMode=_obj.OperatingMode;
-            }else{
-                this.WorkCode='';
-                this.OperatingMode='';
-            }
             // if (this.oneworkname !== '') {
                 setTimeout(() => {
                     $('.onework').css({
@@ -3539,8 +3276,6 @@ this.newblue = true;
             })
             this.pdyd1 = true;
             this.oneObj = '';
-            this.WorkCode = '';
-            this.OperatingMode = 1;
             this.oneworkname = '';
         },
         changetwo() {
@@ -3574,17 +3309,15 @@ this.newblue = true;
             }
             
             this.onechange = 1;
-            this.editWorkStationType="修改工位";
-            this.twowork = true;
-            // setTimeout(() => {
-            //     $('.twowork ').css({
-            //         zoom: this.a11,
-            //         left: `calc(50% - ${($('.twowork ').width() / 2) * this.a11}px)`,
-            //         top: `calc(50% - ${($('.twowork ').height() / 2) * this.a11}px)`
-            //     });
-            //     this.twowork = true;
-            //     this.move('twowork', 'twoworktop');
-            // });
+            setTimeout(() => {
+                $('.twowork ').css({
+                    zoom: this.a11,
+                    left: `calc(50% - ${($('.twowork ').width() / 2) * this.a11}px)`,
+                    top: `calc(50% - ${($('.twowork ').height() / 2) * this.a11}px)`
+                });
+                this.twowork = true;
+                this.move('twowork', 'twoworktop');
+            });
             
             let a = JSON.stringify(this.twoworkdata);
             this.daiti1 = JSON.parse(a);
@@ -3612,37 +3345,20 @@ this.newblue = true;
                 this.tipword =this.lang.NoOperationAuthority;
                 return;
             }
-
-            if(!this.oneworkduan){
-                setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-                        left: `calc(50% - ${($('.tip').width() / 2) * this.a11}px)`,
-                        top: `calc(50% - ${($('.tip').height() / 2) * this.a11}px)`
-                    });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-                this.pdyd5 = true;
-                this.tipword = '请选择工序！';
-                return;
-            }
             this.aaa = false;
             this.bbb = false;
             this.ccc = false;
             
             this.onechange = 2;
-            this.editWorkStationType="添加工位";
-            this.twowork = true;
-            // setTimeout(() => {
-            //     $('.twowork ').css({
-            //         zoom: this.a11,
-            //         left: `calc(50% - ${($('.twowork ').width() / 2) * this.a11}px)`,
-            //         top: `calc(50% - ${($('.twowork ').height() / 2) * this.a11}px)`
-            //     });
-            //     this.twowork = true;
-            //     this.move('twowork', 'twoworktop');
-            // });
+            setTimeout(() => {
+                $('.twowork ').css({
+                    zoom: this.a11,
+                    left: `calc(50% - ${($('.twowork ').width() / 2) * this.a11}px)`,
+                    top: `calc(50% - ${($('.twowork ').height() / 2) * this.a11}px)`
+                });
+                this.twowork = true;
+                this.move('twowork', 'twoworktop');
+            });
             this.pdyd2 = true;
 
             this.twoObj = {
@@ -4387,7 +4103,7 @@ this.newblue = true;
 
 .changpro {
     width: 600px;
-    height: 623px;
+    height: 532px;
     background-color: #eeeeee;
     position: fixed;
     top: 250px;
@@ -4462,7 +4178,6 @@ this.newblue = true;
         height: calc(100% - 60px);
         padding: 30px 0px 0px 0px;
     }
- 
     .changestion {
         margin-top: 10px;
     }
@@ -4966,7 +4681,7 @@ this.newblue = true;
     position: fixed;
     width: 500px;
     overflow: hidden;
-    height: 352px;
+    height: 252px;
     z-index: 10999999;
     box-shadow: 0px 0px 8px black;
     background-color: #eeeeee;
@@ -5010,7 +4725,7 @@ this.newblue = true;
         cursor: pointer;
         font-size: 14px;
         left: 210px;
-        top: 280px;
+        top: 170px;
     }
     .pre {
         width: 100px;
@@ -5024,24 +4739,17 @@ this.newblue = true;
         cursor: pointer;
         font-size: 14px;
         left: 320px;
-        top: 280px;
+        top: 170px;
     }
     img {
         width: 100%;
         height: 100%;
     }
-    .oneworkname,
-    .oneworkname2,
-    .oneworkname3  {
+    .oneworkname {
         position: absolute;
         top: 90px;
-        right: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        .require{
-            color:red;
-        }
+        left: 60px;
+
         input {
             width: 300px;
             height: 46px;
@@ -5052,14 +4760,7 @@ this.newblue = true;
         span {
             font-size: 14px;
             margin-right: 10px;
-            word-break: keep-all;
         }
-    }
-    .oneworkname2{
-        top: 150px;
-    }
-    .oneworkname3{
-        top: 210px;
     }
 }
 .twowork {
@@ -5212,24 +4913,6 @@ this.newblue = true;
             font-weight: 600;
             border-left: 3px solid #386df0;
             padding-left: 5px;
-            position:relative;
-            .missBtn{
-                font-size: 16px;
-                color: #ea9328;
-                cursor: pointer;
-                width: 100px;
-                height: 40px;
-                position: absolute;
-                top: 50%;
-                right: 0;
-                transform: translate(0,-50%);    
-                display: flex;
-                align-items: center;
-                justify-content: center;            
-                background-color: #fff;
-                border: 2px solid #ea9328;
-                border-radius: 4px;
-            }
         }
         .first {
             height: 100%;
@@ -5253,7 +4936,8 @@ this.newblue = true;
             float: left;
         }
         .firsttable {
-            margin-top: 20px;            width: 100%;
+            margin-top: 20px;
+            width: 100%;
             height: calc(100% - 40px);
             border: 1px solid #cccccc;
         }

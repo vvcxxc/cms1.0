@@ -1,47 +1,23 @@
-
-/* 全局过滤器 */
-export function filterCondition (val, {
-    PushMessage_WhenTriggered,
-    PushMessage_WhenConfirmed,
-    PushMessage_WhenRecovered,
-    PushMessage_WhenTimeoutNotConfirmed,
-    PushMessage_WhenTimeoutNotRecovered,
-    PushMessage_WhenReminding,
-    PushMessage_WhenDone,
-    PushMessage_WhenTimeoutNotDeal
-  }) {
-  // debugger
-  if (val === 1) {
-    return PushMessage_WhenTriggered
+/* 订单管理过滤器 */
+export function orderManageStatus(value) {
+  if (value === 1) {
+    return '生产中'
   }
-  if (val === 2) {
-    return PushMessage_WhenConfirmed
+  if (value === 2) {
+    return '暂停'
   }
-  if (val === 3) {
-    return PushMessage_WhenRecovered
+  if (value === 3) {
+    return '待生产'
   }
-  if (val === 4) {
-    return PushMessage_WhenTimeoutNotConfirmed
-  }
-  if (val === 5) {
-    return PushMessage_WhenTimeoutNotRecovered
-  }
-  if (val === 101) {
-    return PushMessage_WhenReminding
-  }
-  if (val === 102) {
-    return PushMessage_WhenDone
-  }
-  if (val === 103) {
-    return PushMessage_WhenTimeoutNotDeal
+  if (value === 4) {
+    return '完成'
   }
 }
 
-export function filterRemind (val) {
-  if (val === 1) {
-    return '弱提醒'
-  }
-  if (val === 2) {
-    return '强提醒'
+export function orderManageResult(value) {
+  if (value) {
+    return '合格'
+  } else {
+    return '不合格'
   }
 }

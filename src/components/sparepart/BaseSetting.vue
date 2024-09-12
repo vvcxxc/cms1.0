@@ -8,11 +8,15 @@
 <template>
     <div class="base">
         <div class="header" :style="{ zoom: a11 }">
-            <div class="equipment" :class="{ change: div == 1 }" @click="equipment">
-                {{ lang.SparePartsManage_TypeSpareParts }}
+            <div
+                class="equipment"
+                :class="{ change: div == 1 }"
+                @click="equipment"
+            >
+                {{lang.SparePartsManage_TypeSpareParts}}
             </div>
             <div class="install" :class="{ change: div == 0 }" @click="install">
-                {{ lang.SparePartsManage_WarehouseLocation }}
+                {{lang.SparePartsManage_WarehouseLocation}}
             </div>
         </div>
         <div class="container">
@@ -29,11 +33,27 @@
                     </div>
                 </div>
                 <div class="selecttree">
-                    <el-tree :data="data5" @node-click="handleNodeClick" default-expand-all ref="treeBox" node-key="NID"
-                        :highlight-current="true" icon-class="el-icon-arrow-up" :expand-on-click-node="false">
-                        <span class="custom-tree-node" slot-scope="{ node, data }">
+                    <el-tree
+                        :data="data5"
+                        @node-click="handleNodeClick"
+                        default-expand-all
+                        ref="treeBox"
+                        node-key="NID"
+                        :highlight-current="true"
+                        icon-class="el-icon-arrow-up"
+                        :expand-on-click-node="false"
+                    >
+                        <span
+                            class="custom-tree-node"
+                            slot-scope="{ node, data }"
+                        >
                             <span>
-                                <img v-show="data.file" :src="data.file" alt class="img" />
+                                <img
+                                    v-show="data.file"
+                                    :src="data.file"
+                                    alt
+                                    class="img"
+                                />
                                 <i :class="data.icon"></i>
                                 {{ node.label }}
                             </span>
@@ -42,8 +62,15 @@
                 </div>
             </div>
             <div class="data">
-                <el-table stripe :data="tableData" height="95%" border :style="{ fontSize: a11 * 15 + 'px', width: '100%' }"
-                    highlight-current-row :row-style="{ height: 50 * a11 + 'px' }" :header-cell-style="{
+                <el-table
+                    stripe
+                    :data="tableData"
+                    height="95%"
+                    border
+                    :style="{ fontSize: a11 * 15 + 'px', width: '100%' }"
+                    highlight-current-row
+                    :row-style="{ height: 50 * a11 + 'px' }"
+                    :header-cell-style="{
                         background:
                             $store.state.color == 'grey'
                                 ? '#D9DBDE'
@@ -52,20 +79,40 @@
                         'border-left': '1px solid #cccccc',
                         height: 50 * a11 + 'px',
                         padding: '0'
-                    }">
+                    }"
+                >
                     <template slot="empty">
-                        <span>{{ lang.SCMSConsoleWebApiMySql_NoData }}</span>
+                        <span>{{lang.SCMSConsoleWebApiMySql_NoData}}</span>
                     </template>
-                    <el-table-column prop="Number" :label="lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber"
-                        :width="100 * a11"></el-table-column>
-                    <el-table-column prop="NodeName" :label="lang.EquipmentAccount_EquipmentTypeName" v-if="div == 0"
-                        :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="NodeDesc" :label="lang.EquipmentAccount_EquipmentTypeDescribe" v-if="div1 == 0"
-                        :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="NodeName" :label="lang.EquipmentAccount_PositionName" v-if="div == 1"
-                        :show-overflow-tooltip="true"></el-table-column>
-                    <el-table-column prop="NodeDesc" :label="lang.EquipmentAccount_PositionDescribe" v-if="div1 == 1"
-                        :show-overflow-tooltip="true"></el-table-column>
+                    <el-table-column
+                        prop="Number"
+                        :label="lang.AlarmRecord_HT_AlarmPointManageUC_SerialNumber"
+                        :width="100*a11"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="NodeName"
+                        :label="lang.EquipmentAccount_EquipmentTypeName"
+                        v-if="div == 0"
+                        :show-overflow-tooltip="true"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="NodeDesc"
+                        :label="lang.EquipmentAccount_EquipmentTypeDescribe"
+                        v-if="div1 == 0"
+                        :show-overflow-tooltip="true"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="NodeName"
+                        :label="lang.EquipmentAccount_PositionName"
+                        v-if="div == 1"
+                        :show-overflow-tooltip="true"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="NodeDesc"
+                        :label="lang.EquipmentAccount_PositionDescribe"
+                        v-if="div1 == 1"
+                        :show-overflow-tooltip="true"
+                    ></el-table-column>
                 </el-table>
                 <div class="page">
                     <my-page :pageData="PageData" @req="req"></my-page>
@@ -75,41 +122,44 @@
         <div class="add" v-show="write">
             <div class="add1"></div>
             <div class="addtop">
-                <span v-if="div == 0">{{ lang.EquipmentAccount_EquipmentTypeEdit }} </span>
-                <span v-if="div == 1">{{ lang.EquipmentAccount_PositionEdit }} </span>
+                <span v-if="div == 0">{{lang.EquipmentAccount_EquipmentTypeEdit}} </span>
+                <span v-if="div == 1">{{lang.EquipmentAccount_PositionEdit}} </span>
                 <img :src="no" class="imgno" alt @click="cancel" />
             </div>
             <div class="addcontent">
                 <div class="addfather">
-                    <span>{{ lang.EquipmentAccount_SubordinateSuperior }}</span>
+                    <span>{{lang.EquipmentAccount_SubordinateSuperior}}</span>
                     <input type="text" v-model="addfather" disabled />
                 </div>
                 <div class="addname">
-                    <span v-if="div == 0">{{ lang.EquipmentAccount_EquipmentTypeName }}</span>
-                    <span v-if="div == 1">{{ lang.EquipmentAccount_PositionName }}</span>
+                    <span v-if="div == 0">{{lang.EquipmentAccount_EquipmentTypeName}}</span>
+                    <span v-if="div == 1">{{lang.EquipmentAccount_PositionName}}</span>
                     <input type="text" v-model="addname" />
                 </div>
                 <div class="addsomething">
-                    <span v-if="div == 0">{{ lang.EquipmentAccount_EquipmentTypeDescribe }}</span>
-                    <span v-if="div == 1">{{ lang.EquipmentAccount_PositionDescribe }}</span>
+                    <span v-if="div == 0">{{lang.EquipmentAccount_EquipmentTypeDescribe}}</span>
+                    <span v-if="div == 1">{{lang.EquipmentAccount_PositionDescribe}}</span>
                     <textarea name v-model="describe"></textarea>
                 </div>
-                <div class="no" @click="cancel">{{ lang.PopupCommon_Cancel }}</div>
-                <div class="yes" @click="preservation">{{ lang.PopupCommon_Save }}</div>
+                <div class="no" @click="cancel">{{lang.PopupCommon_Cancel}}</div>
+                <div class="yes" @click="preservation">{{lang.PopupCommon_Save}}</div>
             </div>
         </div>
         <div class="tip" v-show="tipchange">
-            <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
+            <div
+                class="tiphead"
+                style="position:absolute;width: 380px;height: 40px;"
+            ></div>
             <div class="tiptop">
                 <img :src="gth" alt />
-                <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
+                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
             </div>
             <div class="tipcontanin">
-                <div class="tipword">{{ tipword }}</div>
-                <div class="tipdetermine" @click="tip1" v-if="deltrue">{{ lang.MessageBox_Confrim }}</div>
+                <div class="tipword">{{tipword}}</div>
+                <div class="tipdetermine" @click="tip1" v-if="deltrue">{{lang.MessageBox_Confrim}}</div>
                 <div class="delclass" v-if="!deltrue">
-                    <div class="one" @click="no1">{{ lang.MessageBox_NO }}</div>
-                    <div class="two" @click="yes1">{{ lang.MessageBox_YES }}</div>
+                    <div class="one" @click="no1">{{lang.MessageBox_NO}}</div>
+                    <div class="two" @click="yes1">{{lang.MessageBox_YES}}</div>
                 </div>
             </div>
         </div>
@@ -169,35 +219,35 @@ export default {
             addnavdata: {},
             delnavdata: {},
             xz: 1,
-            div1: 0,
+            div1:0,
             a11: 1,
-            tableheight: '',
-            jurisdiction: [],
-            buttonarr: [],
-            sbtjid: '',
-            sbbjid: '',
-            sbscid: '',
-            aztjid: '',
-            azbjid: '',
-            azscid: '',
-            sbtjshow: true,
-            sbbjshow: true,
-            sbscshow: true,
-            aztjshow: true,
-            azbjshow: true,
-            azscshow: true,
+              tableheight: '',
+             jurisdiction:[],
+            buttonarr:[],
+             sbtjid:'',
+            sbbjid:'',
+            sbscid:'',
+            aztjid:'',
+            azbjid:'',
+            azscid:'',
+            sbtjshow:true,
+            sbbjshow:true,
+            sbscshow:true,
+            aztjshow:true,
+            azbjshow:true,
+            azscshow:true,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
         };
     },
     methods: {
-        move(name, namehead) {
-            //  $(`.${name}`).addClass('center')
-            let left = ($(`.${name}`).width()) / 2 + 'px'
-            let top = ($(`.${name}`).height()) / 2 + 'px'
-            $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
-            $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
-            $(`.${name}`)[0].addEventListener('mousedown', function (e) {
-
+       move(name, namehead) {
+          //  $(`.${name}`).addClass('center')
+           let left = ($(`.${name}`).width())/2+'px'
+           let top = ($(`.${name}`).height())/2+'px'
+             $(`.${name}`)[0].style.left = `calc(50% - ${left})`;
+           $(`.${name}`)[0].style.top = `calc(50% - ${top})`;
+            $(`.${name}`)[0].addEventListener('mousedown', function(e) {
+                
                 console.log(e.target.className.toLocaleLowerCase());
                 if (e.target.className.toLocaleLowerCase() == namehead) {
                     $(`.${name}`).removeClass('center')
@@ -216,11 +266,11 @@ export default {
                     isDown = true;
                     var pdmove = false;
 
-
+                     
                     //设置样式
                     $('body')[0].style.cursor = 'move';
 
-                    $('body')[0].addEventListener('mousemove', function (e) {
+                    $('body')[0].addEventListener('mousemove', function(e) {
                         pdmove = true;
                         if (isDown == false) {
                             return;
@@ -238,7 +288,7 @@ export default {
                         $(`.${name}`)[0].style.left = nl + 'px';
                         $(`.${name}`)[0].style.top = nt + 'px';
                     });
-                    $('body')[0].addEventListener('mouseup', function (e) {
+                    $('body')[0].addEventListener('mouseup', function(e) {
                         //开关关闭
                         isDown = false;
                         $('body')[0].style.cursor = 'default';
@@ -359,7 +409,7 @@ export default {
                     //                     );
                     //       })
                 })
-                .catch(err => { });
+                .catch(err => {});
         },
         tip1() {
             this.tipchange = false;
@@ -458,9 +508,9 @@ export default {
                     .then(res => {
                         if (
                             this.data.NID ==
-                            '11111111-1111-1111-1111-111111111111' ||
+                                '11111111-1111-1111-1111-111111111111' ||
                             this.data.NID ==
-                            '22222222-2222-2222-2222-222222222222'
+                                '22222222-2222-2222-2222-222222222222'
                         ) {
                             this.addfather = this.data.NodeName;
                         } else {
@@ -914,7 +964,7 @@ export default {
                         this.selectword();
                     }
                 })
-                .catch(err => { });
+                .catch(err => {});
         },
         isPositiveInteger(s) {
             //是否为正整数
@@ -1062,7 +1112,7 @@ export default {
                                 this.$refs.treeBox.setCurrentKey(this.data.NID);
                             });
                         })
-                        .catch(err => { });
+                        .catch(err => {});
                 }
             } else {
                 this.delnavdata.Name = this.addname;
@@ -1112,7 +1162,7 @@ export default {
                             this.tipword = res.data.msg;
                         }
                     })
-                    .catch(err => { });
+                    .catch(err => {});
             }
         }
     },
@@ -1244,7 +1294,6 @@ export default {
     position: absolute;
     height: 50px;
 }
-
 .cover {
     width: 100%;
     height: 100%;
@@ -1253,7 +1302,6 @@ export default {
     top: 0;
     left: 0;
 }
-
 .cover1 {
     width: 100%;
     height: 100%;
@@ -1262,7 +1310,6 @@ export default {
     top: 0;
     left: 0;
 }
-
 .header {
     justify-content: space-between;
     background-color: #ddd;
@@ -1271,36 +1318,30 @@ export default {
     color: #7f6f79;
     height: 50px !important;
     line-height: 50px;
-    padding: 0px 22px 0px 22px;
-
+    padding: 2px 22px 0px 22px;
     .equipment {
         height: 40px;
-        cursor: pointer;
         line-height: 40px;
-        background-color: #4270E4;
-        color: #ffffff;
+        background-color: #ffffff;
         text-align: center;
         display: inline-block;
-        padding: 0 20px;
+        cursor: pointer;
+        padding: 0 10px
     }
-
     .install {
-        height: 40px;
         cursor: pointer;
+        height: 40px;
         line-height: 40px;
-        background-color: #4270E4;
-        color: #ffffff;
+        background-color: #ffffff;
         text-align: center;
         display: inline-block;
-        padding: 0 20px;
+        margin-left: 5px;
+        padding: 0 10px;
     }
-
     .change {
-        color: #555555;
         background-color: #f0f0f0;
     }
 }
-
 .add {
     width: 640px;
     height: 400px;
@@ -1308,7 +1349,6 @@ export default {
     left: 600px;
     position: fixed;
     z-index: 12;
-
     .addtop {
         height: 60px;
         width: 640px;
@@ -1318,7 +1358,6 @@ export default {
         line-height: 60px;
         font-size: 20px;
         z-index: 11;
-
         img {
             position: absolute;
             width: 24px;
@@ -1329,18 +1368,15 @@ export default {
             z-index: 13;
         }
     }
-
     .addcontent {
         padding: 30px 78px 0px 78px;
         width: 640px;
         height: calc(100% - 60px);
         background-color: #eeeeee;
     }
-
     .addfather {
         margin-bottom: 10px;
         display: flex;
-
         input {
             width: 400px;
             background-color: #f4f4f4;
@@ -1349,18 +1385,15 @@ export default {
             text-indent: 1em;
             height: 35px;
         }
-
         span {
             display: inline-block;
             width: 120px;
             margin-right: 20px;
         }
     }
-
     .addname {
         margin-bottom: 10px;
         display: flex;
-
         input {
             width: 400px;
             border: none;
@@ -1368,29 +1401,24 @@ export default {
             border: 1px solid #cccccc;
             height: 35px;
         }
-
         span {
             display: inline-block;
             width: 120px;
             margin-right: 20px;
         }
     }
-
     .addsomething {
         display: flex;
-
         span {
             margin-right: 20px;
-            width: 120px;
+            width:120px;
         }
-
         textarea {
             height: 135px;
             width: 400px;
             text-indent: 1em;
         }
     }
-
     .no {
         display: inline-block;
         width: 100px;
@@ -1405,7 +1433,6 @@ export default {
         margin-right: 10px;
         cursor: pointer;
     }
-
     .yes {
         cursor: pointer;
         display: inline-block;
@@ -1418,24 +1445,20 @@ export default {
         color: #ffffff;
     }
 }
-
 .base {
     height: 100%;
     border: 1px solid #cccccc;
-
     .container {
         height: calc(100% - 60px);
         padding: 20px 20px 0px 20px;
         width: 100%;
         overflow: hidden;
     }
-
     .Dendrogram {
         height: 100%;
         width: 630px;
         border: 1px solid #cccccc;
         float: left;
-
         .imglist {
             width: 628px;
             height: 45px;
@@ -1443,7 +1466,6 @@ export default {
             border: 1px solid #cccccc;
             border-bottom: none;
             overflow: hidden;
-
             .img {
                 height: 41px;
                 margin-top: 2px;
@@ -1453,7 +1475,6 @@ export default {
                 background-color: #ffffff;
                 margin-right: 2px;
                 position: relative;
-
                 img {
                     position: absolute;
                     top: 0;
@@ -1464,14 +1485,12 @@ export default {
                 }
             }
         }
-
         .img {
             width: 24px;
             height: 24px;
             vertical-align: bottom;
         }
     }
-
     .data {
         margin-left: 20px;
         width: calc(100% - 650px);
@@ -1480,7 +1499,6 @@ export default {
         // border: 1px solid #cccccc;
     }
 }
-
 .tip {
     position: fixed;
     width: 380px;
@@ -1490,19 +1508,16 @@ export default {
     left: 750px;
     box-shadow: 0px 0px 8px black;
     background-color: #f3f3f4;
-
     .tiptop {
         width: 380px;
         height: 40px;
         background-color: #ffbc3d;
-
         img {
             width: 20px;
             height: 20px;
             margin-top: 10px;
             margin-left: 160px;
         }
-
         span {
             color: #ffffff;
             position: relative;
@@ -1510,11 +1525,9 @@ export default {
             margin-left: 7px;
         }
     }
-
     .tipcontanin {
         height: calc(100% - 40px);
     }
-
     .tipword {
         width: 100%;
         height: 75%;
@@ -1524,7 +1537,6 @@ export default {
         padding: 12px;
         text-align: center;
     }
-
     .tipdetermine {
         color: #ea9328;
         width: 310px;
@@ -1535,14 +1547,12 @@ export default {
         height: 30px;
         background-color: #f3e3ad;
     }
-
     .delclass {
         width: 330px;
         line-height: 30px;
         // margin-top: 40px;
         margin-left: 25px;
         height: 30px;
-
         .one {
             display: inline-block;
             height: 30px;
@@ -1552,7 +1562,6 @@ export default {
             background-color: #e0e0e0;
             color: #7e7e7e;
         }
-
         .two {
             display: inline-block;
             height: 30px;
@@ -1565,16 +1574,13 @@ export default {
         }
     }
 }
-
 .page {
     height: 5%;
     width: 100%;
 }
-
 .img {
     cursor: pointer;
 }
-
 .yd {
     margin: auto;
     top: 0 !important;
@@ -1582,7 +1588,6 @@ export default {
     bottom: 0 !important;
     left: 0 !important;
 }
-
 img {
     cursor: pointer;
 }

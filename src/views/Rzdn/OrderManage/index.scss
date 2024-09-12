@@ -1,0 +1,9 @@
+.slot_btn_view {
+  color: #4270E4;
+}
+.slot_btn_upd {
+  color: #FDAE22
+}
+.slot_btn_view.is-disabled, .slot_btn_upd.is-disabled{
+  color: #C0C4CC;
+}

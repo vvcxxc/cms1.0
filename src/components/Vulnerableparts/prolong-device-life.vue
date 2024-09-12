@@ -98,7 +98,7 @@ export default {
     },
     // 设置下拉项
     setOptions() {
-      if (this.editData.TimerType === this.lang.EquipmentAccount_UsedNumber) {
+      if (this.editData.TimerType === '使用次数') {
         this.options = [
           { value: 5, label: '次' },
         ]

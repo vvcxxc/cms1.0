@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="show" class="linebarBox1">
+    <div v-if="show">
       <div  v-for="(item,index) in dataValue" :key="index">
         <PloylineColumn ref="PloylineColumn" :drawLineShow="item.drawLineShow" :valueData1="valueData" 
           :class="item.class" :data="item.PolylineColumnChartItemList" :dataId="dataId" :item="item" :AllData="data">

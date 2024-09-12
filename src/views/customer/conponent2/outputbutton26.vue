@@ -19,20 +19,18 @@
       + 'px; width:'+ item.width + 'px; height:'+ item.height + 'px; borderRadius:' 
       + item.radiusLeft + 'px ' + item.radiusTop + 'px ' + item.radiusRight + 'px ' 
       + item.radiusButton + 'px; fontFamily:'+ item.family + '; fontSize:'+ item.fontSize 
-      + 'px; opacity:' + item.opacity + '; transform:rotate('
-      + item.rotate + 'deg);' + 'overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow + ';zIndex:'+item.ZIndex
-      + `;border: ${item.BorderThickness}px solid ${item.BorderBrush}`
-      + `; ${item.showLinear ? `border-image: ${item.linearStyle}; clip-path: inset(0 round ${item.BorderThickness}px)` : ''}`">
+      + 'px; opacity:' + item.opacity + '; background:' + item.BorderBrush + '; transform:rotate(' 
+      + item.rotate + 'deg);padding:' + item.BorderThickness + 'px;overflow:hidden;white-space:nowrap;boxShadow:'+item.Shadow + ';zIndex:'+item.ZIndex"> 
 
       <span class="contenText" :style="'position:absolute;left:0;top:0;right:0;bottom:0;margin:auto;line-height:'
-      +(item.height - item.BorderThickness*2) + 'px;color:'+item.Foreground + ';fontWeight:'+item.Blod">{{item.text}}</span>
+      +item.height + 'px;color:'+item.Foreground + ';fontWeight:'+item.Blod">{{item.text}}</span>
 
       <div class="conten" :style="'width:100%;height:100%;background:' + item.Background + ';borderRadius:' 
         + (Number(item.radiusLeft) -1) + 'px ' + (Number(item.radiusTop) -1) + 'px ' + (Number(item.radiusRight) -1) + 'px ' 
         + (Number(item.radiusButton) -1) + 'px;boxShadow:'+item.Shadow2">
       </div>
 
-        <div class="pressButton_box 44"></div>
+        <div class="pressButton_box"></div>
   </div>
 
   </div>
@@ -395,28 +393,22 @@ export default {
                       backgroundColor = '-webkit-linear-gradient('+lagel1+'deg'+backgroundColor+')';
               }
                 //边框色渐变
-                let showLinear = false
-                let linearStyle = ''
                 if(borderbrushArr.ColorType == 'SolidColor'){
                     borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                 }else{
-                        // 此处为渐变色
-                        let linearColor = ''
+                        borderColor = ''
                         lagel3 = borderbrushArr.Data.Angel.toFixed(0)
                     for(var f2=0;f2<borderbrushArr.Data.GradientStops.length;f2++){
                         gradient3 = borderbrushArr.Data.GradientStops[f2]
-                        linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                        borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
                     }
-                        // borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
-                        showLinear = true
-                        borderColor = 'transparent'
-                        linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
+                        borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
                 }
               //背景色渐变
               if(backgroundArr.ColorType == 'SolidColor'){
                   backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                    if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                        // backColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                        backColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                     }
               }else{
                       backColor = ''
@@ -457,9 +449,7 @@ export default {
                  Shadow:Shadow,
                  Shadow2:Shadow2,
                  Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                 ZIndex:this.ZIndex,
-                    showLinear,
-                    linearStyle
+                 ZIndex:this.ZIndex
                }
                   this.dataValue.push(value)
                   break;
@@ -510,28 +500,22 @@ export default {
                           backgroundColor = '-webkit-linear-gradient('+lagel1+'deg'+backgroundColor+')';
                   }
                     //边框色渐变
-                    let showLinear = false
-                    let linearStyle = ''
                     if(borderbrushArr.ColorType == 'SolidColor'){
                         borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
                     }else{
-                            // 此处为渐变色
-                        let linearColor = ''
+                            borderColor = ''
                             lagel3 = borderbrushArr.Data.Angel.toFixed(0)
                         for(var f1=0;f1<borderbrushArr.Data.GradientStops.length;f1++){
                             gradient3 = borderbrushArr.Data.GradientStops[f1]
-                            linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                            borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
                         }
-                            // borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
-                            showLinear = true
-                        borderColor = 'transparent'
-                        linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
+                            borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
                     }
                   //背景色渐变
                   if(backgroundArr.ColorType == 'SolidColor'){
                       backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
                       if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                        // backColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                        backColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
                     }
                   }else{
                           backColor = ''
@@ -572,9 +556,7 @@ export default {
                     Shadow:Shadow,
                     Shadow2:Shadow2,
                     Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                    ZIndex:this.ZIndex,
-                    showLinear,
-                    linearStyle
+                    ZIndex:this.ZIndex
                   }
                       this.dataValue.push(value5)
                }
@@ -610,28 +592,22 @@ export default {
                         Shadow2 = InnerShadow
                     }
             //边框色渐变
-            let showLinear = false
-            let linearStyle = ''
            if(borderbrushArr.ColorType == 'SolidColor'){
                borderColor = '#' + borderbrushArr.Data.Color.slice(3) + borderbrushArr.Data.Color.slice(1, 3)
            }else{
-                    // 此处为渐变色
-                    let linearColor = ''
+                     borderColor = ''
                      lagel3 = borderbrushArr.Data.Angel.toFixed(0)
                  for(var f=0;f<borderbrushArr.Data.GradientStops.length;f++){
                    gradient3 = borderbrushArr.Data.GradientStops[f]
-                   linearColor = linearColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
+                   borderColor = borderColor + ',' + gradient3.Color + ' ' + (gradient3.Offset*100).toFixed(0) + '%'
                }
-                  //  borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
-                  showLinear = true
-                        borderColor = 'transparent'
-                        linearStyle = `linear-gradient(-${Number(lagel3) - 90}deg ${linearColor}) 1`;
+                   borderColor = '-webkit-linear-gradient('+lagel3+'deg'+borderColor+')';
            }
           //背景色渐变
           if(backgroundArr.ColorType == 'SolidColor'){
               backColor = '#' + backgroundArr.Data.Color.slice(3) + backgroundArr.Data.Color.slice(1, 3)
               if(backgroundArr.Data.Color.slice(3) == 'FFFFFF' && backgroundArr.Data.Color.slice(1, 3) != "FF"){
-                  // backColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
+                  backColor = '#FFFFFF' + backgroundArr.Data.Color.slice(1, 3)
               }
           }else{
                   backColor = ''
@@ -687,9 +663,7 @@ export default {
                     Shadow:Shadow,
                     Shadow2:Shadow2,
                     Blod:this.textblockData[i].PropertyList.Blod == 'True' ? 'bold' : '',
-                    ZIndex:this.ZIndex,
-                    showLinear,
-                    linearStyle
+                    ZIndex:this.ZIndex
                   }
                       this.dataValue.push(value8)
          }

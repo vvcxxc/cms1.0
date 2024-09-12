@@ -1,0 +1,41 @@
+{
+    "Menus": [{
+            "title": "报警管理",
+            "permission": "alarm",
+            "to": "/alarm"
+        },
+        {
+            "title": "权限管理",
+            "permission": "permission",
+            "to": "/permission",
+            "children": [{
+                    "title": "用户管理",
+                    "to": "/user_management"
+                },
+                {
+                    "title": "角色管理",
+                    "to": "/role_management"
+                }
+            ]
+        },
+        {
+            "title": "二次开发",
+            "permission": "development1",
+            "to": "/development1",
+            "children": [{
+                    "title": "界面1",
+                    "to": "/矩形状态灯"
+                },
+                {
+                    "title": "界面2",
+                    "to": "/圆形状态灯"
+                }
+            ]
+        },
+        {
+            "title": "监控界面",
+            "permission": "development2",
+            "to": "/多个重复控件"
+        }
+    ]
+}

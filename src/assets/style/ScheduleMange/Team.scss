@@ -1,0 +1,212 @@
+.Team_box{
+  width:100%;
+  height:calc(100% - 58px);
+  .box{
+    width:100%;
+    height:100%;
+    position: absolute;
+    top: 0;
+    left:0;
+    right:0;
+    bottom:0;
+    margin: auto;
+    z-index: 9;
+  }
+  .table_remove,.table_edit{
+    width:60px;
+    height:30px;
+    background:rgba(255,255,255,1);
+    border:2px solid rgba(228,228,228,1);
+    border-radius:15px;
+    position: relative;
+    display: inline-block;
+    margin-left:8px;
+    cursor: pointer;
+  }
+  .remove_img{
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    margin:auto;
+    width:20px;
+    height: 20px;
+  }
+  .edit_img{
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    margin:auto;
+    width:18px;
+    height:20px;
+  }
+  .xianqing_img{
+      position: absolute;
+      top:0;
+      left:0;
+      bottom:0;
+      right:0;
+      margin:auto;
+      width:18px;
+      height:20px;
+  }
+  .Team_head{
+      width:96%;
+      height: 80px;
+      margin:auto;
+      padding-top:20px;
+      padding-bottom: 20px;
+      overflow: hidden;
+      .head_search{
+          float: left;
+          width:368px;
+          height: 40px;
+      }
+      .head_btn{
+          float: left;
+          width:110px;
+          height: 40px;
+          background: #4270E4;
+          border:1px solid #4270E4;
+          border-radius: 4px;
+          font-size: 16px;
+          color: #fff;
+          text-align: center;
+          line-height: 40px;
+          user-select: none;
+          cursor: pointer;
+          margin-left: 20px;
+      }
+      .head_add{
+          float: right;
+          width:110px;
+          height: 40px;
+          border:2px solid #46BE05;
+          border-radius: 4px;
+          font-size: 16px;
+          font-weight: bold;
+          line-height: 40px;
+          color: #46BE05;
+          user-select: none;
+          cursor: pointer;
+          position: relative;
+          .img_add{
+              width:24px;
+              height: 24px;
+              position: absolute;
+              top: 7px;
+              left: 7px;
+          }
+          .text_add{
+              margin-left: 30px;
+          }
+      }
+     
+  }
+  .Team_middle{
+    width:98%;
+    // height: calc(100% - 60px);
+    margin:auto;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+}
+
+.conterFool_bottom{
+    width:97%;
+    margin: auto;
+    height:60px;
+    padding-top:15px;
+    user-select: none;
+    .bottom_text{
+        float: left;
+        color:#929292;
+        font-size: 14px;
+    }
+      .bottom_firest{
+          width:65px;
+          height:30px;
+          line-height: 28px;
+          text-align:center;
+          color:#FDA100;
+          border: 1px solid #FDA100;
+          box-sizing: border-box;
+        float: right;
+        border-radius: 5px;
+        margin-left:10px;
+        cursor: pointer;
+    }
+      .bottom_last{
+          cursor: pointer;
+          width:80px;
+          height:30px;
+          line-height: 28px;
+          text-align:center;
+          color:#F9D79C;
+          border: 1px solid #F8CA7A;
+          box-sizing: border-box;
+          background: #f9f9f9;
+        float: right;
+        border-radius: 5px;
+        margin-left:10px;
+    }
+      .bottom_next{
+          cursor: pointer;
+        float: right;
+          width:80px;
+          height:30px;
+          line-height: 28px;
+          text-align:center;
+          color:#FDA100;
+          border: 1px solid #FDA100;
+          box-sizing: border-box;
+          border-radius: 5px;
+          margin-left:10px;
+    }
+      .bottom_end{
+          cursor: pointer;
+        float: right;
+          width:80px;
+          height:30px;
+          line-height: 28px;
+          text-align:center;
+          color:#FDA100;
+          border: 1px solid #FDA100;
+          box-sizing: border-box;
+          border-radius: 5px;
+          margin-left:10px;
+    }
+      .bottom_input{
+          float: right;
+          margin-left:10px;
+          color:#9C9C9C;
+          .text{
+            display: inline-block;
+            width:65px;
+            height:30px;
+            margin:0 5px;
+            text-align: center;
+            color:#FDA100;
+          }
+    }
+      .bottom_jump{
+          cursor: pointer;
+          float: right;
+            width:80px;
+          height:30px;
+          line-height: 28px;
+          text-align:center;
+          color:#FDA100;
+          border: 1px solid #FDA100;
+          box-sizing: border-box;
+          border-radius: 5px;
+          margin-left:10px;
+    }
+
+}

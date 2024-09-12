@@ -1,0 +1,13 @@
+/* @font-face {  
+       font-family: 'huawen'; 
+      src: url('./font/SourceHanSansCNBold(1).ttf');  
+      font-weight: normal;  
+      font-style: normal;  
+    } */
+
+@font-face {  
+    font-family: '思源黑体 CN'; 
+    src: url('./font/SourceHanSansCNNormal(1).ttf');  
+    font-weight: normal;  
+    font-style: normal;  
+    }

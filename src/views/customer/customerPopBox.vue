@@ -235,7 +235,6 @@ export default {
     "$store.state.contentData": {
       deep: true,
       handler:  function(n, o) {
-        console.log( 'cp2 this.$store.state.contentData',this.$store.state.contentData);
              this.contentData  = n
       }
     },

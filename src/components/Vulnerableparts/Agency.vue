@@ -5,7 +5,7 @@
  * @LastEditors: Tao
  * @LastEditTime: 2020-10-14 18:24:12
  -->
- <template>
+<template>
     <div class="public-table" @click="changeselect = false">
     <!-- 测试模块 -->
     <!-- <div style="position: fixed;z-index: 99;left: 0;top: 0;background: green;padding: 10px;">
@@ -321,8 +321,7 @@
 
                         <!-- 延长器件寿命-显示弹窗 -->
                         <!-- @click="handleEdit8(scope.$index, scope.row)" -->
-                         <!-- v-if="scope.row.Status == lang.SCMSConsoleWebApiMySql_Reminded" -->
-                        <div class="img"
+                        <div v-if="scope.row.Status == lang.SCMSConsoleWebApiMySql_Reminded" class="img"
                             :style="{ zoom: a11 }" @click="prolongDeviceLifeShow('show', scope.row)">{{
                                 lang.VulnerablePartManage_Extend }}</div>
 
@@ -875,7 +874,8 @@
         <!-- 延长器件寿命 -->
         <prolong-device-life v-if="ProlongDeviceLifeDialog.show" :editData="ProlongDeviceLifeDialog.editData"
             @callback="ProlongDeviceLifeCallback"></prolong-device-life>
-         <!-- 添加/编辑器件信息 -->
+
+        <!-- 添加/编辑器件信息 -->
         <create-device :state="createDeviceDialog.state" :editData="createDeviceDialog.editData"
             @callback="createDeviceCallback"></create-device>
     </div>
@@ -2309,25 +2309,14 @@ export default {
         // 器件信息-添加/编辑/查看
         createDeviceShow(state, row, index) {
             // console.clear();
-            console.log('添加/编辑器件信息-显示', state, index, row);
+            // console.log('添加/编辑器件信息-显示', state, index, row);
             if (row) this.createDeviceDialog.editData = row
             this.createDeviceDialog.state = state
         },
         // 添加/编辑器件信息-回调
-        createDeviceCallback(state,str) {
+        createDeviceCallback(state) {
             if (state === 'confirm') {
                 this.getsetime();
-            }
-            if(str){
-                setTimeout(() => {
-                    $('.tip').css({
-                        zoom: this.a11,
-
-                    });
-                    this.tipchange = true;
-                    this.move('tip', 'tiphead');
-                });
-                 this.tipword = str;
             }
             this.createDeviceDialog.state = 'hide'
         },
@@ -2522,8 +2511,6 @@ export default {
                 this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month
             } else if (this.wantnowdata.LifeCycleUnit == 4) {
                 this.wantnowdata.LifeCycleUnit = this.lang.HMI_HT_LineChartWindowViewModel_Year
-            }else if (this.wantnowdata.ReminderTimeUnit == 5) {
-                this.wantnowdata.ReminderTimeUnit = '次';
             }
             if (this.wantnowdata.ReminderTimeUnit == 1) {
                 this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Hour
@@ -2533,8 +2520,6 @@ export default {
                 this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Month
             } else if (this.wantnowdata.ReminderTimeUnit == 4) {
                 this.wantnowdata.ReminderTimeUnit = this.lang.HMI_HT_LineChartWindowViewModel_Year
-            }else if (this.wantnowdata.ReminderTimeUnit == 5) {
-                this.wantnowdata.ReminderTimeUnit = '次';
             }
             this.wantnowdata.ReminderTimeValue = parseInt(
                 this.wantnowdata.ReminderTimeValue
@@ -3111,29 +3096,29 @@ export default {
                             );
                             if (this.tableData1[i].LifeCycleUnit == 1) {
                                 this.tableData1[i].LifeCycleValue =
-                                    this.tableData1[i].LifeCycleValue  
+                                    this.tableData1[i].LifeCycleValue + this.lang.HMI_HT_LineChartWindowViewModel_Hour;
                             } else if (this.tableData1[i].LifeCycleUnit == 2) {
                                 this.tableData1[i].LifeCycleValue =
-                                    this.tableData1[i].LifeCycleValue  
+                                    this.tableData1[i].LifeCycleValue + this.lang.MaintenanceManage_Day;
                             } else if (this.tableData1[i].LifeCycleUnit == 3) {
                                 this.tableData1[i].LifeCycleValue =
-                                    this.tableData1[i].LifeCycleValue 
+                                    this.tableData1[i].LifeCycleValue + this.lang.HMI_HT_LineChartWindowViewModel_Month;
                             } else if (this.tableData1[i].LifeCycleUnit == 4) {
                                 this.tableData1[i].LifeCycleValue =
-                                    this.tableData1[i].LifeCycleValue  
+                                    this.tableData1[i].LifeCycleValue + this.lang.HMI_HT_LineChartWindowViewModel_Year;
                             }
                             if (this.tableData1[i].ReminderTimeUnit == 1) {
                                 this.tableData1[i].ReminderTimeValue =
-                                    this.tableData1[i].ReminderTimeValue 
+                                    this.tableData1[i].ReminderTimeValue + this.lang.HMI_HT_LineChartWindowViewModel_Hour;
                             } else if (this.tableData1[i].ReminderTimeUnit == 2) {
                                 this.tableData1[i].ReminderTimeValue =
-                                    this.tableData1[i].ReminderTimeValue  
+                                    this.tableData1[i].ReminderTimeValue + this.lang.MaintenanceManage_Day;
                             } else if (this.tableData1[i].ReminderTimeUnit == 3) {
                                 this.tableData1[i].ReminderTimeValue =
-                                    this.tableData1[i].ReminderTimeValue  
+                                    this.tableData1[i].ReminderTimeValue + this.lang.HMI_HT_LineChartWindowViewModel_Month;
                             } else if (this.tableData1[i].ReminderTimeUnit == 4) {
                                 this.tableData1[i].ReminderTimeValue =
-                                    this.tableData1[i].ReminderTimeValue  
+                                    this.tableData1[i].ReminderTimeValue + this.lang.HMI_HT_LineChartWindowViewModel_Year;
                             }
                             if (this.tableData1[i].Status == 1) {
                                 this.tableData1[i].Status = this.lang.SCMSConsoleWebApiMySql_Reminded

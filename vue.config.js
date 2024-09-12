@@ -13,7 +13,7 @@
  * @LastEditTime: 2019-11-07 21:18:34
  */
 // http://192.168.1.142:8802/api/Base/PostRediusTest?varNameString=S7_TCP
-const webpack = require('webpack');
+const webpack = require('webpack')
 module.exports = {
     publicPath: './',
     productionSourceMap: false, //生产环境是否生产syourceMap文件,设置为false可减小打包后的体积
@@ -25,13 +25,12 @@ module.exports = {
                 //这里最好有一个 /
                 // 'http://192.168.1.123:8807'
                 // 192.168.2.134:8802
-                // target: 'http://192.168.2.17:8802', // 后台接口域名
-                target: 'http://192.168.2.251:8803', // 后台接口域名
-                ws: true, //如果要代理 websockets，配置这个参数
+                 target: 'http://192.168.2.37:8802/', // 后台接口域名
+                  ws: true, //如果要代理 websockets，配置这个参数
                 secure: false, // 如果是https接口，需要配置这个参数
                 changeOrigin: true, //是否跨域
                 pathRewrite: {
-                    '^/api': '/api'
+                    '^/api': '/api',
                 }
             },
             '/(ISAPI|SDK|webSocketVideoCtrlProxy)': {
@@ -44,7 +43,7 @@ module.exports = {
                     '^/SDK': '/SDK',
                     '^/webSocketVideoCtrlProxy': '/webSocketVideoCtrlProxy'
                 }
-            }
+            },
         }
     },
     css: {
@@ -61,7 +60,7 @@ module.exports = {
             .test(/\.(flv|avi)$/)
             .use('file-loader')
             .loader('file-loader')
-            .end();
+            .end()
     },
     configureWebpack: {
         devtool: 'source-map',
@@ -72,9 +71,9 @@ module.exports = {
         ],
         plugins: [
             new webpack.ProvidePlugin({
-                $: 'jquery',
-                jQuery: 'jquery',
-                'windows.jQuery': 'jquery'
+                $: "jquery",
+                jQuery: "jquery",
+                "windows.jQuery": "jquery"
             })
         ]
     },

@@ -7,7 +7,8 @@
  -->
 <template>
     <div v-if="show">
-        <div v-for="(item, key) in cavantable" :key="key" :id="item.Name" :style="'position:absolute;' +
+        <div v-for="(item, key) in cavantable" :key="key" :id="item.Name" :style="
+            'position:absolute;' +
             'left:' +
             item.PropertyList.Left +
             'px; top:' +
@@ -23,10 +24,10 @@
             item.PropertyList.Opacity +
             ';zIndex:' +
             item.PropertyList.ZIndex
-            ">
-            <div v-html="item.ParameterReportItemtList.dd.zhtml" class="table-box"></div>
-        </div>
-        <!-- <div class="tip12" ref="kongtiao2" v-if="tipchange" :class="{yd:pdyd3}">
+        ">
+        <div v-html="item.ParameterReportItemtList.dd.zhtml" class="table-box"></div>
+    </div>
+    <!-- <div class="tip12" ref="kongtiao2" v-if="tipchange" :class="{yd:pdyd3}">
             <div
                 class="tiptop"
                 @mousedown="mouseDownHandleelse2($event)"
@@ -11248,6 +11249,9 @@ export default {
         //赋值
         gitValue() {
             this.cavantable = this.textblockData;
+
+            console.log('sss', this.cavantable);
+
             //加层级
             for (let j = 0; j < this.textblockData.length; j++) {
                 var ZIndexs = this.data.Data.ZIndexs;
@@ -11284,7 +11288,6 @@ export default {
                                     data.Data.ParameterReportItemtList[j].dd
                                 );
                         }
-                        data.Data.ParameterReportItemtList[j].dd.zhtml = this.zhtmlFn(data.Data.ParameterReportItemtList[j].dd.zhtml, data.Data.ParameterReportItemtList[j].ElementName)
 
                         this.cavantable[a].ParameterReportItemtList =
                             data.Data.ParameterReportItemtList[j];
@@ -11306,35 +11309,10 @@ export default {
                 }
             });
 
-
             setTimeout(() => {
                 this.first();
             });
         },
-        replaceZhtml(str, name) {
-            let customMultiLanguage = JSON.parse(localStorage.getItem('customMultiLanguage'))
-            let _obj = customMultiLanguage.find(_ => _.Field == name && _.Origin == str)
-            if (_obj) {
-                let currentLang = localStorage.getItem('currentLang')
-                return _obj.DicMulitLanguages[currentLang] || str;
-            }
-            return str;
-        },
-        zhtmlFn(_str, name) {
-            let that = this;
-            let str = _str.split('').reverse().join('')
-            let _x = str.replace(/\/<(.*?)>/g, function (item) {
-                let _ = item.replace("/<", "").replace(">", "")
-                console.log('====>', _);
-                if (_) {
-                    _ = that.replaceZhtml(_.split('').reverse().join(''), name)
-                }
-                return `/<${_.split('').reverse().join('')}>`
-            })
-            let fin = _x.split('').reverse().join('')
-            console.log('====>fin', fin);
-            return fin
-        }
     },
 };
 </script>

@@ -65,7 +65,7 @@ export default {
       },
        chartdata:{
         handler(val){
-          console.log("cp2 chartdata",val)
+        
           this.init();
         }
       },

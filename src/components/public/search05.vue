@@ -59,7 +59,7 @@
                     :placeholder="lang.AlarmRecord_Time_Keyword"
                     clearable
                     :style="[{fontSize:16*1+'px'},
-                        {width: 217*1+'px'},
+                        {width: 215*1+'px'},
                         {height: 40*1+'px'}
                     ]"
                 ></el-input>
@@ -72,7 +72,7 @@
                     {marginTop: 10*1+'px'},
                  ]"
             >{{lang.AlarmRecord_Time_Select}}</div>
-            <div class="btn pointer" @click="confirm" :id="qrid" 
+            <div class="btn pointer export" @click="confirm" :id="qrid" 
                 :style="[
                     {fontSize:16*1+'px'},
                     {height: 40*1+'px'},
@@ -90,16 +90,12 @@
                     {marginTop: 10*1+'px'},
                  ]"
             >{{lang.AlarmRecord_Time_AllSure}}</div>
-            <div class="export" @click="exportFn" :id="exid" 
-                :style="[
-                    {fontSize:16*1+'px'},
-                    {height: 40*1+'px'},
-                    {width: 100*1+'px'},
-                    {marginLeft: 10*1+'px'},
-                    {marginTop: 10*1+'px'},
-                 ]"
-            >{{lang.QualityManage_SampleChoseUserControl_Export}}</div>
         </div>
+        
+        <!-- <div class="fr">
+            <div class="import">导入</div>
+            <div class="export">导出</div>
+        </div>-->
     </div>
 </template>
 
@@ -114,10 +110,8 @@ export default {
             zoom1:1,
             qrid:'',
             allqrid:'',
-            exid:'',
             cxshow:true,
             qrshow:true,
-            exshow:'',
             allqrshow:true,
             zoom:1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
@@ -137,9 +131,6 @@ export default {
           this.qrid = item.RightID
          }else if(item.RightName == '实时报警-全部确认按钮'){
            this.allqrid = item.RightID
-         }
-         else if(item.RightName == '实时报警-导出按钮'){
-           this.exid = item.RightID
          }
      })
      var userid = ''
@@ -176,14 +167,6 @@ export default {
               }).catch((err)=>{
                   console.log('err',err)
               })
-              this.$axios({
-                method: 'post',
-                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.exid}`,
-            }).then(res => {
-                this.exshow = res.data.data
-            }).catch((err) => {
-                console.log('err', err)
-            })
         }
     },
     computed:{
@@ -215,8 +198,6 @@ export default {
           this.qrid = item.RightID
          }else if(item.RightName == '实时报警-全部确认按钮'){
            this.allqrid = item.RightID
-         }else if(item.RightName == '实时报警-导出按钮'){
-           this.exid = item.RightID
          }
      })
      var userid = ''
@@ -253,19 +234,8 @@ export default {
               }).catch((err)=>{
                   console.log('err',err)
               })
-              this.$axios({
-                method: 'post',
-                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.exid}`,
-            }).then(res => {
-                this.exshow = res.data.data
-            }).catch((err) => {
-                console.log('err', err)
-            })
     },
     methods: {
-        exportFn(){
-            this.$emit('exportFn', this.exshow);
-        },
                         sx(){
             let that = this
             setTimeout(()=>{
@@ -366,9 +336,9 @@ for(let i=0;i<$('.el-picker-panel').length;i++){
 
 .search-container {
     @extend %flex;
-    width: 100%;
     justify-content: space-between;
     background-color: #ddd;
+    // width: 1690px;
     position: relative;
 }
 span {
@@ -419,7 +389,10 @@ span {
     float: left;
     color: #fda100;
 }
- 
+.export {
+    // bottom: 10px;
+    background-color:#79d088 !important;
+}
 .fr {
     width: 220px;
     height: 100%;
@@ -440,21 +413,6 @@ span {
       border-radius: 4px;
       color: #fff;
           cursor: pointer;
-}
-.export{
-    border: 1px solid #fda100;
-    background-color: #ffffff;
-    color: #fda100;
-    width: 120px;
-    height: 38px;
-    margin-top: 11px;
-    display: block;
-    border-radius: 4px;
-    text-align: center;
-    line-height: 38px;
-    cursor: pointer;
-    float: left;
-    margin-left: 10px;
 }
 .el-input__icon{
     line-height: unset;

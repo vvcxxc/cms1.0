@@ -6,56 +6,107 @@
  * @LastEditTime: 2021-04-08 15:25:35
  -->
 <template>
-    <div v-loading="loading" ref="head" class="tapwater" :style="{ zoom: zoomValue }">
+    <div v-loading="loading || loading2 || loading3" ref="head" class="tapwater" :style="{ zoom: zoomValue }">
         <div class="linebox" id="linebox">
             <div class="query-table clearfix">
                 <div class="fl">
-                    <span>{{ lang.ProcessParameterConfigure_ProcessParameterReportUserControl_QueryTimeRange }}</span>
-                    <div class="container">
-                        <div class="block">
-                            <span class="demonstration"></span>
-
-                            <el-date-picker @change="stateTime" @focus="getZoom()" v-model="value1"
-                                :disabled="selectVale == lang.ProcessParameterReport_HT_AccurateMatching" type="datetime"
-                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate" value-format="yyyy-MM-dd HH:mm:ss"
-                                :style="{ width: '220px' }"></el-date-picker>
-                        </div>
-                        <i class="separate">-</i>
-                        <div class="block">
-                            <span class="demonstration"></span>
-                            <el-date-picker @change="entTime" @focus="getZoom()" v-model="value2"
-                                :disabled="selectVale == lang.ProcessParameterReport_HT_AccurateMatching" type="datetime"
-                                :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate" value-format="yyyy-MM-dd HH:mm:ss"
-                                :style="{ width: '220px' }"></el-date-picker>
-                        </div>
-                    </div>
-                    <el-select style="margin-left:5px;width:170px" v-model="selectVale" @focus="getZoom()"
+                    <span>完工时间范围</span>
+                    <el-date-picker @change="stateTime" @focus="getZoom()" v-model="value1"
+                        :disabled="selectVale == lang.ProcessParameterReport_HT_AccurateMatching" type="datetime"
+                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate" value-format="yyyy-MM-dd HH:mm:ss"
+                        :style="{ width: '160px' }"></el-date-picker>
+                    <span>-</span>
+                    <el-date-picker @change="entTime" @focus="getZoom()" v-model="value2"
+                        :disabled="selectVale == lang.ProcessParameterReport_HT_AccurateMatching" type="datetime"
+                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChooseDate" value-format="yyyy-MM-dd HH:mm:ss"
+                        :style="{ width: '160px' }"></el-date-picker>
+                    <span>产品型号</span>
+                    <el-select style="margin-left:5px;width:120px" v-model="ProductTypeCode" @focus="getZoom()"
+                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
+                        <el-option label="全部" value="全部"> </el-option>
+                        <el-option v-for="item in ProductTypeList" :key="item.ProductTypeCode" :label="item.ProductTypeCode"
+                            :value="item.ProductTypeCode">
+                        </el-option>
+                    </el-select>
+                    <span>是否合格</span>
+                    <el-select style="margin-left:5px;width:80px" v-model="QualitiedType" @focus="getZoom()"
+                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
+                        <el-option label="全部" value="全部"> </el-option>
+                        <el-option label="是" value="是"> </el-option>
+                        <el-option label="否" value="否"> </el-option>
+                    </el-select>
+                    <span>类型</span>
+                    <el-select style="margin-left:5px;width:80px" v-model="WorkType" @focus="getZoom()"
+                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
+                        <el-option label="全部" value="全部"> </el-option>
+                        <el-option label="正常" value="正常"> </el-option>
+                        <el-option label="返修" value="返修"> </el-option>
+                        <el-option label="导入" value="导入"> </el-option>
+                    </el-select>
+                    <el-select style="margin-left:5px;width:100px" v-model="QueryKeyType" @focus="getZoom()"
+                        :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
+                        <el-option label="产品ID" value="产品ID"> </el-option>
+                        <el-option label="工单号" value="工单号"> </el-option>
+                    </el-select>
+                    <!--    <el-select style="margin-left:5px;width:100px" v-model="selectVale" @focus="getZoom()"
                         :placeholder="lang.SCMSConsoleWebApiMySql_PleChoose">
                         <el-option v-for="item in selectOptions" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
-                    </el-select>
-                    <input type="text" v-model="codeText"
+                    </el-select> -->
+                    <input style="margin-left:5px;width:120px" type="text" v-model="codeText"
                         :placeholder="lang.ProcessParameterConfigure_ProcessParameterReportUserControl_InputCode"
                         class="txt">
                     <div class="query" @click="changetime()">{{ lang.FormulaManage_AddProject_Select }}</div>
-                </div>
-                <div class="fr">
-                    <div class="export" @click="exportTable()">
-                        {{ lang.ProcessParameterConfigure_ProcessParameterReportUserControl_Export }}</div>
+                    <div class="set" @click="openDisplaySettings">显示设置</div>
+                    <div class="edit" @click="openProductScrapping">产品解绑</div>
+                    <div class="query" @click="openDataUpdate">数据修改</div>
+                    <el-upload action="#" accept=".xlsx" :show-file-list="false" :http-request="uploadExcel">
+                        <div class="export" @click="handleUpload">导入</div>
+                    </el-upload>
+                    <div class="export" @click="exportTempLate()">导出模板</div>
+                    <div class="export" @click="exportTable()">导出</div>
                 </div>
             </div>
             <div id="conter" class="conter">
-                <div class="report-page">
-                    <div v-loading="loading2">
-                        <div class="charts">
-                            <div class="chart-label">
-                                <div class="c-w">
-                                    <div class="c-i"></div>
-                                </div>
-                                {{ tableData.chartTitle }}
-                            </div>
-                            <div class="mychart" id="mychart"></div>
+                <!--  <div class="report-banner">
+                    <div class="banner-item">
+                        <div class="item-content">
+                            <div class="item-label">产量</div>
+                            <div class="item-num">{{ TotalCount }}</div>
+                            <div class="item-unit">件</div>
                         </div>
+                    </div>
+                    <div class="banner-item">
+                        <div class="item-content">
+                            <div class="item-label">OK数</div>
+                            <div class="item-num">{{ OKCout }}</div>
+                            <div class="item-unit">件</div>
+                        </div>
+                    </div>
+                    <div class="banner-item">
+                        <div class="item-content">
+                            <div class="item-label">NG数</div>
+                            <div class="item-num red">{{ NGCount }}</div>
+                            <div class="item-unit">件</div>
+                        </div>
+                    </div>
+                    <div class="banner-item">
+                        <div class="item-content">
+                            <div class="item-label">合格率</div>
+                            <div class="item-num green">{{ PassRate }}</div>
+                            <div class="item-unit">%</div>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="report-page">
+                    <div class="charts">
+                        <div class="chart-label">
+                            <div class="c-w">
+                                <div class="c-i"></div>
+                            </div>
+                            {{ tableData.chartTitle }}
+                        </div>
+                        <div class="mychart" id="mychart"></div>
                     </div>
                     <div class="table">
                         <div class="table-l">
@@ -68,28 +119,32 @@
                         <div class="table-r" v-if="tableData.curLeft">
                             <div class="table-box">
                                 <!-- 拒绝el-table,从你我做起，eltable加载七八百条数据就卡的飞起 -->
-                                <table cellspacing="0" cellpadding="1" v-loading="loading3">
+                                <table cellspacing="0" cellpadding="1">
                                     <thead>
-                                        <tr v-if="tableData.curLeft.IsVisual">
-                                            <th colspan="6" rowspan="1" class="blue-th">{{
+                                        <!-- <tr>
+                                            <th colspan="5" rowspan="1" class="blue-th">{{
                                                 lang.ProcessParameterReport_HT_Information }}</th>
-                                            <th v-for="item in computedProcess" :colspan="item.ProjectsNum" rowspan="1">
-                                                {{ item.WorkName }}</th>
-                                        </tr>
+                                            <th :colspan="tableData.curLeft.WorkSteps.reduce((sum, w) => { return w.Projects.length + sum }, 1)"
+                                                rowspan="1">
+                                                {{ tableData.curLeft.WorkName }}</th>
+                                        </tr> -->
                                         <tr>
-                                            <th colspan="1" rowspan="2" class="blue-th no1">{{
+                                            <th colspan="1" rowspan="2" class="blue-th no1 fixed-title">{{
                                                 lang.ProcessParameterReport_HT_SerialNumber }}</th>
-                                            <th colspan="1" rowspan="2" class="blue-th no2">{{
-                                                lang.ProcessParameterReport_HT_Date }}</th>
-                                            <th colspan="1" rowspan="2" class="blue-th no3">
+                                            <th colspan="1" rowspan="2" class="blue-th no2 fixed-title">
                                                 {{ lang.ProcessParameterReport_HT_ProductID }}</th>
+                                            <th colspan="1" rowspan="2" class="blue-th no3">托盘码</th>
+
+                                            <th colspan="1" rowspan="2" class="blue-th no3">产品型号</th>
+                                            <th colspan="1" rowspan="2" class="blue-th no3">工单号</th>
+                                            <th colspan="1" rowspan="2" class="blue-th no3">类型</th>
                                             <th colspan="1" rowspan="2" class="blue-th no4">{{
                                                 lang.ProcessParameterReport_HT_IsProductQualified }}</th>
                                             <th colspan="1" rowspan="2" class="blue-th no5">{{
                                                 lang.ProcessParameterReport_HT_ReasonForFailure }}</th>
-                                            <th colspan="1" rowspan="2" class="blue-th no6">{{
-                                                lang.ProcessParameterReport_HT_RecordingTime }}
-                                            </th>
+                                            <th colspan="1" rowspan="2" class="blue-th no6">上线时间</th>
+                                            <th colspan="1" rowspan="2" class="blue-th no6">完工时间</th>
+                                            <th colspan="1" rowspan="2" class="blue-th no6">操作员</th>
                                             <th :colspan="item.Projects.length" rowspan="1"
                                                 v-for="(item, idx)  in tableData.curLeft.WorkSteps"
                                                 :key="item.SID + idx + 'S1'">
@@ -106,11 +161,16 @@
                                             </template>
                                         </tr>
                                         <tr>
-                                            <th colspan="1" rowspan="1" class="blue-th no1">//</th>
-                                            <th colspan="1" rowspan="1" class="blue-th no2">//</th>
+                                            <th colspan="1" rowspan="1" class="blue-th no1 fixed-title">//</th>
+                                            <th colspan="1" rowspan="1" class="blue-th no2 fixed-title">//</th>
+                                            <th colspan="1" rowspan="1" class="blue-th no3">//</th>
+                                            <th colspan="1" rowspan="1" class="blue-th no3">//</th>
+                                            <th colspan="1" rowspan="1" class="blue-th no3">//</th>
                                             <th colspan="1" rowspan="1" class="blue-th no3">//</th>
                                             <th colspan="1" rowspan="1" class="blue-th no4">//</th>
                                             <th colspan="1" rowspan="1" class="blue-th no5">//</th>
+                                            <th colspan="1" rowspan="1" class="blue-th no6">//</th>
+                                            <th colspan="1" rowspan="1" class="blue-th no6">//</th>
                                             <th colspan="1" rowspan="1" class="blue-th no6">//</th>
                                             <template v-for="(item, idx)  in tableData.curLeft.WorkSteps">
                                                 <th colspan="1" rowspan="1" v-for="item2 in item.Projects "
@@ -118,13 +178,19 @@
                                                     {{ item2.Unit }}
                                                 </th>
                                             </template>
+                                        <tr>
+                                        </tr>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="item in tableData.dataList" :key="item.Number + 'data'">
                                             <td class="no1">{{ item.Number }}</td>
-                                            <td class="no2">{{ item.Date }}</td>
-                                            <td class="no3">{{ item.ProductID }}</td>
+                                            <td class="no2">{{ item.ProductID }}</td>
+                                            <td class="no3">{{ item.PalletID }}</td>
+                                            <td class="no3">{{ item.ProductTypeCode }}</td>
+                                            <td class="no3">{{ item.OrderNumber }}</td>
+
+                                            <td class="no3">{{ item.WorkTypeText }}</td>
                                             <td class="no4" :style="{ color: !item.IsQualified ? '#f56c6c' : '#000' }">{{
                                                 item.IsQualifiedText
                                             }}</td>
@@ -133,7 +199,9 @@
                                                     {{ item.Reason }}
                                                 </td>
                                             </el-tooltip>
+                                            <td class="no6">{{ item.GetInTime }}</td>
                                             <td class="no6">{{ item.RecordTime }}</td>
+                                            <td class="no6">{{ item.Operator }}</td>
                                             <template v-for="(item2, _idx) in tableData.curLeft.WorkSteps">
                                                 <td colspan="1" rowspan="1" v-for="item3 in item2.Projects "
                                                     :key="item3.PID + 'P3'"
@@ -156,6 +224,9 @@
         <!-- 提示弹窗和遮罩层 -->
         <TipsPop :popText="TipsPopText" v-if="isTipsPop"></TipsPop>
         <div v-if="isTipsPop || isExport" class="mask_box"></div>
+        <ProductScrapping v-if="ProductScrappingShow" @callback="ProductScrappingCallback"></ProductScrapping>
+        <DataUpdate v-if="DataUpdateShow" @callback="DataUpdateCallback"></DataUpdate>
+        <DisplaySettings v-if="DisplaySettingsShow" @callback="DisplaySettingsCallback"></DisplaySettings>
     </div>
 </template>
 
@@ -165,14 +236,23 @@ let echarts = require('echarts/lib/echarts')
 import html2canvas from "html2canvas"
 import TipsPop from '../../customer/TipsPop'
 import exportTasble from './exportTablePop'
+import ProductScrapping from './ProductScrapping'
+import DataUpdate from './DataUpdate'
+import DisplaySettings from './DisplaySettings'
 export default {
     name: 'tapwater',
     components: {
         TipsPop,
-        exportTasble
+        exportTasble,
+        ProductScrapping,
+        DataUpdate,
+        DisplaySettings
     },
     data() {
         return {
+            ProductScrappingShow: false,
+            DataUpdateShow: false,
+            DisplaySettingsShow: false,
             value1: new Date(new Date().toLocaleDateString()),
             value2: new Date(
                 new Date(new Date().toLocaleDateString()).getTime() +
@@ -191,6 +271,11 @@ export default {
             loading3: false,
             queryId: '',
             exportId: '',
+            exportTemplateId: '',
+            importId: '',
+            scrappingId: '',
+            displaySettingId: '',
+            dataUpdateId: '',
             TipsPopText: '该用户没有操作权限',
             isTipsPop: false,
             isExport: false,
@@ -210,9 +295,19 @@ export default {
                 curLeft: null,
                 dataList: [],
                 curPid: '',
-                chartTitle: '',
+                chartTitle: ''
             },
-            PageContext: {}
+            PageContext: {},
+            ProductTypeList: [],
+            ProductTypeCode: '全部',
+            QualitiedType: '全部',
+            WorkType: '全部',
+            QueryKeyType: '产品ID',
+            NGCount: 0,
+            OKCout: 0,
+            PassRate: 0,
+            TotalCount: 0,
+
         };
     },
     created() {
@@ -222,17 +317,6 @@ export default {
         })
         this.getLangData()
         this.getDate1()
-        let queryData = JSON.parse(sessionStorage.getItem('queryData'))
-        if (queryData) {
-            this.timevalue1 = queryData.timevalue1 || this.timevalue1;
-            this.timevalue2 = queryData.timevalue2 || this.timevalue2;
-            this.oldTimeValue1 = this.timevalue1;
-            this.oldTimeValue2 = this.timevalue2;
-            this.value1 = this.$moment(this.oldTimeValue1).format('YYYY-MM-DD HH:mm:ss')
-            this.value2 = this.$moment(this.oldTimeValue2).format('YYYY-MM-DD HH:mm:ss')
-            this.codeText = queryData.codeText || this.codeText;
-            this.selectVale = queryData.selectVale || this.selectVale;
-        }
         this.allConfigure()
         this.powerBtn()
         //重新改变图表大小
@@ -253,23 +337,7 @@ export default {
             immediate: true,
             handler: function (val, oldVal) {
                 if (!val || !val.WID) return;
-                if (!oldVal || !oldVal.WID) {
-                    let dataList = JSON.parse(sessionStorage.getItem('dataList'))
-                    if (dataList) {
-                        this.tableData.dataList = dataList;
-                    }
-                    let tableDataCurPid = JSON.parse(sessionStorage.getItem('tableDataCurPid'))
-                    if (tableDataCurPid) {
-                        this.tableData.curPid = tableDataCurPid;
-                    }
-                    let drawLineData = JSON.parse(sessionStorage.getItem('drawLineData'))
-                    if (drawLineData) {
-                        this.printLine(drawLineData)
-                    }
-
-                    return
-                }
-                sessionStorage.setItem('tableDataCurLeft', JSON.stringify(val));
+                if (oldVal && (val.WID === oldVal.WID)) return;
                 this.Search();
             }
         },
@@ -279,30 +347,73 @@ export default {
         VpowerData() {
             return this.$store.state.btnPowerData;
         },
-        computedProcess() {
-            //去重得到WorkName数组个数
-            let obj = {};
-            console.log("this.tableData.curLeft.WorkSteps", this.tableData.curLeft.WorkSteps)
-            let arr = this.tableData.curLeft.WorkSteps.reduce((newArr, next) => {
-                obj[next.WID] ? "" : (obj[next.WID] = true && newArr.push(next));
-                return newArr;
-            }, []);
-            //根据WorkName累加Projects长度为合并长度
-            let list = [];
-            arr.map(_ => {
-                let temp = this.tableData.curLeft.WorkSteps.filter(_2 => _2.WID == _.WID)
-                let num = temp.reduce((sum, w) => { return w.Projects.length + sum }, 0)
-                list.push({
-                    WID: _.WID,
-                    WorkName: _.WorkName,
-                    ProjectsNum: num
-                })
-            })
-            console.log("computedProcess", list)
-            return list
-        }
     },
     methods: {
+        openDisplaySettings() {
+            this.isPower(this.displaySettingId).then((val) => {
+                if (val) {
+                    this.DisplaySettingsShow = true;
+                } else {
+                    this.isTipsPop = true
+                    this.TipsPopText = '该用户没有操作权限！'
+                }
+            })
+        },
+        DisplaySettingsCallback(type, str) {
+            this.DisplaySettingsShow = false;
+            if (str) {
+                this.isTipsPop = true
+                this.TipsPopText = str
+            }
+            if (type == 'yes') {
+                this.PageContext = {}//重置查询，回去第一页
+                this.QueryReportData(true);
+            }
+        },
+        openProductScrapping() {
+            this.isPower(this.scrappingId).then((val) => {
+                if (val) {
+                    this.ProductScrappingShow = true;
+                } else {
+                    this.isTipsPop = true
+                    this.TipsPopText = '该用户没有操作权限！'
+                }
+            })
+
+        },
+        ProductScrappingCallback(type, str) {
+            this.ProductScrappingShow = false;
+            if (str) {
+                this.isTipsPop = true
+                this.TipsPopText = str
+            }
+            if (type == 'yes') {
+                this.PageContext = {}//重置查询，回去第一页
+                this.QueryReportData(true);
+            }
+        },
+        openDataUpdate() {
+            this.isPower(this.dataUpdateId).then((val) => {
+                if (val) {
+                    this.DataUpdateShow = true;
+                } else {
+                    this.isTipsPop = true
+                    this.TipsPopText = '该用户没有操作权限！'
+                }
+            })
+
+        },
+        DataUpdateCallback(type, str) {
+            this.DataUpdateShow = false;
+            if (str) {
+                this.isTipsPop = true
+                this.TipsPopText = str
+            }
+            if (type == 'yes') {
+                this.PageContext = {}//重置查询，回去第一页
+                this.QueryReportData(true);
+            }
+        },
         leftItemStyle(selected, displayColor) {
             if (selected) {
                 return {
@@ -353,14 +464,20 @@ export default {
             btnList.forEach((item) => {
                 btnObj[item.RightDesc] = item
             });
-
+            console.log("btnObj", btnObj)
             this.exportId = btnObj['参数报表-导出按钮'].RightID
             this.queryId = btnObj['参数报表-查询按钮'].RightID
+            this.scrappingId = btnObj['参数报表-数据清除按钮'].RightID
+            this.displaySettingId = btnObj['参数报表-显示设置按钮'].RightID
+            this.dataUpdateId = btnObj['参数报表-数据修改按钮'].RightID
+            this.exportTemplateId = btnObj['参数报表-导出模板按钮'].RightID
+            this.importId = btnObj['参数报表-导入按钮'].RightID
         },
         // 该用户是否有权限
         isPower(id) {
             if (!id) {
-                this.$message.warning('ID不能为空');
+                this.isTipsPop = true
+                this.TipsPopText = 'ID不能为空';
                 return;
             }
             return new Promise((resolve, reject) => {
@@ -373,56 +490,63 @@ export default {
                 }).then(res => {
                     resolve(res.data.data)
                 }, err => {
+                    console.log('该用户是否有权限-报错', err)
                 })
             })
         },
 
         clickHeader(id) {
             this.tableData.curPid = id
-            sessionStorage.setItem('tableDataCurPid', JSON.stringify(id));
             this.drawLine()
         },
 
         returnProject(row, pid) {
-            // let _obj = row.ProjectDatas.find(item => item.PID == pid)
-            let _obj = row.ProjectDatas[pid]
+            let _obj = row.ProjectDatas.find(item => item.PID == pid)
             return _obj || {}
         },
 
         //查询所有报表的所有配置
         allConfigure() {
+
             this.$axios({
                 method: 'post',
-                url: '/api/ProcessParameterReport/QueryWorkSections',
+                url: '/api/FormulaManage/QueryProductType',
             }).then(res => {
-                console.log('allConfigure', res.data.data)
-                if (!res.data.data || !res.data.data.length) {
-                    this.$message.warning('请配置工序！');
-                    return
-                }
-                let arr = res.data.data.filter(item => item.WorkSteps.length).map((item) => ({
-                    ...item,
-                    WorkSteps: item.WorkSteps.filter((item2) => item2.Projects.length)
-                }));
-                this.tableData.leftarr = arr;
-
-                let tableDataCurLeft = JSON.parse(sessionStorage.getItem('tableDataCurLeft'))
-                if (tableDataCurLeft && tableDataCurLeft.WID && this.tableData.leftarr.some(_ => _.WID == tableDataCurLeft.WID)) {
-                    this.tableData.curLeft = tableDataCurLeft;
+                if (res.data.code == 0) {
+                    this.ProductTypeList = res.data.data || [];
+                    // if (this.ProductTypeList.length) {
+                    //     this.ProductTypeCode = this.ProductTypeList[0].ProductTypeCode
+                    // }
+                    ///////////////
+                    this.$axios({
+                        method: 'post',
+                        url: '/api/ProcessParameterReport/QueryWorkSections',
+                    }).then(res => {
+                        console.log('allConfigure', res.data.data)
+                        if (!res.data.data || !res.data.data.length) {
+                            this.$message.warning('请配置工序！');
+                            return
+                        }
+                        this.tableData.leftarr = res.data.data;
+                        this.tableData.curLeft = this.tableData.leftarr[0];
+                        this.$nextTick(() => {
+                            this.tableScroll()
+                        })
+                    })
                 } else {
-                    this.tableData.curLeft = this.tableData.leftarr[0];
+                    this.isTipsPop = true
+                    this.TipsPopText = res.data.msg
                 }
-                this.$nextTick(() => {
-                    this.tableScroll()
-                })
             })
+
+
+
         },
         tableScroll() {
             let _dom = document.getElementsByClassName('table-r')[0]
             let that = this;
             //记录初始滚动条高度
             let beforeScrollTop = _dom.scrollTop;
-            let loadMore = true
             _dom.addEventListener('scroll', () => {
                 // 滚动距离
                 let scrollTop = _dom.scrollTop
@@ -434,11 +558,9 @@ export default {
                 let delta = scrollTop - beforeScrollTop;
                 if (delta > 0 && (scrollTop + windowHeight === scrollHeight)) {
                     // 获取到的不是全部数据 当滚动到底部 继续获取新的数据
-                    beforeScrollTop = scrollTop;
                     console.log("loadMorePage")
-                    loadMore && that.QueryReportData();
-                    loadMore = false
-                } else loadMore = true
+                    that.QueryReportData();
+                }
             })
 
         },
@@ -470,14 +592,19 @@ export default {
             }
             this.$axios({
                 method: 'post',
-                url: `/api/ProcessParameterReport/QueryReportData`,
+                url: `/api/ProcessParameterReport/QueryReportData?wid=${this.tableData.curLeft.WID}&startTime=${this.timevalue1}&endTime=${this.timevalue2}&code=${this.codeText}&accurate=${accurate}`,
                 data: {
                     WID: this.tableData.curLeft.WID,
                     StartTime: this.timevalue1,
                     EndTime: this.timevalue2,
                     Code: this.codeText,
                     Accurate: accurate,
-                    PageContext: this.PageContext
+                    PageContext: this.PageContext,
+
+                    ProductTypeCode: this.ProductTypeCode,
+                    QualitiedType: this.QualitiedType,
+                    WorkType: this.WorkType,
+                    QueryKeyType: this.QueryKeyType
                 },
             }).then(res => {
                 this.loading3 = false
@@ -493,16 +620,8 @@ export default {
                     })
                 }
                 this.tableData.leftarr = temp;
-                // ProjectDatas转化为映射
-                data.data.forEach(e => {
-                    e.ProjectDatas = e.ProjectDatas.reduce((t, c) => {
-                        t[c.PID] = c
-                        return t
-                    }, {})
-                    return e
-                })
                 this.tableData.dataList = this.tableData.dataList.concat(data.data || []);
-                sessionStorage.setItem('dataList', JSON.stringify(this.tableData.dataList));
+
                 this.PageContext = data.PageContext
 
                 //查第一页的逻辑放这里面
@@ -600,16 +719,9 @@ export default {
             this.isPower(this.queryId).then((val) => {
                 if (val) {
                     this.Search()
-                    sessionStorage.setItem('queryData', JSON.stringify(
-                        {
-                            timevalue1: this.timevalue1,
-                            timevalue2: this.timevalue2,
-                            codeText: this.codeText,
-                            selectVale: this.selectVale,
-                            PageContext: this.PageContext
-                        }));
                 } else {
                     this.isTipsPop = true
+                    this.TipsPopText = '该用户没有操作权限！'
                 }
             })
         },
@@ -665,9 +777,58 @@ export default {
 
                 } else {
                     this.isTipsPop = true
+                    this.TipsPopText = '该用户没有操作权限！'
                 }
             })
 
+        },
+        exportTempLate() {
+            this.isPower(this.exportTemplateId).then((val) => {
+                if (val) {
+                    var accurate
+                    //1是模糊 2是精准
+                    if (this.selectVale == this.lang.ProcessParameterReport_HT_FuzzyMatching) {
+                        accurate = 1
+                    } else {
+                        accurate = 2
+                    }
+                    window.open(
+                        `/api/ProcessParameterReport/ExportTemplate?wid=${this.tableData.curLeft.WID}`
+                    );
+
+                } else {
+                    this.isTipsPop = true
+                    this.TipsPopText = '该用户没有操作权限！'
+                }
+            })
+        },
+        handleUpload(e) {
+            this.isPower(this.importId).then((val) => {
+                if (!val) {
+                    this.tipText = this.lang.NoOperationAuthority;
+                    this.noCancel = true
+                    this.isPopShow = true;
+                    e.stopPropagation()
+                    return
+                }
+            })
+        },
+        uploadExcel(file) {
+            let formData = new FormData()
+            formData.append('file', file.file)
+            this.$axios({
+                method: 'post',
+                url: `/api/ProcessParameterReport/ImportProcessDatas`,
+                data: formData
+            }).then((res) => {
+                if (res.data.code == 0) {
+                    this.Search();
+                } else {
+                    this.isTipsPop = true
+                    this.TipsPopText = res.data.msg
+                }
+
+            })
         },
         formatJson(filterVal, jsonData) {
             return jsonData.map(v => filterVal.map(j => v[j]));
@@ -698,6 +859,7 @@ export default {
                 }
             })
             let configurationData = JSON.parse(sessionStorage.getItem('configurationData')) || {}
+            console.log('line', SID, configurationData)
             if (configurationData[SID] && configurationData[SID].length) {
                 this.printLine(configurationData[SID])
             } else {
@@ -719,20 +881,49 @@ export default {
                         EndTime: this.timevalue2,
                         Code: this.codeText,
                         Accurate: accurate,
+
+                        ProductTypeCode: this.ProductTypeCode,
+                        QualitiedType: this.QualitiedType,
+                        WorkType: this.WorkType,
+                        QueryKeyType: this.QueryKeyType
                     },
                 }).then(res => {
                     this.loading2 = false
                     let _data = res.data.data.data
                     configurationData[SID] = _data
                     sessionStorage.setItem('configurationData', JSON.stringify(configurationData));
-                    sessionStorage.setItem('drawLineData', JSON.stringify(_data));
                     this.printLine(_data)
                 })
             }
+            // this.$axios({
+            //     method: 'post',
+            //     url: `/api/ProcessParameterReport/QueryReportProduction`,
+            //     data: {
+            //         SID: SID,
+            //         WID: this.tableData.curLeft.WID,
+            //         StartTime: this.timevalue1,
+            //         EndTime: this.timevalue2,
+            //         Code: this.codeText,
+            //         Accurate: accurate,
+
+
+            //         ProductTypeCode: this.ProductTypeCode,
+            //         QualitiedType: this.QualitiedType,
+            //         WorkType: this.WorkType,
+            //         QueryKeyType: this.QueryKeyType
+
+            //     },
+            // }).then(res => {
+            //     this.NGCount = res.data.data.NGCount;
+            //     this.OKCout = res.data.data.OKCout;
+            //     this.PassRate = res.data.data.PassRate;
+            //     this.TotalCount = res.data.data.TotalCount;
+            // })
+
 
         },
         printLine(_data) {
-            let temp = [], xList = [], WorkName = '', stepName = '';
+            let temp = [], xList = [], stepName = '';
             let Upper = 100, Lower = 0, proName = '';
 
             _data.forEach(item => {
@@ -750,10 +941,9 @@ export default {
                     Lower = _obj.Lower
                     proName = _obj.ProjectName;
                     stepName = item.StepName
-                    WorkName = item.WorkName
                 }
             })
-            this.tableData.chartTitle = `${WorkName}-${stepName}-${proName}曲线图`
+            this.tableData.chartTitle = `${this.tableData.curLeft.WorkName}-${stepName}-${proName}曲线图`
             let uList = temp.map(_ => Upper)
             let lList = temp.map(_ => Lower)
             let option = {
@@ -855,6 +1045,7 @@ export default {
     //渲染后计算宽度
     mounted() {
         this.DomArr = []
+
     },
 };
 </script>
@@ -907,6 +1098,8 @@ export default {
 
 .fl {
     float: left;
+    display: flex;
+    align-items: center;
 }
 
 .fr {
@@ -953,7 +1146,8 @@ export default {
         color: #6b6668;
 
         span {
-            margin-left: 18px;
+            margin: 0 5px;
+            word-break: keep-all;
         }
 
         .tablename {
@@ -987,28 +1181,38 @@ export default {
     }
 
     .query,
+    .set,
+    .edit,
     .export {
         display: inline-block;
         height: 40px;
-        width: 118px;
+        width: 85px;
         text-align: center;
         line-height: 40px;
         color: #ffffff;
         border-radius: 5px;
         font-weight: 600;
         cursor: pointer;
+        margin-left: 10px;
+        box-sizing: border-box;
     }
 
     .query {
         background-color: #4270e4;
-        margin-left: 10px;
+    }
+
+    .set {
+        background-color: #a0a0a0;
+    }
+
+    .edit {
+        background-color: #f59a23;
     }
 
     .export {
         background-color: #ffffff;
         color: #4270e4;
         border: 2px solid #4270e4;
-        margin-right: 20px;
     }
 
     .container {
@@ -1038,12 +1242,62 @@ export default {
 }
 </style>
 <style  lang="scss"  >
+.report-banner {
+    width: 100%;
+    height: 100px;
+    box-sizing: border-box;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .banner-item {
+        width: 24%;
+        height: 100%;
+        background: #ededed;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .item-content {
+            display: flex;
+            align-items: flex-end;
+
+            .item-label {
+                font-size: 30px;
+                font-weight: bold;
+                line-height: 1;
+            }
+
+            .item-num {
+                font-size: 30px;
+                font-weight: bolder;
+                line-height: 1;
+                margin: 0 5px;
+            }
+
+            .item-unit {
+                line-height: 1;
+            }
+
+            .red {
+                color: #db2e28;
+            }
+
+            .green {
+                color: #7ABD7A;
+            }
+        }
+    }
+}
+
 .report-page {
     width: 100%;
     height: 100%;
+    // height: calc(100% - 100px);
     box-sizing: border-box;
-    padding: 16px;
-    box-sizing: border-box;
+    padding: 0 16px 10px;
 
     /* 滚动条样式 */
     ::-webkit-scrollbar {
@@ -1237,13 +1491,16 @@ export default {
 
     .no1 {
         min-width: 80px;
-        /* position: sticky;
-    z-index: 10;
-    left: 0; */
+        position: sticky;
+        z-index: 10;
+        left: 0;
     }
 
     .no2 {
         min-width: 110px;
+        position: sticky;
+        z-index: 10;
+        left: 80px;
     }
 
     .no3 {
@@ -1274,6 +1531,10 @@ export default {
 
     .blue-Border {
         background-color: #F8AD3D;
+    }
+
+    .fixed-title {
+        z-index: 11;
     }
 }
 </style>

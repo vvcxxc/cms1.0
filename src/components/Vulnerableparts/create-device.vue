@@ -1,11 +1,12 @@
-
 <template>
   <div>
     <el-dialog title="添加器件信息" width="800px" class="create-device flex" :visible.sync="dialogVisible"
       :before-close="() => { submit('cancel') }" append-to-body :close-on-click-modal="false">
       <div class="create-device-content">
 
+        <!-- 表单 -->
         <el-form ref="myform" class="from" :model="formData" label-width="90px">
+          <!-- 基本信息 -->
           <el-row>
             <el-col :span="24" class="title flex">
               <div class="block"></div>
@@ -38,6 +39,7 @@
             </el-col>
           </el-row>
 
+          <!-- 寿命信息 -->
           <el-row>
             <el-col :span="24" class="title flex">
               <div class="block"></div>
@@ -106,6 +108,7 @@
             </el-col>
           </el-row>
 
+          <!-- 其他信息 -->
           <el-row>
             <el-col :span="24" class="title flex">
               <div class="block"></div>
@@ -136,18 +139,22 @@
           </el-row>
         </el-form>
 
+        <!-- 底部 -->
         <div class="foot flex" v-if="state !== 'check'">
           <div class="btn cancel" @click="submit('cancel')">{{ lang.PopupCommon_Cancel }}</div>
           <div class="btn confirm" @click="submit('confirm')">{{ lang.PopupCommon_Save }}</div>
         </div>
 
+        <!-- 遮罩层 -->
         <div class="masklayer" v-if="state === 'check'"></div>
       </div>
     </el-dialog>
 
+    <!-- 选择变量 -->
     <select-variable2 :state="selectVariableConfig.state" :list="selectVariableConfig.list"
       @callback="selectVariableCallback"></select-variable2>
 
+    <!-- 关联设备 -->
     <association-device :state="associationDeviceConfig.state" :editData="associationDeviceConfig.editData"
       @callback="associationDeviceCallback"></association-device>
   </div>
@@ -156,27 +163,25 @@
 import SelectVariable2 from '@/components/public/select-variable2.vue';
 import AssociationDevice from './association-device.vue';
 import { getCurrentTime } from './index';
+
 export default {
   components: { SelectVariable2, AssociationDevice },
-
-  props: ['state', 'editData'],
+  props: {
+    state: { // 创建-create 查看-check 编辑-edit 隐藏-hide
+      type: String,
+      required: false,
+      default: ''
+    },
+    editData: {
+      type: Object,
+      required: false,
+      default: () => {
+        return null
+      }
+    },
+  },
   data() {
     return {
-      teststr: 1,
-      options: {
-        userList: [],
-        unit: [
-          { label: '小时', value: 4 },
-          { label: '年', value: 1 },
-          { label: '月', value: 2 },
-          { label: '日', value: 3 },
-        ],
-        statisticalType: [
-          { label: '标准时间', value: 1 },
-          { label: '运行时间', value: 2 },
-          { label: '使用次数', value: 3 },
-        ]
-      },
       icons: {
         diji: require('@/assets/images/icon_diji.png'),
       },
@@ -242,20 +247,30 @@ export default {
         state: 'hide',
         editData: null
       },
-      lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
 
-    };
+      options: {
+        userList: [],
+        unit: [
+          { label: '小时', value: 4 },
+          { label: '年', value: 1 },
+          { label: '月', value: 2 },
+          { label: '日', value: 3 },
+        ],
+        statisticalType: [
+          { label: '标准时间', value: 1 },
+          { label: '运行时间', value: 2 },
+          { label: this.lang.EquipmentAccount_UsedNumber, value: 3 },
+        ]
+      }
+    }
   },
-
   methods: {
     // 获取用户列表
     getUserList() {
-      let that = this;
       return this.$api.agency.gstUserWithNoPage().then(ref => {
-
         const list = ref.data.data
-        that.options.userList = list
-        console.log("用户列表", JSON.parse(JSON.stringify(list)));
+        this.options.userList = list
+        // console.log("用户列表", JSON.parse(JSON.stringify(list)));
       }, err => {
         console.log('失败回调', err);
       })
@@ -350,7 +365,7 @@ export default {
       }).then(ref => {
         // console.log('保存/编辑结果', ref);
         if (ref.data.code === 0) {
-          this.$emit("callback", 'confirm', '添加成功');
+          this.$emit("callback", 'confirm');
           return
         }
         this.confirm_Pop2(this, ref.data.msg)
@@ -378,7 +393,6 @@ export default {
       newData.LoginUserName = this.getLoginUserName()
 
       this.formData = { ...newData, Coefficient: newData.CoefficientValue }
-      console.log( 'this.formData ',this.formData   )
     },
     initFormData() {
       console.log('组件.initFormData', JSON.parse(JSON.stringify(this.editData)));
@@ -450,9 +464,6 @@ export default {
       }
     },
   },
-  mounted() {
-    this.lang = JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
-  }
 };
 </script>
 <style lang='scss' scoped>

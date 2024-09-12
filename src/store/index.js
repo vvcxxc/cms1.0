@@ -58,7 +58,9 @@ export default new Vuex.Store({
     curveGroupId: '', // 趋势曲线 清除曲线
     div:'',
     dittop:'',
-    zoom:1
+    zoom:1,
+    _prodCode:null,
+    sizeBool: true
     
   },
   mutations: {

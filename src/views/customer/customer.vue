@@ -8,21 +8,13 @@
 <!-- 90vh 78px-->
 <!-- 版本号   1.3.6.4-->
 <template>
-    <div
-        @scroll="scroll()"
-        class="customerPage"
-        style="position:relative;overflow:auto;margin-bottom:0px;margin-top:100px;"
-        :style="[{ height: nowoverflow }, { width: newoverflow },{marginTop:heardertop}]"
-    >
+    <div @scroll="scroll()" class="customerPage" style="position:relative;overflow:auto;margin-bottom:0px;margin-top:100px;"
+        :style="[{ height: nowoverflow }, { width: newoverflow }, { marginTop: heardertop }]">
         <div class="btablecover">
-            <div class="btabletop">{{lang.ReportForm_ExportProgress}}</div>
+            <div class="btabletop">{{ lang.ReportForm_ExportProgress }}</div>
             <div class="btableconter">
-                <span class="btableconterword">{{lang.ReportForm_Exporting}}</span>
-                <el-progress
-                    :text-inside="true"
-                    :stroke-width="26"
-                    :percentage="percentage"
-                ></el-progress>
+                <span class="btableconterword">{{ lang.ReportForm_Exporting }}</span>
+                <el-progress :text-inside="true" :stroke-width="26" :percentage="percentage"></el-progress>
                 <!-- <div class='tablebigpass'>
         <div class="tablesmallpass">
         
@@ -83,302 +75,111 @@
 </div>
 
 </div> -->
-      <div class="tip" v-if="tipchange" :style="{zoom: zoomValue}">
-            <div
-                class="tiphead"
-                style="position:absolute;width: 380px;height: 40px;"
-            ></div>
+        <div class="tip" v-if="tipchange" :style="{ zoom: zoomValue }">
+            <div class="tiphead" style="position:absolute;width: 380px;height: 40px;"></div>
             <div class="tiptop">
                 <img :src="gth" alt />
-                <span>{{lang.HT_MessageBoxCaption_Tips}}</span>
+                <span>{{ lang.HT_MessageBoxCaption_Tips }}</span>
             </div>
             <div class="tipcontanin">
-                <div class="tipword">{{tipword}}</div>
+                <div class="tipword">{{ tipword }}</div>
                 <div class="delclass" v-if="deltrue">
-                    <div class="one" @click="shownotip">{{lang.MessageBox_NO}}</div>
-                    <div class="two" @click="issueFun">{{lang.MessageBox_YES}}</div>
+                    <div class="one" @click="shownotip">{{ lang.MessageBox_NO }}</div>
+                    <div class="two" @click="issueFun">{{ lang.MessageBox_YES }}</div>
                 </div>
-                <div class="tipdetermine" v-else @click="shownotip" >{{lang.PopupCommon_Sure}}</div>
+                <div class="tipdetermine" v-else @click="shownotip">{{ lang.PopupCommon_Sure }}</div>
             </div>
         </div>
-         <div class="cover1111" v-if="tipchange" @mouseup.stop="upFun()"></div>
-         <div v-loading="true" class="loadbox"   v-if="this.$store.state.isShow" @mouseup.stop="upFun()"> </div>
+        <div class="cover1111" v-if="tipchange" @mouseup.stop="upFun()"></div>
+        <div v-loading="true" class="loadbox" v-if="this.$store.state.isShow" @mouseup.stop="upFun()"> </div>
         <div class="scalediv1">
-            <div class="big_box report"  >
-                <LineVue1
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="1 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></LineVue1>
-                <RectangleVue2
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="2 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></RectangleVue2>
-                <EllipseVue3
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="3 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></EllipseVue3>
-                <StaticImage4
-                    ref="StaticImage4"
-                    :dataId="dataId"
-                    :name="name"
-                    :dae="data"
-                    :key="4 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></StaticImage4>
-                <StaticTextBlock5
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="5 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></StaticTextBlock5>
-                <CornerButton6
-                    ref="CornerButton6"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="6 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip" @showIssueTip="showIssueTip"
-                ></CornerButton6>
-                <PressButton7
-                    ref="PressButton7"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="7 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></PressButton7>
-                <Switch8
-                    ref="Switch8a"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="8 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></Switch8>
-                <TabModuleButton9
-                    :dataId="dataId"
-                    class="TabModuleVButton"
-                    :dae="data"
-                    :key="9 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></TabModuleButton9>
-                <PopupButton10
-                    :dataId="dataId"
-                    :ViewName="name"
-                    :dae="data"
-                    :key="10 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></PopupButton10>
-                <TextBox11
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="11 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></TextBox11>
-                <DataTextBlock12
-                    ref="DataTextBlock12"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="12 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></DataTextBlock12>
-                <RWTextBox13
-                    ref="RWTextBox13"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="13 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></RWTextBox13>
-                <Alarm14
-                    :dataId="dataId"
-                    ref="Alarm14"
-                    :dae="data"
-                    :key="14 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></Alarm14>
-                <EllipseLamp15
-                    ref="EllipseLamp"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="15 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></EllipseLamp15>
-                <CommonLamp16
-                    ref="CommonLamp"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="16 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></CommonLamp16>
-                <DynamicText17
-                    ref="dynamicyext17"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="17 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></DynamicText17>
-                <Image18
-                    ref="Dimage"
-                    :dataId="dataId"
-                    :name="name"
-                    :dae="data"
-                    :key="18 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></Image18>
-                <PieChart20
-                    :dataId="dataId"
-                    :dae="data"
-                    :ViewName="name"
-                    :contentName="contentName"
-                    :chartdata="contentData"
-                    :key="20 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></PieChart20>
-                <DashBoardChart21
-                    :type="type"
-                    :dataId="dataId"
-                    :ViewName="name"
-                    :contentName="contentName"
-                    :dae="data"
-                    :chartdata="contentData"
-                    :key="21 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></DashBoardChart21>
-                <LineChart22
-                    :dataId="dataId"
-                    :dae="data"
-                    :ViewName="name"
-                    :contentName="contentName"
-                    :chartdata="contentData"
-                    :key="22 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></LineChart22>
-                <ColumnChart23
-                    :dataId="dataId"
-                    :dae="data"
-                    :ViewName="name"
-                    :contentName="contentName"
-                    :chartdata="contentData"
-                    :key="23 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></ColumnChart23>
-                <PolylineColumnChart24
-                    :dataId="dataId"
-                    :ViewName="name"
-                    :contentName="contentName"
-                    :dae="data"
-                    :chartdata="contentData"
-                    :key="24 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></PolylineColumnChart24>
+            <div class="big_box report">
+                <LineVue1 :dataId="dataId" :dae="data" :key="1 + componentKey" @showtip="showtip" @shownotip="shownotip">
+                </LineVue1>
+                <RectangleVue2 :dataId="dataId" :dae="data" :key="2 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></RectangleVue2>
+                <EllipseVue3 :dataId="dataId" :dae="data" :key="3 + componentKey" @showtip="showtip" @shownotip="shownotip">
+                </EllipseVue3>
+                <StaticImage4 ref="StaticImage4" :dataId="dataId" :name="name" :dae="data" :key="4 + componentKey"
+                    @showtip="showtip" @shownotip="shownotip"></StaticImage4>
+                <StaticTextBlock5 :dataId="dataId" :dae="data" :key="5 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></StaticTextBlock5>
+                <CornerButton6 ref="CornerButton6" :dataId="dataId" :dae="data" :key="6 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip" @showIssueTip="showIssueTip"></CornerButton6>
+                <PressButton7 ref="PressButton7" :dataId="dataId" :dae="data" :key="7 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></PressButton7>
+                <Switch8 ref="Switch8a" :dataId="dataId" :dae="data" :key="8 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></Switch8>
+                <TabModuleButton9 :dataId="dataId" class="TabModuleVButton" :dae="data" :key="9 + componentKey"
+                    @showtip="showtip" @shownotip="shownotip"></TabModuleButton9>
+                <PopupButton10 :dataId="dataId" :ViewName="name" :dae="data" :key="10 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></PopupButton10>
+                <TextBox11 :dataId="dataId" :dae="data" :key="11 + componentKey" @showtip="showtip" @shownotip="shownotip">
+                </TextBox11>
+                <DataTextBlock12 ref="DataTextBlock12" :dataId="dataId" :dae="data" :key="12 + componentKey"
+                    @showtip="showtip" @shownotip="shownotip"></DataTextBlock12>
+                <RWTextBox13 ref="RWTextBox13" :dataId="dataId" :dae="data" :key="13 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></RWTextBox13>
+                <Alarm14 :dataId="dataId" ref="Alarm14" :dae="data" :key="14 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></Alarm14>
+                <EllipseLamp15 ref="EllipseLamp" :dataId="dataId" :dae="data" :key="15 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></EllipseLamp15>
+                <CommonLamp16 ref="CommonLamp" :dataId="dataId" :dae="data" :key="16 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></CommonLamp16>
+                <DynamicText17 ref="dynamicyext17" :dataId="dataId" :dae="data" :key="17 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></DynamicText17>
+                <Image18 ref="Dimage" :dataId="dataId" :name="name" :dae="data" :key="18 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></Image18>
+                <PieChart20 :dataId="dataId" :dae="data" :ViewName="name" :contentName="contentName"
+                    :chartdata="contentData" :key="20 + componentKey" @showtip="showtip" @shownotip="shownotip">
+                </PieChart20>
+                <DashBoardChart21 :type="type" :dataId="dataId" :ViewName="name" :contentName="contentName" :dae="data"
+                    :chartdata="contentData" :key="21 + componentKey" @showtip="showtip" @shownotip="shownotip">
+                </DashBoardChart21>
+                <LineChart22 :dataId="dataId" :dae="data" :ViewName="name" :contentName="contentName"
+                    :chartdata="contentData" :key="22 + componentKey" @showtip="showtip" @shownotip="shownotip">
+                </LineChart22>
+                <ColumnChart23 :dataId="dataId" :dae="data" :ViewName="name" :contentName="contentName"
+                    :chartdata="contentData" :key="23 + componentKey" @showtip="showtip" @shownotip="shownotip">
+                </ColumnChart23>
+                <PolylineColumnChart24 :dataId="dataId" :ViewName="name" :contentName="contentName" :dae="data"
+                    :chartdata="contentData" :key="24 + componentKey" @showtip="showtip" @shownotip="shownotip">
+                </PolylineColumnChart24>
                 <!-- 筛选控件 -->
-                <querybutton25
-                    ref="querybutton25"
-                    :dataId="dataId"
-                    :dae="data"
-                    :PageName="name"
-                    @search="search"
-                    :key="25 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></querybutton25>
-                <outputbutton26
-                    :dataId="dataId"
-                    :dae="data"
-                    @exportdata="exportdata"
-                    :key="26 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></outputbutton26>
-                <textimport27a
-                    ref="textimport27a"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="27 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></textimport27a>
-                <DateTimePicker282
-                    ref="DateTimePicker282"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="28 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></DateTimePicker282>
-                <Combobox299
-                    ref="Combobox299"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="29 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></Combobox299>
-                <Customreport
-                    :dataId="dataId"
-                    :dae="data"
-                    ref="table"
-                    @percentage1="percentage1"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></Customreport>
-                <NumberScreen30
-                    ref="NumberScreen30"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="30 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></NumberScreen30>
+                <querybutton25 ref="querybutton25" :dataId="dataId" :dae="data" :PageName="name" @search="search"
+                    :key="25 + componentKey" @showtip="showtip" @shownotip="shownotip"></querybutton25>
+                <outputbutton26 :dataId="dataId" :dae="data" @exportdata="exportdata" :key="26 + componentKey"
+                    @showtip="showtip" @shownotip="shownotip"></outputbutton26>
+                <textimport27a ref="textimport27a" :dataId="dataId" :dae="data" :key="27 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></textimport27a>
+                <DateTimePicker282 ref="DateTimePicker282" :dataId="dataId" :dae="data" :key="28 + componentKey"
+                    @showtip="showtip" @shownotip="shownotip"></DateTimePicker282>
+                <Combobox299 ref="Combobox299" :dataId="dataId" :dae="data" :key="29 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></Combobox299>
+                <Customreport :dataId="dataId" :dae="data" ref="table" @percentage1="percentage1" @showtip="showtip"
+                    @shownotip="shownotip"></Customreport>
+                <NumberScreen30 ref="NumberScreen30" :dataId="dataId" :dae="data" :key="30 + componentKey"
+                    @showtip="showtip" @shownotip="shownotip"></NumberScreen30>
                 <!-- 视频控件 -->
-                <Video
-                    ref="Video"
-                    :dataId="dataId"
-                    :dae="data"
-                    :name="name"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></Video>
-                <MobileProducts
-                    ref="mobileProducts"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="31 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></MobileProducts>
-                <DynamicProducts
-                    ref="Dyn1"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="32 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></DynamicProducts>
-                <FlowPipe
-                    ref="FlowPipe"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="33 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></FlowPipe>
+                <Video ref="Video" :dataId="dataId" :dae="data" :name="name" @showtip="showtip"
+                    @shownotip="shownotip"></Video>
+                <MobileProducts ref="mobileProducts" :dataId="dataId" :dae="data" :key="31 + componentKey"
+                    @showtip="showtip" @shownotip="shownotip"></MobileProducts>
+                <DynamicProducts ref="Dyn1" :dataId="dataId" :dae="data" :key="32 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></DynamicProducts>
+                <FlowPipe ref="FlowPipe" :dataId="dataId" :dae="data" :key="33 + componentKey" @showtip="showtip"
+                    @shownotip="shownotip"></FlowPipe>
                 <!-- 权限失败提示弹窗 -->
                 <TipsPop :popText="TipsPopText" v-if="isTipsPop"></TipsPop>
-                <Tank
-                    @showtip="showtip" @shownotip="shownotip"
-                    ref="Tank"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="34 + componentKey"
-                ></Tank>
-                <MatrixGrid @showtip="showtip" @shownotip="shownotip" ref="MatrixGrid" :dataId="dataId" :dae="data" :key="35+componentKey"/>
-                <MatrixGridSet @showtip="showtip" @shownotip="shownotip" ref="MatrixGridSet" :dataId="dataId" :dae="data" :key="36+componentKey"/>
-                <Camera
-                    :dataId="dataId"
-                    :name="name"
-                    :dae="data"
-                    :key="35 + componentKey"
-                ></Camera>
-                <Combinecombobox
-                    ref="Combinecombobox"
-                    :dataId="dataId"
-                    :dae="data"
-                    :key="37 + componentKey"
-                    @showtip="showtip" @shownotip="shownotip"
-                ></Combinecombobox>
+                <Tank @showtip="showtip" @shownotip="shownotip" ref="Tank" :dataId="dataId" :dae="data"
+                    :key="34 + componentKey"></Tank>
+                <MatrixGrid @showtip="showtip" @shownotip="shownotip" ref="MatrixGrid" :dataId="dataId" :dae="data"
+                    :key="35 + componentKey" />
+                <MatrixGridSet @showtip="showtip" @shownotip="shownotip" ref="MatrixGridSet" :dataId="dataId" :dae="data"
+                    :key="36 + componentKey" />
+                <Camera :dataId="dataId" :name="name" :dae="data" :key="35 + componentKey"></Camera>
+                <Combinecombobox ref="Combinecombobox" :dataId="dataId" :dae="data" :key="37 + componentKey"
+                    @showtip="showtip" @shownotip="shownotip"></Combinecombobox>
                 <div v-if="isTipsPop" class="mask_box"></div>
             </div>
         </div>
@@ -476,10 +277,11 @@ export default {
         return {
             zoomValue: 0,
             gth: require('../../assets/images/gth.png'),
-            tipchange:false,
+            tipchange: false,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
-            fdsx:true,
-            heardertop:90,
+            fdsx: true,
+            init_heardertop: 90,
+            heardertop: 90,
             percentage: 0,
             data: '',
             componentKey1: 1,
@@ -515,10 +317,10 @@ export default {
             pageHTime: '',
             nowoverflow: 'calc(100% - 110px)',
             newoverflow: 'calc(100%)',
-            tipword:'',
-            deltrue :false,
-            issueFun_url:'',
-            issueFun_commonIDarr:{}
+            tipword: '',
+            deltrue: false,
+            issueFun_url: '',
+            issueFun_commonIDarr: {}
         };
     },
     computed: {
@@ -531,14 +333,39 @@ export default {
         }
     },
     watch: {
-        screen(val) {
-            
-              if($('header')[0].style.zoom){
-             
-                if(parseFloat(($('header')[0].style.zoom))>1){
- this.heardertop = $('header').height()*parseFloat($('header')[0].style.zoom)+'px'
+        '$store.state.sizeBool'(val) {
+            console.log('888*', val)
+            if (!val) {
+                this.heardertop = 0;
+                let _a = '';
+                if (parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
+                    _a = $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                } else {
+                    _a = $('.v-footer').height();
                 }
-               
+                this.nowoverflow = `calc(100% - ${_a}px)`;
+            } else {
+                this.heardertop = this.init_heardertop + 'px';
+                console.log("this.heardertop ", this.init_heardertop)
+                if (parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
+                    var a =
+                        this.init_heardertop +
+                        $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                } else {
+                    var a =
+                        this.init_heardertop +
+                        $('.v-footer').height();
+                }
+                this.nowoverflow = `calc(100% - ${a}px)`;
+            }
+        },
+        screen(val) {
+            if ($('header')[0].style.zoom) {
+                if (parseFloat(($('header')[0].style.zoom)) > 1) {
+                    this.heardertop = $('header').height() * parseFloat($('header')[0].style.zoom) + 'px'
+                    this.init_heardertop = this.heardertop;
+                }
+
             }
             setTimeout(() => {
                 if (this.$store.state.screentype == 1) {
@@ -546,17 +373,16 @@ export default {
                         let w =
                             window.screen.width /
                             parseFloat($('.big_box').attr('width'));
-                            
-                       
-                       if(parseFloat($('.v-toolbar')[0].style.zoom)>1){
-                                 var a =
-                            $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) +
-                            $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
-                        }else{
-                           var a =
-                            $('.v-toolbar').height()  +
-                            10 +
-                            $('.v-footer').height() ;
+
+
+                        if (parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
+                            var a =
+                                $('.v-toolbar').height() * parseFloat($('.v-toolbar')[0].style.zoom) +
+                                $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                        } else {
+                            var a =
+                                $('.v-toolbar').height() +
+                                $('.v-footer').height();
                         }
                         let h =
                             (window.screen.height - a) /
@@ -565,10 +391,10 @@ export default {
                             transform: `scale(${w},${h})`,
                             margin: '0px'
                         });
-                        $('.scalediv1').css({
-                            height: window.screen.height - a + 'px',
-                            width: window.screen.width + 'px'
-                        });
+                        // $('.scalediv1').css({
+                        //     height: window.screen.height - a + 'px',
+                        //     width: window.screen.width + 'px'
+                        // });
                     });
                 } else if (this.$store.state.screentype == 2) {
                     setTimeout(() => {
@@ -576,56 +402,55 @@ export default {
                             transform: `scale(1,1)`
                         });
                     });
-                    $('.scalediv1').css({
-                        height: 'auto',
-                        width: parseFloat($('.big_box').attr('width'))
-                    });
+                    // $('.scalediv1').css({
+                    //     height: 'auto',
+                    //     width: parseFloat($('.big_box').attr('width'))
+                    // });
                 } else if (this.$store.state.screentype == 3) {
-                    
+
                     let width = window.screen.width;
                     console.log(this.JsonData)
-                     let w1 = width / parseFloat($('.big_box').attr('width'));
-                     let w2 = window.screen.width
-                     console.log(parseFloat(
-                            JSON.parse(JSON.stringify(this.JsonData)).Controls
-                                .PropertyList.Height
-                        )*w1)
+                    let w1 = width / parseFloat($('.big_box').attr('width'));
+                    let w2 = window.screen.width
+                    console.log(parseFloat(
+                        JSON.parse(JSON.stringify(this.JsonData)).Controls
+                            .PropertyList.Height
+                    ) * w1)
                     if (
                         parseFloat(
                             JSON.parse(JSON.stringify(this.JsonData)).Controls
                                 .PropertyList.Height
-                        )*w1 >
+                        ) * w1 >
                         window.screen.height - 130
                     ) {
                         w2 -= 17;
                     }
                     let w = width / parseFloat($('.big_box').attr('width'));
-                     let w3 = w2 / parseFloat($('.big_box').attr('width'));
+                    let w3 = w2 / parseFloat($('.big_box').attr('width'));
                     $('.report').css({
                         transform: `scale(${w},${w3})`,
                         margin: '0px'
                     });
-                    $('.scalediv1').css({
-                        height: parseFloat($('.big_box').attr('height'))*w3+'px',
-                        width: width + 'px'
-                    });
-                    console.log(parseFloat($('.big_box').attr('height'))*w)
-                         if (JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Width*parseFloat(w) > window.screen.width&&this.$store.state.screentype!==1) {
-                   if(this.$store.state.screentype==4||this.$store.state.screentype==3){
- this.newoverflow = `calc(100% + 20px)`
-                   }
-                   }
-                } else if (this.$store.state.screentype == 4) {
-                      if(parseFloat($('.v-toolbar')[0].style.zoom)>1){
-                                var a =
-                            $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) +
-                            $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
-                        }else{
-                          var a =
-                            $('.v-toolbar').height()  +
-                            10 +
-                            $('.v-footer').height() ;
+                    // $('.scalediv1').css({
+                    //     height: parseFloat($('.big_box').attr('height')) * w3 + 'px',
+                    //     width: width + 'px'
+                    // });
+                    console.log(parseFloat($('.big_box').attr('height')) * w)
+                    if (JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Width * parseFloat(w) > window.screen.width && this.$store.state.screentype !== 1) {
+                        if (this.$store.state.screentype == 4 || this.$store.state.screentype == 3) {
+                            this.newoverflow = `calc(100% + 20px)`
                         }
+                    }
+                } else if (this.$store.state.screentype == 4) {
+                    if (parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
+                        var a =
+                            $('.v-toolbar').height() * parseFloat($('.v-toolbar')[0].style.zoom) +
+                            $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                    } else {
+                        var a =
+                            $('.v-toolbar').height() +
+                            $('.v-footer').height();
+                    }
                     let height = window.screen.height - a;
                     if (
                         parseFloat(
@@ -639,59 +464,57 @@ export default {
                     $('.report').css({
                         transform: `scale(${h},${h})`
                     });
-                    $('.scalediv1').css({
-                        height: height + 'px',
-                        width: parseFloat($('.big_box').attr('width'))*h + 'px'
-                    });
+                    // $('.scalediv1').css({
+                    //     height: height + 'px',
+                    //     width: parseFloat($('.big_box').attr('width')) * h + 'px'
+                    // });
                 }
-                this.newoverflow =  'calc(100%)'
-                   
-                if (JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Width > window.screen.width&&this.$store.state.screentype!==1) {
-                   if(this.$store.state.screentype==4||this.$store.state.screentype == 3){
-                    if(parseFloat($('.v-toolbar')[0].style.zoom)>1){
-                                var a =
-                            $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) +
-                            $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
-                        }else{
-                          var a =
-                            $('.v-toolbar').height()  +
-                            10 +
-                            $('.v-footer').height() ;
+                this.newoverflow = 'calc(100%)'
+
+                if (JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Width > window.screen.width && this.$store.state.screentype !== 1) {
+                    if (this.$store.state.screentype == 4 || this.$store.state.screentype == 3) {
+                        if (parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
+                            var a =
+                                $('.v-toolbar').height() * parseFloat($('.v-toolbar')[0].style.zoom) +
+                                $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                        } else {
+                            var a =
+                                $('.v-toolbar').height() +
+                                $('.v-footer').height();
                         }
-                    this.nowoverflow = `calc(100% - ${a}px)`;
-                    this.newoverflow = `calc(100% + 20px)`
-                   }
-                 if(parseFloat($('.v-toolbar')[0].style.zoom)>1){
-                                var a =
-                            $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) +
+                        this.nowoverflow = `calc(100% - ${a}px)`;
+                        this.newoverflow = `calc(100% + 20px)`
+                    }
+                    if (parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
+                        var a =
+                            $('.v-toolbar').height() * parseFloat($('.v-toolbar')[0].style.zoom) +
                             $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
-                        }else{
-                          var a =
-                            $('.v-toolbar').height()  +
-                            10 +
-                            $('.v-footer').height() ;
-                        }
+                    } else {
+                        var a =
+                            $('.v-toolbar').height() +
+                            $('.v-footer').height();
+                    }
 
                     this.nowoverflow = `calc(100% - ${a}px)`;
                 } else {
-                      console.log(this.JsonData)
-                    
-                       if(parseFloat($('.v-toolbar')[0].style.zoom)>1){
-                                var a =
-                            $('.v-toolbar').height()*parseFloat($('.v-toolbar')[0].style.zoom) +
-                            $('.v-footer').height()*parseFloat($('.v-toolbar')[0].style.zoom)
-                        }else{
-                          var a =
-                            $('.v-toolbar').height() -10 +
-                            $('.v-footer').height() ;
-                        }
-                    this.nowoverflow = `calc(100% - ${a}px)`;
-                    if($('.customerPage')[0].style.boxSizing== 'border-box'){
-                          $('.customerPage')[0].style.boxSizing='content-box'
-                    }else{
-                        $('.customerPage')[0].style.boxSizing='border-box'
+                    console.log(this.JsonData)
+
+                    if (parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
+                        var a =
+                            $('.v-toolbar').height() * parseFloat($('.v-toolbar')[0].style.zoom) +
+                            $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                    } else {
+                        var a =
+                            $('.v-toolbar').height() +
+                            $('.v-footer').height();
                     }
-                    
+                    this.nowoverflow = `calc(100% - ${a}px)`;
+                    if ($('.customerPage')[0].style.boxSizing == 'border-box') {
+                        $('.customerPage')[0].style.boxSizing = 'content-box'
+                    } else {
+                        $('.customerPage')[0].style.boxSizing = 'border-box'
+                    }
+
                 }
             }, 300);
         },
@@ -705,7 +528,7 @@ export default {
         '$store.state.scriptData': {
             //脚本事件
             deep: true,
-            handler: function(n, o) {
+            handler: function (n, o) {
                 if (this.$store.state.scriptData == null) {
                     this.isTipsPop = true;
                 } else {
@@ -717,10 +540,9 @@ export default {
         '$store.state.contentData': {
             //监听图表
             deep: true,
-            handler: function(n, o) {
+            handler: function (n, o) {
                 this.type = this.$store.state.typeNum;
-                console.log( '7789',this.$store.state.contentName , this.name);
-                console.log( 'this.$store.state.contentData',this.$store.state.contentData);
+                console.log('7789', this.$store.state.contentName, this.name);
                 if (this.$store.state.contentName == this.name) {
                     this.contentData = this.$store.state.contentData;
                     this.contentName = this.$store.state.contentName;
@@ -732,11 +554,11 @@ export default {
         '$store.state.varChange': {
             //监听变量
             deep: true,
-            handler: function(n, o) {
+            handler: function (n, o) {
                 var data = this.$store.state.varChange;
                 console.log('=-----', this.$refs);
-                if(this.$refs.Combinecombobox){
-                      this.$refs.Combinecombobox.axioImg2(data);
+                if (this.$refs.Combinecombobox) {
+                    this.$refs.Combinecombobox.axioImg2(data);
                 }
                 if (this.$refs.Dimage) {
                     this.$refs.Dimage.axioImg2(data);
@@ -774,14 +596,14 @@ export default {
                 if (this.$refs.Tank) {
                     this.$refs.Tank.axioImg2(data);
                 }
-            
-               
+
+
                 if (this.$refs.MatrixGridSet) {
-                    
+
                     this.$refs.MatrixGridSet.axioImg2(data);
                 }
-                    if (this.$refs.MatrixGrid) {
-                    
+                if (this.$refs.MatrixGrid) {
+
                     this.$refs.MatrixGrid.axioImg2(data);
                 }
             }
@@ -789,7 +611,7 @@ export default {
         '$store.state.setTiemValue': {
             //监听筛选控件查询值
             deep: true,
-            handler: function(n, o) {
+            handler: function (n, o) {
                 console.log("22222")
                 this.$refs.table.search('默认查询');
                 var option = this.$refs.querybutton25.timingSearch(
@@ -806,24 +628,24 @@ export default {
                 );
             }
         },
-        '$store.state.staticImagearr':{
+        '$store.state.staticImagearr': {
             //静态图片数据
-            deep:true,
-            handler:function(n){
-              this.$refs.StaticImage4.axioImg2(this.$store.state.staticImagearr);
+            deep: true,
+            handler: function (n) {
+                this.$refs.StaticImage4.axioImg2(this.$store.state.staticImagearr);
             }
         },
         '$store.state.ReceivedAlarms': {
             //监听报警控件信息
             deep: true,
-            handler: function(n, o) {
+            handler: function (n, o) {
                 this.$refs.Alarm14.axioImg2(this.$store.state.ReceivedAlarms);
             }
         },
         '$store.state.websocketsShow': {
             //是否开始连接websockets
             deep: true,
-            handler: function(n, o) {
+            handler: function (n, o) {
                 if (this.$store.state.websocketsShow != null) {
                     window.$.connection.subchart.server.joinView(
                         `${this.name}`,
@@ -847,7 +669,7 @@ export default {
                 if (this.$refs.Combinecombobox) {
                     this.$refs.Combinecombobox.JoinVarFun();
                 }
-                
+
                 if (this.$refs.dynamicyext17) {
                     this.$refs.dynamicyext17.JoinVarFun();
                 }
@@ -884,13 +706,13 @@ export default {
                 if (this.$refs.Tank) {
                     this.$refs.Tank.JoinVarFun();
                 }
-                 if (this.$refs.MatrixGridSet) {
+                if (this.$refs.MatrixGridSet) {
                     this.$refs.MatrixGridSet.JoinVarFun();
                 }
                 if (this.$refs.MatrixGrid) {
                     this.$refs.MatrixGrid.JoinVarFun();
                 }
-               
+
             }
         },
         listData(n, o) {
@@ -899,13 +721,13 @@ export default {
             clearInterval(this.scriptTime);
             if (this.$store.state.websocketsShow != null) {
                 if (window.$.connection.chart) {
-                         if(window.$.connection.chart.connection.state == 1){
+                    if (window.$.connection.chart.connection.state == 1) {
                         //调用服务器端方法 离开视图
                         // try{
-                            window.$.connection.subchart.server.leaveView(
-                                `${this.name}`,
-                                localStorage.getItem('currentLang')
-                            ); //停止
+                        window.$.connection.subchart.server.leaveView(
+                            `${this.name}`,
+                            localStorage.getItem('currentLang')
+                        ); //停止
                         // } catch {
 
                         // }
@@ -957,38 +779,51 @@ export default {
     },
 
     destroyed() {
+        this.$store.state.sizeBool = true;
         if (window.$.connection.chart) {
             //调用服务器端方法 离开视图
-            window.$.connection.subchart.server.leaveView(`${this.name}`,localStorage.getItem('currentLang'));
+            window.$.connection.subchart.server.leaveView(`${this.name}`, localStorage.getItem('currentLang'));
         }
         clearInterval(this.scriptTime);
         clearInterval(this.pageHTime);
     },
     created() {
-         this.zoomValue = Number(parseFloat(window.screen.width/1920).toFixed(2)) <= 0.8 ? 0.8 : Number(parseFloat(window.screen.width/1920).toFixed(2))
+        this.zoomValue = Number(parseFloat(window.screen.width / 1920).toFixed(2)) <= 0.8 ? 0.8 : Number(parseFloat(window.screen.width / 1920).toFixed(2))
         console.log('screentype', this.$store.state.screentype);
         this.init();
     },
 
     mounted() {
-                let screen = JSON.parse(sessionStorage.getItem('screen'));
-            if (!screen) {
-                this.$store.state.screentype = 1;
-            } else if (screen == 'one') {
-                this.$store.state.screentype = 1;
-            } else if (screen == 'two') {
-                this.$store.state.screentype = 2;
-            } else if (screen == 'three') {
-                this.$store.state.screentype = 3;
-            } else if (screen == 'four') {
-                this.$store.state.screentype = 4;
+        document.addEventListener('keyup', (e) => {
+
+            let keyvalue = e.keyCode ? e.keyCode : e.which;
+            if (keyvalue == 27 && !this.sizeBool) {
+                this.$store.state.sizeBool = true;
             }
+            // if (keyvalue == 122) {
+            //     this.$store.state.sizeBool = !this.$store.state.sizeBool;
+            // }
+            console.log('jjj*', keyvalue, e)
+        });
+
+        let screen = JSON.parse(sessionStorage.getItem('screen'));
+        if (!screen) {
+            this.$store.state.screentype = 1;
+        } else if (screen == 'one') {
+            this.$store.state.screentype = 1;
+        } else if (screen == 'two') {
+            this.$store.state.screentype = 2;
+        } else if (screen == 'three') {
+            this.$store.state.screentype = 3;
+        } else if (screen == 'four') {
+            this.$store.state.screentype = 4;
+        }
         console.log('触发1111');
         clearInterval(this.timer);
         //监听页面窗口改变页面自适应 在直线控件1触发（LineVue1）
         var _this = this;
         var endtime = 0;
-        document.onkeydown = function(e) {
+        document.onkeydown = function (e) {
             if (e.keyCode == 13) {
                 endtime++;
                 if (endtime == 2) {
@@ -1009,66 +844,66 @@ export default {
         //         console.log(e);
         //     }
         // }, 1000);
-window.addEventListener('scroll', this.scroll,true);
+        window.addEventListener('scroll', this.scroll, true);
     },
     methods: {
-        upFun(){
+        upFun() {
             // console.log('触发了')
-        this.$refs.PressButton7.upclick()
-        }, 
-        showtip(a){
-         this.tipchange = true;
-         this.tipword = a;
+            this.$refs.PressButton7.upclick()
         },
-        showIssueTip(a,issueFun_url,issueFun_commonIDarr){
-         this.tipchange = true;
-         this.tipword = a;
-         this.deltrue=true;
-         this.issueFun_url=issueFun_url;
-         this.issueFun_commonIDarr=issueFun_commonIDarr;
+        showtip(a) {
+            this.tipchange = true;
+            this.tipword = a;
         },
-        shownotip(){
-        this.tipchange = false
-        this.deltrue=false
+        showIssueTip(a, issueFun_url, issueFun_commonIDarr) {
+            this.tipchange = true;
+            this.tipword = a;
+            this.deltrue = true;
+            this.issueFun_url = issueFun_url;
+            this.issueFun_commonIDarr = issueFun_commonIDarr;
         },
-        issueFun(){
-             this.$axios({
-                method:'post',
-                url:this.issueFun_url,
-                data:this.issueFun_commonIDarr
-            }).then((res1)=>{
-                if(res1.data.code === 0){
+        shownotip() {
+            this.tipchange = false
+            this.deltrue = false
+        },
+        issueFun() {
+            this.$axios({
+                method: 'post',
+                url: this.issueFun_url,
+                data: this.issueFun_commonIDarr
+            }).then((res1) => {
+                if (res1.data.code === 0) {
                     this.shownotip()
-                    this.$axios({                  
+                    this.$axios({
                         method: 'post',
                         url: '/api/Base/PostIOServiceTest',
-                        data:this.issueFun_commonIDarr
+                        data: this.issueFun_commonIDarr
                     }).then(res => {
-                        console.log('res',res)
-                        if(res.data.code != 0){
+                        console.log('res', res)
+                        if (res.data.code != 0) {
                             this.showtip(res.data.msg)
                         }
                     })
-                }else{
+                } else {
                     this.showtip(res1.data.msg)
                 }
             })
 
         },
-        scroll(e){
+        scroll(e) {
 
-            if(e){
-                           if (e.srcElement.scrollTop + e.srcElement.clientHeight == e.srcElement.scrollHeight ) {
-                            if($('.customerPage')[0]){
- if($('.customerPage')[0].style.boxSizing== 'border-box'){
-               console.log($('.customerPage')[0].style.boxSizing,"sadas")
-                          $('.customerPage')[0].style.boxSizing='content-box'
-                    }else{
-                        $('.customerPage')[0].style.boxSizing='border-box'
-                        console.log($('.customerPage')[0].style.boxSizing,'saddsadsa')
+            if (e) {
+                if (e.srcElement.scrollTop + e.srcElement.clientHeight == e.srcElement.scrollHeight) {
+                    if ($('.customerPage')[0]) {
+                        if ($('.customerPage')[0].style.boxSizing == 'border-box') {
+                            console.log($('.customerPage')[0].style.boxSizing, "sadas")
+                            $('.customerPage')[0].style.boxSizing = 'content-box'
+                        } else {
+                            $('.customerPage')[0].style.boxSizing = 'border-box'
+                            console.log($('.customerPage')[0].style.boxSizing, 'saddsadsa')
+                        }
                     }
-           }
-            }
+                }
             }
 
 
@@ -1078,7 +913,7 @@ window.addEventListener('scroll', this.scroll,true);
             this.percentage = data;
         },
         searchFun() {
-        
+
             //触发查询控件 查询方法
             if (this.$refs.querybutton25) {
                 this.$refs.querybutton25.searchFun();
@@ -1098,7 +933,7 @@ window.addEventListener('scroll', this.scroll,true);
         search(a, num, i1) {
             //组件25查询事件
             console.log("2222112")
-            
+
             this.$refs.table.search(a, num, i1);
         },
         exportdata(a, num) {
@@ -1109,7 +944,7 @@ window.addEventListener('scroll', this.scroll,true);
         //跳转loading
         loding() {
             var left = this;
-            setTimeout(function() {
+            setTimeout(function () {
                 left.loading1 = false;
             }, 2);
         },
@@ -1117,15 +952,15 @@ window.addEventListener('scroll', this.scroll,true);
         //初始化页面
         init() {
             // this.pathNmae = this.$route.path.slice(1);
-           console.log("asddsasasasasasasasasasasasasasasa")
+            console.log("asddsasasasasasasasasasasasasasasa")
             this.pathNmae = this.$route.query.title;
-            if(!this.pathNmae){
+            if (!this.pathNmae) {
                 this.pathNmae = this.$route.params.pathMatch
             }
             if (this.pathName2 != this.pathName) {
                 this.dataId = this.$route.query.id;
             }
-            
+
             this.name = this.pathNmae;
             this.nameC = this.pathNmae;
             //  初始化/跳转页面获取名称
@@ -1261,6 +1096,7 @@ window.addEventListener('scroll', this.scroll,true);
             var hieghtType;
             //画布高度比例
             //画布宽度比例
+            console.log('originalData', originalData, screenWV)
             if (
                 Number(originalData.Controls.PropertyList.Width) < Number(screenWV)
             ) {
@@ -1321,7 +1157,6 @@ window.addEventListener('scroll', this.scroll,true);
 
             this.isWindow = false; //首次之后为false
             const setData = originalData.Controls.ControlList;
-
             //==============
             //    if(this.$store.state.screentype == 3){
             //   for(let i=0;i<setData.length;i++){
@@ -1477,7 +1312,7 @@ window.addEventListener('scroll', this.scroll,true);
         },
         //跟换JSON源
         impor(name) {
-            console.log("xxxxxxxxxxx")
+            // console.log("sadsadasdasdasdsad")
             this.$store.state.isInit = true; //分辨率
             this.$store.state.report = true; //
             this.name = name;
@@ -1485,7 +1320,7 @@ window.addEventListener('scroll', this.scroll,true);
             // debugger
             if (name == 'onePath') {
                 //默认页面
-                this.JsonData  = {
+                this.JsonData = {
                     "Controls": {
                         "Name": "MainCanvas",
                         "ControlType": "canvas",
@@ -1554,14 +1389,14 @@ window.addEventListener('scroll', this.scroll,true);
                 });
                 // return;
             } else {
-                
-                console.log("name",name)
+
+                console.log("name", name)
                 // 本地服务器读取方法
                 this.$axios({
                     method: 'post',
                     url: `/api/Main/Main_GetViewJson?argViewName=${encodeURIComponent(name)}`
                 }).then(res => {
-                    console.log("界面",res.data)
+                    console.log("界面", res.data)
                     var data = res.data;
                     this.JsonData = data.data;
                     console.log(' this.JsonData ', this.JsonData);
@@ -1574,30 +1409,31 @@ window.addEventListener('scroll', this.scroll,true);
                         this.scriptShow();
                     });
                 }).then(() => {
-                    if($('header')[0].style.zoom){
-                        if(parseFloat(($('header')[0].style.zoom))>1){
-                            this.heardertop = $('header').height()*parseFloat($('header')[0].style.zoom)+'px'
+                    if ($('header')[0].style.zoom) {
+                        if (parseFloat(($('header')[0].style.zoom)) > 1) {
+                            this.heardertop = $('header').height() * parseFloat($('header')[0].style.zoom) + 'px'
+                            this.init_heardertop = this.heardertop;
                         }
                     }
                     // setTimeout(()=>{
-                    this.newoverflow =  'calc(100%)'
+                    this.newoverflow = 'calc(100%)'
                     if (this.$store.state.screentype == 1) {
                         setTimeout(() => {
                             let w = window.screen.width / parseFloat($('.big_box').attr('width'));
-                            if (parseFloat($('.v-toolbar')[0].style.zoom)>1) {
-                                var a = $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) + $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                            if (parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
+                                var a = $('.v-toolbar').height() * parseFloat($('.v-toolbar')[0].style.zoom) + $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
                             } else {
-                                var a = $('.v-toolbar').height()  + 10 + $('.v-footer').height() ;
+                                var a = $('.v-toolbar').height() + $('.v-footer').height();
                             }
                             let h = (window.screen.height - a) / parseFloat($('.big_box').attr('height'));
                             $('.report').css({
                                 transform: `scale(${w},${h})`,
                                 margin: '0px'
                             });
-                            $('.scalediv1').css({
-                                height: window.screen.height - a + 'px',
-                                width: window.screen.width + 'px'
-                            });
+                            // $('.scalediv1').css({
+                            //     height: window.screen.height - a + 'px',
+                            //     width: window.screen.width + 'px'
+                            // });
                         });
                     } else if (this.$store.state.screentype == 2) {
                         setTimeout(() => {
@@ -1605,18 +1441,18 @@ window.addEventListener('scroll', this.scroll,true);
                                 transform: `scale(1,1)`
                             });
                         });
-                        $('.scalediv1').css({
-                            height: 'auto',
-                            width: parseFloat($('.big_box').attr('width'))
-                        });
+                        // $('.scalediv1').css({
+                        //     height: 'auto',
+                        //     width: parseFloat($('.big_box').attr('width'))
+                        // });
                     } else if (this.$store.state.screentype == 3) {
                         setTimeout(() => {
                             console.log(this.JsonData)
                             let width = window.screen.width;
                             let w2 = window.screen.width
-                            console.log(parseFloat(JSON.parse(JSON.stringify(this.JsonData)).Controls)*w1)
+                            console.log(parseFloat(JSON.parse(JSON.stringify(this.JsonData)).Controls) * w1)
                             if (
-                                parseFloat(JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Height)*w1 >
+                                parseFloat(JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Height) * w1 >
                                 window.screen.height - 130
                             ) {
                                 w2 -= 17;
@@ -1635,27 +1471,27 @@ window.addEventListener('scroll', this.scroll,true);
                             console.log($('.report'));
                             // let w =
                             //     width / parseFloat($('.big_box').attr('width'));
-                            $('.report').css({transform: `scale(${w},${w3})`});
-                            $('.scalediv1').css({
-                                height: parseFloat($('.big_box').attr('height'))*w3+'px',
-                                width: width + 'px'
-                            });
-                            if (parseFloat($('.v-toolbar')[0].style.zoom)>1) {
+                            $('.report').css({ transform: `scale(${w},${w3})` });
+                            // $('.scalediv1').css({
+                            //     height: parseFloat($('.big_box').attr('height')) * w3 + 'px',
+                            //     width: width + 'px'
+                            // });
+                            if (parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
                                 if (
-                                    JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Width*parseFloat(w) >= 
-                                    window.screen.width&&this.$store.state.screentype!==1
+                                    JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Width * parseFloat(w) >=
+                                    window.screen.width && this.$store.state.screentype !== 1
                                 ) {
-                                    if(this.$store.state.screentype==4||this.$store.state.screentype==3){
+                                    if (this.$store.state.screentype == 4 || this.$store.state.screentype == 3) {
                                         this.newoverflow = `calc(100% + 20px)`
                                     }
                                 }
                             }
                         });
                     } else if (this.$store.state.screentype == 4) {
-                        if (parseFloat($('.v-toolbar')[0].style.zoom)>1) {
-                            var a = $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) + $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                        if (parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
+                            var a = $('.v-toolbar').height() * parseFloat($('.v-toolbar')[0].style.zoom) + $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
                         } else {
-                            var a = $('.v-toolbar').height() + 10 + $('.v-footer').height() ;
+                            var a = $('.v-toolbar').height() + $('.v-footer').height();
                         }
                         let height = window.screen.height - a;
                         if (parseFloat(JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Width) > window.screen.width) {
@@ -1663,42 +1499,41 @@ window.addEventListener('scroll', this.scroll,true);
                         }
                         let h = height / parseFloat($('.big_box').attr('height'));
                         setTimeout(() => {
-                            $('.report').css({transform: `scale(${h},${h})`});
+                            $('.report').css({ transform: `scale(${h},${h})` });
                         });
-                        $('.scalediv1').css({
-                            height: height + 'px',
-                            width: parseFloat($('.big_box').attr('width'))*h + 'px'
-                        });
+                        // $('.scalediv1').css({
+                        //     height: height + 'px',
+                        //     width: parseFloat($('.big_box').attr('width')) * h + 'px'
+                        // });
                     }
                     console.log(this.JsonData)
-                    if (JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Width > window.screen.width&&this.$store.state.screentype!==1) {
-                        if (this.$store.state.screentype == 4 || this.$store.state.screentype== 3) {
-                            if(parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
-                                var a = $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) + $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
-                            }else{
-                                var a = $('.v-toolbar').height()  + 10 + $('.v-footer').height();
+                    if (JSON.parse(JSON.stringify(this.JsonData)).Controls.PropertyList.Width > window.screen.width && this.$store.state.screentype !== 1) {
+                        if (this.$store.state.screentype == 4 || this.$store.state.screentype == 3) {
+                            if (parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
+                                var a = $('.v-toolbar').height() * parseFloat($('.v-toolbar')[0].style.zoom) + $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                            } else {
+                                var a = $('.v-toolbar').height() + $('.v-footer').height();
                             }
                             this.nowoverflow = `calc(100% - ${a}px)`;
                             this.newoverflow = `calc(100% + 20px)`
                         }
-                        if(parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
-                            var a = $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) + $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                        if (parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
+                            var a = $('.v-toolbar').height() * parseFloat($('.v-toolbar')[0].style.zoom) + $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
                         } else {
-                            var a = $('.v-toolbar').height()  + 10 + $('.v-footer').height() ;
+                            var a = $('.v-toolbar').height() + $('.v-footer').height();
                         }
                         this.nowoverflow = `calc(100% - ${a}px)`;
                     } else {
-                            if(parseFloat($('.v-toolbar')[0].style.zoom)>1){
-                                        var a =
-                                    $('.v-toolbar').height()* parseFloat($('.v-toolbar')[0].style.zoom) +
-                                    $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
-                                }else{
-                                var a =
-                                    $('.v-toolbar').height()  -
-                                    10 +
-                                    $('.v-footer').height() ;
-                                }
-                            this.nowoverflow = `calc(100% - ${a}px)`;
+                        if (parseFloat($('.v-toolbar')[0].style.zoom) > 1) {
+                            var a =
+                                $('.v-toolbar').height() * parseFloat($('.v-toolbar')[0].style.zoom) +
+                                $('.v-footer').height() * parseFloat($('.v-toolbar')[0].style.zoom)
+                        } else {
+                            var a =
+                                $('.v-toolbar').height() -
+                                $('.v-footer').height();
+                        }
+                        this.nowoverflow = `calc(100% - ${a}px)`;
                     }
                 });
             }
@@ -1719,12 +1554,12 @@ window.addEventListener('scroll', this.scroll,true);
         },
         //查询赋值
         queryassignmentFun(name, value) {
-            
+
             setTimeout(() => {
-              console.log(this.name)
-              console.log( name,
+                console.log(this.name)
+                console.log(name,
                     value)
-                    console.log(localStorage.getItem('currentLang'))
+                console.log(localStorage.getItem('currentLang'))
                 window.$.connection.subchart.server.query(
                     this.name,
                     name,
@@ -1769,13 +1604,13 @@ window.addEventListener('scroll', this.scroll,true);
                 if (this.$refs.Alarm14) {
                     this.$refs.Alarm14.JoinVarFun();
                 }
-                  if (this.$refs.MatrixGridSet) {
+                if (this.$refs.MatrixGridSet) {
                     this.$refs.MatrixGridSet.JoinVarFun();
                 }
                 if (this.$refs.MatrixGrid) {
                     this.$refs.MatrixGrid.JoinVarFun();
                 }
-              
+
             });
         },
 
@@ -1878,7 +1713,7 @@ window.addEventListener('scroll', this.scroll,true);
                             var aab = this.$refs.DateTimePicker282.TimeValueFun();
                             var bbb = this.$refs.Combobox299.TimeValueFun();
                             var bbb1 = this.$refs.Combinecombobox.TimeValueFun();
-                            
+
                             var ccb = this.$refs.textimport27a.TimeValueFun();
                             var vv = '';
                             if (
@@ -1992,7 +1827,7 @@ window.addEventListener('scroll', this.scroll,true);
                         data.push(res[1]);
                     }
                     let ziarr = [];
-                   var arr = [];
+                    var arr = [];
                     let isShow = true;
                     //该脚本画面属性有下拉，文本输入，时间的下发事件
                     if (data.length) {
@@ -2014,7 +1849,7 @@ window.addEventListener('scroll', this.scroll,true);
                             //将筛选的数据格式化
                             let WebPropertyArr = [];
                             for (let k = 0; k < ziarr.length; k++) {
-                               var aab = this.$refs.DateTimePicker282.TimeValueFun();
+                                var aab = this.$refs.DateTimePicker282.TimeValueFun();
                                 let bbb = this.$refs.Combobox299.TimeValueFun();
                                 let bbb1 = this.$refs.Combinecombobox.TimeValueFun();
                                 let ccb = this.$refs.textimport27a.TimeValueFun();
@@ -2033,7 +1868,7 @@ window.addEventListener('scroll', this.scroll,true);
                                             isShow = true;
                                         }
                                     }
-                                        for (let f = 0; f < bbb1.length; f++) {
+                                    for (let f = 0; f < bbb1.length; f++) {
                                         if (
                                             bbb1[f].name ==
                                             ziarr[k].split(',')[0].trim()
@@ -2112,10 +1947,10 @@ window.addEventListener('scroll', this.scroll,true);
                 console.log();
                 endarr = [{ ScriptContent: undefined, WebProperty: [] }];
             }
-        
+
             // 修改过的
             if (this.$store.state.websocketsShow != null) {
-                    console.log('脚本事件', endarr);
+                console.log('脚本事件', endarr);
                 window.$.connection.chart.server.ExecuteScript(endarr);
             }
         },
@@ -4592,6 +4427,7 @@ window.addEventListener('scroll', this.scroll,true);
     height: 100%;
     z-index: 999;
 }
+
 .big_box {
     position: relative;
     width: 1920px;
@@ -4599,6 +4435,7 @@ window.addEventListener('scroll', this.scroll,true);
     height: 100%;
     z-index: 0;
 }
+
 .report {
     margin-top: 0px !important;
     height: calc(100% - 95px);
@@ -4607,18 +4444,22 @@ window.addEventListener('scroll', this.scroll,true);
     overflow: hidden;
     position: relative;
 }
+
 .search {
     width: 100%;
     height: 60px;
 }
+
 .box1 {
     width: 100%;
     overflow: auto;
     height: calc(100% - 60px);
 }
+
 .jexcel_label {
     display: none;
 }
+
 .btablecover {
     position: fixed;
     z-index: 99999999999;
@@ -4630,6 +4471,7 @@ window.addEventListener('scroll', this.scroll,true);
     display: none;
     width: 400px;
     height: 170px;
+
     .btabletop {
         width: 400px;
         height: 40px;
@@ -4638,18 +4480,21 @@ window.addEventListener('scroll', this.scroll,true);
         line-height: 40px;
         text-align: center;
     }
+
     .btableconter {
         width: 400px;
         height: 130px;
         background: #eeeeee;
         box-shadow: 0px 0px 60px 0px rgba(15, 16, 16, 0.16);
     }
+
     span {
         position: relative;
         font-size: 13px;
         top: 25px;
         left: 50px;
     }
+
     .tablebigpass {
         position: relative;
         width: 330px;
@@ -4659,6 +4504,7 @@ window.addEventListener('scroll', this.scroll,true);
         background: #cacaca;
         border-radius: 8px;
     }
+
     .tablesmallpass {
         position: relative;
         width: 0px;
@@ -4668,6 +4514,7 @@ window.addEventListener('scroll', this.scroll,true);
         background: #00c297;
         border-radius: 8px;
     }
+
     .tablepassword {
         position: absolute;
         right: 20px;
@@ -4676,16 +4523,22 @@ window.addEventListener('scroll', this.scroll,true);
         // color:#fff;
     }
 }
+
 .scalediv1 {
     overflow: hidden;
     position: absolute;
     right: 0;
     left: 0;
     margin: auto;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
 }
-.customerPage{
+
+.customerPage {
     box-sizing: content-box;
 }
+
 .tip {
     position: fixed;
     width: 380px;
@@ -4698,16 +4551,19 @@ window.addEventListener('scroll', this.scroll,true);
     margin: auto;
     box-shadow: 0px 0px 8px black;
     background-color: #f3f3f4;
+
     .tiptop {
         width: 380px;
         height: 40px;
         background-color: #ffbc3d;
+
         img {
             width: 20px;
             height: 20px;
             margin-top: 10px;
             margin-left: 160px;
         }
+
         span {
             color: #ffffff;
             position: relative;
@@ -4715,9 +4571,11 @@ window.addEventListener('scroll', this.scroll,true);
             margin-left: 7px;
         }
     }
-    .tipcontanin{
+
+    .tipcontanin {
         height: 110px;
     }
+
     .tipword {
         // width:calc(100% - 0px);
         // text-align: center;
@@ -4727,8 +4585,9 @@ window.addEventListener('scroll', this.scroll,true);
         display: flex;
         word-break: break-all;
         height: 70px;
-        min-height:70px ;
+        min-height: 70px;
     }
+
     .tipdetermine {
         cursor: pointer;
         color: #ea9328;
@@ -4747,6 +4606,7 @@ window.addEventListener('scroll', this.scroll,true);
         line-height: 30px;
         margin-left: 25px;
         height: 30px;
+
         .one {
             cursor: pointer;
             display: inline-block;
@@ -4756,6 +4616,7 @@ window.addEventListener('scroll', this.scroll,true);
             background-color: #e0e0e0;
             color: #7e7e7e;
         }
+
         .two {
             cursor: pointer;
             display: inline-block;
@@ -4768,6 +4629,7 @@ window.addEventListener('scroll', this.scroll,true);
         }
     }
 }
+
 .cover1111 {
     width: 100%;
     height: 100%;
@@ -4776,8 +4638,9 @@ window.addEventListener('scroll', this.scroll,true);
     top: 0;
     left: 0;
 }
-.loadbox{
-      width: 100%;
+
+.loadbox {
+    width: 100%;
     height: 100%;
     z-index: 99999999;
     position: fixed;

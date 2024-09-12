@@ -65,7 +65,7 @@ export default {
       },
        chartdata:{
         handler(val){
-        console.log("chartdata",val)
+        
           this.init();
         }
       },

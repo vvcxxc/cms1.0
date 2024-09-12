@@ -14,7 +14,7 @@
                                                         top: 0;
                                                         left: 0;"></div>
         <div class="search-container" :style="{ zoom }">
-            <my-search :searchList="searchList" :searchData="searchData" @setParams="setParams" @delFn="delFn" @exportFn="exportFn"
+            <my-search :searchList="searchList" :searchData="searchData" @setParams="setParams" @delFn="delFn"
                 @change="change"></my-search>
         </div>
         <div class="table-container">
@@ -302,7 +302,8 @@ export default {
                 RecoverTime: '恢复时间',
                 ConfirmTime: '确认时间',
                 OperatorName: '报警确认员',
-                AlarmState: '报警状态'
+                AlarmState: '报警状态',
+                AlarmDuration: '报警时长(HH:MM:SS)',
             },
             data: [],
             daochu: '',
@@ -404,6 +405,7 @@ export default {
                 ConfirmTime: this.lang.AlarmRecord_Time_DataGrid_ConfirmationTime,
                 OperatorName: this.lang.AlarmRecord_Time_DataGrid_ConfirmationPerson,
                 AlarmStateName: this.lang.AlarmRecord_Time_DataGrid_State,
+                AlarmDuration: '报警时长(HH:MM:SS)',
             }
         },
         error2() {
@@ -920,26 +922,6 @@ export default {
             this.isPopShow = true;
             this.tipText = this.lang.APPFormManage_DeleteData
         },
-        exportFn(a) {
-            if (!a) {
-                this.isPopShow = true;
-                this.tipText = this.lang.NoOperationAuthority;
-                return
-            }
-            this.$axios({
-                method: 'post',
-                url: `/api/AlarmRecord/ExportHistory`,
-                responseType: 'blob',
-                data: {
-                    StartTime: this.searchData.argStartTime,
-                    EndTime: this.searchData.argEndTime,
-                    Alarmtype: this.searchData.argAlarmType,
-                    Keyword: this.searchData.argKeyword
-                }
-            }).then(res => {
-                 this.downloadFile(res.data, '历史报警.xlsx')
-            })
-         },
         tipCallBack(str) {
             this.noCancel = true;
             if (str == 'yes') {

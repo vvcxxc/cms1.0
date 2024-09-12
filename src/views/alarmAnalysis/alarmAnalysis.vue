@@ -9,7 +9,7 @@
     <div class="tapwater" v-loading="this.$store.state.isShow">
         <div class="linebox" :class="{ colordiv: $store.state.color == 'grey' }">
             <div class="table">
-                <div class="fll" v-show="!tableData.curId && !tableData.curId2">
+                <div class="fll" v-show="!tableData.curId">
 
                     <span>{{ lang.AlarmStatistics_AlarmStatisticsUserControl_StartTime }}</span>
                     <div class="block">
@@ -24,7 +24,7 @@
                             :style="[{ height: 40 * 1 + 'px' }, { marginLeft: 16 + 'px' }, { width: 250 * 1 + 'px' }]"></el-date-picker>
                     </div>
                 </div>
-                <div class="query" @click="tablename" v-show="!tableData.curId && !tableData.curId2" :id="cxid"
+                <div class="query" @click="tablename" v-show="!tableData.curId" :id="cxid"
                     :style="[{ lineHeight: 36 * 1 < 36 ? 36 + 'px' : 36 * 1 + 'px' }, { height: 40 * 1 + 'px' }, { fontSize: 16 * 1 + 'px' }, { width: 120 * 1 + 'px' }]">
                     {{ lang.AlarmStatistics_AlarmStatisticsUserControl_Query }}</div>
                 <div class="fr">
@@ -32,7 +32,7 @@
                         :style="[{ lineHeight: 40 * 1 + 'px' }, { height: 40 * 1 + 'px' }, { fontSize: 16 * 1 + 'px' }, { width: 120 * 1 + 'px' }]">
                         {{ lang.AlarmStatistics_AlarmStatisticsUserControl_Export }}</div>
 
-                    <div class="query" @click="back" v-show="tableData.curId || tableData.curId2"
+                    <div class="query" @click="back" v-show="tableData.curId"
                         :style="[{ lineHeight: 36 * 1 + 'px' }, { height: 40 * 1 + 'px' }, { fontSize: 16 * 1 + 'px' }, { width: 120 * 1 + 'px' }]">
                         {{ lang.AlarmStatistics_AlarmStatisticsUserControl_Back }}</div>
 
@@ -48,83 +48,55 @@
                 <div class="table-r">
                     <table cellspacing="0" cellpadding="1">
                         <!-- 头部 -->
-                        <!-- 第一层 -->
-                        <thead v-if="!tableData.curId && !tableData.curId2">
+                        <thead v-if="!tableData.curId">
                             <tr>
                                 <th>{{ ZHObj.rowTitleDevice }}</th>
-                                <th v-for="item in tableData.tableList" :key="item.ColumnName + 'ColumnName'">
-                                    {{ item.ColumnName }}</th>
+                                <th v-for="item in tableData.tableList" :key="item.Name + 'Name'">
+                                    {{ item.Name }}</th>
                             </tr>
                         </thead>
-                        <!-- 第二层 -->
-                        <thead v-else-if="tableData.curId && !tableData.curId2">
-                            <tr>
-                                <th>{{ ZHObj.subTableRowTitleAlarmType }}</th>
-                                <th v-for="item in tableData.curIdList" :key="item.ColumnName + 'ColumnName2'">
-                                    {{ item.ColumnName }}</th>
-                            </tr>
-                        </thead>
-                        <!-- 第三层 -->
                         <thead v-else>
                             <tr>
-                                <th>{{ ZHObj.AlarmRecord_HT_AlarmPointManageUC_AlarmText }}</th>
-                                <th v-for="item in tableData.curIdList2" :key="item.ColumnName + 'ColumnName3'">
-                                    {{ item.ColumnName }}</th>
+                                <th>{{ ZHObj.subTableRowTitleAlarmType }}</th>
+                                <th v-for="item in tableData.curIdList" :key="item.Name + 'Name2'">
+                                    {{ item.Name }}</th>
                             </tr>
                         </thead>
                         <!-- 表体 -->
-                        <tbody v-if="!tableData.curId && !tableData.curId2">
+                        <tbody v-if="!tableData.curId">
                             <tr>
-                                <td>{{ ZHObj.rowTitleCount }}</td>
-                                <td v-for="item in tableData.tableList" :key="item.ColumnName + 'rowTitleCount'">
-                                    {{ item.Count }}</td>
+                                <td>{{ ZHObj.rowTitleCon }}</td>
+                                <td v-for="item in tableData.tableList" :key="item.Name + 'rowTitleCon'">
+                                    {{ item.Con }}</td>
                             </tr>
                             <tr>
-                                <td>{{ ZHObj.rowTitlePercentage }}</td>
-                                <td v-for="item in tableData.tableList" :key="item.ColumnName + 'rowTitlePercentage'">
-                                    {{ (item.Percentage * 100).toFixed(1) }}
+                                <td>{{ ZHObj.rowTitlePer }}</td>
+                                <td v-for="item in tableData.tableList" :key="item.Name + 'rowTitlePer'">
+                                    {{ (item.Per * 100).toFixed(1) }}
                                 </td>
                             </tr>
                             <tr>
-                                <td>{{ ZHObj.rowTitleSumPercentage }}</td>
-                                <td v-for="item in tableData.tableList" :key="item.ColumnName + 'rowTitleSumPercentage'">
-                                    {{ (item.SumPercentage * 100).toFixed(1) }}</td>
-                            </tr>
-                        </tbody>
-                        <tbody v-else-if="tableData.curId && !tableData.curId2">
-                            <tr>
-                                <td>{{ ZHObj.rowTitleCount }}</td>
-                                <td v-for="item in tableData.curIdList" :key="item.ColumnName + 'rowTitleCount2'">
-                                    {{ item.Count }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ ZHObj.rowTitlePercentage }}</td>
-                                <td v-for="item in tableData.curIdList" :key="item.ColumnName + 'rowTitlePercentage2'">
-                                    {{ (item.Percentage * 100).toFixed(1) }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>{{ ZHObj.rowTitleSumPercentage }}</td>
-                                <td v-for="item in tableData.curIdList" :key="item.ColumnName + 'rowTitleSumPercentage2'">
-                                    {{ (item.SumPercentage * 100).toFixed(1) }}</td>
+                                <td>{{ ZHObj.rowTitleSumPer }}</td>
+                                <td v-for="item in tableData.tableList" :key="item.Name + 'rowTitleSumPer'">
+                                    {{ (item.SumPer * 100).toFixed(1) }}</td>
                             </tr>
                         </tbody>
                         <tbody v-else>
                             <tr>
-                                <td>{{ ZHObj.rowTitleCount }}</td>
-                                <td v-for="item in tableData.curIdList2" :key="item.ColumnName + 'rowTitleCount3'">
-                                    {{ item.Count }}</td>
+                                <td>{{ ZHObj.rowTitleCon }}</td>
+                                <td v-for="item in tableData.curIdList" :key="item.Name + 'rowTitleCon2'">
+                                    {{ item.Con }}</td>
                             </tr>
                             <tr>
-                                <td>{{ ZHObj.rowTitlePercentage }}</td>
-                                <td v-for="item in tableData.curIdList2" :key="item.ColumnName + 'rowTitlePercentage3'">
-                                    {{ (item.Percentage * 100).toFixed(1) }}
+                                <td>{{ ZHObj.rowTitlePer }}</td>
+                                <td v-for="item in tableData.curIdList" :key="item.Name + 'rowTitlePer2'">
+                                    {{ (item.Per * 100).toFixed(1) }}
                                 </td>
                             </tr>
                             <tr>
-                                <td>{{ ZHObj.rowTitleSumPercentage }}</td>
-                                <td v-for="item in tableData.curIdList2" :key="item.ColumnName + 'rowTitleSumPercentage3'">
-                                    {{ (item.SumPercentage * 100).toFixed(1) }}</td>
+                                <td>{{ ZHObj.rowTitleSumPer }}</td>
+                                <td v-for="item in tableData.curIdList" :key="item.Name + 'rowTitleSumPer2'">
+                                    {{ (item.SumPer * 100).toFixed(1) }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -169,12 +141,10 @@ export default {
                 chartTitle: '设备报警统计',
                 subChartTitle: '设备报警类型统计',
                 rowTitleDevice: '设备',
-                rowTitleCount: '数量',
-                rowTitlePercentage: '百分比',
-                rowTitleSumPercentage: '累计百分比',
+                rowTitleCon: '数量',
+                rowTitlePer: '百分比',
+                rowTitleSumPer: '累计百分比',
                 subTableRowTitleAlarmType: '报警类型',
-                AlarmStatistics_subcharttitleAlarmText: "设备报警文本统计",
-                AlarmRecord_HT_AlarmPointManageUC_AlarmText: "报警文本"
             },
 
             tipchange1: false,
@@ -191,11 +161,11 @@ export default {
             tableData: {
                 tableList: [],
                 curId: '',
-                curIdList: '',
-                curId2: '',
-                curIdList2: [],
-            },
-         };
+                curIdList: ''
+            }
+
+
+        };
     },
 
     created() {
@@ -250,18 +220,16 @@ export default {
             this.tablename();
         }
 
-        this.$nextTick(() => {
-            let myChart = this.$echarts.init(document.getElementById('mychart'));
-            myChart.on('click', params => this.chartClick(params))
-        })
         $(window).bind("resize",
             function () {
                 let myChart = this.$echarts.init(document.getElementById('mychart'));
+                console.log("myChart99")
                 myChart.resize()
             }
         );
     },
     watch: {
+
         VpowerData(val) {
             this.jurisdiction = this.$store.state.btnPowerData
             this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'), this.jurisdiction)[0].Children
@@ -308,12 +276,10 @@ export default {
                 chartTitle: this.lang.AlarmStatistics_chartitle,
                 subChartTitle: this.lang.AlarmStatistics_subcharttitle,
                 rowTitleDevice: this.lang.AlarmStatistics_tablecell0,
-                rowTitleCount: this.lang.AlarmStatistics_tablecell1,
-                rowTitlePercentage: this.lang.AlarmStatistics_tablecell2,
-                rowTitleSumPercentage: this.lang.AlarmStatistics_tablecell3,
+                rowTitleCon: this.lang.AlarmStatistics_tablecell1,
+                rowTitlePer: this.lang.AlarmStatistics_tablecell2,
+                rowTitleSumPer: this.lang.AlarmStatistics_tablecell3,
                 subTableRowTitleAlarmType: this.lang.AlarmStatistics_subtablecell0,
-                AlarmStatistics_subcharttitleAlarmText: this.lang.AlarmStatistics_subcharttitleAlarmText,
-                AlarmRecord_HT_AlarmPointManageUC_AlarmText: this.lang.AlarmRecord_HT_AlarmPointManageUC_AlarmText,
             }
         },
         move(name, namehead) {
@@ -533,11 +499,8 @@ export default {
             }).then(res => {
                 if (res.data.code == 0) {
                     this.tableData.tableList = res.data.data || [];
-                    console.log(' this.tableData.tableList', this.tableData.tableList)
                     this.tableData.curId = '';
                     this.tableData.curIdList = [];
-                    this.tableData.curId2 = '';
-                    this.tableData.curIdList2 = [];
                     this.drawLine()
                 } else {
                     this.tipchange1 = true;
@@ -558,52 +521,35 @@ export default {
 
         // 返回
         back() {
-            if (this.tableData.curId2) {
-                this.tableData.curId2 = ''
-                this.tableData.curIdList2 = []
-            } else {
-                this.tableData.curId = ''
-                this.tableData.curIdList = []
-            }
-
+            this.tableData.curId = ''
+            this.tableData.curIdList = ''
             this.drawLine()
         },
         chartClick(data) {
-            if (this.tableData.curId && this.tableData.curId2) {
+            console.log("111")
+            if (this.tableData.curId) {
                 return
             }
-            if (this.tableData.curId) {
-                this.tableData.curId2 = data.name
-                let _subObj = this.tableData.curIdList.find(item => item.ColumnName == data.name) || {}
-                this.tableData.curIdList2 = _subObj.Children || []
-                this.drawLine()
-            } else {
-                this.tableData.curId = data.name
-                let _subObj = this.tableData.tableList.find(item => item.ColumnName == data.name) || {}
-                this.tableData.curIdList = _subObj.Children || []
-                this.drawLine()
-            }
-         },
+            this.tableData.curId = data.name
+            let _subObj = this.tableData.tableList.find(item => item.Name == data.name) || {}
+            this.tableData.curIdList = _subObj.Children || []
+            this.drawLine()
+        },
         drawLine() {
             let xList = [], databar = [], dataline = [], dataShadow = [], title = '';
-            if (this.tableData.curId && this.tableData.curId2) {
-                //第三层
-                title = this.ZHObj.AlarmStatistics_subcharttitleAlarmText
-                xList = this.tableData.curIdList2.map(item => item.ColumnName)
-                databar = this.tableData.curIdList2.map(item => (item.Percentage * 100).toFixed(1));
-                dataline = this.tableData.curIdList2.map(item => (item.SumPercentage * 100).toFixed(1));
-            } else if (this.tableData.curId) {
-                //第二层
+            if (this.tableData.curId) {
+                //分表
                 title = this.ZHObj.subChartTitle
-                xList = this.tableData.curIdList.map(item => item.ColumnName)
-                databar = this.tableData.curIdList.map(item => (item.Percentage * 100).toFixed(1));
-                dataline = this.tableData.curIdList.map(item => (item.SumPercentage * 100).toFixed(1));
+                title = this.ZHObj.subChartTitle
+                xList = this.tableData.curIdList.map(item => item.Name)
+                databar = this.tableData.curIdList.map(item => (item.Per * 100).toFixed(1));
+                dataline = this.tableData.curIdList.map(item => (item.SumPer * 100).toFixed(1));
             } else {
-                //第一层
+                //总表
                 title = this.ZHObj.chartTitle
-                xList = this.tableData.tableList.map(item => item.ColumnName)
-                databar = this.tableData.tableList.map(item => (item.Percentage * 100).toFixed(1));
-                dataline = this.tableData.tableList.map(item => (item.SumPercentage * 100).toFixed(1));
+                xList = this.tableData.tableList.map(item => item.Name)
+                databar = this.tableData.tableList.map(item => (item.Per * 100).toFixed(1));
+                dataline = this.tableData.tableList.map(item => (item.SumPer * 100).toFixed(1));
 
             }
             dataShadow = databar.map(_ => 100)
@@ -700,6 +646,7 @@ export default {
             let myChart = this.$echarts.init(document.getElementById('mychart'));
             myChart.clear()
             myChart.setOption(option, true);
+            myChart.on('click', params => this.chartClick(params))
         }
     },
 

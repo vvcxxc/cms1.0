@@ -18,7 +18,7 @@
             :style="{
           zoom
         }">
-            <!-- <span class="title sblx" >{{lang.EquipmentAccount_EquipmentType1}}</span>
+            <span class="title sblx" >{{lang.EquipmentAccount_EquipmentType1}}</span>
              <div class="seleword seleword3" @click.stop="selectword1" >
              <div class="seleword1">
                   {{Meter}}
@@ -41,7 +41,7 @@
                         </span>
                     </span>
                 </el-tree>
-            </div> -->
+            </div>
 
             <span class="sp4 tinput title" >{{lang.MaintenanceManage_ThisTimeStartTime1}}</span>
 

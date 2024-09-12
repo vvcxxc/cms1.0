@@ -6,15 +6,10 @@
  * @LastEditTime: 2019-12-01 19:01:37
  -->
 <template>
-    <div class="left-container" :class="{colordiv:$store.state.color == 'grey'}">
-        <div
-            class="nav"
-            :class="{ active: activeIndex == index }"
-            v-for="(item, index) in nav"
-            :key="index"
-             :style="{fontSize:16*zoom+'px',paddingTop:zoom<1?languages+'px':languages*zoom+'px',paddingBottom:zoom<1?languages+'px':languages*zoom+'px'}"
-            @click="tabActive(index)"
-        >
+    <div class="left-container" :class="{ colordiv: $store.state.color == 'grey' }">
+        <div class="nav" :class="{ active: activeIndex == index }" v-for="(item, index) in nav" :key="index"
+            :style="{ fontSize: 16 * zoom + 'px', paddingTop: zoom < 1 ? languages + 'px' : languages * zoom + 'px', paddingBottom: zoom < 1 ? languages + 'px' : languages * zoom + 'px' }"
+            @click="tabActive(index)">
             <div class="border"></div>
             {{ item.name }}
         </div>
@@ -25,8 +20,8 @@
 export default {
     data() {
         return {
-            color:'',
-            width:'',
+            color: '',
+            width: '',
             navList: {
                 AlarmRecord: [
                     {
@@ -39,7 +34,7 @@ export default {
                         name: '报警点管理'
                     }
                 ],
-                 AlarmRecord1: [
+                AlarmRecord1: [
                     {
                         name: '实时报警'
                     },
@@ -80,22 +75,22 @@ export default {
                         name: '用户操作记录'
                     }
                 ],
-                PointInspectionManage:[
-                     {
+                PointInspectionManage: [
+                    {
                         name: '待办点巡检'
                     },
                     {
                         name: '点巡检计划'
                     },
-                     {
+                    {
                         name: '点巡检标准'
                     },
                     {
                         name: '点巡检记录'
                     }
                 ],
-                MaintenanceManage:[
-                     {
+                MaintenanceManage: [
+                    {
                         name: '待办保养'
                     },
                     {
@@ -105,8 +100,8 @@ export default {
                         name: '保养记录'
                     }
                 ],
-                RepairManage:[
-                     {
+                RepairManage: [
+                    {
                         name: '待办维修'
                     },
                     {
@@ -116,16 +111,16 @@ export default {
                         name: '维修记录'
                     }
                 ],
-                FileManage:[
-                     {
+                FileManage: [
+                    {
                         name: 'SOP管理'
                     },
                     {
                         name: '设备资料'
                     },
                 ],
-                VulnerablePartManage:[
-                     {
+                VulnerablePartManage: [
+                    {
                         name: '易损件台账'
                     },
                     {
@@ -143,11 +138,38 @@ export default {
                         name: '推送日志'
                     }
                 ],
+                OrderManagement: [
+                    {
+                        name: '工单管理'
+                    },
+                    {
+                        name: '实时生产'
+                    },
+                    {
+                        name: '工单记录'
+                    },
+                ],
+                PrinterManagement: [
+                    {
+                        name: '打印机管理'
+                    },
+                    {
+                        name: '打印记录'
+                    },
+                ],
+                BasicDataManagement: [
+                    {
+                        name: '产线建模'
+                    },
+                    {
+                        name: '数据项采集'
+                    },
+                ],
             },
             nav: [],
-            zoom:1,
+            zoom: 1,
             activeIndex: 0,
-            languages:20
+            languages: 20
         };
     },
     created() {
@@ -155,26 +177,26 @@ export default {
         let path = this.$route.path.substr(1);
         this.nav = this.navList[path];
     },
-    mounted(){
+    mounted() {
         this.width = window.screen.width
-          this.color = this.$store.state.color;
-          this.zoom = (window.screen.width/1920)>1?(window.screen.width/1920):1
+        this.color = this.$store.state.color;
+        this.zoom = (window.screen.width / 1920) > 1 ? (window.screen.width / 1920) : 1
     },
     methods: {
         getLangData() {
             let languages = JSON.parse(localStorage.getItem('languages'))
             let currentLang = localStorage.getItem('currentLang')
-            
-            if(currentLang=='Main_Language_ZH'){
+
+            if (currentLang == 'Main_Language_ZH') {
                 this.languages = 20
-                
-            }else{
-                if(this.zoom<=1){
- this.languages = 35
-                }else{
- this.languages = 45
+
+            } else {
+                if (this.zoom <= 1) {
+                    this.languages = 35
+                } else {
+                    this.languages = 45
                 }
-               
+
             }
             this.navList.AlarmRecord = [
                 {
@@ -210,13 +232,13 @@ export default {
                 }
             ]
             this.navList.FileManage = [
-                    {
-                        name: languages[currentLang].FileManage_SOPManage
-                    },
-                    {
-                        name: languages[currentLang].FileManage_EquipmentData
-                    },
-                ]
+                {
+                    name: languages[currentLang].FileManage_SOPManage
+                },
+                {
+                    name: languages[currentLang].FileManage_EquipmentData
+                },
+            ]
             this.navList.SparePartsManage = [
                 {
                     name: languages[currentLang].SparePartsManage_SparePartsAccount
@@ -243,7 +265,7 @@ export default {
                 {
                     name: languages[currentLang].PointInspectionManage_PointInspectionPlan
                 },
-                    {
+                {
                     name: languages[currentLang].PointInspectionManage_PointInspectionStandard
                 },
                 {
@@ -304,7 +326,8 @@ export default {
 .left-container {
     width: 100%;
     box-sizing: border-box;
-       min-width: 100px;
+    min-width: 100px;
+
     .nav {
         height: 50px;
         display: flex;
@@ -313,11 +336,13 @@ export default {
         cursor: pointer;
         padding-left: 15px;
         opacity: 0.5;
+
         &.active {
             background-color: #fff;
             opacity: 1;
             color: #4270e4;
             font-weight: 600;
+
             .border {
                 position: absolute;
                 left: -5px;
@@ -328,7 +353,8 @@ export default {
         }
     }
 }
-.colordiv{
- background-color: #D9DBDE;
+
+.colordiv {
+    background-color: #D9DBDE;
 }
 </style>

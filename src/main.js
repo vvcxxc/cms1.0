@@ -30,7 +30,7 @@ import store from './store';
 import vueXlsxTable from 'vue-xlsx-table'
 import './common/font.css'
 import common from './assets/js/common'
-
+import VueCompositionApi from '@vue/composition-api';
 import Print from './plugins/print'
 
 import '@/api/index'; // 导入API插件
@@ -49,7 +49,7 @@ require('vue-video-player/src/custom-theme.css')
 import domtoimage from 'dom-to-image';
 // const hls =require("videojs-contrib-hls")
 import Directives from './directive/index'
-
+Vue.use(VueCompositionApi)
 Vue.use(Print) // 注册
 Vue.use(common)
 Vue.use(Directives)
@@ -93,6 +93,25 @@ const i18n = new VueI18n({
     } */
  })
  
+
+ let cacheLength = localStorage.getItem('languages')
+    ? localStorage.getItem('languages').length
+    : 0;
+let languages = JSON.parse(localStorage.getItem('languages') || '{}');
+window.$$t = Vue.prototype.$$t = str => {
+    const languagesStr = localStorage.getItem('languages');
+    if (cacheLength !== languagesStr.length) {
+        cacheLength = languagesStr.length;
+        languages = JSON.parse(languagesStr || '{}');
+    }
+    const curr = localStorage.getItem('currentLang');
+    const map = Object.keys(languages['Main_Language_ZH']).reduce((t, key) => {
+        t[languages['Main_Language_ZH'][key]] =
+            languages[curr][key] || t[languages['Main_Language_ZH'][key]];
+        return t;
+    }, {});
+    return map[str] || str;
+};
     
 //  游客登录获取多语言信息
     axios({

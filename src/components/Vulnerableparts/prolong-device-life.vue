@@ -63,7 +63,6 @@ export default {
         argRemarks: [{ required: true, message: '请输入备注', trigger: 'blur' }],
       },
       options: [],
-      lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
     }
   },
   methods: {
@@ -99,7 +98,6 @@ export default {
     },
     // 设置下拉项
     setOptions() {
-      console.log( this.editData.TimerType , this.lang.EquipmentAccount_UsedNumber   )
       if (this.editData.TimerType === this.lang.EquipmentAccount_UsedNumber) {
         this.options = [
           { value: 5, label: '次' },
@@ -129,9 +127,6 @@ export default {
       }
     }
   },
-  mounted() {
-    this.lang = JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
-  }
 };
 </script>
 

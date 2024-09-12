@@ -6,7 +6,8 @@
  * @LastEditTime: 2021-04-07 13:47:49
  -->
 <template>
-  <header class="v-toolbar" @click="yifu = false; showscreen = false" :class="{ colordiv: $store.state.color == 'grey' }">
+  <header class="v-toolbar" @click="yifu = false; showscreen = false" :class="{ colordiv: $store.state.color == 'grey' }"
+    v-show="sizeBool">
     <div @click="warnIfon1" class="v-toolbar__content">
       <div class="header-top">
         <div class="logo-content">
@@ -15,13 +16,8 @@
         <div class="divider"></div>
         <div class="title">{{ TitleText }}</div>
         <div class="v-spacer"></div>
-        <div class="header-screen" @click.stop="languagechange">
-          <img src="../../assets/images/Lang.png" alt class="app-class" />
-        </div>
-        <div class="lan-list" :class="{ colortip: $store.state.color == 'grey' }" v-show="lanShow">
-          <div v-for="item in languages" :key="item.value"
-            :class="item.value == currentLang ? 'lan-btn cur-lan' : 'lan-btn'" @click="setLang(item.value)">{{ item.label
-            }}</div>
+        <div class="header-screen" @click.stop="changeSize">
+          <img src="../../assets/images/hight_normal.png" alt class="app-class" />
         </div>
         <div class="header-screen" @click.stop="appchange">
           <img src="../../assets/images/app.png" alt class="app-class" />
@@ -130,7 +126,6 @@
       <div v-show="loginShow" @click="loginIfon" class="warn_popBox"></div>
       <div v-show="yifu" @click="yifu1" class="warn_popBox"></div>
       <div v-show="showscreen" @click="screenchange1" class="warn_popBox"></div>
-      <div v-show="lanShow" @click="languagechange1" class="warn_popBox"></div>
       <div v-show="appShow" @click="appchange1" class="warn_popBox"></div>
     </div>
 
@@ -424,7 +419,6 @@ export default {
         SuperAdmin: '',
       },
       lang: '',
-      lanShow: false,
       appShow: false,
       appCodeShow: false,
       appTitle: '',
@@ -436,8 +430,7 @@ export default {
       engineeringImgUrl: '',
       engineeringName: '',
       warnList: [],
-      languages: [],
-      currentLang: '',
+      sizeBool: true,
     };
   },
   watch: {
@@ -446,6 +439,9 @@ export default {
     },
     Menus(val) {
       console.log(val)
+    },
+    '$store.state.sizeBool'(val) {
+      this.sizeBool = val
     }
   },
   destroyed() {
@@ -454,7 +450,7 @@ export default {
   },
 
   mounted() {
-    // this.currentLang = localStorage.getItem('currentLang')
+    this.sizeBool = this.$store.state.sizeBool
     // this.$nextTick(() => {
     //     this.lang = JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
     // })
@@ -573,9 +569,11 @@ export default {
     this.initTextLogo()
 
 
+
+
+
   },
   created() {
-    this.getdropLang();
     var $this = this
     this.$axios({
       method: 'post',
@@ -586,7 +584,6 @@ export default {
         let langType = currentLang ? currentLang : 'Main_Language_ZH'
         localStorage.setItem('languages', JSON.stringify(res.data.data))
         localStorage.setItem('currentLang', langType)
-        this.currentLang = langType;
         $this.getLocalData()
         $this.lang = JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
       }
@@ -606,25 +603,6 @@ export default {
     }
   },
   methods: {
-    getdropLang() {
-      this.$axios({
-        method: 'GET',
-        url: `/api/main/Main_GetLanguageTypes`,
-      }).then(res => {
-        this.languages = res.data.data
-        let langValue = localStorage.getItem('currentLang')  
-        if(!langValue || !res.data.data.find(_=>_.value==langValue)){
-            localStorage.setItem('currentLang', this.languages[0].value )
-        }
-      })
-
-      this.$axios({
-        method: 'post',
-        url: `/api/main/Main_GetCustomMultiLanguage`,
-      }).then(res => {
-        localStorage.setItem('customMultiLanguage', JSON.stringify(res.data.data))
-      })
-    },
     functionA(arr) {
       Utils.$emit('demo', arr)
     },
@@ -652,10 +630,9 @@ export default {
       }
 
     },
-    setLang(lang) {
-      localStorage.setItem('currentLang', lang)
-      this.currentLang = lang;
-      this.$router.go(0);
+    changeSize() {
+      this.sizeBool = false
+      this.$store.state.sizeBool = false;
     },
     //app选择
     appdownloadcode(type) {
@@ -758,7 +735,6 @@ export default {
       this.showscreen = !this.showscreen
       this.wranShow = false;
       this.loginShow = false;
-      this.lanShow = false;
       this.yifu = false
       this.appShow = !this.appShow
     },
@@ -938,6 +914,18 @@ export default {
         console.log(err)
       }
       try {
+        //不良条码prodCode
+        window.$.connection.redisMonitor.client.ReceivedRFIDValue = function (data) {
+          console.log("ReceivedRFIDValue", data)
+          self.$store.state._prodCode = {};
+          setTimeout(() => {
+            self.$store.state._prodCode = data
+          }, 50)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+      try {
         //websockets建立连接在Vuex监听
         window.$.connection.hub.start().done(() => {
           console.log("触发", this.$route)
@@ -1070,12 +1058,6 @@ export default {
         .catch(err => {
           console.log('修改err', err);
         });
-    },
-    languagechange() {
-      this.lanShow = true
-    },
-    languagechange1() {
-      this.lanShow = false
     },
     //显示app图标
     appchange() {
@@ -1889,37 +1871,6 @@ export default {
   }
 }
 
-.lan-list {
-  position: absolute;
-  top: 50px;
-  right: 290px;
-  width: fit-content;
-  padding: 0 16px;
-  box-sizing: border-box;
-  height: 50px;
-  background: #fff;
-  box-shadow: 0px 0px 8px 0px rgba(72, 82, 93, 0.5);
-  border-radius: 4px;
-  z-index: 12;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-
-  .lan-btn {
-    background: #ebedf2;
-    color: #939394;
-    border-radius: 4px;
-    padding: 3px 5px;
-    margin-left: 5px;
-    cursor: pointer;
-  }
-
-  .cur-lan {
-    background: #4270e4;
-    color: #fff;
-  }
-}
-
 .warn_pop1 {
   position: absolute;
   top: 50px;
@@ -2350,8 +2301,6 @@ export default {
   border-radius: 4px;
   z-index: 12;
   overflow: hidden;
-
-
 
   ul {
     width: 100%;

@@ -65,8 +65,6 @@ export default {
                 startValue: 0,
                 count: 0,
             },
-            datazoomLoading: false,
-            datazoomTimer: 1
         }
     },
     props: ["data", 'item', 'valueData1', 'drawLineShow', 'dataId', 'AllData'],
@@ -78,7 +76,6 @@ export default {
                 this.data = val
                 this.serieArr = []
                 this.Xdata = []
-                console.log('cp2 initdata', val)
                 this.isFirst = true;
                 this.init()
             }
@@ -90,7 +87,7 @@ export default {
                 for (let i = 0; i < val.length; i++) {
                     if (this.data.name == val[i].name) {
                         this.valueData = val[i]
-                        console.log("cp2 this.valueData", this.valueData)
+                        console.log(" this.valueData", this.valueData)
                     }
                 }
                 this.dynamicNumber()
@@ -396,6 +393,7 @@ export default {
                 this.LPtb = 10
                 this.LPlr = 10
             }
+
             /* 新增需求 -滑块模式 */
             let sessionSliderData = JSON.parse(sessionStorage.getItem(this.data.name))
             if (sessionSliderData !== null /* === this.data.name */) {
@@ -415,6 +413,7 @@ export default {
                 this.sliderData.count = this.optionData.DataZoom.DataNumber /* 5 */
             }
             /* **** */
+
             this.Title = this.optionData.Title.Title
             this.TitlePosition = this.optionData.Title.Position
             this.TitleIsChecked = this.optionData.Title.Show
@@ -742,10 +741,6 @@ export default {
         },
         //刷数
         dynamicNumber() {
-            if (this.datazoomLoading) {
-                console.log('正在拖动滑块，先不刷数')
-                return
-            }
             let $this = this
             setTimeout(() => {
                 if (this.myChart) {
@@ -881,7 +876,7 @@ export default {
 
                         }
                     }
-                    console.log("this.valueData1111", this.valueData)
+
                     //动态辅助线
                     if (this.valueData.hasOwnProperty("MarkLine")) {
                         var axiosArr = []
@@ -1054,6 +1049,7 @@ export default {
                         }
 
                     })
+
                     if (seData1.length > 0) {
 
                         Ddata.yAxis.forEach((item, key) => {
@@ -1107,8 +1103,8 @@ export default {
                     // 			item.interval =!item.splitNumber?null:Number(Number(Math.ceil(Math.max.apply(null,seData1)/Math.pow(10,(Math.max.apply(null,seData1).toString().length)))*Math.pow(10,(Math.max.apply(null,seData1).toString().length))/item.splitNumber).toFixed(2))
                     // 		})
                     //  }
-                    //  console.log(seData1)
-                    //  console.log("data",JSON.stringify(Ddata))
+                    console.log(seData1)
+                    console.log("data", JSON.stringify(Ddata))
                     //历史
                     if (this.$store.state.typeNum == '1') {
                         this.$nextTick(() => {
@@ -1135,11 +1131,10 @@ export default {
                                     if (Ddata.xAxis[0].data.length < $this.sliderData.count) {
                                         $this.sliderData.count = Ddata.xAxis[0].data.length
                                     }
-                                    if (Ddata.dataZoom[0].startValue != 0 && !Ddata.dataZoom[0].startValue) {
+                                    if ((!Ddata.dataZoom[0].startValue && Ddata.xAxis[0].data.length > $this.sliderData.count)) {
                                         $this.isFirst = true
                                     }
-
-                                    if (Ddata.xAxis[0].data.findIndex(_ => _ == $this.nowStartTime) == -1) {
+                                    if (Ddata.xAxis[0].data.findIndex(_ => _ == this.nowStartTime) == -1) {
                                         $this.isFirst = true
                                     }
                                     if (($this.isFirst && Ddata.xAxis[0].data.length)) {
@@ -1159,7 +1154,7 @@ export default {
                                         $this.nowStartTime = Ddata.xAxis[0].data[Ddata.dataZoom[0].startValue]
                                         Ddata.dataZoom = dataZoom
                                     } else {
-                                        let startValue = Ddata.xAxis[0].data.findIndex(_ => _ == $this.nowStartTime)
+                                        let startValue = Ddata.xAxis[0].data.findIndex(_ => _ == this.nowStartTime)
                                         $this.sliderData.startValue = startValue
                                         let dataZoom = [
                                             {
@@ -1168,17 +1163,17 @@ export default {
                                                 realtime: true,
                                                 height: 15,
                                                 bottom: 10,
-                                                startValue: $this.sliderData.startValue >= 0
+                                                startValue: $this.sliderData.startValue
                                                     ? Ddata.xAxis.data[Number($this.sliderData.startValue)]
                                                     : Ddata.xAxis[0].data.length - $this.sliderData.count,
-                                                endValue: $this.sliderData.startValue >= 0 ?
+                                                endValue: $this.sliderData.startValue ?
                                                     Ddata.xAxis.data[Number($this.sliderData.startValue + $this.sliderData.count) - 1]
                                                     : Ddata.xAxis[0].data.length - 1,
                                             }
                                         ]
                                         Ddata.dataZoom = dataZoom
                                     }
-                                    sessionStorage.setItem(`${this.data.id}_${this.data.name}`, JSON.stringify(this.sliderData))
+                                    sessionStorage.setItem(this.data.name, JSON.stringify(this.sliderData))
                                 } else {
                                     Ddata.dataZoom = [{
                                         show: false,
@@ -1190,7 +1185,6 @@ export default {
                                         endValue: Ddata.xAxis[0].data[Ddata.xAxis[0].data.length - 1],
                                     }]
                                 }
-                                // console.log("asdasdsa",JSON.stringify(Ddata))
                                 this.myChart.setOption(Ddata)
                             }
                         })
@@ -1342,7 +1336,6 @@ export default {
                 if (aa.hasOwnProperty('markLine')) {
                     delete aa.markLine
                 }
-
                 aa.dataZoom = [
                     {
                         show: $this.sliderData.show,
@@ -1463,6 +1456,9 @@ export default {
                                 this.myChart.setOption(a);
                             }
                         }
+
+
+
                     })
                     this.myChart.on('datazoom', function (params) {
                         let startValue = $this.myChart.getModel().option.dataZoom[1].startValue // x轴开始值
@@ -1471,14 +1467,7 @@ export default {
                         $this.sliderData.count = endValue - startValue + 1
                         sessionStorage.setItem(`${$this.data.id}_${$this.data.name}`, JSON.stringify($this.sliderData))
                         $this.nowStartTime = $this.myChart.getModel().option.xAxis[0].data[startValue]
-                        $this.isFirst = false;
-                        console.log('正在拖动滑块，先不刷数1', $this.nowStartTime)
-                        $this.datazoomLoading = true;
-                        if ($this.datazoomTimer) clearTimeout($this.datazoomTimer);
-                        $this.datazoomTimer = setTimeout(function () {
-                            $this.datazoomLoading = false;
-                            clearTimeout($this.datazoomTimer)
-                        }, 1000);
+                        $this.isFirst = false
                     })
                     // this.myChart.on('restore', function (params) {
                     //     $this.isFirst = true

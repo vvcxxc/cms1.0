@@ -41,15 +41,11 @@
         { height: 40 * zoom + 'px' },
         { width: 100 * zoom + 'px' },
         ]" :id="scid">{{ lang.APPFormManage_Delete }}</div>
-       
-        <div class="btn pointer export" @click="exportFn" :id="exid" 
-                :style="[
-                    {fontSize:16*zoom+'px'},
-                    {height: 40*zoom+'px'},
-                    {width: 100*zoom+'px'},
-                 ]"
-            >{{lang.QualityManage_SampleChoseUserControl_Export}}</div>
-         </div>
+        </div>
+        <div class="fr">
+            <!-- <div class="import">导入</div>
+                    <div class="export">导出</div> -->
+        </div>
     </div>
 </template>
 
@@ -63,9 +59,7 @@ export default {
             cxid: "",
             cxshow: true,
             scid: "",
-            exid:'',
             scshow: true,
-            exshow:'',
             zoom1: 1,
             zoom: 1,
             lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')]
@@ -75,16 +69,12 @@ export default {
         VpowerData(val) {
             this.jurisdiction = this.$store.state.btnPowerData
             this.buttonarr = this.findPathByLeafId(this.GetUrlParam('id'), this.jurisdiction)[0].Children
-           console.log(" this.buttonarr", this.buttonarr)
             this.buttonarr.forEach((item) => {
                 if (item.RightName == '历史报警-查询按钮') {
                     this.cxid = item.RightID
                 }
                 if (item.RightName == '历史报警-删除按钮') {
                     this.scid = item.RightID
-                }
-                if (item.RightName == '历史报警-导出按钮') {
-                    this.exid = item.RightID
                 }
             })
             var userid = ''
@@ -113,14 +103,6 @@ export default {
             }).catch((err) => {
                 console.log('err', err)
             })
-            this.$axios({
-                method: 'post',
-                url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.exid}`,
-            }).then(res => {
-                this.exshow = res.data.data
-            }).catch((err) => {
-                console.log('err', err)
-            })
         }
     },
     mounted() {
@@ -141,9 +123,6 @@ export default {
             }
             if (item.RightName == '历史报警-删除按钮') {
                 this.scid = item.RightID
-            }
-            if (item.RightName == '历史报警-导出按钮') {
-                    this.exid = item.RightID
             }
         })
         var userid = ''
@@ -172,14 +151,6 @@ export default {
         }).catch((err) => {
             console.log('err', err)
         })
-        this.$axios({
-            method: 'post',
-            url: `/api/UserManage/UserManage_CheckAuthority?argUserID=${userid}&argRightID=${this.exid}`,
-        }).then(res => {
-            this.exshow = res.data.data
-        }).catch((err) => {
-            console.log('err', err)
-        })
     },
     computed: {
         VpowerData() {
@@ -187,9 +158,6 @@ export default {
         },
     },
     methods: {
-        exportFn(){
-            this.$emit('exportFn', this.exshow);
-        },
         getZoom() {
             let that = this
             setTimeout(() => {
@@ -308,15 +276,30 @@ span {
         background: #999999;
         color: #fff;
     }
-
-    .export{
-        border: 1px solid #fda100;
-        background-color: #ffffff;
-        color: #fda100;
-    }
 }
 
- 
+.import {
+    border: 1px solid #fda100;
+    background-color: #ffffff;
+    width: 120px;
+    height: 38px;
+    margin-top: 11px;
+    display: block;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 38px;
+    cursor: pointer;
+    float: left;
+    color: #fda100;
+}
+
+.export {
+    position: absolute;
+    right: 30px;
+    bottom: 10px;
+    background-color: #79d088 !important;
+}
+
 .fr {
     width: 260px;
     height: 100%;

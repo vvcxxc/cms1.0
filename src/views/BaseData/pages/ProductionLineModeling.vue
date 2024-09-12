@@ -1,0 +1,292 @@
+<!--
+ * @Description: 报警管理
+ * @Date: 2019-11-23 11:54:01
+ * @Author: 随风
+ * @LastEditors: 随风
+ * @LastEditTime: 2019-11-27 14:53:55
+ -->
+<template>
+    <div class="ProductionLineModeling-container">
+
+        <div class="ProductionLineModeling-flex">
+            <div class="ProductionLineModeling-item table1">
+                <div class="item-header">
+                    <div class="item-title">设备信息</div>
+                </div>
+
+
+                <div class="item-table">
+                    <el-table ref="table1" @row-click="tableRowClick" highlight-current-row
+                        :cell-style="{ borderColor: '#E4E7ED' }"
+                        :header-cell-style="{ background: '#5a6c98', color: '#fff' }" :data="dataList1" border
+                        height="100%">
+                        <template slot="empty">
+                            <span>暂无数据</span>
+                        </template>
+                        <el-table-column type="index" label="序号" width="60px"></el-table-column>
+                        <el-table-column prop="EquipmentCode" label="设备ID" :show-overflow-tooltip="true"></el-table-column>
+                    </el-table>
+                </div>
+
+            </div>
+
+            <div class="ProductionLineModeling-item">
+                <div class="item-header">
+                    <div class="item-title">工序及工位信息</div>
+                </div>
+
+                <div class="item-table">
+                    <el-table ref="table2" @row-click="tableRowClick2" highlight-current-row
+                        :cell-style="{ borderColor: '#E4E7ED' }"
+                        :header-cell-style="{ background: '#5a6c98', color: '#fff' }" :data="dataList2" border
+                        height="100%">
+                        <template slot="empty">
+                            <span>暂无数据</span>
+                        </template>
+                        <el-table-column type="index" label="序号" width="60px"></el-table-column>
+                        <el-table-column prop="OperationCode" label="工艺编码" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="WorkCellId" label="工位ID" :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="WorkCellCode" label="工位描述" :show-overflow-tooltip="true"></el-table-column>
+                    </el-table>
+                </div>
+            </div>
+            <div class="ProductionLineModeling-item">
+                <div class="item-header">
+                    <div class="item-title">货位及AGV站点信息</div>
+                </div>
+                <div class="item-table">
+                    <el-table highlight-current-row :cell-style="{ borderColor: '#E4E7ED' }"
+                        :header-cell-style="{ background: '#5a6c98', color: '#fff' }" :data="dataList3" border
+                        height="100%">
+                        <template slot="empty">
+                            <span>暂无数据</span>
+                        </template>
+                        <el-table-column type="index" label="序号" width="60px"></el-table-column>
+                        <el-table-column prop="LocatorId" label="货位ID" :show-overflow-tooltip="true">
+                        </el-table-column>
+                        <el-table-column prop="AgvPointCode" label="AGV站点编码"
+                            :show-overflow-tooltip="true"></el-table-column>
+                        <el-table-column prop="ContainerCode" label="容器编码（料车码）"
+                            :show-overflow-tooltip="true"></el-table-column>
+
+                    </el-table>
+                </div>
+            </div>
+        </div>
+        <tip-pop v-if="isTipShow" :tipText="tipText" :noCancel="noCancel" @tipCallBack="tipCallBack"></tip-pop>
+
+    </div>
+</template>
+
+<script>
+
+import TipPop from '../../../components/public/tipPop.vue';
+
+export default {
+    components: {
+
+        TipPop,
+    },
+    data() {
+        return {
+            lang: JSON.parse(localStorage.getItem('languages'))[localStorage.getItem('currentLang')],
+            isTipShow: false,
+            tipText: '',
+            noCancel: true,
+            curLeft: {},
+            curMiddle: {},
+            dataList1: [],
+            dataList2: [],
+            dataList3: [],
+
+        };
+    },
+    mounted() {
+        this.getData1()
+    },
+    methods: {
+        tipCallBack(str) {
+            console.log(str)
+            if (str == 'yes') {
+
+            }
+            this.isTipShow = false;
+            this.noCancel = true;
+        },
+        tableRowClick(row) {
+            this.curLeft = row;
+            this.getData2()
+        },
+        tableRowClick2(row) {
+            this.curMiddle = row
+            this.getData3()
+        },
+        getData1() {
+            this.$axios({
+                method: 'get',
+                url: `/api/BasicData/GetDeviceList`,
+            })
+                .then(res => {
+                    if (res.data.code == 0) {
+                        this.dataList1 = res.data.data;
+                        if (this.dataList1.length) {
+                            this.curLeft = this.dataList1[0]
+                            this.$refs.table1.setCurrentRow(this.curLeft);
+                        } else {
+                            this.curLeft = {};
+                        }
+                        this.getData2()
+                    } else {
+                        this.isTipShow = true;
+                        this.tipText = res.data.msg;
+                    }
+                })
+        },
+        getData2() {
+            console.log(this.curLeft.EquipmentId)
+            if (!this.curLeft.EquipmentId) {
+                this.dataList2 = [];
+                this.dataList3 = [];
+                this.curMiddle = {};
+                return
+            }
+            this.$axios({
+                method: 'get',
+                url: `/api/BasicData/GetWorkSectionList?equipmentId=${this.curLeft.EquipmentId}`,
+            })
+                .then(res => {
+                    if (res.data.code == 0) {
+                        this.dataList2 = res.data.data;
+                        if (this.dataList2.length) {
+                            this.curMiddle = this.dataList2[0]
+                            this.$refs.table2.setCurrentRow(this.curMiddle);
+                        } else {
+                            this.curMiddle = {};
+                        }
+                        this.getData3()
+                    } else {
+                        this.isTipShow = true;
+                        this.tipText = res.data.msg;
+                    }
+                })
+        },
+        getData3() {
+            if (!this.curMiddle.WorkCellId) {
+                this.dataList3 = [];
+                return
+            }
+            this.$axios({
+                method: 'get',
+                url: `/api/BasicData/GetLocatorList?workCellId=${this.curMiddle.WorkCellId}`,
+            })
+                .then(res => {
+                    if (res.data.code == 0) {
+                        this.dataList3 = res.data.data;
+                    } else {
+                        this.isTipShow = true;
+                        this.tipText = res.data.msg;
+                    }
+                })
+        },
+
+
+    }
+};
+</script>
+
+<style lang='scss' scoped>
+.ProductionLineModeling-container {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+
+    .ProductionLineModeling-flex {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        .ProductionLineModeling-item {
+            flex: 2;
+            height: 100%;
+            padding: 0 10px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            margin-left: 10px;
+
+            .item-header {
+                height: 50px;
+                display: flex;
+                align-items: center;
+
+
+                .item-title {
+                    color: #386df0;
+                    font-size: 16px;
+                    border-left: 3px solid #386df0;
+                    padding-left: 5px;
+                }
+            }
+
+
+            .item-table {
+                width: 100%;
+                height: calc(100% - 60px);
+                border: 1px solid #ddd;
+
+                .green {
+                    color: #61D731;
+                }
+
+                .yes2 {
+                    display: flex;
+                    align-items: center;
+                    padding-left: 20px;
+                    position: relative;
+                    line-height: 1;
+
+                    .yes2-content {
+                        width: 16px;
+                        height: 16px;
+                        position: absolute;
+                        left: 0;
+                        top: 50%;
+                        transform: translate(0, -50%);
+                    }
+                }
+
+                .table-action {
+                    width: 50px;
+                    float: left;
+                    height: 25px;
+                    border-radius: 13px;
+                    background-color: #fff;
+                    border: 1px solid #cccccc;
+                    position: relative;
+                    margin-left: 5px;
+                    cursor: pointer;
+
+                    img {
+                        position: absolute;
+                        top: 0;
+                        width: 20px;
+                        height: 20px;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        margin: auto;
+                    }
+                }
+            }
+
+        }
+
+        .table1 {
+            flex: 1;
+            margin-left: 0;
+        }
+    }
+
+}
+</style>
